@@ -184,16 +184,15 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	// apparently, we need to do this in the current context, can't cache it
 	CGColorSpaceRef patternSpace = CGColorSpaceCreatePattern(NULL);
 	CGContextSetFillColorSpace(currentContext, patternSpace);
-//	CGColorSpaceRelease(patternSpace);
+	CGColorSpaceRelease(patternSpace);
 	// setup graphic attributes for drawing strata rectangles
 	CGContextSetLineWidth(currentContext, 3);
 	CGFloat colorComponents[4] = {0, 0, 0, 1.};
-//	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-//	CGColorRef color = CGColorCreate(colorSpace, colorComponents);
-//	CGContextSetStrokeColorWithColor(currentContext, color);
-//	CFRelease(color);
-//	CFRelease(colorSpace);
-	CGContextSetStrokeColorWithColor(currentContext, CGColorCreate(CGColorSpaceCreateDeviceRGB(), colorComponents));
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	CGColorRef color = CGColorCreate(colorSpace, colorComponents);
+	CGContextSetStrokeColorWithColor(currentContext, color);
+	CFRelease(color);
+	CFRelease(colorSpace);
 	for (Stratum *stratum in self.activeDocument.strata) {									// for each stratum
 		if (self.dragActive && [self.activeDocument.strata indexOfObject:stratum] == self.activeDragIndex) {	// adjust strata dimensions, based on selected move icon's coordinates
 			CGPoint iconLocation;
