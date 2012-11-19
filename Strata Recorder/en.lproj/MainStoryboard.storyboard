@@ -79,7 +79,7 @@
                                 <rect key="frame" x="0.0" y="44" width="768" height="960"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <view hidden="YES" multipleTouchEnabled="YES" contentMode="TopLeft" id="a0A-EG-Gec" customClass="StrataPageView">
+                                    <view multipleTouchEnabled="YES" contentMode="TopLeft" id="a0A-EG-Gec" customClass="StrataPageView">
                                         <rect key="frame" x="125" y="350" width="384" height="234"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
