@@ -27,6 +27,6 @@ void patternDrawingCallback(void *info, CGContextRef context);
 @property StrataViewController* delegate;
 @property Stratum*	selectedStratum;
 @property CGPoint infoSelectionPoint;							// for stratum info popover
-@property StrataDocument* activeDocument;				// current StrataDocument being edited/displayed
+@property (nonatomic) StrataDocument* activeDocument;				// current StrataDocument being edited/displayed
 
 @end

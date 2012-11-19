@@ -6,6 +6,9 @@
 //  Copyright (c) 2012 Don Altman. All rights reserved.
 //
 
+#define XORIGIN .5												// distance in inches of origin from LL of view
+#define YORIGIN .5												// distance in inches of origin from LL of view
+
 #import "StrataView.h"
 #import "IconImage.h"
 #import "Graphics.h"
@@ -50,8 +53,16 @@ void patternDrawingCallback(void *info, CGContextRef context)
     for (Stratum *stratum in self.activeDocument.strata) {
         CGRect myRect = stratum.frame;
         CGPoint iconLocation = CGPointMake(myRect.origin.x+myRect.size.width, myRect.origin.y+myRect.size.height);
-        [self.iconLocations addObject:(__bridge id)(CGPointCreateDictionaryRepresentation(iconLocation))];
+		CFDictionaryRef dict = CGPointCreateDictionaryRepresentation(iconLocation);
+        [self.iconLocations addObject:(__bridge id)(dict)];
+		CFRelease(dict);
     }
+}
+
+- (void)setActiveDocument:(StrataDocument *)activeDocument
+{
+	_activeDocument = activeDocument;
+	[self populateIconLocations];														// we're overriding the setter, because this is a good time to do this
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -65,8 +76,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
 		[self addGestureRecognizer:longPress];
 		longPress.cancelsTouchesInView = NO;
-		self.activeDocument = [[StrataDocument alloc] init];
-		[self populateIconLocations];
 	}
 	return self;
 }
@@ -91,7 +100,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 {
 	CGPoint dragPoint = [self getDragPoint:event];
-#define HIT_DISTANCE 1./4.
+#define HIT_DISTANCE 1./6.
 	for (NSDictionary *dict in self.iconLocations) {													// first check move icons
 		CGPoint iconLocation;
 		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &iconLocation);
@@ -130,7 +139,9 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		if (offsetDragPoint.x < self.dragConstraint.x) offsetDragPoint.x = self.dragConstraint.x;		// constrain the dragged icon
 		if (offsetDragPoint.y < self.dragConstraint.y) offsetDragPoint.y = self.dragConstraint.y;
 		Stratum *stratum = self.activeDocument.strata[self.activeDragIndex];							// selected stratum
-		[self.iconLocations replaceObjectAtIndex:self.activeDragIndex withObject:(__bridge id)(CGPointCreateDictionaryRepresentation(offsetDragPoint))];
+		CFDictionaryRef dict = CGPointCreateDictionaryRepresentation(offsetDragPoint);
+		[self.iconLocations replaceObjectAtIndex:self.activeDragIndex withObject:(__bridge id)(dict)];
+		CFRelease(dict);
 		[self updateCoordinateText:offsetDragPoint stratum:stratum];
 		[self setNeedsDisplay];
 	}
@@ -173,16 +184,20 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	// apparently, we need to do this in the current context, can't cache it
 	CGColorSpaceRef patternSpace = CGColorSpaceCreatePattern(NULL);
 	CGContextSetFillColorSpace(currentContext, patternSpace);
-	CGColorSpaceRelease(patternSpace);
+//	CGColorSpaceRelease(patternSpace);
 	// setup graphic attributes for drawing strata rectangles
 	CGContextSetLineWidth(currentContext, 3);
 	CGFloat colorComponents[4] = {0, 0, 0, 1.};
+//	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+//	CGColorRef color = CGColorCreate(colorSpace, colorComponents);
+//	CGContextSetStrokeColorWithColor(currentContext, color);
+//	CFRelease(color);
+//	CFRelease(colorSpace);
 	CGContextSetStrokeColorWithColor(currentContext, CGColorCreate(CGColorSpaceCreateDeviceRGB(), colorComponents));
 	for (Stratum *stratum in self.activeDocument.strata) {									// for each stratum
 		if (self.dragActive && [self.activeDocument.strata indexOfObject:stratum] == self.activeDragIndex) {	// adjust strata dimensions, based on selected move icon's coordinates
 			CGPoint iconLocation;
-			NSDictionary *dict = self.iconLocations[self.activeDragIndex];
-			CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &iconLocation);
+			CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.iconLocations[self.activeDragIndex]), &iconLocation);
 			CGSize newSize = CGSizeMake(iconLocation.x-stratum.frame.origin.x, iconLocation.y-stratum.frame.origin.y);
 			[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];	// here's where the work is done
 		}
@@ -197,7 +212,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 								   VDY(stratum.frame.size.height));
 		CGContextFillRect(currentContext, myRect);											// draw fill pattern
 		CGContextStrokeRect(currentContext, myRect);										// draw boundary
-		if (stratum != self.activeDocument.strata.lastObject)								// draw info icon, unless this is the last (empty) stratum
+		if (!self.dragActive && stratum != self.activeDocument.strata.lastObject)			// draw info icon, unless this is the last (empty) stratum
 			[self.infoIcon drawAtPoint:CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1) scale:self.scale];
 	}
 	for (NSDictionary *dict in self.iconLocations) {										// draw move icons
@@ -218,14 +233,14 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	CGContextSetShouldAntialias(context, NO);
 	// horizontal rules
 	CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0 green:1 blue:1 alpha:1.0].CGColor);
-	for (float i=0; i<self.bounds.size.height/PPI; i+=GRID_WIDTH) {
+	for (float i=-YORIGIN; i<self.bounds.size.height/PPI; i+=GRID_WIDTH) {
 		CGContextMoveToPoint(context, 0, VY(i));
 		CGContextAddLineToPoint(context, self.frame.size.width, VY(i));
 		CGContextStrokePath(context);
 	}
 	// vertical rules
 	CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0 green:1 blue:1 alpha:1.0].CGColor);
-	for (float i=0; i<=self.bounds.size.width/PPI; i+=GRID_WIDTH) {
+	for (float i=-XORIGIN; i<=self.bounds.size.width/PPI; i+=GRID_WIDTH) {
 		CGContextMoveToPoint(context, VX(i), 0);
 		CGContextAddLineToPoint(context, VX(i), self.frame.origin.y+self.frame.size.height);
 		CGContextStrokePath(context);

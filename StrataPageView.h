@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "StrataModel.h"
 
 @interface StrataPageView : UIView
+
+@property (nonatomic) StrataDocument*			activeDocument;
+@property CGPDFPageRef							patternsPage;
 
 @end

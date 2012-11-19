@@ -17,5 +17,6 @@
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *graphPageToggle;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *toolbarTitle;
 
 @end

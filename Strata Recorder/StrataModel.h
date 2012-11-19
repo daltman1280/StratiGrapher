@@ -12,8 +12,14 @@
 
 - (void)adjustStratumSize:(CGSize)size atIndex:(int)index;
 - (void)save;
++ (id)loadFromFile:(NSString *)name;
 
-@property NSMutableArray *strata;		// array of Strata*
+@property NSMutableArray*	strata;			// array of Strata*
+@property NSString*			name;			// not a part of persistent document, just for housekeeping purposes
+@property CGSize			pageDimension;	// in inches
+@property CGSize			pageMargins;	// in inches
+@property CGFloat			scale;			// in meters/inch
+@property int				lineThickness;	// in points
 
 @end
 

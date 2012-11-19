@@ -22,6 +22,7 @@
 @property UIPopoverController *popover;
 @property (weak, nonatomic) IBOutlet UIScrollView *strataPageScrollView;
 @property (weak, nonatomic) IBOutlet StrataPageView *strataPageView;
+@property StrataDocument *activeDocument;
 
 @end
 
@@ -30,28 +31,45 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"])
+		self.activeDocument = [StrataDocument loadFromFile:[[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"]];
+	else
+		self.activeDocument = [StrataDocument loadFromFile:@"test"];
+	
+	self.toolbarTitle.title = self.activeDocument.name;
+	self.strataView.activeDocument = self.activeDocument;
 	self.scrollView.contentSize = self.strataView.bounds.size;
 	self.scrollView.contentOffset = CGPointMake(0, self.strataView.bounds.size.height-self.scrollView.bounds.size.height);
 	self.strataView.scale = self.scrollView.zoomScale;
 	self.strataView.locationLabel = self.locationLabel;
 	self.strataView.dimensionLabel = self.dimensionLabel;
 	self.strataView.delegate = self;
+	
+	self.strataPageView.activeDocument = self.activeDocument;
+	self.strataPageScrollView.contentSize = self.strataPageView.bounds.size;
+	self.strataPageScrollView.contentOffset = CGPointMake(0, self.strataPageView.bounds.size.height-self.strataPageScrollView.bounds.size.height);
+	self.strataPageScrollView.hidden = YES;
 	NSURL *url = [[NSBundle mainBundle] URLForResource:@"patterns1" withExtension:@"pdf"];
 	CGPDFDocumentRef document = CGPDFDocumentCreateWithURL((__bridge CFURLRef)(url));
 	CGPDFPageRef page = CGPDFDocumentGetPage(document, 1);
+	CFRelease(document);
 	self.strataView.patternsPage = page;
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationResigning:) name:@"applicationResigning" object:nil];
+	self.strataPageView.patternsPage = page;
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationEnteredBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
-- (void)handleApplicationResigning:(id)sender
+- (void)handleApplicationEnteredBackground:(id)sender
 {
 	[self.strataView.activeDocument save];
+	[[NSUserDefaults standardUserDefaults] setObject:self.activeDocument.name forKey:@"activeDocument"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (IBAction)handleModeSwitch:(id)sender {
 	int selection = [(UISegmentedControl *)sender selectedSegmentIndex];
 	if (selection == 1) {																						// switching to page mode
 		[self.strataView resignFirstResponder];
+		self.strataPageScrollView.hidden = NO;
 //		[self.strataPageScrollView invalidate];
 		[UIView beginAnimations:@"GraphToPageTransition" context:nil];
 		[UIView setAnimationDuration:0.5];
@@ -59,6 +77,7 @@
 		self.strataPageScrollView.alpha = 1.0;
 		[UIView commitAnimations];
 	} else {																									// switching to graph mode
+		self.strataPageScrollView.hidden = YES;
 		[UIView beginAnimations:@"PageToGraphTransition" context:nil];
 		[UIView setAnimationDuration:0.5];
 		self.strataGraphScrollView.alpha = 1.0;
@@ -98,7 +117,10 @@
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)sender
 {
-	return self.strataView;
+	if (sender == self.scrollView)
+		return self.strataView;
+	else
+		return self.strataPageView;
 }
 
 #if 0
@@ -134,6 +156,9 @@
 	[self setStrataPageScrollView:nil];
 	[self setStrataPageView:nil];
 	[self setStrataGraphScrollView:nil];
+	[self setTitle:nil];
+	[self setTitle:nil];
+	[self setToolbarTitle:nil];
 	[super viewDidUnload];
 }
 @end

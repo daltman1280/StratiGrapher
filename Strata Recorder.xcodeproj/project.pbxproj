@@ -23,6 +23,13 @@
 		2589CF23163F897D00E43147 /* StrataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2589CF22163F897D00E43147 /* StrataViewController.m */; };
 		2589CF2E163F8AE200E43147 /* StrataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2589CF2D163F8AE200E43147 /* StrataView.m */; };
 		258C79461654877D0040F759 /* patterns descriptive text.txt in Resources */ = {isa = PBXBuildFile; fileRef = 258C79451654877D0040F759 /* patterns descriptive text.txt */; };
+		258CF6C21658CE48001E8D20 /* DocumentListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258CF6C11658CE48001E8D20 /* DocumentListTableViewController.m */; };
+		258CF6C41658D18C001E8D20 /* rename.tif in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6C31658D18C001E8D20 /* rename.tif */; };
+		258CF6C61658D1DA001E8D20 /* duplicate.tif in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6C51658D1DA001E8D20 /* duplicate.tif */; };
+		258CF6CB1658D2A1001E8D20 /* blueButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6C71658D2A1001E8D20 /* blueButton.png */; };
+		258CF6CC1658D2A1001E8D20 /* darkBlueButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6C81658D2A1001E8D20 /* darkBlueButton.png */; };
+		258CF6CD1658D2A1001E8D20 /* darkRedButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6C91658D2A1001E8D20 /* darkRedButton.png */; };
+		258CF6CE1658D2A1001E8D20 /* redButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6CA1658D2A1001E8D20 /* redButton.png */; };
 		258E34BE1656E6C200E09A3A /* StrataPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258E34BD1656E6C200E09A3A /* StrataPageView.m */; };
 		258E73851642F14500C12D43 /* move icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E73841642F14500C12D43 /* move icon.png */; };
 		258E73891642F9EA00C12D43 /* Notes.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 258E73881642F9EA00C12D43 /* Notes.rtf */; };
@@ -64,15 +71,24 @@
 		2589CF2C163F8AE200E43147 /* StrataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrataView.h; sourceTree = "<group>"; };
 		2589CF2D163F8AE200E43147 /* StrataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StrataView.m; sourceTree = "<group>"; };
 		258C79451654877D0040F759 /* patterns descriptive text.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "patterns descriptive text.txt"; path = "stratigraphic swatches/patterns descriptive text.txt"; sourceTree = "<group>"; };
+		258CF6C01658CE48001E8D20 /* DocumentListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentListTableViewController.h; path = ../DocumentListTableViewController.h; sourceTree = "<group>"; };
+		258CF6C11658CE48001E8D20 /* DocumentListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentListTableViewController.m; path = ../DocumentListTableViewController.m; sourceTree = "<group>"; };
+		258CF6C31658D18C001E8D20 /* rename.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = rename.tif; path = images/rename.tif; sourceTree = "<group>"; };
+		258CF6C51658D1DA001E8D20 /* duplicate.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = duplicate.tif; path = images/duplicate.tif; sourceTree = "<group>"; };
+		258CF6C71658D2A1001E8D20 /* blueButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blueButton.png; path = images/blueButton.png; sourceTree = "<group>"; };
+		258CF6C81658D2A1001E8D20 /* darkBlueButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkBlueButton.png; path = images/darkBlueButton.png; sourceTree = "<group>"; };
+		258CF6C91658D2A1001E8D20 /* darkRedButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkRedButton.png; path = images/darkRedButton.png; sourceTree = "<group>"; };
+		258CF6CA1658D2A1001E8D20 /* redButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = redButton.png; path = images/redButton.png; sourceTree = "<group>"; };
 		258E34BC1656E6C200E09A3A /* StrataPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StrataPageView.h; path = ../StrataPageView.h; sourceTree = "<group>"; };
 		258E34BD1656E6C200E09A3A /* StrataPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StrataPageView.m; path = ../StrataPageView.m; sourceTree = "<group>"; };
+		258E34C11657157C00E09A3A /* StrataNotifications.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrataNotifications.h; sourceTree = "<group>"; };
 		258E73841642F14500C12D43 /* move icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move icon.png"; sourceTree = "<group>"; };
 		258E73881642F9EA00C12D43 /* Notes.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Notes.rtf; sourceTree = "<group>"; };
 		258E738A1642FAB400C12D43 /* To do.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "To do.rtf"; sourceTree = "<group>"; };
 		258FABA316433356005A00A8 /* IconImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconImage.h; sourceTree = "<group>"; };
 		258FABA416433356005A00A8 /* IconImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconImage.m; sourceTree = "<group>"; };
 		258FABA71643782D005A00A8 /* StrataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrataModel.h; sourceTree = "<group>"; };
-		258FABA81643782D005A00A8 /* StrataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StrataModel.m; sourceTree = "<group>"; };
+		258FABA81643782D005A00A8 /* StrataModel.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = StrataModel.m; sourceTree = "<group>"; };
 		2590A827164CAC96004FF6B5 /* Graphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Graphics.h; sourceTree = "<group>"; };
 		2590A82A164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-01cs2.eps */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "FGDCgeostdTM11A2_A-37-01cs2.eps"; path = "stratigraphic swatches/FGDCgeostdTM11A2_Sec37_cs2/FGDCgeostdTM11A2_A-37-01cs2.eps"; sourceTree = "<group>"; };
 		2590A82B164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-02cs2.eps */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "FGDCgeostdTM11A2_A-37-02cs2.eps"; path = "stratigraphic swatches/FGDCgeostdTM11A2_Sec37_cs2/FGDCgeostdTM11A2_A-37-02cs2.eps"; sourceTree = "<group>"; };
@@ -80,6 +96,8 @@
 		2590A830164F2B62004FF6B5 /* FGDCgeostdTM11A2web_Sec37.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = FGDCgeostdTM11A2web_Sec37.pdf; path = "stratigraphic swatches/FGDCgeostdTM11A2web_Sec37.pdf"; sourceTree = "<group>"; };
 		2590A8731650BC8E004FF6B5 /* patterns1.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = patterns1.pdf; path = "stratigraphic swatches/patterns1.pdf"; sourceTree = "<group>"; };
 		259129E71648491200C08897 /* move icon selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move icon selected.png"; sourceTree = "<group>"; };
+		2591C0A8165890C100A622A8 /* PaperListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaperListTableViewController.h; sourceTree = "<group>"; };
+		2591C0A9165890C100A622A8 /* PaperListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaperListTableViewController.m; sourceTree = "<group>"; };
 		25E7D26F1652C56800109376 /* info icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info icon.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -140,21 +158,16 @@
 		2589CF0C163F897C00E43147 /* Strata Recorder */ = {
 			isa = PBXGroup;
 			children = (
+				2591C0A8165890C100A622A8 /* PaperListTableViewController.h */,
+				2591C0A9165890C100A622A8 /* PaperListTableViewController.m */,
+				258CF6C01658CE48001E8D20 /* DocumentListTableViewController.h */,
+				258CF6C11658CE48001E8D20 /* DocumentListTableViewController.m */,
+				258E34C21657159B00E09A3A /* Views */,
 				2590C55416423E1000DB9C98 /* images */,
-				2589CF2C163F8AE200E43147 /* StrataView.h */,
-				2589CF2D163F8AE200E43147 /* StrataView.m */,
-				258E34BC1656E6C200E09A3A /* StrataPageView.h */,
-				258E34BD1656E6C200E09A3A /* StrataPageView.m */,
 				2589CF1E163F897D00E43147 /* MainStoryboard.storyboard */,
-				2589CF21163F897D00E43147 /* StrataViewController.h */,
-				2589CF22163F897D00E43147 /* StrataViewController.m */,
 				25890D8C16562B190007BC72 /* Materials */,
 				2589CF0D163F897C00E43147 /* Supporting Files */,
-				258FABA316433356005A00A8 /* IconImage.h */,
-				258FABA416433356005A00A8 /* IconImage.m */,
-				2590A827164CAC96004FF6B5 /* Graphics.h */,
-				2589CF15163F897C00E43147 /* StrataAppDelegate.h */,
-				2589CF16163F897C00E43147 /* StrataAppDelegate.m */,
+				258E34C3165715F200E09A3A /* General */,
 				258E34C01656FC2E00E09A3A /* Model */,
 			);
 			path = "Strata Recorder";
@@ -186,6 +199,32 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		258E34C21657159B00E09A3A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2589CF2C163F8AE200E43147 /* StrataView.h */,
+				2589CF2D163F8AE200E43147 /* StrataView.m */,
+				258E34BC1656E6C200E09A3A /* StrataPageView.h */,
+				258E34BD1656E6C200E09A3A /* StrataPageView.m */,
+				2589CF21163F897D00E43147 /* StrataViewController.h */,
+				2589CF22163F897D00E43147 /* StrataViewController.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		258E34C3165715F200E09A3A /* General */ = {
+			isa = PBXGroup;
+			children = (
+				2590A827164CAC96004FF6B5 /* Graphics.h */,
+				258E34C11657157C00E09A3A /* StrataNotifications.h */,
+				258FABA316433356005A00A8 /* IconImage.h */,
+				258FABA416433356005A00A8 /* IconImage.m */,
+				2589CF15163F897C00E43147 /* StrataAppDelegate.h */,
+				2589CF16163F897C00E43147 /* StrataAppDelegate.m */,
+			);
+			name = General;
+			sourceTree = "<group>";
+		};
 		2590A829164F294F004FF6B5 /* Stratigraphic pattern swatches */ = {
 			isa = PBXGroup;
 			children = (
@@ -205,6 +244,12 @@
 				258E73841642F14500C12D43 /* move icon.png */,
 				259129E71648491200C08897 /* move icon selected.png */,
 				25E7D26F1652C56800109376 /* info icon.png */,
+				258CF6C31658D18C001E8D20 /* rename.tif */,
+				258CF6C51658D1DA001E8D20 /* duplicate.tif */,
+				258CF6C71658D2A1001E8D20 /* blueButton.png */,
+				258CF6C81658D2A1001E8D20 /* darkBlueButton.png */,
+				258CF6C91658D2A1001E8D20 /* darkRedButton.png */,
+				258CF6CA1658D2A1001E8D20 /* redButton.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -277,6 +322,12 @@
 				2590A8741650BC8E004FF6B5 /* patterns1.pdf in Resources */,
 				25E7D2701652C56800109376 /* info icon.png in Resources */,
 				258C79461654877D0040F759 /* patterns descriptive text.txt in Resources */,
+				258CF6C41658D18C001E8D20 /* rename.tif in Resources */,
+				258CF6C61658D1DA001E8D20 /* duplicate.tif in Resources */,
+				258CF6CB1658D2A1001E8D20 /* blueButton.png in Resources */,
+				258CF6CC1658D2A1001E8D20 /* darkBlueButton.png in Resources */,
+				258CF6CD1658D2A1001E8D20 /* darkRedButton.png in Resources */,
+				258CF6CE1658D2A1001E8D20 /* redButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,6 +348,7 @@
 				25890D881655D8990007BC72 /* MaterialPatternView.m in Sources */,
 				25890D8B1655DAD20007BC72 /* MaterialTableViewCell.m in Sources */,
 				258E34BE1656E6C200E09A3A /* StrataPageView.m in Sources */,
+				258CF6C21658CE48001E8D20 /* DocumentListTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

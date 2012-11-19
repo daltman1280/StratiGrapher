@@ -9,6 +9,8 @@
 #import "StrataModel.h"
 #import "Graphics.h"
 
+#define documentsFolderPath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]
+
 @interface StrataDocument()
 
 @end
@@ -17,36 +19,37 @@
 
 - (id)init
 {
-#if 0
 	self = [super init];
-	if (self) {
+	if (self) {												// default test document
 		self.strata = [[NSMutableArray alloc] init];
-		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 0*GRID_WIDTH, 2*GRID_WIDTH, 3*GRID_WIDTH)]];		// just for now
+		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 0*GRID_WIDTH, 2*GRID_WIDTH, 3*GRID_WIDTH)]];
 		((Stratum *)self.strata[0]).materialNumber = 703;
-		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 3*GRID_WIDTH, 1*GRID_WIDTH, 2*GRID_WIDTH)]];		// just for now
+		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 3*GRID_WIDTH, 1*GRID_WIDTH, 2*GRID_WIDTH)]];
 		((Stratum *)self.strata[1]).materialNumber = 671;
-		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 5*GRID_WIDTH, 3*GRID_WIDTH, 4*GRID_WIDTH)]];		// just for now
+		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 5*GRID_WIDTH, 3*GRID_WIDTH, 4*GRID_WIDTH)]];
 		((Stratum *)self.strata[2]).materialNumber = 611;
-		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 9*GRID_WIDTH, 0*GRID_WIDTH, 0*GRID_WIDTH)]];		// just for now
+		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 9*GRID_WIDTH, 0*GRID_WIDTH, 0*GRID_WIDTH)]];
 		((Stratum *)self.strata[3]).materialNumber = 605;
 	}
-#else
-	self = [StrataDocument restore];
-#endif
 	return self;
+}
+
++ (id)loadFromFile:(NSString *)name
+{
+	NSString *filepath = [documentsFolderPath stringByAppendingPathComponent:[name stringByAppendingPathExtension:@"strata"]];
+	StrataDocument *doc = [NSKeyedUnarchiver unarchiveObjectWithFile:filepath];
+	doc.name = name;
+	doc.pageDimension = CGSizeMake(3.5, 5.);							// hard-coded until we support document settings
+	doc.pageMargins = CGSizeMake(.5, .5);
+	doc.scale = 2.;
+	doc.lineThickness = 2;
+	return doc;
 }
 
 - (void)save
 {
-	NSString *gDocumentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-	[NSKeyedArchiver archiveRootObject:self toFile:[gDocumentsFolder stringByAppendingPathComponent:@"test.strata"]];
-}
-
-+ (id)restore
-{
-	NSString *gDocumentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-	StrataDocument *doc = [NSKeyedUnarchiver unarchiveObjectWithFile:[gDocumentsFolder stringByAppendingPathComponent:@"test.strata"]];
-	return doc;
+	NSAssert(self.name, @"nil name for StrataDocument:save");
+	[NSKeyedArchiver archiveRootObject:self toFile:[documentsFolderPath stringByAppendingPathComponent:[self.name stringByAppendingPathExtension:@"strata"]]];
 }
 
 - (void)adjustStratumSize:(CGSize)size atIndex:(int)index
@@ -61,16 +64,24 @@
 	}
 }
 
+#pragma mark NSCoder protocol
+
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
 	self = [super init];
 	self.strata = [aDecoder decodeObjectForKey:@"strata"];
+	self.pageDimension = [aDecoder decodeCGSizeForKey:@"pageDimension"];
+	self.scale = [aDecoder decodeFloatForKey:@"scale"];
+	self.lineThickness = [aDecoder decodeIntForKey:@"lineThickness"];
 	return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
 	[aCoder encodeObject:self.strata forKey:@"strata"];
+	[aCoder encodeCGSize:self.pageDimension forKey:@"pageDimension"];
+	[aCoder encodeFloat:self.scale forKey:@"scale"];
+	[aCoder encodeInt:self.lineThickness forKey:@"lineThickness"];
 }
 
 @end
@@ -87,6 +98,8 @@
 	}
 	return self;
 }
+
+#pragma mark NSCoder protocol
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {

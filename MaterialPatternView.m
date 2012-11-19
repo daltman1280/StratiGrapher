@@ -7,7 +7,7 @@
 //
 
 #import "MaterialPatternView.h"
-#import "StrataView.h"
+#import "StrataView.h"																		// pattern drawing
 
 @implementation MaterialPatternView
 
@@ -36,7 +36,11 @@
 	// setup graphic attributes for drawing strata rectangles
 	CGContextSetLineWidth(currentContext, 1);
 	CGFloat colorComponents[4] = {0, 0, 0, 1.};
-	CGContextSetStrokeColorWithColor(currentContext, CGColorCreate(CGColorSpaceCreateDeviceRGB(), colorComponents));
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	CGColorRef color = CGColorCreate(colorSpace, colorComponents);
+	CGContextSetStrokeColorWithColor(currentContext, color);
+	CFRelease(colorSpace);
+	CFRelease(color);
 	CGPatternRef pattern = CGPatternCreate(NULL, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
 	CGContextSetFillPattern(currentContext, pattern, &alpha);
 	gPatternNumber = self.patternNumber;												// global variables used by pattern drawing callback

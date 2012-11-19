@@ -9,15 +9,20 @@
 #ifndef Strata_Recorder_Graphics_h
 #define Strata_Recorder_Graphics_h
 
-#define PPI 160.0
-#define VX(x) (x)*PPI+PPI/4.
-#define VY(y) -(y)*PPI+self.bounds.size.height-PPI/4.
-#define VDX(d) (d)*PPI
-#define VDY(d) -(d)*PPI
+/*
+ Converts between User coordinates (in inches) and screen coordinates (points, which are the Core Graphics units.
+ If the user scale is in meters/inch, then divide by user scale to obtain units in inches.
+ */
 
-#define GRID_WIDTH .25
+#define PPI 160.0												// pixels per inch (this might be different on iPad Mini)
+#define VX(x) (x)*PPI+PPI*XORIGIN								// convert user (in meters) to view units (pixels)
+#define VY(y) -(y)*PPI+self.bounds.size.height-PPI*YORIGIN		// convert user (in meters) to view units (pixels)
+#define VDX(d) (d)*PPI											// convert distance in X to view units
+#define VDY(d) -(d)*PPI											// convert distance in X to view units
 
-#define UX(x) (x-PPI/4.)/PPI
-#define UY(y) -(y-self.bounds.size.height+PPI/4.)/PPI
+#define GRID_WIDTH .25											// in inches
+
+#define UX(x) (x-PPI*XORIGIN)/PPI								// convert view (pixels) to user units (meters)
+#define UY(y) -(y-self.bounds.size.height+PPI*YORIGIN)/PPI		// convert view (pixels) to user units (meters)
 
 #endif

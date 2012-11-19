@@ -6,6 +6,9 @@
 //  Copyright (c) 2012 Don Altman. All rights reserved.
 //
 
+#define XORIGIN .5												// distance in inches of origin from LL of view
+#define YORIGIN .5												// distance in inches of origin from LL of view
+
 #import "IconImage.h"
 #import "Graphics.h"
 
@@ -24,7 +27,7 @@
 
 - (id)initWithImageName:(NSString *)imageName offset:(CGPoint)offset width:(CGFloat)width viewBounds:(CGRect)bounds
 {
-	if ([super init]) {
+	if (self = [super init]) {
 		self.offset = offset;
 		self.image = [UIImage imageNamed:imageName];
 		self.width = width;
