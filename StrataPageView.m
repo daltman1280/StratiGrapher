@@ -32,7 +32,6 @@
 
 - (void)drawRect:(CGRect)rect
 {
-#if 0
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
 	CGFloat colorComponents[4] = {0, 0, 0, 1.};
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -76,7 +75,6 @@
 		CGContextFillRect(currentContext, stratumRect);
 		CGContextStrokeRect(currentContext, stratumRect);
 	}
-#endif
 }
 
 @end
