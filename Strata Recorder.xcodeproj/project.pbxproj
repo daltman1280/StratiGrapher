@@ -1,0 +1,425 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		25890D851655B2670007BC72 /* StratumMaterialsTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D841655B2670007BC72 /* StratumMaterialsTableController.m */; };
+		25890D881655D8990007BC72 /* MaterialPatternView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D871655D8990007BC72 /* MaterialPatternView.m */; };
+		25890D8B1655DAD20007BC72 /* MaterialTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D8A1655DAD20007BC72 /* MaterialTableViewCell.m */; };
+		2589CF07163F897C00E43147 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2589CF06163F897C00E43147 /* UIKit.framework */; };
+		2589CF09163F897C00E43147 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2589CF08163F897C00E43147 /* Foundation.framework */; };
+		2589CF0B163F897C00E43147 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2589CF0A163F897C00E43147 /* CoreGraphics.framework */; };
+		2589CF11163F897C00E43147 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2589CF0F163F897C00E43147 /* InfoPlist.strings */; };
+		2589CF13163F897C00E43147 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2589CF12163F897C00E43147 /* main.m */; };
+		2589CF17163F897C00E43147 /* StrataAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2589CF16163F897C00E43147 /* StrataAppDelegate.m */; };
+		2589CF19163F897D00E43147 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2589CF18163F897D00E43147 /* Default.png */; };
+		2589CF1B163F897D00E43147 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2589CF1A163F897D00E43147 /* Default@2x.png */; };
+		2589CF1D163F897D00E43147 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2589CF1C163F897D00E43147 /* Default-568h@2x.png */; };
+		2589CF20163F897D00E43147 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2589CF1E163F897D00E43147 /* MainStoryboard.storyboard */; };
+		2589CF23163F897D00E43147 /* StrataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2589CF22163F897D00E43147 /* StrataViewController.m */; };
+		2589CF2E163F8AE200E43147 /* StrataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2589CF2D163F8AE200E43147 /* StrataView.m */; };
+		258C79461654877D0040F759 /* patterns descriptive text.txt in Resources */ = {isa = PBXBuildFile; fileRef = 258C79451654877D0040F759 /* patterns descriptive text.txt */; };
+		258E34BE1656E6C200E09A3A /* StrataPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258E34BD1656E6C200E09A3A /* StrataPageView.m */; };
+		258E73851642F14500C12D43 /* move icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E73841642F14500C12D43 /* move icon.png */; };
+		258E73891642F9EA00C12D43 /* Notes.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 258E73881642F9EA00C12D43 /* Notes.rtf */; };
+		258E738B1642FAB400C12D43 /* To do.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 258E738A1642FAB400C12D43 /* To do.rtf */; };
+		258FABA516433356005A00A8 /* IconImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 258FABA416433356005A00A8 /* IconImage.m */; };
+		258FABA91643782D005A00A8 /* StrataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 258FABA81643782D005A00A8 /* StrataModel.m */; };
+		2590A82D164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-01cs2.eps in Resources */ = {isa = PBXBuildFile; fileRef = 2590A82A164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-01cs2.eps */; };
+		2590A82E164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-02cs2.eps in Resources */ = {isa = PBXBuildFile; fileRef = 2590A82B164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-02cs2.eps */; };
+		2590A82F164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-03cs2.eps in Resources */ = {isa = PBXBuildFile; fileRef = 2590A82C164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-03cs2.eps */; };
+		2590A831164F2B62004FF6B5 /* FGDCgeostdTM11A2web_Sec37.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2590A830164F2B62004FF6B5 /* FGDCgeostdTM11A2web_Sec37.pdf */; };
+		2590A8741650BC8E004FF6B5 /* patterns1.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2590A8731650BC8E004FF6B5 /* patterns1.pdf */; };
+		259129E81648491200C08897 /* move icon selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 259129E71648491200C08897 /* move icon selected.png */; };
+		25E7D2701652C56800109376 /* info icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E7D26F1652C56800109376 /* info icon.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		25890D831655B2670007BC72 /* StratumMaterialsTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StratumMaterialsTableController.h; path = ../StratumMaterialsTableController.h; sourceTree = "<group>"; };
+		25890D841655B2670007BC72 /* StratumMaterialsTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StratumMaterialsTableController.m; path = ../StratumMaterialsTableController.m; sourceTree = "<group>"; };
+		25890D861655D8990007BC72 /* MaterialPatternView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MaterialPatternView.h; path = ../MaterialPatternView.h; sourceTree = "<group>"; };
+		25890D871655D8990007BC72 /* MaterialPatternView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MaterialPatternView.m; path = ../MaterialPatternView.m; sourceTree = "<group>"; };
+		25890D891655DAD20007BC72 /* MaterialTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MaterialTableViewCell.h; path = ../MaterialTableViewCell.h; sourceTree = "<group>"; };
+		25890D8A1655DAD20007BC72 /* MaterialTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MaterialTableViewCell.m; path = ../MaterialTableViewCell.m; sourceTree = "<group>"; };
+		2589CF02163F897C00E43147 /* Strata Recorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Strata Recorder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2589CF06163F897C00E43147 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		2589CF08163F897C00E43147 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2589CF0A163F897C00E43147 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		2589CF0E163F897C00E43147 /* Strata Recorder-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Strata Recorder-Info.plist"; sourceTree = "<group>"; };
+		2589CF10163F897C00E43147 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2589CF12163F897C00E43147 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2589CF14163F897C00E43147 /* Strata Recorder-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Strata Recorder-Prefix.pch"; sourceTree = "<group>"; };
+		2589CF15163F897C00E43147 /* StrataAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrataAppDelegate.h; sourceTree = "<group>"; };
+		2589CF16163F897C00E43147 /* StrataAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StrataAppDelegate.m; sourceTree = "<group>"; };
+		2589CF18163F897D00E43147 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		2589CF1A163F897D00E43147 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		2589CF1C163F897D00E43147 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		2589CF1F163F897D00E43147 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		2589CF21163F897D00E43147 /* StrataViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrataViewController.h; sourceTree = "<group>"; };
+		2589CF22163F897D00E43147 /* StrataViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StrataViewController.m; sourceTree = "<group>"; };
+		2589CF2C163F8AE200E43147 /* StrataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrataView.h; sourceTree = "<group>"; };
+		2589CF2D163F8AE200E43147 /* StrataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StrataView.m; sourceTree = "<group>"; };
+		258C79451654877D0040F759 /* patterns descriptive text.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "patterns descriptive text.txt"; path = "stratigraphic swatches/patterns descriptive text.txt"; sourceTree = "<group>"; };
+		258E34BC1656E6C200E09A3A /* StrataPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StrataPageView.h; path = ../StrataPageView.h; sourceTree = "<group>"; };
+		258E34BD1656E6C200E09A3A /* StrataPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StrataPageView.m; path = ../StrataPageView.m; sourceTree = "<group>"; };
+		258E73841642F14500C12D43 /* move icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move icon.png"; sourceTree = "<group>"; };
+		258E73881642F9EA00C12D43 /* Notes.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Notes.rtf; sourceTree = "<group>"; };
+		258E738A1642FAB400C12D43 /* To do.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "To do.rtf"; sourceTree = "<group>"; };
+		258FABA316433356005A00A8 /* IconImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconImage.h; sourceTree = "<group>"; };
+		258FABA416433356005A00A8 /* IconImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconImage.m; sourceTree = "<group>"; };
+		258FABA71643782D005A00A8 /* StrataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrataModel.h; sourceTree = "<group>"; };
+		258FABA81643782D005A00A8 /* StrataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StrataModel.m; sourceTree = "<group>"; };
+		2590A827164CAC96004FF6B5 /* Graphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Graphics.h; sourceTree = "<group>"; };
+		2590A82A164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-01cs2.eps */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "FGDCgeostdTM11A2_A-37-01cs2.eps"; path = "stratigraphic swatches/FGDCgeostdTM11A2_Sec37_cs2/FGDCgeostdTM11A2_A-37-01cs2.eps"; sourceTree = "<group>"; };
+		2590A82B164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-02cs2.eps */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "FGDCgeostdTM11A2_A-37-02cs2.eps"; path = "stratigraphic swatches/FGDCgeostdTM11A2_Sec37_cs2/FGDCgeostdTM11A2_A-37-02cs2.eps"; sourceTree = "<group>"; };
+		2590A82C164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-03cs2.eps */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "FGDCgeostdTM11A2_A-37-03cs2.eps"; path = "stratigraphic swatches/FGDCgeostdTM11A2_Sec37_cs2/FGDCgeostdTM11A2_A-37-03cs2.eps"; sourceTree = "<group>"; };
+		2590A830164F2B62004FF6B5 /* FGDCgeostdTM11A2web_Sec37.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = FGDCgeostdTM11A2web_Sec37.pdf; path = "stratigraphic swatches/FGDCgeostdTM11A2web_Sec37.pdf"; sourceTree = "<group>"; };
+		2590A8731650BC8E004FF6B5 /* patterns1.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = patterns1.pdf; path = "stratigraphic swatches/patterns1.pdf"; sourceTree = "<group>"; };
+		259129E71648491200C08897 /* move icon selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move icon selected.png"; sourceTree = "<group>"; };
+		25E7D26F1652C56800109376 /* info icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info icon.png"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2589CEFF163F897C00E43147 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2589CF07163F897C00E43147 /* UIKit.framework in Frameworks */,
+				2589CF09163F897C00E43147 /* Foundation.framework in Frameworks */,
+				2589CF0B163F897C00E43147 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		25890D8C16562B190007BC72 /* Materials */ = {
+			isa = PBXGroup;
+			children = (
+				25890D831655B2670007BC72 /* StratumMaterialsTableController.h */,
+				25890D841655B2670007BC72 /* StratumMaterialsTableController.m */,
+				25890D861655D8990007BC72 /* MaterialPatternView.h */,
+				25890D871655D8990007BC72 /* MaterialPatternView.m */,
+				25890D891655DAD20007BC72 /* MaterialTableViewCell.h */,
+				25890D8A1655DAD20007BC72 /* MaterialTableViewCell.m */,
+			);
+			name = Materials;
+			sourceTree = "<group>";
+		};
+		2589CEF7163F897C00E43147 = {
+			isa = PBXGroup;
+			children = (
+				2589CF0C163F897C00E43147 /* Strata Recorder */,
+				2589CF05163F897C00E43147 /* Frameworks */,
+				2589CF03163F897C00E43147 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2589CF03163F897C00E43147 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2589CF02163F897C00E43147 /* Strata Recorder.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2589CF05163F897C00E43147 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2589CF06163F897C00E43147 /* UIKit.framework */,
+				2589CF08163F897C00E43147 /* Foundation.framework */,
+				2589CF0A163F897C00E43147 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2589CF0C163F897C00E43147 /* Strata Recorder */ = {
+			isa = PBXGroup;
+			children = (
+				2590C55416423E1000DB9C98 /* images */,
+				2589CF2C163F8AE200E43147 /* StrataView.h */,
+				2589CF2D163F8AE200E43147 /* StrataView.m */,
+				258E34BC1656E6C200E09A3A /* StrataPageView.h */,
+				258E34BD1656E6C200E09A3A /* StrataPageView.m */,
+				2589CF1E163F897D00E43147 /* MainStoryboard.storyboard */,
+				2589CF21163F897D00E43147 /* StrataViewController.h */,
+				2589CF22163F897D00E43147 /* StrataViewController.m */,
+				25890D8C16562B190007BC72 /* Materials */,
+				2589CF0D163F897C00E43147 /* Supporting Files */,
+				258FABA316433356005A00A8 /* IconImage.h */,
+				258FABA416433356005A00A8 /* IconImage.m */,
+				2590A827164CAC96004FF6B5 /* Graphics.h */,
+				2589CF15163F897C00E43147 /* StrataAppDelegate.h */,
+				2589CF16163F897C00E43147 /* StrataAppDelegate.m */,
+				258E34C01656FC2E00E09A3A /* Model */,
+			);
+			path = "Strata Recorder";
+			sourceTree = "<group>";
+		};
+		2589CF0D163F897C00E43147 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2590A829164F294F004FF6B5 /* Stratigraphic pattern swatches */,
+				258E73881642F9EA00C12D43 /* Notes.rtf */,
+				258E738A1642FAB400C12D43 /* To do.rtf */,
+				2589CF0E163F897C00E43147 /* Strata Recorder-Info.plist */,
+				2589CF0F163F897C00E43147 /* InfoPlist.strings */,
+				2589CF12163F897C00E43147 /* main.m */,
+				2589CF14163F897C00E43147 /* Strata Recorder-Prefix.pch */,
+				2589CF18163F897D00E43147 /* Default.png */,
+				2589CF1A163F897D00E43147 /* Default@2x.png */,
+				2589CF1C163F897D00E43147 /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		258E34C01656FC2E00E09A3A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				258FABA71643782D005A00A8 /* StrataModel.h */,
+				258FABA81643782D005A00A8 /* StrataModel.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		2590A829164F294F004FF6B5 /* Stratigraphic pattern swatches */ = {
+			isa = PBXGroup;
+			children = (
+				2590A830164F2B62004FF6B5 /* FGDCgeostdTM11A2web_Sec37.pdf */,
+				2590A82A164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-01cs2.eps */,
+				2590A82B164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-02cs2.eps */,
+				2590A82C164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-03cs2.eps */,
+				2590A8731650BC8E004FF6B5 /* patterns1.pdf */,
+				258C79451654877D0040F759 /* patterns descriptive text.txt */,
+			);
+			name = "Stratigraphic pattern swatches";
+			sourceTree = "<group>";
+		};
+		2590C55416423E1000DB9C98 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				258E73841642F14500C12D43 /* move icon.png */,
+				259129E71648491200C08897 /* move icon selected.png */,
+				25E7D26F1652C56800109376 /* info icon.png */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2589CF01163F897C00E43147 /* Strata Recorder */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2589CF26163F897D00E43147 /* Build configuration list for PBXNativeTarget "Strata Recorder" */;
+			buildPhases = (
+				2589CEFE163F897C00E43147 /* Sources */,
+				2589CEFF163F897C00E43147 /* Frameworks */,
+				2589CF00163F897C00E43147 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Strata Recorder";
+			productName = "Strata Recorder";
+			productReference = 2589CF02163F897C00E43147 /* Strata Recorder.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2589CEF9163F897C00E43147 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = Strata;
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = "Don Altman";
+			};
+			buildConfigurationList = 2589CEFC163F897C00E43147 /* Build configuration list for PBXProject "Strata Recorder" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2589CEF7163F897C00E43147;
+			productRefGroup = 2589CF03163F897C00E43147 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2589CF01163F897C00E43147 /* Strata Recorder */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2589CF00163F897C00E43147 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2589CF11163F897C00E43147 /* InfoPlist.strings in Resources */,
+				2589CF19163F897D00E43147 /* Default.png in Resources */,
+				2589CF1B163F897D00E43147 /* Default@2x.png in Resources */,
+				2589CF1D163F897D00E43147 /* Default-568h@2x.png in Resources */,
+				2589CF20163F897D00E43147 /* MainStoryboard.storyboard in Resources */,
+				258E73851642F14500C12D43 /* move icon.png in Resources */,
+				258E73891642F9EA00C12D43 /* Notes.rtf in Resources */,
+				258E738B1642FAB400C12D43 /* To do.rtf in Resources */,
+				259129E81648491200C08897 /* move icon selected.png in Resources */,
+				2590A82D164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-01cs2.eps in Resources */,
+				2590A82E164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-02cs2.eps in Resources */,
+				2590A82F164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-03cs2.eps in Resources */,
+				2590A831164F2B62004FF6B5 /* FGDCgeostdTM11A2web_Sec37.pdf in Resources */,
+				2590A8741650BC8E004FF6B5 /* patterns1.pdf in Resources */,
+				25E7D2701652C56800109376 /* info icon.png in Resources */,
+				258C79461654877D0040F759 /* patterns descriptive text.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2589CEFE163F897C00E43147 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2589CF13163F897C00E43147 /* main.m in Sources */,
+				2589CF17163F897C00E43147 /* StrataAppDelegate.m in Sources */,
+				2589CF23163F897D00E43147 /* StrataViewController.m in Sources */,
+				2589CF2E163F8AE200E43147 /* StrataView.m in Sources */,
+				258FABA516433356005A00A8 /* IconImage.m in Sources */,
+				258FABA91643782D005A00A8 /* StrataModel.m in Sources */,
+				25890D851655B2670007BC72 /* StratumMaterialsTableController.m in Sources */,
+				25890D881655D8990007BC72 /* MaterialPatternView.m in Sources */,
+				25890D8B1655DAD20007BC72 /* MaterialTableViewCell.m in Sources */,
+				258E34BE1656E6C200E09A3A /* StrataPageView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		2589CF0F163F897C00E43147 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2589CF10163F897C00E43147 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		2589CF1E163F897D00E43147 /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2589CF1F163F897D00E43147 /* en */,
+			);
+			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2589CF24163F897D00E43147 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		2589CF25163F897D00E43147 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2589CF27163F897D00E43147 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Strata Recorder/Strata Recorder-Prefix.pch";
+				INFOPLIST_FILE = "Strata Recorder/Strata Recorder-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		2589CF28163F897D00E43147 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Strata Recorder/Strata Recorder-Prefix.pch";
+				INFOPLIST_FILE = "Strata Recorder/Strata Recorder-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2589CEFC163F897C00E43147 /* Build configuration list for PBXProject "Strata Recorder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2589CF24163F897D00E43147 /* Debug */,
+				2589CF25163F897D00E43147 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2589CF26163F897D00E43147 /* Build configuration list for PBXNativeTarget "Strata Recorder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2589CF27163F897D00E43147 /* Debug */,
+				2589CF28163F897D00E43147 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2589CEF9163F897C00E43147 /* Project object */;
+}

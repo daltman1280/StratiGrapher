@@ -1,0 +1,236 @@
+//
+//  StrataView.m
+//  Strata Recorder
+//
+//  Created by Don Altman on 10/29/12.
+//  Copyright (c) 2012 Don Altman. All rights reserved.
+//
+
+#import "StrataView.h"
+#import "IconImage.h"
+#import "Graphics.h"
+#import "StrataViewController.h"
+
+/*
+ A static callback function for drawing stratigraphic patterns. Uses a matrix of pattern swatches contained in a manually prepared
+ PDF, which contains rows of 10 elements each, arranged sequentially according to pattern number. Each item is a rectangle of 55
+ pixels, which contains a 54 x 54 pixel pattern representation, derived from the "official" patterns. Presumably, the representations
+ are in PostScript, so are resolution-independent.
+ 
+ The callback makes use of static variables, because it has no access to StrataView.
+ */
+void patternDrawingCallback(void *info, CGContextRef context)
+{
+	if (gPatternNumber <= 0) return;
+	int patternIndex = gPatternNumber-601;
+	int rowIndex = patternIndex/10;
+	int columnIndex = patternIndex-(rowIndex*10);
+	rowIndex = 13-rowIndex;														// reverse rows (top down, not bottom up)
+	CGContextTranslateCTM(context, -(55*columnIndex)-1, -(55*rowIndex)-1);		// -1, -56, ...
+//	CGContextScaleCTM(context, 1./gScale, 1./gScale);
+	CGContextDrawPDFPage(context, gPage);										// draw the requested pattern rectangle from the PDF materials patterns page
+}
+
+@interface StrataView() <UIGestureRecognizerDelegate>
+@property IconImage* moveIcon;							// icon used to display drag sensitive locations for moving the upper-right corner of strata rectangles
+@property IconImage* moveIconSelected;
+@property IconImage* infoIcon;							// display touch sensitive location for info popovers
+@property NSMutableArray* iconLocations;				// CGPoint dictionaries, in user coordinates
+@property CGSize dragOffsetFromCenter;					// the offset of the drag coordinate from center of dragged object, to track movement of icon's center coordinates
+@property CGPoint dragConstraint;						// lower left limit of dragging allowed, don't allow negative height/width
+@property BOOL dragActive;								// tracks dragging state
+@property int activeDragIndex;							// index in strata of dragged item
+@end
+
+@implementation StrataView
+
+- (void)populateIconLocations
+{
+	self.iconLocations = [[NSMutableArray alloc] init];
+    for (Stratum *stratum in self.activeDocument.strata) {
+        CGRect myRect = stratum.frame;
+        CGPoint iconLocation = CGPointMake(myRect.origin.x+myRect.size.width, myRect.origin.y+myRect.size.height);
+        [self.iconLocations addObject:(__bridge id)(CGPointCreateDictionaryRepresentation(iconLocation))];
+    }
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+	self = [super initWithCoder:aDecoder];
+	if (self) {
+		self.moveIcon = [[IconImage alloc] initWithImageName:@"move icon.png" offset:CGPointMake(9./50., 9./50.) width:50 viewBounds:self.bounds];
+		float width = 50.*921./555.;														// ratio of image size, relative to move icon, because of "flare" imagery
+		self.moveIconSelected = [[IconImage alloc] initWithImageName:@"move icon selected.png" offset:CGPointMake(25./width, 25./width) width:width viewBounds:self.bounds];
+		self.infoIcon = [[IconImage alloc] initWithImageName:@"info icon.png" offset:CGPointMake(.5, .5) width:25 viewBounds:self.bounds];
+		UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+		[self addGestureRecognizer:longPress];
+		longPress.cancelsTouchesInView = NO;
+		self.activeDocument = [[StrataDocument alloc] init];
+		[self populateIconLocations];
+	}
+	return self;
+}
+
+//	return in user coordinates
+
+- (CGPoint)getDragPoint:(UIEvent *)event
+{
+	CGPoint dragPoint = CGPointMake(UX([(UITouch *)[[event touchesForView:self] anyObject] locationInView:self].x),
+									UY([(UITouch *)[[event touchesForView:self] anyObject] locationInView:self].y));
+	return dragPoint;
+}
+
+- (void)updateCoordinateText:(CGPoint)iconLocation stratum:(Stratum *)stratum
+{
+    [self.locationLabel setText:[NSString stringWithFormat:@"%4.2fm x %4.2fm", iconLocation.x, iconLocation.y]];
+    self.locationLabel.frame = CGRectMake(VX(iconLocation.x+.1), VY(iconLocation.y+.25), self.locationLabel.frame.size.width, self.locationLabel.frame.size.height);
+    [self.dimensionLabel setText:[NSString stringWithFormat:@"W %4.2fm x H %4.2fm", stratum.frame.size.width, stratum.frame.size.height]];
+    self.dimensionLabel.frame = CGRectMake(VX(stratum.frame.origin.x+stratum.frame.size.width/2.)-self.dimensionLabel.bounds.size.width/2., VY(stratum.frame.origin.y+stratum.frame.size.height/2.)-self.dimensionLabel.bounds.size.height/2., self.dimensionLabel.frame.size.width, self.dimensionLabel.frame.size.height);
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+{
+	CGPoint dragPoint = [self getDragPoint:event];
+#define HIT_DISTANCE 1./4.
+	for (NSDictionary *dict in self.iconLocations) {													// first check move icons
+		CGPoint iconLocation;
+		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &iconLocation);
+		if ((dragPoint.x-iconLocation.x)*(dragPoint.x-iconLocation.x)+
+			(dragPoint.y-iconLocation.y)*(dragPoint.y-iconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {	// hit detected
+			self.dragActive = YES;
+			self.dragOffsetFromCenter = CGSizeMake(dragPoint.x-iconLocation.x, dragPoint.y-iconLocation.y);
+			self.activeDragIndex = [self.iconLocations indexOfObject:dict];								// index of selected object
+			Stratum *stratum = self.activeDocument.strata[self.activeDragIndex];						// selected stratum
+			self.dragConstraint = CGPointMake(stratum.frame.origin.x, stratum.frame.origin.y);
+			[self.locationLabel setHidden:NO];															// display location and dimension coordinate text
+			[self.dimensionLabel setHidden:NO];
+			[self updateCoordinateText:iconLocation stratum:stratum];
+			[self setNeedsDisplay];
+			break;
+		}
+	}
+	for (Stratum *stratum in self.activeDocument.strata) {												// check info icons
+		if (stratum != self.activeDocument.strata.lastObject) {
+			CGPoint iconLocation = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1);
+			if ((dragPoint.x-iconLocation.x)*(dragPoint.x-iconLocation.x)+
+				(dragPoint.y-iconLocation.y)*(dragPoint.y-iconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected
+				self.selectedStratum = stratum;															// for our delegate's use
+				self.infoSelectionPoint = CGPointMake(VX(iconLocation.x), VY(iconLocation.y));			// for our delegate's use
+				[self.delegate handleStratumInfo:self];													// tell our delegate to create the navigation controller for managing stratum properties
+			}
+		}
+	}
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
+{
+	CGPoint dragPoint = [self getDragPoint:event];
+	if (self.dragActive) {																				// if dragging is active, modify the selected stratum
+		CGPoint offsetDragPoint = CGPointMake(dragPoint.x-self.dragOffsetFromCenter.width, dragPoint.y-self.dragOffsetFromCenter.height);	// coordinates of icon center
+		if (offsetDragPoint.x < self.dragConstraint.x) offsetDragPoint.x = self.dragConstraint.x;		// constrain the dragged icon
+		if (offsetDragPoint.y < self.dragConstraint.y) offsetDragPoint.y = self.dragConstraint.y;
+		Stratum *stratum = self.activeDocument.strata[self.activeDragIndex];							// selected stratum
+		[self.iconLocations replaceObjectAtIndex:self.activeDragIndex withObject:(__bridge id)(CGPointCreateDictionaryRepresentation(offsetDragPoint))];
+		[self updateCoordinateText:offsetDragPoint stratum:stratum];
+		[self setNeedsDisplay];
+	}
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
+{
+	[self.locationLabel setHidden:YES];
+	[self.dimensionLabel setHidden:YES];
+	if (self.dragActive && self.activeDragIndex == self.activeDocument.strata.count-1 &&
+		((Stratum *)self.activeDocument.strata.lastObject).frame.size.width &&
+		((Stratum *)self.activeDocument.strata.lastObject).frame.size.height) {							// user has modified last (empty) stratum, create a new empty stratum
+		Stratum *lastStratum = self.activeDocument.strata.lastObject;
+		Stratum *newStratum = [[Stratum alloc] initWithFrame:CGRectMake(0, lastStratum.frame.origin.y+lastStratum.frame.size.height, 0, 0)];
+		newStratum.materialNumber = 601;																// arbitrary material, for now
+		[self.activeDocument.strata addObject:newStratum];
+	}
+	self.dragActive = NO;
+	[self populateIconLocations];																		// re-populate move icon coordinates
+	[self setNeedsDisplay];
+}
+
+//	when is this called?
+
+- (void)handleLongPress:(UILongPressGestureRecognizer *)gesture
+{
+}
+					
+- (void)drawRect:(CGRect)rect
+{
+	[self drawGraphPaper:rect];
+	CGContextRef currentContext = UIGraphicsGetCurrentContext();
+	CGContextSetShouldAntialias(currentContext, YES);
+	// setup patterns
+	struct CGPatternCallbacks patternCallbacks = {
+		0, &patternDrawingCallback, 0
+	};
+	CGFloat alpha = 1;
+	gPage = self.patternsPage;																// global variable used by pattern drawing callback
+	// apparently, we need to do this in the current context, can't cache it
+	CGColorSpaceRef patternSpace = CGColorSpaceCreatePattern(NULL);
+	CGContextSetFillColorSpace(currentContext, patternSpace);
+	CGColorSpaceRelease(patternSpace);
+	// setup graphic attributes for drawing strata rectangles
+	CGContextSetLineWidth(currentContext, 3);
+	CGFloat colorComponents[4] = {0, 0, 0, 1.};
+	CGContextSetStrokeColorWithColor(currentContext, CGColorCreate(CGColorSpaceCreateDeviceRGB(), colorComponents));
+	for (Stratum *stratum in self.activeDocument.strata) {									// for each stratum
+		if (self.dragActive && [self.activeDocument.strata indexOfObject:stratum] == self.activeDragIndex) {	// adjust strata dimensions, based on selected move icon's coordinates
+			CGPoint iconLocation;
+			NSDictionary *dict = self.iconLocations[self.activeDragIndex];
+			CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &iconLocation);
+			CGSize newSize = CGSizeMake(iconLocation.x-stratum.frame.origin.x, iconLocation.y-stratum.frame.origin.y);
+			[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];	// here's where the work is done
+		}
+		// setup fill pattern, must do for each stratum
+		CGPatternRef pattern = CGPatternCreate(NULL, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
+		CGContextSetFillPattern(currentContext, pattern, &alpha);
+		gPatternNumber = stratum.materialNumber;											// global variables used by pattern drawing callback
+		gScale = self.scale;
+		CGRect myRect = CGRectMake(VX(stratum.frame.origin.x),								// stratum rectangle
+								   VY(stratum.frame.origin.y),
+								   VDX(stratum.frame.size.width),
+								   VDY(stratum.frame.size.height));
+		CGContextFillRect(currentContext, myRect);											// draw fill pattern
+		CGContextStrokeRect(currentContext, myRect);										// draw boundary
+		if (stratum != self.activeDocument.strata.lastObject)								// draw info icon, unless this is the last (empty) stratum
+			[self.infoIcon drawAtPoint:CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1) scale:self.scale];
+	}
+	for (NSDictionary *dict in self.iconLocations) {										// draw move icons
+		CGPoint iconLocation;
+		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &iconLocation);
+		if (self.dragActive) {
+			if (self.activeDragIndex == [self.iconLocations indexOfObject:dict])
+				[self.moveIconSelected drawAtPoint:iconLocation scale:self.scale];			// draw icon in selected state if it's selected and dragging is active
+		} else
+			[self.moveIcon drawAtPoint:iconLocation scale:self.scale];
+	}
+}
+
+- (void)drawGraphPaper:(CGRect)rect
+{
+	// paper background
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGContextSetShouldAntialias(context, NO);
+	// horizontal rules
+	CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0 green:1 blue:1 alpha:1.0].CGColor);
+	for (float i=0; i<self.bounds.size.height/PPI; i+=GRID_WIDTH) {
+		CGContextMoveToPoint(context, 0, VY(i));
+		CGContextAddLineToPoint(context, self.frame.size.width, VY(i));
+		CGContextStrokePath(context);
+	}
+	// vertical rules
+	CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0 green:1 blue:1 alpha:1.0].CGColor);
+	for (float i=0; i<=self.bounds.size.width/PPI; i+=GRID_WIDTH) {
+		CGContextMoveToPoint(context, VX(i), 0);
+		CGContextAddLineToPoint(context, VX(i), self.frame.origin.y+self.frame.size.height);
+		CGContextStrokePath(context);
+	}
+}
+
+@end
+
