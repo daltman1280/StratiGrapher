@@ -52,6 +52,8 @@
 	NSURL *url = [[NSBundle mainBundle] URLForResource:@"patterns1" withExtension:@"pdf"];
 	CGPDFDocumentRef document = CGPDFDocumentCreateWithURL((__bridge CFURLRef)(url));
 	CGPDFPageRef page = CGPDFDocumentGetPage(document, 1);
+	CFRetain(page);
+	CGPDFDocumentRelease(document);
 	self.strataView.patternsPage = page;
 	self.strataPageView.patternsPage = page;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationEnteredBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
