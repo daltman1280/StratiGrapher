@@ -9,9 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "StrataModel.h"
 
+typedef enum {
+	graphMode,
+	PDFMode
+} drawMode;
+
 @interface StrataPageView : UIView
 
 @property (nonatomic) StrataDocument*			activeDocument;
 @property CGPDFPageRef							patternsPage;
+@property drawMode								mode;
 
 @end

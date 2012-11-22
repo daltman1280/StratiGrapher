@@ -10,6 +10,8 @@
 
 @interface DocumentListTableViewController ()
 
+@property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
+
 @end
 
 @implementation DocumentListTableViewController
@@ -22,6 +24,8 @@
 - (IBAction)handleDuplicateDocument:(id)sender {
 }
 - (IBAction)handleActionDocument:(id)sender {
+	exportPaperActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Feedback…", @"Email .docx", @"Export .docx", @"Email PDF", @"Export PDF",nil];
+	[exportPaperActionSheet showFromBarButtonItem:self.actionDocument animated:YES];
 }
 
 - (void)viewDidLoad
@@ -38,23 +42,21 @@
 						 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
 						 self.actionDocument,
 						 nil];
-	// setup Rename buttons
-	UIImage *buttonImageNormal = [UIImage imageNamed:@"redButton.png"];
-	UIImage *stretchableButtonImageNormal = [buttonImageNormal stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-	UIImage *buttonImagePressed = [UIImage imageNamed:@"darkRedButton.png"];
-	UIImage *stretchableButtonImagePressed = [buttonImagePressed stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-	UIImage *buttonImageCancelNormal = [UIImage imageNamed:@"blueButton.png"];
-	UIImage *stretchableButtonImageCancelNormal = [buttonImageCancelNormal stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-	UIImage *buttonImageCancelPressed = [UIImage imageNamed:@"darkBlueButton.png"];
-	UIImage *stretchableButtonImageCancelPressed = [buttonImageCancelPressed stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-	
-#if 0
-	[renameOKButton setBackgroundImage:stretchableButtonImageNormal forState:UIControlStateNormal];
-	[renameOKButton setBackgroundImage:stretchableButtonImagePressed forState:UIControlStateHighlighted];
-	[renameCancelButton setBackgroundImage:stretchableButtonImageCancelNormal forState:UIControlStateNormal];
-	[renameCancelButton setBackgroundImage:stretchableButtonImageCancelPressed forState:UIControlStateHighlighted];
-#endif
     self.clearsSelectionOnViewWillAppear = YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+#if 0
+	[self.tableView reloadData];
+	NSUInteger indexes[2];
+	indexes[0] = 0;
+	indexes[1] = [paperNames indexOfObject:[TermPaperModel activeTermPaper].name];
+	NSIndexPath *indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+	[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
+#endif
+	self.contentSizeForViewInPopover = CGSizeMake(300, 342);		// TODO: get the appropriate size
+//	[self setDeleteButtonEnabled];
 }
 
 - (void)didReceiveMemoryWarning
@@ -147,6 +149,63 @@
 	[self setRenameDocument:nil];
 	[self setDuplicateDocument:nil];
 	[self setActionDocument:nil];
+	[self setToolbar:nil];
 	[super viewDidUnload];
 }
+
+- (IBAction)handleExportPDFButton:(id)sender
+{
+	[self.delegate handleExportPDFButton:self];
+}
+
+//	UIActionSheetDelegate method
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+//	exportPaperActionSheetVisible = NO;
+	if (buttonIndex == actionSheet.cancelButtonIndex) return;									// user canceled
+	if (actionSheet == deletePaperActionSheet) {
+#if 0
+		int previousSelectionIndex = [paperNames indexOfObject:[TermPaperModel activeTermPaper].name];
+		[[TermPaperModel activeTermPaper] remove];
+		if (previousSelectionIndex >= paperNames.count) --previousSelectionIndex;					// in case user has deleted the last paper in the list
+		NSUInteger indexes[2];
+		indexes[0] = 0;
+		indexes[1] = previousSelectionIndex;
+		NSIndexPath *indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+		[self.tableView reloadData];
+		if (self.paperNames.count > 0) {
+			[self handlePaperPick:[paperNames objectAtIndex:previousSelectionIndex]];
+			[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
+		}
+		[self setDeleteButtonEnabled];
+#endif
+	} else if (actionSheet == exportPaperActionSheet) {
+		switch (buttonIndex) {
+			case 0:
+//				[self handleEmailFeedbackButton:self];
+				break;
+			case 1:
+//				[self handleEmailDOCXButton:self];
+				break;
+			case 2:
+//				[self handleExportDOCXButton:self];
+				break;
+			case 3:
+//				[self handleEmailPDFButton:self];
+				break;
+			case 4:
+				[self handleExportPDFButton:self];
+				break;
+#if CONSOLE
+			case 5:
+				NSLog(@"console output");
+				[self handleEmailConsoleButton:self];
+				break;
+#endif
+		}
+	} else
+		NSAssert(NO, @"Illegal value for actionSheet.");
+}
+
 @end

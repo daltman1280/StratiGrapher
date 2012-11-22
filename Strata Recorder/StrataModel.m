@@ -37,6 +37,8 @@
 + (id)loadFromFile:(NSString *)name
 {
 	NSString *filepath = [documentsFolderPath stringByAppendingPathComponent:[name stringByAppendingPathExtension:@"strata"]];
+	if (![[NSFileManager defaultManager] fileExistsAtPath:filepath])
+		return nil;
 	StrataDocument *doc = [NSKeyedUnarchiver unarchiveObjectWithFile:filepath];
 	doc.name = name;
 	doc.pageDimension = CGSizeMake(3.5, 5.);							// hard-coded until we support document settings

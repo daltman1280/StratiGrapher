@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DocumentListControllerDelegate.h"
 
-@interface StrataViewController : UIViewController {
+@interface StrataViewController : UIViewController <DocumentListControllerDelegate> {
 	UISegmentedControl*						modeControl;
 }
 

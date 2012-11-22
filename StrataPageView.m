@@ -32,6 +32,13 @@
 
 - (void)drawRect:(CGRect)rect
 {
+	if (self.mode == PDFMode) {
+		NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+		NSString *pdfFile = [documentsFolder stringByAppendingFormat:@"/%@.pdf", self.activeDocument.name];
+		UIGraphicsBeginPDFContextToFile(pdfFile, CGRectZero, nil);
+	}
+	if (self.mode == PDFMode)
+		UIGraphicsBeginPDFPage();
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
 	CGFloat colorComponents[4] = {0, 0, 0, 1.};
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -74,6 +81,10 @@
 		CGRect stratumRect = CGRectMake(VX(columnOrigin.x), VY(columnOrigin.y+stratum.frame.origin.y/self.activeDocument.scale), VDX(stratum.frame.size.width/self.activeDocument.scale), VDY(stratum.frame.size.height/self.activeDocument.scale));
 		CGContextFillRect(currentContext, stratumRect);
 		CGContextStrokeRect(currentContext, stratumRect);
+	}
+	if (self.mode == PDFMode) {
+		UIGraphicsEndPDFContext();
+		self.mode = graphMode;
 	}
 }
 

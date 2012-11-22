@@ -11,6 +11,7 @@
 #import "StratumMaterialsTableController.h"
 #import "StrataPageView.h"
 #import "StrataModel.h"
+#import "DocumentListTableViewController.h"
 
 @interface StrataViewController () <UIScrollViewDelegate>
 
@@ -23,19 +24,36 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *strataPageScrollView;
 @property (weak, nonatomic) IBOutlet StrataPageView *strataPageView;
 @property StrataDocument *activeDocument;
+@property (weak, nonatomic) IBOutlet StrataPageView *renameDialog;
+@property (weak, nonatomic) IBOutlet UITextField *renameText;
+@property (weak, nonatomic) IBOutlet UIButton *renameOKButton;
+@property (weak, nonatomic) IBOutlet UIButton *renameCancelButton;
 
 @end
 
 @implementation StrataViewController
+
+- (void)handleExportPDFButton:(id)sender
+{
+	[self.strataPageView setNeedsDisplayInRect:self.strataPageView.bounds];
+	self.strataPageView.mode = PDFMode;
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+	((DocumentListTableViewController *)((UINavigationController *)segue.destinationViewController).topViewController).delegate = self;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"])
 		self.activeDocument = [StrataDocument loadFromFile:[[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"]];
-	else
-		self.activeDocument = [StrataDocument loadFromFile:@"test"];
-	
+	else {
+		self.activeDocument = [[StrataDocument alloc] init];
+	}
+	if (!self.activeDocument)
+		self.activeDocument = [[StrataDocument alloc] init];
 	self.toolbarTitle.title = self.activeDocument.name;
 	self.strataView.activeDocument = self.activeDocument;
 	self.scrollView.contentSize = self.strataView.bounds.size;
@@ -160,6 +178,10 @@
 	[self setTitle:nil];
 	[self setTitle:nil];
 	[self setToolbarTitle:nil];
+	[self setRenameDialog:nil];
+	[self setRenameText:nil];
+	[self setRenameOKButton:nil];
+	[self setRenameCancelButton:nil];
 	[super viewDidUnload];
 }
 @end

@@ -43,6 +43,7 @@
 		2590A8741650BC8E004FF6B5 /* patterns1.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2590A8731650BC8E004FF6B5 /* patterns1.pdf */; };
 		259129E81648491200C08897 /* move icon selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 259129E71648491200C08897 /* move icon selected.png */; };
 		25E7D2701652C56800109376 /* info icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E7D26F1652C56800109376 /* info icon.png */; };
+		25F3F2F2165B568F001A2F53 /* RenameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F3F2F1165B568F001A2F53 /* RenameViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -98,7 +99,10 @@
 		259129E71648491200C08897 /* move icon selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move icon selected.png"; sourceTree = "<group>"; };
 		2591C0A8165890C100A622A8 /* PaperListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaperListTableViewController.h; sourceTree = "<group>"; };
 		2591C0A9165890C100A622A8 /* PaperListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaperListTableViewController.m; sourceTree = "<group>"; };
+		259FDA57165DE9300010867E /* DocumentListControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentListControllerDelegate.h; sourceTree = "<group>"; };
 		25E7D26F1652C56800109376 /* info icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info icon.png"; sourceTree = "<group>"; };
+		25F3F2F0165B568F001A2F53 /* RenameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenameViewController.h; sourceTree = "<group>"; };
+		25F3F2F1165B568F001A2F53 /* RenameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenameViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,10 +162,7 @@
 		2589CF0C163F897C00E43147 /* Strata Recorder */ = {
 			isa = PBXGroup;
 			children = (
-				2591C0A8165890C100A622A8 /* PaperListTableViewController.h */,
-				2591C0A9165890C100A622A8 /* PaperListTableViewController.m */,
-				258CF6C01658CE48001E8D20 /* DocumentListTableViewController.h */,
-				258CF6C11658CE48001E8D20 /* DocumentListTableViewController.m */,
+				25F3F2EA165AB54C001A2F53 /* Popover Menus */,
 				258E34C21657159B00E09A3A /* Views */,
 				2590C55416423E1000DB9C98 /* images */,
 				2589CF1E163F897D00E43147 /* MainStoryboard.storyboard */,
@@ -208,6 +209,7 @@
 				258E34BD1656E6C200E09A3A /* StrataPageView.m */,
 				2589CF21163F897D00E43147 /* StrataViewController.h */,
 				2589CF22163F897D00E43147 /* StrataViewController.m */,
+				259FDA57165DE9300010867E /* DocumentListControllerDelegate.h */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -252,6 +254,19 @@
 				258CF6CA1658D2A1001E8D20 /* redButton.png */,
 			);
 			name = images;
+			sourceTree = "<group>";
+		};
+		25F3F2EA165AB54C001A2F53 /* Popover Menus */ = {
+			isa = PBXGroup;
+			children = (
+				2591C0A8165890C100A622A8 /* PaperListTableViewController.h */,
+				2591C0A9165890C100A622A8 /* PaperListTableViewController.m */,
+				258CF6C01658CE48001E8D20 /* DocumentListTableViewController.h */,
+				258CF6C11658CE48001E8D20 /* DocumentListTableViewController.m */,
+				25F3F2F0165B568F001A2F53 /* RenameViewController.h */,
+				25F3F2F1165B568F001A2F53 /* RenameViewController.m */,
+			);
+			name = "Popover Menus";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -349,6 +364,7 @@
 				25890D8B1655DAD20007BC72 /* MaterialTableViewCell.m in Sources */,
 				258E34BE1656E6C200E09A3A /* StrataPageView.m in Sources */,
 				258CF6C21658CE48001E8D20 /* DocumentListTableViewController.m in Sources */,
+				25F3F2F2165B568F001A2F53 /* RenameViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
