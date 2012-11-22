@@ -24,8 +24,8 @@
  */
 void patternDrawingCallback(void *info, CGContextRef context)
 {
-	if (gPatternNumber <= 0) return;
-	int patternIndex = gPatternNumber-601;
+	if ((int) info <= 0) return;
+	int patternIndex = (int) info-601;
 	int rowIndex = patternIndex/10;
 	int columnIndex = patternIndex-(rowIndex*10);
 	rowIndex = 13-rowIndex;														// reverse rows (top down, not bottom up)
@@ -201,9 +201,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];	// here's where the work is done
 		}
 		// setup fill pattern, must do for each stratum
-		CGPatternRef pattern = CGPatternCreate(NULL, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
+		CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
 		CGContextSetFillPattern(currentContext, pattern, &alpha);
-		gPatternNumber = stratum.materialNumber;											// global variables used by pattern drawing callback
 		gScale = self.scale;
 		CGRect myRect = CGRectMake(VX(stratum.frame.origin.x),								// stratum rectangle
 								   VY(stratum.frame.origin.y),

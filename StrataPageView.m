@@ -75,9 +75,8 @@
 	CFRelease(colorSpace);
 	gScale = 1;
 	for (Stratum *stratum in self.activeDocument.strata) {
-		CGPatternRef pattern = CGPatternCreate(NULL, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
+		CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
 		CGContextSetFillPattern(currentContext, pattern, &alpha);
-		gPatternNumber = stratum.materialNumber;											// global variables used by pattern drawing callback
 		CGRect stratumRect = CGRectMake(VX(columnOrigin.x), VY(columnOrigin.y+stratum.frame.origin.y/self.activeDocument.scale), VDX(stratum.frame.size.width/self.activeDocument.scale), VDY(stratum.frame.size.height/self.activeDocument.scale));
 		CGContextFillRect(currentContext, stratumRect);
 		CGContextStrokeRect(currentContext, stratumRect);

@@ -13,7 +13,6 @@
 //	globals for use with callback function
 
 CGPDFPageRef gPage;
-int gPatternNumber;
 CGFloat gScale;
 
 void patternDrawingCallback(void *info, CGContextRef context);

@@ -41,9 +41,8 @@
 	CGContextSetStrokeColorWithColor(currentContext, color);
 	CFRelease(colorSpace);
 	CFRelease(color);
-	CGPatternRef pattern = CGPatternCreate(NULL, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
+	CGPatternRef pattern = CGPatternCreate((void *)self.patternNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
 	CGContextSetFillPattern(currentContext, pattern, &alpha);
-	gPatternNumber = self.patternNumber;												// global variables used by pattern drawing callback
 	gScale = 1;
 	CGContextFillRect(currentContext, self.bounds);										// draw fill pattern
 	CGContextStrokeRect(currentContext, self.bounds);									// draw boundary
