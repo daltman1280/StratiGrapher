@@ -35,7 +35,9 @@
 	if (self.mode == PDFMode) {
 		NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 		NSString *pdfFile = [documentsFolder stringByAppendingFormat:@"/%@.pdf", self.activeDocument.name];
-		UIGraphicsBeginPDFContextToFile(pdfFile, CGRectZero, nil);
+		CGFloat ratio = 72.0/PPI;
+		CGRect bounds = CGRectMake(0, 0, self.bounds.size.width*ratio, self.bounds.size.height*ratio);
+		UIGraphicsBeginPDFContextToFile(pdfFile, CGRectMake(0, 0, 8.5*72, 11.*72.), nil);
 	}
 	if (self.mode == PDFMode)
 		UIGraphicsBeginPDFPage();
@@ -48,7 +50,7 @@
 	CFRelease(colorSpace);
 	// draw page boundaries
 	CGContextSetLineWidth(currentContext, 3);
-	CGContextStrokeRect(currentContext, self.bounds);
+//	CGContextStrokeRect(currentContext, self.bounds);
 	// draw strata
 	CGContextSetLineWidth(currentContext, self.activeDocument.lineThickness);
 	CGFloat maxWidth = 0;

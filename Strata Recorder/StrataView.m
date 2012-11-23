@@ -65,19 +65,18 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	[self populateIconLocations];														// we're overriding the setter, because this is a good time to do this
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+/*
+ initWithCoder and initWithFrame are not reliably called, so we call this from the view controller in its UIApplicationDidBecomeActiveNotification
+ */
+- (void)initialize
 {
-	self = [super initWithCoder:aDecoder];
-	if (self) {
-		self.moveIcon = [[IconImage alloc] initWithImageName:@"move icon.png" offset:CGPointMake(9./50., 9./50.) width:50 viewBounds:self.bounds];
-		float width = 50.*921./555.;														// ratio of image size, relative to move icon, because of "flare" imagery
-		self.moveIconSelected = [[IconImage alloc] initWithImageName:@"move icon selected.png" offset:CGPointMake(25./width, 25./width) width:width viewBounds:self.bounds];
-		self.infoIcon = [[IconImage alloc] initWithImageName:@"info icon.png" offset:CGPointMake(.5, .5) width:25 viewBounds:self.bounds];
-		UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-		[self addGestureRecognizer:longPress];
-		longPress.cancelsTouchesInView = NO;
-	}
-	return self;
+	self.moveIcon = [[IconImage alloc] initWithImageName:@"move icon.png" offset:CGPointMake(9./50., 9./50.) width:50 viewBounds:self.bounds];
+	float width = 50.*921./555.;														// ratio of image size, relative to move icon, because of "flare" imagery
+	self.moveIconSelected = [[IconImage alloc] initWithImageName:@"move icon selected.png" offset:CGPointMake(25./width, 25./width) width:width viewBounds:self.bounds];
+	self.infoIcon = [[IconImage alloc] initWithImageName:@"info icon.png" offset:CGPointMake(.5, .5) width:25 viewBounds:self.bounds];
+	UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+	[self addGestureRecognizer:longPress];
+	longPress.cancelsTouchesInView = NO;
 }
 
 //	return in user coordinates

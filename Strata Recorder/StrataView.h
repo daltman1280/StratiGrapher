@@ -19,6 +19,8 @@ void patternDrawingCallback(void *info, CGContextRef context);
 
 @interface StrataView : UIView
 
+- (void)initialize;
+
 @property CGFloat scale;
 @property UILabel* locationLabel;
 @property UILabel* dimensionLabel;

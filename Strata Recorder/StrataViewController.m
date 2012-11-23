@@ -75,6 +75,12 @@
 	self.strataView.patternsPage = page;
 	self.strataPageView.patternsPage = page;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationEnteredBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationBecameActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)handleApplicationBecameActive:(id)sender
+{
+	[self.strataView initialize];
 }
 
 - (void)handleApplicationEnteredBackground:(id)sender
@@ -95,6 +101,7 @@
 		self.strataGraphScrollView.alpha = 0.0;
 		self.strataPageScrollView.alpha = 1.0;
 		[UIView commitAnimations];
+		[self.strataPageView setNeedsDisplay];
 	} else {																									// switching to graph mode
 		self.strataPageScrollView.hidden = YES;
 		[UIView beginAnimations:@"PageToGraphTransition" context:nil];
