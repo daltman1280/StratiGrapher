@@ -419,6 +419,7 @@
         <class className="StrataViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/StrataViewController.h"/>
             <relationships>
+                <relationship kind="action" name="handleModeSwitch:"/>
                 <relationship kind="outlet" name="dimensionLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="graphPageToggle" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="locationLabel" candidateClass="UILabel"/>
