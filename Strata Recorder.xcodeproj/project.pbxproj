@@ -32,14 +32,8 @@
 		258CF6CE1658D2A1001E8D20 /* redButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6CA1658D2A1001E8D20 /* redButton.png */; };
 		258E34BE1656E6C200E09A3A /* StrataPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258E34BD1656E6C200E09A3A /* StrataPageView.m */; };
 		258E73851642F14500C12D43 /* move icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E73841642F14500C12D43 /* move icon.png */; };
-		258E73891642F9EA00C12D43 /* Notes.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 258E73881642F9EA00C12D43 /* Notes.rtf */; };
-		258E738B1642FAB400C12D43 /* To do.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 258E738A1642FAB400C12D43 /* To do.rtf */; };
 		258FABA516433356005A00A8 /* IconImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 258FABA416433356005A00A8 /* IconImage.m */; };
 		258FABA91643782D005A00A8 /* StrataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 258FABA81643782D005A00A8 /* StrataModel.m */; };
-		2590A82D164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-01cs2.eps in Resources */ = {isa = PBXBuildFile; fileRef = 2590A82A164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-01cs2.eps */; };
-		2590A82E164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-02cs2.eps in Resources */ = {isa = PBXBuildFile; fileRef = 2590A82B164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-02cs2.eps */; };
-		2590A82F164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-03cs2.eps in Resources */ = {isa = PBXBuildFile; fileRef = 2590A82C164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-03cs2.eps */; };
-		2590A831164F2B62004FF6B5 /* FGDCgeostdTM11A2web_Sec37.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2590A830164F2B62004FF6B5 /* FGDCgeostdTM11A2web_Sec37.pdf */; };
 		2590A8741650BC8E004FF6B5 /* patterns1.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2590A8731650BC8E004FF6B5 /* patterns1.pdf */; };
 		259129E81648491200C08897 /* move icon selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 259129E71648491200C08897 /* move icon selected.png */; };
 		25E7D2701652C56800109376 /* info icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E7D26F1652C56800109376 /* info icon.png */; };
@@ -327,13 +321,7 @@
 				2589CF1D163F897D00E43147 /* Default-568h@2x.png in Resources */,
 				2589CF20163F897D00E43147 /* MainStoryboard.storyboard in Resources */,
 				258E73851642F14500C12D43 /* move icon.png in Resources */,
-				258E73891642F9EA00C12D43 /* Notes.rtf in Resources */,
-				258E738B1642FAB400C12D43 /* To do.rtf in Resources */,
 				259129E81648491200C08897 /* move icon selected.png in Resources */,
-				2590A82D164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-01cs2.eps in Resources */,
-				2590A82E164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-02cs2.eps in Resources */,
-				2590A82F164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-03cs2.eps in Resources */,
-				2590A831164F2B62004FF6B5 /* FGDCgeostdTM11A2web_Sec37.pdf in Resources */,
 				2590A8741650BC8E004FF6B5 /* patterns1.pdf in Resources */,
 				25E7D2701652C56800109376 /* info icon.png in Resources */,
 				258C79461654877D0040F759 /* patterns descriptive text.txt in Resources */,
@@ -412,7 +400,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -434,7 +422,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;

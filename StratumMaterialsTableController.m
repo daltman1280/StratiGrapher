@@ -70,11 +70,13 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	NSString *descriptions = [NSString stringWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"patterns descriptive text" ofType:@"txt"] encoding:NSASCIIStringEncoding error:nil];
-    return [descriptions componentsSeparatedByString:@"\n"].count;
+	return [descriptions componentsSeparatedByString:@"\n"].count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	NSLog(@"datasource = %@", tableView.dataSource);
+	NSLog(@"self = %@, tableView = %@, indexPath = %@", self, tableView, indexPath);
 	MaterialTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"material" forIndexPath:indexPath];
     // Configure the cell...
 	NSString *descriptions = [NSString stringWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"patterns descriptive text" ofType:@"txt"] encoding:NSASCIIStringEncoding error:nil];

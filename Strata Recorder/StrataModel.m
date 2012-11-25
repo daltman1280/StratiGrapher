@@ -50,6 +50,7 @@
 
 - (void)save
 {
+	self.name = @"test";
 	NSAssert(self.name, @"nil name for StrataDocument:save");
 	[NSKeyedArchiver archiveRootObject:self toFile:[documentsFolderPath stringByAppendingPathComponent:[self.name stringByAppendingPathExtension:@"strata"]]];
 }

@@ -28,6 +28,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *renameText;
 @property (weak, nonatomic) IBOutlet UIButton *renameOKButton;
 @property (weak, nonatomic) IBOutlet UIButton *renameCancelButton;
+@property UINavigationController* stratumMaterialsNavigationController;
+@property StratumMaterialsTableController* stratumMaterialsTableController;
 
 @end
 
@@ -119,12 +121,12 @@
 - (void)handleStratumInfo:(id)sender
 {
 	// get the UITableController and initialize its properties, so it can manage the properties of the selected stratum
-	UINavigationController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"StratumInfoNavigationController"];
-	StratumMaterialsTableController *tableController = viewController.viewControllers[0];
-	tableController.stratum = ((StrataView *)sender).selectedStratum;											// tell the table controller what stratum is selected
-	tableController.patternsPage = ((StrataView *)sender).patternsPage;											// give it the page of patterns
-	tableController.delegate = self;
-	self.popover = [[UIPopoverController alloc] initWithContentViewController:viewController];
+	self.stratumMaterialsNavigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"StratumInfoNavigationController"];
+	self.stratumMaterialsTableController = self.stratumMaterialsNavigationController.viewControllers[0];
+	self.stratumMaterialsTableController.stratum = ((StrataView *)sender).selectedStratum;					// tell the table controller what stratum is selected
+	self.stratumMaterialsTableController.patternsPage = ((StrataView *)sender).patternsPage;				// give it the page of patterns
+	self.stratumMaterialsTableController.delegate = self;
+	self.popover = [[UIPopoverController alloc] initWithContentViewController:self.stratumMaterialsNavigationController];
 	[self.popover setPopoverContentSize:CGSizeMake(380, 500)];
 	[self.popover presentPopoverFromRect:CGRectMake(self.strataView.infoSelectionPoint.x, self.strataView.infoSelectionPoint.y, 1, 1) inView:self.strataView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }

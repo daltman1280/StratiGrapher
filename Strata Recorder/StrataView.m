@@ -199,15 +199,17 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			CGSize newSize = CGSizeMake(iconLocation.x-stratum.frame.origin.x, iconLocation.y-stratum.frame.origin.y);
 			[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];	// here's where the work is done
 		}
-		// setup fill pattern, must do for each stratum
-		CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
-		CGContextSetFillPattern(currentContext, pattern, &alpha);
-		gScale = self.scale;
 		CGRect myRect = CGRectMake(VX(stratum.frame.origin.x),								// stratum rectangle
 								   VY(stratum.frame.origin.y),
 								   VDX(stratum.frame.size.width),
 								   VDY(stratum.frame.size.height));
-		CGContextFillRect(currentContext, myRect);											// draw fill pattern
+		// setup fill pattern, must do for each stratum
+		if (!self.dragActive) {
+			CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
+			CGContextSetFillPattern(currentContext, pattern, &alpha);
+			gScale = self.scale;
+			CGContextFillRect(currentContext, myRect);											// draw fill pattern
+		}
 		CGContextStrokeRect(currentContext, myRect);										// draw boundary
 		if (!self.dragActive && stratum != self.activeDocument.strata.lastObject)			// draw info icon, unless this is the last (empty) stratum
 			[self.infoIcon drawAtPoint:CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1) scale:self.scale];
