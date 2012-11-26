@@ -12,6 +12,7 @@
 #import "StrataPageView.h"
 #import "StrataModel.h"
 #import "DocumentListTableViewController.h"
+#import "SettingsTableController.h"
 
 @interface StrataViewController () <UIScrollViewDelegate>
 
@@ -43,7 +44,14 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-	((DocumentListTableViewController *)((UINavigationController *)segue.destinationViewController).topViewController).delegate = self;
+	NSLog(@"sender = %@", sender);
+	NSLog(@"id = %@", segue.identifier);
+	if ([segue.identifier isEqualToString:@"documents"])
+		((DocumentListTableViewController *)((UINavigationController *)segue.destinationViewController).topViewController).delegate = self;
+	else if ([segue.identifier isEqualToString:@"settings"])
+		((SettingsTableController *)((UINavigationController *)segue.destinationViewController).topViewController).delegate = self;
+	else
+		NSAssert1(NO, @"Unexpected segue, ID = %@", segue.identifier);
 }
 
 - (void)viewDidLoad
