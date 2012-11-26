@@ -13,6 +13,8 @@
 @end
 
 @implementation SettingsTableController
+- (IBAction)handleStrataHeightStepper:(id)sender {
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -34,6 +36,11 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+	self.contentSizeForViewInPopover = CGSizeMake(460, 342);		// TODO: get the appropriate size
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -41,19 +48,19 @@
 }
 
 #pragma mark - Table view data source
-
+#if 0
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 #warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 #warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -65,7 +72,7 @@
     
     return cell;
 }
-
+#endif
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -118,4 +125,12 @@
      */
 }
 
+- (void)viewDidUnload {
+	[self setStrataHeight:nil];
+	[self setUnitsSelector:nil];
+	[self setPaperWidth:nil];
+	[self setPaperHeight:nil];
+	[self setPageScale:nil];
+	[super viewDidUnload];
+}
 @end

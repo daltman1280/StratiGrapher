@@ -13,5 +13,10 @@
 }
 
 @property id delegate;
+@property (weak, nonatomic) IBOutlet UITextField *strataHeight;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *unitsSelector;
+@property (weak, nonatomic) IBOutlet UITextField *paperWidth;
+@property (weak, nonatomic) IBOutlet UITextField *paperHeight;
+@property (weak, nonatomic) IBOutlet UITextField *pageScale;
 
 @end

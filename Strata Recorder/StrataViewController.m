@@ -44,8 +44,6 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-	NSLog(@"sender = %@", sender);
-	NSLog(@"id = %@", segue.identifier);
 	if ([segue.identifier isEqualToString:@"documents"])
 		((DocumentListTableViewController *)((UINavigationController *)segue.destinationViewController).topViewController).delegate = self;
 	else if ([segue.identifier isEqualToString:@"settings"])

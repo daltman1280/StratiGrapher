@@ -37,6 +37,7 @@
 		2590A8741650BC8E004FF6B5 /* patterns1.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2590A8731650BC8E004FF6B5 /* patterns1.pdf */; };
 		259129E81648491200C08897 /* move icon selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 259129E71648491200C08897 /* move icon selected.png */; };
 		25E7D2701652C56800109376 /* info icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E7D26F1652C56800109376 /* info icon.png */; };
+		25E91B2016633CC600AFFC0E /* SettingsTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E91B1F16633CC600AFFC0E /* SettingsTableController.m */; };
 		25F3F2F2165B568F001A2F53 /* RenameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F3F2F1165B568F001A2F53 /* RenameViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +96,8 @@
 		2591C0A9165890C100A622A8 /* PaperListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaperListTableViewController.m; sourceTree = "<group>"; };
 		259FDA57165DE9300010867E /* DocumentListControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentListControllerDelegate.h; sourceTree = "<group>"; };
 		25E7D26F1652C56800109376 /* info icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info icon.png"; sourceTree = "<group>"; };
+		25E91B1E16633CC600AFFC0E /* SettingsTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsTableController.h; path = ../SettingsTableController.h; sourceTree = "<group>"; };
+		25E91B1F16633CC600AFFC0E /* SettingsTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsTableController.m; path = ../SettingsTableController.m; sourceTree = "<group>"; };
 		25F3F2F0165B568F001A2F53 /* RenameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenameViewController.h; sourceTree = "<group>"; };
 		25F3F2F1165B568F001A2F53 /* RenameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenameViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -259,6 +262,8 @@
 				258CF6C11658CE48001E8D20 /* DocumentListTableViewController.m */,
 				25F3F2F0165B568F001A2F53 /* RenameViewController.h */,
 				25F3F2F1165B568F001A2F53 /* RenameViewController.m */,
+				25E91B1E16633CC600AFFC0E /* SettingsTableController.h */,
+				25E91B1F16633CC600AFFC0E /* SettingsTableController.m */,
 			);
 			name = "Popover Menus";
 			sourceTree = "<group>";
@@ -353,6 +358,7 @@
 				258E34BE1656E6C200E09A3A /* StrataPageView.m in Sources */,
 				258CF6C21658CE48001E8D20 /* DocumentListTableViewController.m in Sources */,
 				25F3F2F2165B568F001A2F53 /* RenameViewController.m in Sources */,
+				25E91B2016633CC600AFFC0E /* SettingsTableController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
