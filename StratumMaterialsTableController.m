@@ -75,9 +75,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSLog(@"datasource = %@", tableView.dataSource);
-	NSLog(@"self = %@, tableView = %@, indexPath = %@", self, tableView, indexPath);
-	MaterialTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"material" forIndexPath:indexPath];
+	MaterialTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"material"];
     // Configure the cell...
 	NSString *descriptions = [NSString stringWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"patterns descriptive text" ofType:@"txt"] encoding:NSASCIIStringEncoding error:nil];
 	NSString *line = [descriptions componentsSeparatedByString:@"\n"][indexPath.row];
