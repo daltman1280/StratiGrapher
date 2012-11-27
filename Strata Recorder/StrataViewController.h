@@ -9,13 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "DocumentListControllerDelegate.h"
 #import "SettingsControllerDelegate.h"
+#import "StratumMaterialsControllerDelegate.h"
 
-@interface StrataViewController : UIViewController <DocumentListControllerDelegate, SettingsControllerDelegate> {
+@interface StrataViewController : UIViewController <StratumMaterialsControllerDelegate, DocumentListControllerDelegate, SettingsControllerDelegate> {
 	UISegmentedControl*						modeControl;
 }
 
 - (void)handleStratumInfo:(id)sender;
-- (void)dismissStratumInfoPopoverContainer:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *graphPageToggle;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;

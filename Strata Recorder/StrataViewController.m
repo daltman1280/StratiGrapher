@@ -31,24 +31,22 @@
 @property (weak, nonatomic) IBOutlet UIButton *renameCancelButton;
 @property UINavigationController* stratumMaterialsNavigationController;
 @property StratumMaterialsTableController* stratumMaterialsTableController;
+@property SettingsTableController* settingsTableController;
 
 @end
 
 @implementation StrataViewController
 
-- (void)handleExportPDFButton:(id)sender
-{
-	[self.strataPageView setNeedsDisplayInRect:self.strataPageView.bounds];
-	self.strataPageView.mode = PDFMode;
-}
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
 	if ([segue.identifier isEqualToString:@"documents"])
 		((DocumentListTableViewController *)((UINavigationController *)segue.destinationViewController).topViewController).delegate = self;
-	else if ([segue.identifier isEqualToString:@"settings"])
-		((SettingsTableController *)((UINavigationController *)segue.destinationViewController).topViewController).delegate = self;
-	else
+	else if ([segue.identifier isEqualToString:@"settings"]) {
+		UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
+		self.popover = popoverSegue.popoverController;
+		self.settingsTableController = ((SettingsTableController *)((UINavigationController *)segue.destinationViewController).topViewController);
+		self.settingsTableController.delegate = self;
+	} else
 		NSAssert1(NO, @"Unexpected segue, ID = %@", segue.identifier);
 }
 
@@ -139,13 +137,28 @@
 	[self.popover presentPopoverFromRect:CGRectMake(self.strataView.infoSelectionPoint.x, self.strataView.infoSelectionPoint.y, 1, 1) inView:self.strataView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
-- (void)dismissStratumInfoPopoverContainer:(id)sender
+- (void)handleStratumInfoComplete:(id)sender
 {
 	[self.popover dismissPopoverAnimated:YES];
 	[self.strataView setNeedsDisplay];
 }
 
-#pragma mark settings popover
+#pragma mark SettingsControllerDelegate
+
+- (void)handleSettingsTableComplete:(id)sender;
+{
+	NSLog(@"units = %@", self.settingsTableController.units);
+	[self.popover dismissPopoverAnimated:YES];
+	
+}
+
+#pragma mark DocumentListControllerDelegate
+
+- (void)handleExportPDFButton:(id)sender
+{
+	[self.strataPageView setNeedsDisplayInRect:self.strataPageView.bounds];
+	self.strataPageView.mode = PDFMode;
+}
 
 - (void)didReceiveMemoryWarning
 {

@@ -56,7 +56,7 @@
 	[[NSUserDefaults standardUserDefaults] setFloat:self.pageScale forKey:@"pageScale"];
 	[[NSUserDefaults standardUserDefaults] setInteger:self.lineThickness forKey:@"lineThickness"];
 	
-	[self.delegate performSelector:@selector(dismissSettingsPopoverContainer:) withObject:self];
+	[self.delegate performSelector:@selector(handleSettingsTableComplete:) withObject:self];
 }
 
 - (IBAction)handlePageScaleSlider:(id)sender {
@@ -117,6 +117,7 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	self.modalInPopover = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated {

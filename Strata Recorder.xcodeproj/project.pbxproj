@@ -94,6 +94,7 @@
 		259129E71648491200C08897 /* move icon selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move icon selected.png"; sourceTree = "<group>"; };
 		2591C0A8165890C100A622A8 /* PaperListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaperListTableViewController.h; sourceTree = "<group>"; };
 		2591C0A9165890C100A622A8 /* PaperListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaperListTableViewController.m; sourceTree = "<group>"; };
+		2592B9EF166487E6006A4497 /* StratumMaterialsControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = StratumMaterialsControllerDelegate.h; path = ../StratumMaterialsControllerDelegate.h; sourceTree = "<group>"; };
 		259FDA57165DE9300010867E /* DocumentListControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentListControllerDelegate.h; sourceTree = "<group>"; };
 		25E7D26F1652C56800109376 /* info icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info icon.png"; sourceTree = "<group>"; };
 		25E91B1E16633CC600AFFC0E /* SettingsTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsTableController.h; path = ../SettingsTableController.h; sourceTree = "<group>"; };
@@ -122,6 +123,7 @@
 			children = (
 				25890D831655B2670007BC72 /* StratumMaterialsTableController.h */,
 				25890D841655B2670007BC72 /* StratumMaterialsTableController.m */,
+				2592B9EF166487E6006A4497 /* StratumMaterialsControllerDelegate.h */,
 				25890D861655D8990007BC72 /* MaterialPatternView.h */,
 				25890D871655D8990007BC72 /* MaterialPatternView.m */,
 				25890D891655DAD20007BC72 /* MaterialTableViewCell.h */,

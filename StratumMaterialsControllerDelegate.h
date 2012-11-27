@@ -1,5 +1,5 @@
 //
-//  SettingsControllerDelegate.h
+//  StratumMaterialsControllerDelegate.h
 //  Strata Recorder
 //
 //  Created by daltman on 11/26/12.
@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol SettingsControllerDelegate <NSObject>
+@protocol StratumMaterialsControllerDelegate <NSObject>
 
-- (void)handleSettingsTableComplete:(id)sender;
+- (void)handleStratumInfoComplete:(id)sender;
 
 @end
