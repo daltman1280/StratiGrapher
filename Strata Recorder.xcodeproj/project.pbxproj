@@ -98,6 +98,7 @@
 		25E7D26F1652C56800109376 /* info icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info icon.png"; sourceTree = "<group>"; };
 		25E91B1E16633CC600AFFC0E /* SettingsTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsTableController.h; path = ../SettingsTableController.h; sourceTree = "<group>"; };
 		25E91B1F16633CC600AFFC0E /* SettingsTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsTableController.m; path = ../SettingsTableController.m; sourceTree = "<group>"; };
+		25E91B251663FBBF00AFFC0E /* SettingsControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingsControllerDelegate.h; sourceTree = "<group>"; };
 		25F3F2F0165B568F001A2F53 /* RenameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenameViewController.h; sourceTree = "<group>"; };
 		25F3F2F1165B568F001A2F53 /* RenameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenameViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -207,6 +208,7 @@
 				2589CF21163F897D00E43147 /* StrataViewController.h */,
 				2589CF22163F897D00E43147 /* StrataViewController.m */,
 				259FDA57165DE9300010867E /* DocumentListControllerDelegate.h */,
+				25E91B251663FBBF00AFFC0E /* SettingsControllerDelegate.h */,
 			);
 			name = Views;
 			sourceTree = "<group>";

@@ -120,6 +120,8 @@
 	}
 }
 
+#pragma mark strata info popover
+
 /*
  Create a popover which contains a navigation controller, containing a table controller for managing the material number
  */
@@ -137,11 +139,13 @@
 	[self.popover presentPopoverFromRect:CGRectMake(self.strataView.infoSelectionPoint.x, self.strataView.infoSelectionPoint.y, 1, 1) inView:self.strataView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
-- (void)dismissPopoverContainer:(id)sender
+- (void)dismissStratumInfoPopoverContainer:(id)sender
 {
 	[self.popover dismissPopoverAnimated:YES];
 	[self.strataView setNeedsDisplay];
 }
+
+#pragma mark settings popover
 
 - (void)didReceiveMemoryWarning
 {

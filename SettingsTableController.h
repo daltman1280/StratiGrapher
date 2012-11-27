@@ -12,11 +12,12 @@
 	
 }
 
-@property id delegate;
-@property (weak, nonatomic) IBOutlet UITextField *strataHeight;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *unitsSelector;
-@property (weak, nonatomic) IBOutlet UITextField *paperWidth;
-@property (weak, nonatomic) IBOutlet UITextField *paperHeight;
-@property (weak, nonatomic) IBOutlet UITextField *pageScale;
+@property id		delegate;
+@property int		strataHeight;
+@property NSString*	units;
+@property float		paperWidth;
+@property float		paperHeight;
+@property float		pageScale;
+@property int		lineThickness;
 
 @end

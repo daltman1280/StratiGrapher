@@ -34,7 +34,7 @@
 	NSString *descriptions = [NSString stringWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"patterns descriptive text" ofType:@"txt"] encoding:NSASCIIStringEncoding error:nil];
 	NSString *line = [descriptions componentsSeparatedByString:@"\n"][lineNumber];
 	self.stratum.materialNumber = [[line substringToIndex:3] intValue];
-	[self.delegate performSelector:@selector(dismissPopoverContainer:) withObject:self];
+	[self.delegate performSelector:@selector(dismissStratumInfoPopoverContainer:) withObject:self];
 }
 
 - (void)viewDidLoad
