@@ -147,6 +147,8 @@
 
 - (void)handleSettingsTableComplete:(id)sender;
 {
+	// handle preference changes
+	NSLog(@"sender = %@", ((UIBarButtonItem *)sender).title);
 	NSLog(@"units = %@", self.settingsTableController.units);
 	[self.popover dismissPopoverAnimated:YES];
 	

@@ -391,6 +391,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="cancelItem" destination="tmI-VE-nMa" id="f7K-uZ-Vzs"/>
                         <outlet property="lineThicknessText" destination="8Dd-9b-A77" id="H3Y-dh-zE4"/>
                         <outlet property="pageScaleSlider" destination="SNX-Ua-VV1" id="NQ6-xI-86Y"/>
                         <outlet property="pageScaleText" destination="wQo-q2-zya" id="gSC-qS-PLz"/>
@@ -411,6 +412,11 @@
                         <barButtonItem title="Save" id="c3N-pM-65F">
                             <connections>
                                 <action selector="handleSave:" destination="0ij-0L-Qfo" id="u9O-9B-j2I"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="Cancel" id="tmI-VE-nMa">
+                            <connections>
+                                <action selector="handleCancel:" destination="0ij-0L-Qfo" id="GUR-gt-y3b"/>
                             </connections>
                         </barButtonItem>
                     </items>

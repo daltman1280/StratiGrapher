@@ -10,6 +10,7 @@
 
 @interface SettingsTableController ()
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveItem;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelItem;
 @property (weak, nonatomic) IBOutlet UISlider *pageScaleSlider;
 @property (weak, nonatomic) IBOutlet UITextField *strataHeightText;
 @property (weak, nonatomic) IBOutlet UIStepper *strataHeightStepper;
@@ -51,12 +52,17 @@
 		self.lineThickness = self.lineThicknessText.text.intValue;
 	// now, update user preferences from current property values
 	[[NSUserDefaults standardUserDefaults] setFloat:self.strataHeight forKey:@"strataHeight"];
+	[[NSUserDefaults standardUserDefaults] setObject:self.units forKey:@"units"];
 	[[NSUserDefaults standardUserDefaults] setFloat:self.paperWidth forKey:@"paperWidth"];
 	[[NSUserDefaults standardUserDefaults] setFloat:self.paperHeight forKey:@"paperHeight"];
 	[[NSUserDefaults standardUserDefaults] setFloat:self.pageScale forKey:@"pageScale"];
 	[[NSUserDefaults standardUserDefaults] setInteger:self.lineThickness forKey:@"lineThickness"];
 	
-	[self.delegate performSelector:@selector(handleSettingsTableComplete:) withObject:self];
+	[self.delegate performSelector:@selector(handleSettingsTableComplete:) withObject:sender];
+}
+
+- (IBAction)handleCancel:(id)sender {
+	[self.delegate performSelector:@selector(handleSettingsTableComplete:) withObject:sender];
 }
 
 - (IBAction)handlePageScaleSlider:(id)sender {
@@ -76,8 +82,7 @@
 {
     [super viewDidLoad];
 
-	self.toolbarItems = [NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
-						 self.saveItem, nil];
+	self.toolbarItems = [NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], self.cancelItem, self.saveItem, nil];
 	// populate the properties from user preferences
 	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"strataHeight"])
 		self.strataHeight = [[[NSUserDefaults standardUserDefaults] objectForKey:@"strataHeight"] intValue];
@@ -117,7 +122,7 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	self.modalInPopover = YES;
+	self.modalInPopover = YES;									// make this view modal (if it's in a popover, ignore outside clicks)
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -220,6 +225,7 @@
 	[self setLineThicknessText:nil];
 	[self setPatternPitchText:nil];
 	[self setStrataHeightStepper:nil];
+	[self setCancelItem:nil];
 	[super viewDidUnload];
 }
 @end

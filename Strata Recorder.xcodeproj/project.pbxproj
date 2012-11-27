@@ -209,8 +209,6 @@
 				258E34BD1656E6C200E09A3A /* StrataPageView.m */,
 				2589CF21163F897D00E43147 /* StrataViewController.h */,
 				2589CF22163F897D00E43147 /* StrataViewController.m */,
-				259FDA57165DE9300010867E /* DocumentListControllerDelegate.h */,
-				25E91B251663FBBF00AFFC0E /* SettingsControllerDelegate.h */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -264,10 +262,12 @@
 				2591C0A9165890C100A622A8 /* PaperListTableViewController.m */,
 				258CF6C01658CE48001E8D20 /* DocumentListTableViewController.h */,
 				258CF6C11658CE48001E8D20 /* DocumentListTableViewController.m */,
+				259FDA57165DE9300010867E /* DocumentListControllerDelegate.h */,
 				25F3F2F0165B568F001A2F53 /* RenameViewController.h */,
 				25F3F2F1165B568F001A2F53 /* RenameViewController.m */,
 				25E91B1E16633CC600AFFC0E /* SettingsTableController.h */,
 				25E91B1F16633CC600AFFC0E /* SettingsTableController.m */,
+				25E91B251663FBBF00AFFC0E /* SettingsControllerDelegate.h */,
 			);
 			name = "Popover Menus";
 			sourceTree = "<group>";
