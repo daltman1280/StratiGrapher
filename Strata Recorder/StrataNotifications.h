@@ -9,4 +9,11 @@
 #ifndef Strata_Recorder_StrataNotifications_h
 #define Strata_Recorder_StrataNotifications_h
 
+static NSString* SRStrataHeightChangedNotification = @"SRStrataHeightChangedNotification";
+static NSString* SRUnitsChangedNotification = @"SRUnitsChangedNotification";
+static NSString* SRPaperWidthChangedNotification = @"SRPaperWidthChangedNotification";
+static NSString* SRPaperHeightChangedNotification = @"SRPaperHeightChangedNotification";
+static NSString* SRPageScaleChangedNotification = @"SRPageScaleChangedNotification";
+static NSString* SRLineThicknessChangedNotification = @"SRLineThicknessChangedNotification";
+
 #endif

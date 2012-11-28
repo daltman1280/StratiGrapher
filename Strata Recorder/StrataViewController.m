@@ -13,6 +13,8 @@
 #import "StrataModel.h"
 #import "DocumentListTableViewController.h"
 #import "SettingsTableController.h"
+#import "StrataNotifications.h"
+#import "Graphics.h"
 
 @interface StrataViewController () <UIScrollViewDelegate>
 
@@ -40,12 +42,12 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
 	if ([segue.identifier isEqualToString:@"documents"])
-		((DocumentListTableViewController *)((UINavigationController *)segue.destinationViewController).topViewController).delegate = self;
+		((DocumentListTableViewController *)((UINavigationController *)segue.destinationViewController).topViewController).delegate = self;			// set up ourselves as delegate
 	else if ([segue.identifier isEqualToString:@"settings"]) {
 		UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
-		self.popover = popoverSegue.popoverController;
+		self.popover = popoverSegue.popoverController;																								// so we can dismiss the popover
 		self.settingsTableController = ((SettingsTableController *)((UINavigationController *)segue.destinationViewController).topViewController);
-		self.settingsTableController.delegate = self;
+		self.settingsTableController.delegate = self;																								// set up ourselves as delegate
 	} else
 		NSAssert1(NO, @"Unexpected segue, ID = %@", segue.identifier);
 }
@@ -53,6 +55,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	// settings from user preferences
+	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"strataHeight"]) {
+		CGRect frame = CGRectMake(0, 0, self.strataView.frame.size.width, [[[NSUserDefaults standardUserDefaults] objectForKey:@"strataHeight"] floatValue]*PPI);
+		self.strataView.frame = frame;														// modifying bounds would affect frame origin
+	}
 	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"])
 		self.activeDocument = [StrataDocument loadFromFile:[[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"]];
 	else {
@@ -82,11 +89,25 @@
 	self.strataPageView.patternsPage = page;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationEnteredBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationBecameActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleStrataHeightChanged:) name:SRStrataHeightChangedNotification object:nil];
 }
 
 - (void)handleApplicationBecameActive:(id)sender
 {
 	[self.strataView initialize];
+}
+
+- (void)handleStrataHeightChanged:(id)sender
+{
+	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"strataHeight"]) {
+		CGRect frame = CGRectMake(0, 0, self.strataView.frame.size.width, [[[NSUserDefaults standardUserDefaults] objectForKey:@"strataHeight"] floatValue]*PPI);
+		self.strataView.frame = frame;														// modifying bounds would affect frame origin
+		self.strataView.bounds = frame;
+	}
+	self.scrollView.contentSize = self.strataView.bounds.size;
+//	NSLog(@"frame x = %f, y = %f, w = %f, h = %f", self.strataView.frame.origin.x, self.strataView.frame.origin.y,
+//			  self.strataView.frame.size.width, self.strataView.frame.size.height);
+	[self.strataView setNeedsDisplay];
 }
 
 - (void)handleApplicationEnteredBackground:(id)sender
@@ -147,11 +168,8 @@
 
 - (void)handleSettingsTableComplete:(id)sender;
 {
-	// handle preference changes
-	NSLog(@"sender = %@", ((UIBarButtonItem *)sender).title);
-	NSLog(@"units = %@", self.settingsTableController.units);
+	// handle preference changes. Settings controller sends notifications, so we don't do anything here
 	[self.popover dismissPopoverAnimated:YES];
-	
 }
 
 #pragma mark DocumentListControllerDelegate

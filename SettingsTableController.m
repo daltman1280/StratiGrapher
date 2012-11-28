@@ -7,6 +7,7 @@
 //
 
 #import "SettingsTableController.h"
+#import "StrataNotifications.h"
 
 @interface SettingsTableController ()
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveItem;
@@ -39,17 +40,40 @@
 
 - (IBAction)handleSave:(id)sender {
 	// initialize our properties from our current control settings, so our SettingsControllerDelegate can use them to propagate changes made
-	if (self.strataHeightText.text.floatValue)
-		self.strataHeight = self.strataHeightText.text.intValue;
-	self.units = (self.unitsSelector.selectedSegmentIndex) ? @"English" : @"Metric";
-	if (self.paperWidthText.text.floatValue)
-		self.paperWidth = self.paperWidthText.text.floatValue;
-	if (self.paperHeightText.text.floatValue)
-		self.paperHeight = self.paperHeightText.text.floatValue;
-	if (self.pageScaleText.text.floatValue)
-		self.pageScale = self.pageScaleText.text.floatValue;
-	if (self.lineThicknessText.text.intValue)
-		self.lineThickness = self.lineThicknessText.text.intValue;
+	if (self.strataHeightText.text.floatValue) {
+		if (self.strataHeightText.text.intValue != self.strataHeight) {
+			self.strataHeight = self.strataHeightText.text.intValue;
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataHeightChangedNotification object:self];
+		}
+	}
+	if (![self.units isEqualToString:(self.unitsSelector.selectedSegmentIndex) ? @"English" : @"Metric"]) {
+		self.units = (self.unitsSelector.selectedSegmentIndex) ? @"English" : @"Metric";
+		[[NSNotificationCenter defaultCenter] postNotificationName:SRUnitsChangedNotification object:self];
+	}
+	if (self.paperWidthText.text.floatValue) {
+		if (self.paperWidthText.text.floatValue != self.paperWidth) {
+			self.paperWidth = self.paperWidthText.text.floatValue;
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRPaperWidthChangedNotification object:self];
+		}
+	}
+	if (self.paperHeightText.text.floatValue) {
+		if (self.paperHeightText.text.floatValue != self.paperHeight) {
+			self.paperHeight = self.paperHeightText.text.floatValue;
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRPaperHeightChangedNotification object:self];
+		}
+	}
+	if (self.pageScaleText.text.floatValue) {
+		if (self.pageScaleText.text.floatValue != self.pageScale) {
+			self.pageScale = self.pageScaleText.text.floatValue;
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRPageScaleChangedNotification object:self];
+		}
+	}
+	if (self.lineThicknessText.text.intValue) {
+		if (self.lineThicknessText.text.floatValue != self.lineThickness) {
+			self.lineThickness = self.lineThicknessText.text.intValue;
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRLineThicknessChangedNotification object:self];
+		}
+	}
 	// now, update user preferences from current property values
 	[[NSUserDefaults standardUserDefaults] setFloat:self.strataHeight forKey:@"strataHeight"];
 	[[NSUserDefaults standardUserDefaults] setObject:self.units forKey:@"units"];
@@ -57,6 +81,7 @@
 	[[NSUserDefaults standardUserDefaults] setFloat:self.paperHeight forKey:@"paperHeight"];
 	[[NSUserDefaults standardUserDefaults] setFloat:self.pageScale forKey:@"pageScale"];
 	[[NSUserDefaults standardUserDefaults] setInteger:self.lineThickness forKey:@"lineThickness"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 	
 	[self.delegate performSelector:@selector(handleSettingsTableComplete:) withObject:sender];
 }
