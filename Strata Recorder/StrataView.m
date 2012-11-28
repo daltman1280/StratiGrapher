@@ -59,6 +59,13 @@ void patternDrawingCallback(void *info, CGContextRef context)
     }
 }
 
+- (void)handleStrataHeightChanged:(id)sender
+{
+	self.moveIcon.bounds = self.bounds;
+	self.moveIconSelected.bounds = self.bounds;
+	self.infoIcon.bounds = self.bounds;
+}
+
 - (void)setActiveDocument:(StrataDocument *)activeDocument
 {
 	_activeDocument = activeDocument;

@@ -13,5 +13,7 @@
 - (id)initWithImageName:(NSString *)imageName offset:(CGPoint)offset width:(CGFloat)width viewBounds:(CGRect)bounds;
 - (void)drawAtPoint:(CGPoint)point scale:(CGFloat)scale;
 
+@property CGRect bounds;				// this must be updated whenever parent view's bounds change
+
 @end
 

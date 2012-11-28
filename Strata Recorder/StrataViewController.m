@@ -105,8 +105,7 @@
 		self.strataView.bounds = frame;
 	}
 	self.scrollView.contentSize = self.strataView.bounds.size;
-//	NSLog(@"frame x = %f, y = %f, w = %f, h = %f", self.strataView.frame.origin.x, self.strataView.frame.origin.y,
-//			  self.strataView.frame.size.width, self.strataView.frame.size.height);
+	[self.strataView handleStrataHeightChanged:self];
 	[self.strataView setNeedsDisplay];
 }
 
