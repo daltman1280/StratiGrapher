@@ -7,17 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "StrataModel.h"
 
 @interface SettingsTableController : UITableViewController {
 	
 }
 
-@property id		delegate;
-@property int		strataHeight;
-@property NSString*	units;
-@property float		paperWidth;
-@property float		paperHeight;
-@property float		pageScale;
-@property int		lineThickness;
+@property id				delegate;
+@property StrataDocument*	activeDocument;
+
+//	document properties
+@property int				strataHeight;
+@property NSString*			units;
+@property float				paperWidth;
+@property float				paperHeight;
+@property float				pageScale;
+@property int				lineThickness;
 
 @end

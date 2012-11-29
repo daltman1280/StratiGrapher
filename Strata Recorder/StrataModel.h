@@ -14,12 +14,15 @@
 - (void)save;
 + (id)loadFromFile:(NSString *)name;
 
-@property NSMutableArray*	strata;			// array of Strata*
 @property NSString*			name;			// not a part of persistent document, just for housekeeping purposes
+//	persistent properties
+@property NSMutableArray*	strata;			// array of Strata*
 @property CGSize			pageDimension;	// in inches
 @property CGSize			pageMargins;	// in inches
-@property CGFloat			scale;			// in meters/inch
-@property int				lineThickness;	// in points
+@property CGFloat			scale;			// of page presentation, in physical units/inch
+@property int				lineThickness;	// of page presentation, strata edges, in points
+@property NSString*			units;			// English or Metric
+@property float				strataHeight;	// height of model view (in physical units)
 
 @end
 

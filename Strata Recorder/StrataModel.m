@@ -30,6 +30,13 @@
 		((Stratum *)self.strata[2]).materialNumber = 611;
 		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 9*GRID_WIDTH, 0*GRID_WIDTH, 0*GRID_WIDTH)]];
 		((Stratum *)self.strata[3]).materialNumber = 605;
+		self.name = @"test";
+		self.units = @"Metric";
+		self.strataHeight = 10;
+		self.pageDimension = CGSizeMake(3.5, 5.);							// hard-coded until we support document settings
+		self.pageMargins = CGSizeMake(.5, .5);
+		self.scale = 2.;
+		self.lineThickness = 2;
 	}
 	return self;
 }
@@ -41,10 +48,6 @@
 		return nil;
 	StrataDocument *doc = [NSKeyedUnarchiver unarchiveObjectWithFile:filepath];
 	doc.name = name;
-	doc.pageDimension = CGSizeMake(3.5, 5.);							// hard-coded until we support document settings
-	doc.pageMargins = CGSizeMake(.5, .5);
-	doc.scale = 2.;
-	doc.lineThickness = 2;
 	return doc;
 }
 
@@ -76,6 +79,8 @@
 	self.pageDimension = [aDecoder decodeCGSizeForKey:@"pageDimension"];
 	self.scale = [aDecoder decodeFloatForKey:@"scale"];
 	self.lineThickness = [aDecoder decodeIntForKey:@"lineThickness"];
+	self.units = [aDecoder decodeObjectForKey:@"units"];
+	self.strataHeight = [aDecoder decodeFloatForKey:@"strataHeight"];
 	return self;
 }
 
@@ -85,6 +90,8 @@
 	[aCoder encodeCGSize:self.pageDimension forKey:@"pageDimension"];
 	[aCoder encodeFloat:self.scale forKey:@"scale"];
 	[aCoder encodeInt:self.lineThickness forKey:@"lineThickness"];
+	[aCoder encodeObject:self.units forKey:@"units"];
+	[aCoder encodeFloat:self.strataHeight forKey:@"strataHeight"];
 }
 
 @end

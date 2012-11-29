@@ -40,6 +40,7 @@
 
 - (IBAction)handleSave:(id)sender {
 	// initialize our properties from our current control settings, so our SettingsControllerDelegate can use them to propagate changes made
+	// only post notifications for properties that have changed
 	if (self.strataHeightText.text.floatValue) {
 		if (self.strataHeightText.text.intValue != self.strataHeight) {
 			self.strataHeight = self.strataHeightText.text.intValue;
@@ -74,16 +75,7 @@
 			[[NSNotificationCenter defaultCenter] postNotificationName:SRLineThicknessChangedNotification object:self];
 		}
 	}
-	// now, update user preferences from current property values
-	[[NSUserDefaults standardUserDefaults] setFloat:self.strataHeight forKey:@"strataHeight"];
-	[[NSUserDefaults standardUserDefaults] setObject:self.units forKey:@"units"];
-	[[NSUserDefaults standardUserDefaults] setFloat:self.paperWidth forKey:@"paperWidth"];
-	[[NSUserDefaults standardUserDefaults] setFloat:self.paperHeight forKey:@"paperHeight"];
-	[[NSUserDefaults standardUserDefaults] setFloat:self.pageScale forKey:@"pageScale"];
-	[[NSUserDefaults standardUserDefaults] setInteger:self.lineThickness forKey:@"lineThickness"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-	
-	[self.delegate performSelector:@selector(handleSettingsTableComplete:) withObject:sender];
+	[self.delegate performSelector:@selector(handleSettingsTableComplete:) withObject:sender];					// let the delegate deal with the changed properties
 }
 
 - (IBAction)handleCancel:(id)sender {
@@ -108,31 +100,13 @@
     [super viewDidLoad];
 
 	self.toolbarItems = [NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], self.cancelItem, self.saveItem, nil];
-	// populate the properties from user preferences
-	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"strataHeight"])
-		self.strataHeight = [[[NSUserDefaults standardUserDefaults] objectForKey:@"strataHeight"] intValue];
-	else
-		self.strataHeight = 10;
-	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"units"])
-		self.units = [[NSUserDefaults standardUserDefaults] objectForKey:@"units"];
-	else
-		self.units = @"Metric";
-	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"paperWidth"])
-		self.paperWidth = [[[NSUserDefaults standardUserDefaults] objectForKey:@"paperWidth"] floatValue];
-	else
-		self.paperWidth = 8.5;
-	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"paperHeight"])
-		self.paperHeight = [[[NSUserDefaults standardUserDefaults] objectForKey:@"paperHeight"] floatValue];
-	else
-		self.paperHeight = 11;
-	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"pageScale"])
-		self.pageScale = [[[NSUserDefaults standardUserDefaults] objectForKey:@"pageScale"] floatValue];
-	else
-		self.pageScale = 1;
-	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"lineThickness"])
-		self.lineThickness = [[[NSUserDefaults standardUserDefaults] objectForKey:@"lineThickness"] intValue];
-	else
-		self.lineThickness = 3;
+	// populate the properties from active document
+	self.strataHeight = self.activeDocument.strataHeight;
+	self.units = self.activeDocument.units;
+	self.paperWidth = self.activeDocument.pageDimension.width;
+	self.paperHeight = self.activeDocument.pageDimension.height;
+	self.pageScale = self.activeDocument.scale;
+	self.lineThickness = self.activeDocument.lineThickness;
 	// populate the table's controls from property values
 	self.strataHeightText.text = [NSString stringWithFormat:@"%d", self.strataHeight];
 	self.strataHeightStepper.value = self.strataHeight;

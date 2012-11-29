@@ -45,9 +45,10 @@
 		((DocumentListTableViewController *)((UINavigationController *)segue.destinationViewController).topViewController).delegate = self;			// set up ourselves as delegate
 	else if ([segue.identifier isEqualToString:@"settings"]) {
 		UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
-		self.popover = popoverSegue.popoverController;																								// so we can dismiss the popover
 		self.settingsTableController = ((SettingsTableController *)((UINavigationController *)segue.destinationViewController).topViewController);
 		self.settingsTableController.delegate = self;																								// set up ourselves as delegate
+		self.settingsTableController.activeDocument = self.activeDocument;
+		self.popover = popoverSegue.popoverController;																								// so we can dismiss the popover
 	} else
 		NSAssert1(NO, @"Unexpected segue, ID = %@", segue.identifier);
 }
@@ -121,7 +122,6 @@
 	if (selection == 1) {																						// switching to page mode
 		[self.strataView resignFirstResponder];
 		self.strataPageScrollView.hidden = NO;
-//		[self.strataPageScrollView invalidate];
 		[UIView beginAnimations:@"GraphToPageTransition" context:nil];
 		[UIView setAnimationDuration:0.5];
 		self.strataGraphScrollView.alpha = 0.0;
@@ -167,8 +167,14 @@
 
 - (void)handleSettingsTableComplete:(id)sender;
 {
-	// handle preference changes. Settings controller sends notifications, so we don't do anything here
 	[self.popover dismissPopoverAnimated:YES];
+	if ([((UIBarButtonItem *)sender).title isEqualToString:@"Save"]) {
+		self.activeDocument.pageDimension = CGSizeMake(self.settingsTableController.paperWidth, self.settingsTableController.paperHeight);
+		self.activeDocument.scale = self.settingsTableController.pageScale;
+		self.activeDocument.lineThickness = self.settingsTableController.lineThickness;
+		self.activeDocument.units = self.settingsTableController.units;
+		self.activeDocument.strataHeight = self.settingsTableController.strataHeight;
+	}
 }
 
 #pragma mark DocumentListControllerDelegate

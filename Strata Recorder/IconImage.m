@@ -30,7 +30,7 @@
 		self.offset = offset;
 		self.image = [UIImage imageNamed:imageName];
 		self.width = width;
-		self.bounds = bounds;
+		self.bounds = bounds;									// must be updated whenever parent view's bounds change
 	}
 	return self;
 }
