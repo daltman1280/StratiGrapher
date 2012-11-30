@@ -77,6 +77,7 @@
 	self = [super init];
 	self.strata = [aDecoder decodeObjectForKey:@"strata"];
 	self.pageDimension = [aDecoder decodeCGSizeForKey:@"pageDimension"];
+	self.pageMargins = [aDecoder decodeCGSizeForKey:@"pageMargins"];
 	self.scale = [aDecoder decodeFloatForKey:@"scale"];
 	self.lineThickness = [aDecoder decodeIntForKey:@"lineThickness"];
 	self.units = [aDecoder decodeObjectForKey:@"units"];
@@ -88,6 +89,7 @@
 {
 	[aCoder encodeObject:self.strata forKey:@"strata"];
 	[aCoder encodeCGSize:self.pageDimension forKey:@"pageDimension"];
+	[aCoder encodeCGSize:self.pageMargins forKey:@"pageMargins"];
 	[aCoder encodeFloat:self.scale forKey:@"scale"];
 	[aCoder encodeInt:self.lineThickness forKey:@"lineThickness"];
 	[aCoder encodeObject:self.units forKey:@"units"];

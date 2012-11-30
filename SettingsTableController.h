@@ -21,6 +21,8 @@
 @property NSString*			units;
 @property float				paperWidth;
 @property float				paperHeight;
+@property float				marginWidth;
+@property float				marginHeight;
 @property float				pageScale;
 @property int				lineThickness;
 

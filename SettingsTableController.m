@@ -18,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *unitsSelector;
 @property (weak, nonatomic) IBOutlet UITextField *paperWidthText;
 @property (weak, nonatomic) IBOutlet UITextField *paperHeightText;
+@property (weak, nonatomic) IBOutlet UITextField *marginWidthText;
+@property (weak, nonatomic) IBOutlet UITextField *marginHeightText;
 @property (weak, nonatomic) IBOutlet UITextField *pageScaleText;
 @property (weak, nonatomic) IBOutlet UITextField *lineThicknessText;
 @property (weak, nonatomic) IBOutlet UITextField *patternPitchText;
@@ -63,6 +65,18 @@
 			[[NSNotificationCenter defaultCenter] postNotificationName:SRPaperHeightChangedNotification object:self];
 		}
 	}
+	if (self.marginWidthText.text.floatValue) {
+		if (self.marginWidthText.text.floatValue != self.marginWidth) {
+			self.marginWidth = self.marginWidthText.text.floatValue;
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRMarginWidthChangedNotification object:self];
+		}
+	}
+	if (self.marginHeightText.text.floatValue) {
+		if (self.marginHeightText.text.floatValue != self.marginHeight) {
+			self.marginHeight = self.marginHeightText.text.floatValue;
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRMarginHeightChangedNotification object:self];
+		}
+	}
 	if (self.pageScaleText.text.floatValue) {
 		if (self.pageScaleText.text.floatValue != self.pageScale) {
 			self.pageScale = self.pageScaleText.text.floatValue;
@@ -105,6 +119,8 @@
 	self.units = self.activeDocument.units;
 	self.paperWidth = self.activeDocument.pageDimension.width;
 	self.paperHeight = self.activeDocument.pageDimension.height;
+	self.marginWidth = self.activeDocument.pageMargins.width;
+	self.marginHeight = self.activeDocument.pageMargins.height;
 	self.pageScale = self.activeDocument.scale;
 	self.lineThickness = self.activeDocument.lineThickness;
 	// populate the table's controls from property values
@@ -113,6 +129,8 @@
 	self.unitsSelector.selectedSegmentIndex = [self.units isEqualToString:@"Metric"] ? 0 : 1;
 	self.paperWidthText.text = [NSString stringWithFormat:@"%.1f", self.paperWidth];
 	self.paperHeightText.text = [NSString stringWithFormat:@"%.1f", self.paperHeight];
+	self.marginWidthText.text = [NSString stringWithFormat:@"%.1f", self.marginWidth];
+	self.marginHeightText.text = [NSString stringWithFormat:@"%.1f", self.marginHeight];
 	self.pageScaleText.text = [NSString stringWithFormat:@"%.1f", self.pageScale];
 	self.pageScaleSlider.value = self.pageScale;
 	self.lineThicknessText.text = [NSString stringWithFormat:@"%d", self.lineThickness];
@@ -126,7 +144,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-	self.contentSizeForViewInPopover = CGSizeMake(460, 410);		// TODO: get the appropriate size
+	self.contentSizeForViewInPopover = CGSizeMake(460, 454);		// TODO: get the appropriate size
 }
 
 - (void)didReceiveMemoryWarning
@@ -225,6 +243,8 @@
 	[self setPatternPitchText:nil];
 	[self setStrataHeightStepper:nil];
 	[self setCancelItem:nil];
+	[self setMarginWidthText:nil];
+	[self setMarginHeightText:nil];
 	[super viewDidUnload];
 }
 @end

@@ -57,10 +57,6 @@
 {
     [super viewDidLoad];
 	// settings from user preferences
-	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"strataHeight"]) {
-		CGRect frame = CGRectMake(0, 0, self.strataView.frame.size.width, [[[NSUserDefaults standardUserDefaults] objectForKey:@"strataHeight"] floatValue]*PPI);
-		self.strataView.frame = frame;														// modifying bounds would affect frame origin
-	}
 	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"])
 		self.activeDocument = [StrataDocument loadFromFile:[[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"]];
 	else {
@@ -68,6 +64,8 @@
 	}
 	if (!self.activeDocument)
 		self.activeDocument = [[StrataDocument alloc] init];
+	CGRect frame = CGRectMake(0, 0, self.strataView.frame.size.width, self.activeDocument.strataHeight*PPI);
+	self.strataView.frame = frame;														// modifying bounds would affect frame origin
 	self.toolbarTitle.title = self.activeDocument.name;
 	self.strataView.activeDocument = self.activeDocument;
 	self.scrollView.contentSize = self.strataView.bounds.size;
@@ -107,6 +105,7 @@
 	}
 	self.scrollView.contentSize = self.strataView.bounds.size;
 	[self.strataView handleStrataHeightChanged:self];
+	[self.scrollView setNeedsDisplay];														// TODO: unsuccessful at displaying new view height
 	[self.strataView setNeedsDisplay];
 }
 
@@ -170,6 +169,7 @@
 	[self.popover dismissPopoverAnimated:YES];
 	if ([((UIBarButtonItem *)sender).title isEqualToString:@"Save"]) {
 		self.activeDocument.pageDimension = CGSizeMake(self.settingsTableController.paperWidth, self.settingsTableController.paperHeight);
+		self.activeDocument.pageMargins = CGSizeMake(self.settingsTableController.marginWidth, self.settingsTableController.marginHeight);
 		self.activeDocument.scale = self.settingsTableController.pageScale;
 		self.activeDocument.lineThickness = self.settingsTableController.lineThickness;
 		self.activeDocument.units = self.settingsTableController.units;

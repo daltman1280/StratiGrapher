@@ -13,6 +13,8 @@ static NSString* SRStrataHeightChangedNotification = @"SRStrataHeightChangedNoti
 static NSString* SRUnitsChangedNotification = @"SRUnitsChangedNotification";
 static NSString* SRPaperWidthChangedNotification = @"SRPaperWidthChangedNotification";
 static NSString* SRPaperHeightChangedNotification = @"SRPaperHeightChangedNotification";
+static NSString* SRMarginWidthChangedNotification = @"SRMarginWidthChangedNotification";
+static NSString* SRMarginHeightChangedNotification = @"SRMarginHeightChangedNotification";
 static NSString* SRPageScaleChangedNotification = @"SRPageScaleChangedNotification";
 static NSString* SRLineThicknessChangedNotification = @"SRLineThicknessChangedNotification";
 

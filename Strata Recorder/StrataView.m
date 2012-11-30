@@ -61,6 +61,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)handleStrataHeightChanged:(id)sender
 {
+	// these properties must be updated, because the graphics transform functions depend on them
 	self.moveIcon.bounds = self.bounds;
 	self.moveIconSelected.bounds = self.bounds;
 	self.infoIcon.bounds = self.bounds;
