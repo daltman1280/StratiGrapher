@@ -34,6 +34,7 @@
 @property UINavigationController* stratumMaterialsNavigationController;
 @property StratumMaterialsTableController* stratumMaterialsTableController;
 @property SettingsTableController* settingsTableController;
+@property (weak, nonatomic) IBOutlet UIImageView *scissorsIcon;
 
 @end
 
@@ -239,6 +240,7 @@
 	[self setRenameText:nil];
 	[self setRenameOKButton:nil];
 	[self setRenameCancelButton:nil];
+	[self setScissorsIcon:nil];
 	[super viewDidUnload];
 }
 @end

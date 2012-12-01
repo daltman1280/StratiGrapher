@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		25066EDA166A5EF70095C3CC /* StrataToolsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25066ED9166A5EF70095C3CC /* StrataToolsView.m */; };
+		25066EE1166A67CB0095C3CC /* cut.png in Resources */ = {isa = PBXBuildFile; fileRef = 25066EE0166A67CB0095C3CC /* cut.png */; };
+		25066EE3166A79040095C3CC /* anchor.png in Resources */ = {isa = PBXBuildFile; fileRef = 25066EE2166A79040095C3CC /* anchor.png */; };
 		25890D851655B2670007BC72 /* StratumMaterialsTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D841655B2670007BC72 /* StratumMaterialsTableController.m */; };
 		25890D881655D8990007BC72 /* MaterialPatternView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D871655D8990007BC72 /* MaterialPatternView.m */; };
 		25890D8B1655DAD20007BC72 /* MaterialTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D8A1655DAD20007BC72 /* MaterialTableViewCell.m */; };
@@ -42,6 +45,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		25066ED8166A5EF70095C3CC /* StrataToolsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StrataToolsView.h; path = ../StrataToolsView.h; sourceTree = "<group>"; };
+		25066ED9166A5EF70095C3CC /* StrataToolsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StrataToolsView.m; path = ../StrataToolsView.m; sourceTree = "<group>"; };
+		25066EE0166A67CB0095C3CC /* cut.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cut.png; path = images/cut.png; sourceTree = "<group>"; };
+		25066EE2166A79040095C3CC /* anchor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = anchor.png; path = images/anchor.png; sourceTree = "<group>"; };
 		25890D831655B2670007BC72 /* StratumMaterialsTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StratumMaterialsTableController.h; path = ../StratumMaterialsTableController.h; sourceTree = "<group>"; };
 		25890D841655B2670007BC72 /* StratumMaterialsTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StratumMaterialsTableController.m; path = ../StratumMaterialsTableController.m; sourceTree = "<group>"; };
 		25890D861655D8990007BC72 /* MaterialPatternView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MaterialPatternView.h; path = ../MaterialPatternView.h; sourceTree = "<group>"; };
@@ -207,6 +214,8 @@
 				2589CF2D163F8AE200E43147 /* StrataView.m */,
 				258E34BC1656E6C200E09A3A /* StrataPageView.h */,
 				258E34BD1656E6C200E09A3A /* StrataPageView.m */,
+				25066ED8166A5EF70095C3CC /* StrataToolsView.h */,
+				25066ED9166A5EF70095C3CC /* StrataToolsView.m */,
 				2589CF21163F897D00E43147 /* StrataViewController.h */,
 				2589CF22163F897D00E43147 /* StrataViewController.m */,
 			);
@@ -242,6 +251,8 @@
 		2590C55416423E1000DB9C98 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				25066EE2166A79040095C3CC /* anchor.png */,
+				25066EE0166A67CB0095C3CC /* cut.png */,
 				258E73841642F14500C12D43 /* move icon.png */,
 				259129E71648491200C08897 /* move icon selected.png */,
 				25E7D26F1652C56800109376 /* info icon.png */,
@@ -340,6 +351,8 @@
 				258CF6CC1658D2A1001E8D20 /* darkBlueButton.png in Resources */,
 				258CF6CD1658D2A1001E8D20 /* darkRedButton.png in Resources */,
 				258CF6CE1658D2A1001E8D20 /* redButton.png in Resources */,
+				25066EE1166A67CB0095C3CC /* cut.png in Resources */,
+				25066EE3166A79040095C3CC /* anchor.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,6 +376,7 @@
 				258CF6C21658CE48001E8D20 /* DocumentListTableViewController.m in Sources */,
 				25F3F2F2165B568F001A2F53 /* RenameViewController.m in Sources */,
 				25E91B2016633CC600AFFC0E /* SettingsTableController.m in Sources */,
+				25066EDA166A5EF70095C3CC /* StrataToolsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
