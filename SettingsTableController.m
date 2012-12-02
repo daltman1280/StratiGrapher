@@ -112,8 +112,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
 	self.toolbarItems = [NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], self.cancelItem, self.saveItem, nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 	// populate the properties from active document
 	self.strataHeight = self.activeDocument.strataHeight;
 	self.units = self.activeDocument.units;
@@ -134,16 +137,9 @@
 	self.pageScaleText.text = [NSString stringWithFormat:@"%.1f", self.pageScale];
 	self.pageScaleSlider.value = self.pageScale;
 	self.lineThicknessText.text = [NSString stringWithFormat:@"%d", self.lineThickness];
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.modalInPopover = YES;									// make this view modal (if it's in a popover, ignore outside clicks)
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
 	self.contentSizeForViewInPopover = CGSizeMake(460, 454);		// TODO: get the appropriate size
 }
 
