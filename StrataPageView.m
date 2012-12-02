@@ -70,8 +70,6 @@
 //	CGContextTranslateCTM(currentContext, -VX(self.activeDocument.pageMargins.width), VY(self.activeDocument.pageMargins.height));
 	[[self.activeDocument.units isEqualToString:@"Metric"] ? @"1 Meter" : @"1 Foot" drawAtPoint:CGPointZero withFont:[UIFont systemFontOfSize:10]];
 	CGContextRestoreGState(currentContext);
-	// draw strata
-	CGContextSetLineWidth(currentContext, self.activeDocument.lineThickness);
 	CGFloat maxWidth = 0;
 	for (Stratum *stratum in self.activeDocument.strata)
 		if (stratum.frame.size.width > maxWidth) maxWidth = stratum.frame.size.width;
@@ -87,7 +85,7 @@
 	CGContextSetFillColorSpace(currentContext, patternSpace);
 	CGColorSpaceRelease(patternSpace);
 	// setup graphic attributes for drawing strata rectangles
-	CGContextSetLineWidth(currentContext, 1);
+	CGContextSetLineWidth(currentContext, self.activeDocument.lineThickness);
 	colorSpace = CGColorSpaceCreateDeviceRGB();
 	color = CGColorCreate(colorSpace, colorComponents);
 	CGContextSetStrokeColorWithColor(currentContext, color);
@@ -98,6 +96,7 @@
 	float pageTop = self.activeDocument.pageDimension.height-self.activeDocument.pageMargins.height;
 	// horizontal and vertical adjustments, in inches, which take into account column membership of a stratum
 	CGPoint offset = CGPointMake(self.activeDocument.pageDimension.width-self.activeDocument.pageMargins.width-maxWidth, self.activeDocument.pageMargins.height);
+	// draw strata
 	for (Stratum *stratum in self.activeDocument.strata) {
 		CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
 		CGContextSetFillPattern(currentContext, pattern, &alpha);
