@@ -11,6 +11,5 @@
 @interface MaterialPatternView : UIView
 
 @property int patternNumber;
-@property CGPDFPageRef patternsPage;
 
 @end

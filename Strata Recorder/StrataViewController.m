@@ -80,13 +80,17 @@
 	self.strataPageScrollView.contentSize = self.strataPageView.bounds.size;
 	self.strataPageScrollView.contentOffset = CGPointMake(0, self.strataPageView.bounds.size.height-self.strataPageScrollView.bounds.size.height);
 	self.strataPageScrollView.hidden = YES;
-	NSURL *url = [[NSBundle mainBundle] URLForResource:@"patterns1" withExtension:@"pdf"];
+	NSURL *url = [[NSBundle mainBundle] URLForResource:@"patterns1 multipage" withExtension:@"pdf"];
 	CGPDFDocumentRef document = CGPDFDocumentCreateWithURL((__bridge CFURLRef)(url));
-	CGPDFPageRef page = CGPDFDocumentGetPage(document, 1);
-	CFRetain(page);
+	CGPDFPageRef page;
+	self.strataView.patternsPageArray = [[NSMutableArray alloc] init];
+	for (int i=1; i<=28; ++i) {
+		page = CGPDFDocumentGetPage(document, i);
+		[self.strataView.patternsPageArray addObject:[NSValue valueWithPointer:page]];
+		CFRetain(page);
+	}
 	CGPDFDocumentRelease(document);
-	self.strataView.patternsPage = page;
-	self.strataPageView.patternsPage = page;
+	self.strataPageView.patternsPageArray = self.strataView.patternsPageArray;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationEnteredBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationBecameActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleStrataHeightChanged:) name:SRStrataHeightChangedNotification object:nil];
@@ -150,7 +154,6 @@
 	self.stratumMaterialsNavigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"StratumInfoNavigationController"];
 	self.stratumMaterialsTableController = self.stratumMaterialsNavigationController.viewControllers[0];
 	self.stratumMaterialsTableController.stratum = ((StrataView *)sender).selectedStratum;					// tell the table controller what stratum is selected
-	self.stratumMaterialsTableController.patternsPage = ((StrataView *)sender).patternsPage;				// give it the page of patterns
 	self.stratumMaterialsTableController.delegate = self;
 	self.popover = [[UIPopoverController alloc] initWithContentViewController:self.stratumMaterialsNavigationController];
 	[self.popover setPopoverContentSize:CGSizeMake(380, 500)];

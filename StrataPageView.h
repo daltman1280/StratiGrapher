@@ -17,7 +17,7 @@ typedef enum {
 @interface StrataPageView : UIView
 
 @property (nonatomic) StrataDocument*			activeDocument;
-@property CGPDFPageRef							patternsPage;
+@property NSMutableArray*						patternsPageArray;
 @property drawMode								mode;
 
 @end

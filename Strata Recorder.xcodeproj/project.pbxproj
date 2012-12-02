@@ -37,7 +37,7 @@
 		258E73851642F14500C12D43 /* move icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E73841642F14500C12D43 /* move icon.png */; };
 		258FABA516433356005A00A8 /* IconImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 258FABA416433356005A00A8 /* IconImage.m */; };
 		258FABA91643782D005A00A8 /* StrataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 258FABA81643782D005A00A8 /* StrataModel.m */; };
-		2590A8741650BC8E004FF6B5 /* patterns1.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2590A8731650BC8E004FF6B5 /* patterns1.pdf */; };
+		2590CEC5166B24C2009525D8 /* patterns1 multipage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2590CEC3166B1105009525D8 /* patterns1 multipage.pdf */; };
 		259129E81648491200C08897 /* move icon selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 259129E71648491200C08897 /* move icon selected.png */; };
 		25E7D2701652C56800109376 /* info icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E7D26F1652C56800109376 /* info icon.png */; };
 		25E91B2016633CC600AFFC0E /* SettingsTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E91B1F16633CC600AFFC0E /* SettingsTableController.m */; };
@@ -98,6 +98,8 @@
 		2590A82C164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-03cs2.eps */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "FGDCgeostdTM11A2_A-37-03cs2.eps"; path = "stratigraphic swatches/FGDCgeostdTM11A2_Sec37_cs2/FGDCgeostdTM11A2_A-37-03cs2.eps"; sourceTree = "<group>"; };
 		2590A830164F2B62004FF6B5 /* FGDCgeostdTM11A2web_Sec37.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = FGDCgeostdTM11A2web_Sec37.pdf; path = "stratigraphic swatches/FGDCgeostdTM11A2web_Sec37.pdf"; sourceTree = "<group>"; };
 		2590A8731650BC8E004FF6B5 /* patterns1.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = patterns1.pdf; path = "stratigraphic swatches/patterns1.pdf"; sourceTree = "<group>"; };
+		2590CEBF166B0485009525D8 /* patterns1 opt.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "patterns1 opt.pdf"; path = "stratigraphic swatches/patterns1 opt.pdf"; sourceTree = "<group>"; };
+		2590CEC3166B1105009525D8 /* patterns1 multipage.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "patterns1 multipage.pdf"; path = "stratigraphic swatches/patterns1 multipage.pdf"; sourceTree = "<group>"; };
 		259129E71648491200C08897 /* move icon selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move icon selected.png"; sourceTree = "<group>"; };
 		2591C0A8165890C100A622A8 /* PaperListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaperListTableViewController.h; sourceTree = "<group>"; };
 		2591C0A9165890C100A622A8 /* PaperListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaperListTableViewController.m; sourceTree = "<group>"; };
@@ -243,6 +245,8 @@
 				2590A82B164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-02cs2.eps */,
 				2590A82C164F297E004FF6B5 /* FGDCgeostdTM11A2_A-37-03cs2.eps */,
 				2590A8731650BC8E004FF6B5 /* patterns1.pdf */,
+				2590CEBF166B0485009525D8 /* patterns1 opt.pdf */,
+				2590CEC3166B1105009525D8 /* patterns1 multipage.pdf */,
 				258C79451654877D0040F759 /* patterns descriptive text.txt */,
 			);
 			name = "Stratigraphic pattern swatches";
@@ -342,7 +346,6 @@
 				2589CF20163F897D00E43147 /* MainStoryboard.storyboard in Resources */,
 				258E73851642F14500C12D43 /* move icon.png in Resources */,
 				259129E81648491200C08897 /* move icon selected.png in Resources */,
-				2590A8741650BC8E004FF6B5 /* patterns1.pdf in Resources */,
 				25E7D2701652C56800109376 /* info icon.png in Resources */,
 				258C79461654877D0040F759 /* patterns descriptive text.txt in Resources */,
 				258CF6C41658D18C001E8D20 /* rename.tif in Resources */,
@@ -353,6 +356,7 @@
 				258CF6CE1658D2A1001E8D20 /* redButton.png in Resources */,
 				25066EE1166A67CB0095C3CC /* cut.png in Resources */,
 				25066EE3166A79040095C3CC /* anchor.png in Resources */,
+				2590CEC5166B24C2009525D8 /* patterns1 multipage.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

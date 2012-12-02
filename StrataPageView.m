@@ -81,7 +81,7 @@
 		0, &patternDrawingCallback, 0
 	};
 	CGFloat alpha = 1;
-	gPage = self.patternsPage;																// global variable used by pattern drawing callback
+	gPageArray = self.patternsPageArray;															// global variable used by pattern drawing callback
 	// apparently, we need to do this in the current context, can't cache it
 	CGColorSpaceRef patternSpace = CGColorSpaceCreatePattern(NULL);
 	CGContextSetFillColorSpace(currentContext, patternSpace);
@@ -112,6 +112,7 @@
 			stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);					// give it the same offset as succeeding strata
 		}
 		stratumRect = [self RectUtoV:stratumRect];
+		if ([self.activeDocument.strata indexOfObject:stratum] == self.activeDocument.strata.count-1) break;	// don't draw last empty stratum
 		CGContextFillRect(currentContext, stratumRect);
 		CGContextStrokeRect(currentContext, stratumRect);
 	}

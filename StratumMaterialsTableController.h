@@ -12,7 +12,6 @@
 @interface StratumMaterialsTableController : UITableViewController
 
 @property Stratum *stratum;
-@property CGPDFPageRef patternsPage;
 @property UIViewController *delegate;
 
 @end

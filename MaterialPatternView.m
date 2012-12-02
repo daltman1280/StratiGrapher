@@ -28,7 +28,6 @@
 		0, &patternDrawingCallback, 0
 	};
 	CGFloat alpha = 1;
-	gPage = self.patternsPage;																// global variable used by pattern drawing callback
 	// apparently, we need to do this in the current context, can't cache it
 	CGColorSpaceRef patternSpace = CGColorSpaceCreatePattern(NULL);
 	CGContextSetFillColorSpace(currentContext, patternSpace);

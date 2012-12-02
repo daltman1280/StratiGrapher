@@ -16,7 +16,7 @@
 
 /*
  A static callback function for drawing stratigraphic patterns. Uses a matrix of pattern swatches contained in a manually prepared
- PDF, which contains rows of 10 elements each, arranged sequentially according to pattern number. Each item is a rectangle of 55
+ PDF, which contains rows of 5 elements each, one row per PDF page, arranged sequentially according to pattern number. Each item is a rectangle of 55
  pixels, which contains a 54 x 54 pixel pattern representation, derived from the "official" patterns. Presumably, the representations
  are in PostScript, so are resolution-independent.
  
@@ -26,12 +26,9 @@ void patternDrawingCallback(void *info, CGContextRef context)
 {
 	if ((int) info <= 0) return;
 	int patternIndex = (int) info-601;
-	int rowIndex = patternIndex/10;
-	int columnIndex = patternIndex-(rowIndex*10);
-	rowIndex = 13-rowIndex;														// reverse rows (top down, not bottom up)
-	CGContextTranslateCTM(context, -(55*columnIndex)-1, -(55*rowIndex)-1);		// -1, -56, ...
-//	CGContextScaleCTM(context, 1./gScale, 1./gScale);
-	CGContextDrawPDFPage(context, gPage);										// draw the requested pattern rectangle from the PDF materials patterns page
+	int columnIndex = patternIndex % 5;
+	CGContextTranslateCTM(context, -(55*columnIndex)+.1, +.3);									// so the ith element in the row will be at the origin
+	CGContextDrawPDFPage(context, [((NSValue *)gPageArray[patternIndex/5]) pointerValue]);		// draw the requested pattern rectangle from the PDF materials patterns page
 }
 
 @interface StrataView() <UIGestureRecognizerDelegate>
@@ -187,7 +184,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		0, &patternDrawingCallback, 0
 	};
 	CGFloat alpha = 1;
-	gPage = self.patternsPage;																// global variable used by pattern drawing callback
+	gPageArray = self.patternsPageArray;
 	// apparently, we need to do this in the current context, can't cache it
 	CGColorSpaceRef patternSpace = CGColorSpaceCreatePattern(NULL);
 	CGContextSetFillColorSpace(currentContext, patternSpace);

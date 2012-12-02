@@ -82,7 +82,6 @@
     [cell.title setText:[line substringToIndex:3]];
 	[cell.subtitle setText:[line substringFromIndex:4]];
 	cell.pattern.patternNumber = [[line substringToIndex:3] intValue];
-	cell.pattern.patternsPage = self.patternsPage;
 	[cell.pattern setNeedsDisplay];
     return cell;
 }

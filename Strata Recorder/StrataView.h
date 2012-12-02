@@ -12,7 +12,7 @@
 
 //	globals for use with callback function
 
-CGPDFPageRef gPage;
+NSMutableArray *gPageArray;										// array of NSValue containing CGPDFPageRef's, one per page
 CGFloat gScale;
 
 void patternDrawingCallback(void *info, CGContextRef context);
@@ -25,10 +25,10 @@ void patternDrawingCallback(void *info, CGContextRef context);
 @property CGFloat scale;
 @property UILabel* locationLabel;
 @property UILabel* dimensionLabel;
-@property CGPDFPageRef patternsPage;
+@property NSMutableArray* patternsPageArray;					// of NSValue of CGPDFPageRef
 @property StrataViewController* delegate;
 @property Stratum*	selectedStratum;
 @property CGPoint infoSelectionPoint;							// for stratum info popover
-@property (nonatomic) StrataDocument* activeDocument;				// current StrataDocument being edited/displayed
+@property (nonatomic) StrataDocument* activeDocument;			// current StrataDocument being edited/displayed
 
 @end
