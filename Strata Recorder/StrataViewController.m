@@ -34,11 +34,60 @@
 @property UINavigationController* stratumMaterialsNavigationController;
 @property StratumMaterialsTableController* stratumMaterialsTableController;
 @property SettingsTableController* settingsTableController;
-@property (weak, nonatomic) IBOutlet UIImageView *scissorsIcon;
+// tools
+@property (weak, nonatomic) IBOutlet UIImageView *scissorsView;
+@property (weak, nonatomic) IBOutlet UIImageView *anchorView;
+@property (weak, nonatomic) IBOutlet UIImageView *paleoCurrentView;
+// equivalent icons in main view, for dragging
+@property (weak, nonatomic) IBOutlet UIImageView *scissorsDragView;
+@property (weak, nonatomic) IBOutlet UIImageView *anchorDragView;
+@property (weak, nonatomic) IBOutlet UIImageView *paleoCurrentDragView;
 
 @end
 
 @implementation StrataViewController
+
+- (IBAction)handlePanGesture:(UIPanGestureRecognizer *)gestureRecognizer
+{
+	if (gestureRecognizer.view == self.scissorsView || gestureRecognizer.view == self.anchorView || gestureRecognizer.view == self.paleoCurrentView) {
+		if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {     // beginning a pan of a tool, make a copy in the main view to start dragging it
+			if (gestureRecognizer.view == self.scissorsView) {
+				self.scissorsDragView.hidden = NO;
+				self.scissorsDragView.center = [self.scissorsView.superview convertPoint:self.scissorsView.center toView:self.view];	// reposition the drag icon to coincide with the tool icon
+			} else if (gestureRecognizer.view == self.anchorView) {
+				self.anchorDragView.hidden = NO;
+				self.anchorDragView.center = [self.anchorView.superview convertPoint:self.anchorView.center toView:self.view];			// reposition the drag icon to coincide with the tool icon
+			} else if (gestureRecognizer.view == self.paleoCurrentView) {
+				self.paleoCurrentDragView.hidden = NO;
+				self.paleoCurrentDragView.center = [self.paleoCurrentView.superview convertPoint:self.paleoCurrentView.center toView:self.view];	// reposition the drag icon to coincide with the tool icon
+			} else
+				NSAssert1(NO, @"Unexpected view attached to gesture recognizer, view = %@", gestureRecognizer.view);
+		} else if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
+			if (gestureRecognizer.view == self.scissorsView) {
+				CGPoint translation = [gestureRecognizer translationInView:[self.scissorsDragView superview]];
+				[self.scissorsDragView setCenter:CGPointMake([self.scissorsDragView center].x + translation.x, [self.scissorsDragView center].y + translation.y)];
+			} else if (gestureRecognizer.view == self.anchorView) {
+				CGPoint translation = [gestureRecognizer translationInView:[self.anchorDragView superview]];
+				[self.anchorDragView setCenter:CGPointMake([self.anchorDragView center].x + translation.x, [self.anchorDragView center].y + translation.y)];
+			} else if (gestureRecognizer.view == self.paleoCurrentView) {
+				CGPoint translation = [gestureRecognizer translationInView:[self.paleoCurrentDragView superview]];
+				[self.paleoCurrentDragView setCenter:CGPointMake([self.paleoCurrentDragView center].x + translation.x, [self.paleoCurrentDragView center].y + translation.y)];
+			} else
+				NSAssert1(NO, @"Unexpected view attached to gesture recognizer, view = %@", gestureRecognizer.view);
+			[gestureRecognizer setTranslation:CGPointZero inView:self.view];
+        } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+			if (gestureRecognizer.view == self.scissorsView) {
+//				[self handlePlaceScissors];
+			} else if (gestureRecognizer.view == self.anchorView) {
+			} else if (gestureRecognizer.view == self.paleoCurrentView) {
+			} else
+				NSAssert1(NO, @"Unexpected view attached to gesture recognizer, view = %@", gestureRecognizer.view);
+//			self.scissorsDragView.hidden = YES;
+//			self.anchorDragView.hidden = YES;
+//			self.paleoCurrentDragView.hidden = YES;
+		}
+    }
+}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -243,7 +292,12 @@
 	[self setRenameText:nil];
 	[self setRenameOKButton:nil];
 	[self setRenameCancelButton:nil];
-	[self setScissorsIcon:nil];
+	[self setScissorsView:nil];
+	[self setAnchorView:nil];
+	[self setPaleoCurrentView:nil];
+	[self setScissorsDragView:nil];
+	[self setAnchorDragView:nil];
+	[self setPaleoCurrentDragView:nil];
 	[super viewDidUnload];
 }
 @end

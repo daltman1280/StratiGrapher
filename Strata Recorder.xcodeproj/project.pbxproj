@@ -26,6 +26,7 @@
 		2589CF23163F897D00E43147 /* StrataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2589CF22163F897D00E43147 /* StrataViewController.m */; };
 		2589CF2E163F8AE200E43147 /* StrataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2589CF2D163F8AE200E43147 /* StrataView.m */; };
 		258C79461654877D0040F759 /* patterns descriptive text.txt in Resources */ = {isa = PBXBuildFile; fileRef = 258C79451654877D0040F759 /* patterns descriptive text.txt */; };
+		258C982E166C1A7300665158 /* paleocurrent.png in Resources */ = {isa = PBXBuildFile; fileRef = 258C982D166C1A7300665158 /* paleocurrent.png */; };
 		258CF6C21658CE48001E8D20 /* DocumentListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258CF6C11658CE48001E8D20 /* DocumentListTableViewController.m */; };
 		258CF6C41658D18C001E8D20 /* rename.tif in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6C31658D18C001E8D20 /* rename.tif */; };
 		258CF6C61658D1DA001E8D20 /* duplicate.tif in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6C51658D1DA001E8D20 /* duplicate.tif */; };
@@ -74,6 +75,7 @@
 		2589CF2C163F8AE200E43147 /* StrataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrataView.h; sourceTree = "<group>"; };
 		2589CF2D163F8AE200E43147 /* StrataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StrataView.m; sourceTree = "<group>"; };
 		258C79451654877D0040F759 /* patterns descriptive text.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "patterns descriptive text.txt"; path = "stratigraphic swatches/patterns descriptive text.txt"; sourceTree = "<group>"; };
+		258C982D166C1A7300665158 /* paleocurrent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = paleocurrent.png; path = images/paleocurrent.png; sourceTree = "<group>"; };
 		258CF6C01658CE48001E8D20 /* DocumentListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentListTableViewController.h; path = ../DocumentListTableViewController.h; sourceTree = "<group>"; };
 		258CF6C11658CE48001E8D20 /* DocumentListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentListTableViewController.m; path = ../DocumentListTableViewController.m; sourceTree = "<group>"; };
 		258CF6C31658D18C001E8D20 /* rename.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = rename.tif; path = images/rename.tif; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 		2590C55416423E1000DB9C98 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				258C982D166C1A7300665158 /* paleocurrent.png */,
 				25066EE2166A79040095C3CC /* anchor.png */,
 				25066EE0166A67CB0095C3CC /* cut.png */,
 				258E73841642F14500C12D43 /* move icon.png */,
@@ -357,6 +360,7 @@
 				25066EE1166A67CB0095C3CC /* cut.png in Resources */,
 				25066EE3166A79040095C3CC /* anchor.png in Resources */,
 				2590CEC5166B24C2009525D8 /* patterns1 multipage.pdf in Resources */,
+				258C982E166C1A7300665158 /* paleocurrent.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

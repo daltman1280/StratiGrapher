@@ -67,7 +67,6 @@
 	CGContextSaveGState(currentContext);
 	CGContextTranslateCTM(currentContext, VDX(self.activeDocument.pageMargins.width), -VDY(self.activeDocument.pageDimension.height-self.activeDocument.pageMargins.height));
 	CGContextRotateCTM(currentContext, -M_PI_2);
-//	CGContextTranslateCTM(currentContext, -VX(self.activeDocument.pageMargins.width), VY(self.activeDocument.pageMargins.height));
 	[[self.activeDocument.units isEqualToString:@"Metric"] ? @"1 Meter" : @"1 Foot" drawAtPoint:CGPointZero withFont:[UIFont systemFontOfSize:10]];
 	CGContextRestoreGState(currentContext);
 	CGFloat maxWidth = 0;

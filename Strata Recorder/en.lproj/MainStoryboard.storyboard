@@ -44,7 +44,7 @@
                                 </connections>
                             </scrollView>
                             <view opaque="NO" contentMode="scaleToFill" id="81O-9C-Aqh" customClass="StrataToolsView">
-                                <rect key="frame" x="680" y="418" width="63" height="150"/>
+                                <rect key="frame" x="680" y="418" width="63" height="210"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Drag tool to left margin" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5b7-3s-ywr">
@@ -53,13 +53,26 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="cut.png" id="aMK-PI-4Q4">
+                                    <imageView contentMode="scaleToFill" image="cut.png" id="aMK-PI-4Q4">
                                         <rect key="frame" x="11" y="44" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="WQD-Lg-vSs" appends="YES" id="cvw-sv-KGZ"/>
+                                        </connections>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="anchor.png" id="wIu-Hr-kVM">
+                                    <imageView contentMode="scaleToFill" image="anchor.png" id="wIu-Hr-kVM">
                                         <rect key="frame" x="11" y="100" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="rX2-M0-nBo" appends="YES" id="5Kl-qg-25W"/>
+                                        </connections>
+                                    </imageView>
+                                    <imageView contentMode="scaleToFill" image="paleocurrent.png" id="FLT-gJ-BHO">
+                                        <rect key="frame" x="17" y="156" width="40" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="96w-NU-UFi" appends="YES" id="nRI-Ih-7oF"/>
+                                        </connections>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -117,14 +130,31 @@
                                     <outlet property="delegate" destination="laN-41-imc" id="vrm-iP-Jru"/>
                                 </connections>
                             </scrollView>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="cut.png" id="CKd-Wg-9zQ">
+                                <rect key="frame" x="364" y="482" width="40" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="anchor.png" id="KjJ-ro-Bgf">
+                                <rect key="frame" x="364" y="482" width="40" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="paleocurrent.png" id="rbt-p4-yVS">
+                                <rect key="frame" x="364" y="482" width="40" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="anchorDragView" destination="KjJ-ro-Bgf" id="SN3-EZ-YSM"/>
+                        <outlet property="anchorView" destination="wIu-Hr-kVM" id="4GC-eB-MrI"/>
                         <outlet property="dimensionLabel" destination="Aim-bV-Ulc" id="bv0-de-aKw"/>
                         <outlet property="locationLabel" destination="lno-m9-rOY" id="qAi-eG-sau"/>
+                        <outlet property="paleoCurrentDragView" destination="rbt-p4-yVS" id="QO0-vj-zwC"/>
+                        <outlet property="paleoCurrentView" destination="FLT-gJ-BHO" id="Kih-Z7-qf6"/>
                         <outlet property="renameDialog" destination="a0A-EG-Gec" id="Joh-HH-ucM"/>
-                        <outlet property="scissorsIcon" destination="aMK-PI-4Q4" id="jZR-Qo-eYt"/>
+                        <outlet property="scissorsDragView" destination="CKd-Wg-9zQ" id="Z6A-e5-W1a"/>
+                        <outlet property="scissorsView" destination="aMK-PI-4Q4" id="hmz-kp-MNq"/>
                         <outlet property="scrollView" destination="y2N-2I-zTn" id="mHW-Tr-REw"/>
                         <outlet property="strataGraphScrollView" destination="y2N-2I-zTn" id="j5e-aX-0Hy"/>
                         <outlet property="strataPageScrollView" destination="po3-cT-cer" id="nAZ-vW-iFS"/>
@@ -135,6 +165,21 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T4p-aq-TNC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="WQD-Lg-vSs">
+                    <connections>
+                        <action selector="handlePanGesture:" destination="laN-41-imc" id="uOG-dW-M8j"/>
+                    </connections>
+                </panGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="rX2-M0-nBo">
+                    <connections>
+                        <action selector="handlePanGesture:" destination="laN-41-imc" id="Yj4-11-ESb"/>
+                    </connections>
+                </panGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="96w-NU-UFi">
+                    <connections>
+                        <action selector="handlePanGesture:" destination="laN-41-imc" id="Qha-Fh-Xj4"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-294" y="-384"/>
         </scene>
@@ -731,6 +776,7 @@
         <image name="anchor.png" width="128" height="128"/>
         <image name="cut.png" width="128" height="128"/>
         <image name="duplicate.tif" width="20" height="20"/>
+        <image name="paleocurrent.png" width="249" height="342"/>
         <image name="rename.tif" width="20" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
