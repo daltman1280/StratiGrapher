@@ -153,7 +153,10 @@
 
 - (IBAction)handleExportPDFButton:(id)sender
 {
-	[self.delegate handleExportPDFButton:self];
+	dispatch_queue_t exportQueue = dispatch_queue_create("export queue", NULL);
+	dispatch_async(exportQueue, ^{
+		[self.delegate handleExportPDFButton:self];
+	});
 }
 
 //	UIActionSheetDelegate method
