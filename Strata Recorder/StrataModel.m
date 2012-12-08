@@ -142,7 +142,7 @@
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
 	self = [super init];
-	self.rotation = [aDecoder decodeFloatForKey:@"rotatin"];
+	self.rotation = [aDecoder decodeFloatForKey:@"rotation"];
 	self.origin = [aDecoder decodeCGPointForKey:@"origin"];
 	return self;
 }

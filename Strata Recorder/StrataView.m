@@ -136,6 +136,16 @@ void patternDrawingCallback(void *info, CGContextRef context)
 				self.selectedStratum = stratum;															// for our delegate's use
 				self.infoSelectionPoint = CGPointMake(VX(iconLocation.x), VY(iconLocation.y));			// for our delegate's use
 				[self.delegate handleStratumInfo:self];													// tell our delegate to create the navigation controller for managing stratum properties
+			} else {																					// look for paleocurrents in the stratum
+				for (PaleoCurrent *paleo in stratum.paleoCurrents) {
+					CGPoint paleoLocation = CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y);
+					if ((dragPoint.x-paleoLocation.x)*(dragPoint.x-paleoLocation.x)+
+						(dragPoint.y-paleoLocation.y)*(dragPoint.y-paleoLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected
+						self.selectedPaleoCurrent = paleo;
+						self.selectedStratum = stratum;
+						self.dragConstraint = CGPointMake(stratum.frame.size.width, stratum.frame.origin.y);
+					}
+				}
 			}
 		}
 	}
@@ -154,6 +164,13 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		CFRelease(dict);
 		[self updateCoordinateText:offsetDragPoint stratum:stratum];
 		[self setNeedsDisplay];
+	} else if (self.selectedPaleoCurrent) {
+		CGPoint newOrigin = CGPointMake(dragPoint.x-self.selectedStratum.frame.size.width, dragPoint.y-self.selectedStratum.frame.origin.y);
+		if (newOrigin.x < 0) newOrigin.x = 0;
+		if (newOrigin.y < 0) newOrigin.y = 0;
+		if (newOrigin.y > self.selectedStratum.frame.size.height) newOrigin.y = self.selectedStratum.frame.size.height;
+		self.selectedPaleoCurrent.origin = newOrigin;
+		[self setNeedsDisplay];
 	}
 }
 
@@ -166,10 +183,11 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		((Stratum *)self.activeDocument.strata.lastObject).frame.size.height) {							// user has modified last (empty) stratum, create a new empty stratum
 		Stratum *lastStratum = self.activeDocument.strata.lastObject;
 		Stratum *newStratum = [[Stratum alloc] initWithFrame:CGRectMake(0, lastStratum.frame.origin.y+lastStratum.frame.size.height, 0, 0)];
-		newStratum.materialNumber = 601;																// arbitrary material, for now
+		newStratum.materialNumber = lastStratum.materialNumber;											// arbitrary material, for now
 		[self.activeDocument.strata addObject:newStratum];
 	}
 	self.dragActive = NO;
+	self.selectedPaleoCurrent = nil;
 	[self populateIconLocations];																		// re-populate move icon coordinates
 	[self setNeedsDisplay];
 }
@@ -225,8 +243,13 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		if (stratum.hasPageCutter) [self.scissorsIcon drawAtPoint:CGPointMake(-0.25, stratum.frame.origin.y) scale:self.scale];
 		if (stratum.hasAnchor) [self.anchorIcon drawAtPoint:CGPointMake(-0.5, stratum.frame.origin.y) scale:self.scale];
 		for (PaleoCurrent *paleo in stratum.paleoCurrents) {
-			NSLog(@"x = %f, y = %f", stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y);
-			[self.arrowIcon drawAtPoint:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1];
+//			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1 rotation:M_PI_4*.8];
+//			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1 rotation:M_PI_4*.9];
+//			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1 rotation:M_PI_4];
+//			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1 rotation:M_PI_4*1.1];
+//			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1 rotation:M_PI_4*1.2];
+//			[self.arrowIcon drawAtPoint:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1];
+			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1 rotation:paleo.rotation];
 		}
 		if (!self.dragActive && stratum != self.activeDocument.strata.lastObject)			// draw info icon, unless this is the last (empty) stratum
 			[self.infoIcon drawAtPoint:CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1) scale:self.scale];

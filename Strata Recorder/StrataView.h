@@ -28,6 +28,7 @@ void patternDrawingCallback(void *info, CGContextRef context);
 @property NSMutableArray* patternsPageArray;					// of NSValue of CGPDFPageRef
 @property StrataViewController* delegate;
 @property Stratum*	selectedStratum;
+@property PaleoCurrent* selectedPaleoCurrent;
 @property CGPoint infoSelectionPoint;							// for stratum info popover
 @property (nonatomic) StrataDocument* activeDocument;			// current StrataDocument being edited/displayed
 

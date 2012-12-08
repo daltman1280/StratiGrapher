@@ -47,9 +47,42 @@
 @property (weak, nonatomic) IBOutlet UIImageView *paleoCurrentDragView;
 // for graphics.h
 @property CGRect bounds;
+// for rotating paleocurrent
+@property PaleoCurrent *selectedPaleoCurrent;
+@property Stratum *selectedPaleoCurrentStratum;
+@property float paleoCurrentInitialRotation;
 @end
 
 @implementation StrataViewController
+
+/*
+ Look for a paleocurrent icon that's located at the rotation center, and change its rotation based on the gesture.
+ */
+
+- (IBAction)handleRotationGesture:(UIRotationGestureRecognizer *)gestureRecognizer
+{
+	if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+		CGPoint locationInView = [gestureRecognizer locationInView:self.strataView];				// in StrataView coordinates
+		CGPoint userLocation = CGPointMake(UX(locationInView.x), UY(locationInView.y));				// in user coordinates
+		for (Stratum *stratum in self.strataView.activeDocument.strata) {
+			for (PaleoCurrent *paleo in stratum.paleoCurrents) {
+				if (fabs(userLocation.x-(stratum.frame.size.width+paleo.origin.x)) < 0.25 && fabs(userLocation.y-(stratum.frame.origin.y+paleo.origin.y) < 0.25)) {
+					self.selectedPaleoCurrent = paleo;
+					self.paleoCurrentInitialRotation = paleo.rotation;
+					self.selectedPaleoCurrent.rotation = self.paleoCurrentInitialRotation + gestureRecognizer.rotation;
+					[self.strataView setNeedsDisplay];
+				}
+			}
+		}
+	} else if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
+		if (self.selectedPaleoCurrent) {
+			self.selectedPaleoCurrent.rotation = self.paleoCurrentInitialRotation + gestureRecognizer.rotation;
+			[self.strataView setNeedsDisplay];
+		}
+	} else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+		if (self.selectedPaleoCurrent) self.selectedPaleoCurrent = nil;
+	}
+}
 
 - (IBAction)handlePanGesture:(UIPanGestureRecognizer *)gestureRecognizer
 {

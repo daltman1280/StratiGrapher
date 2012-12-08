@@ -43,4 +43,14 @@
 	[self.image drawInRect:CGRectMake(VX(point.x)-self.offset.x*self.width, VY(point.y)-self.width+self.offset.y*self.width, self.width, self.width)];
 }
 
+- (void)drawAtPointWithRotation:(CGPoint)point scale:(CGFloat)scale rotation:(CGFloat)rotation
+{
+	CGContextRef currentContext = UIGraphicsGetCurrentContext();
+	CGContextSaveGState(currentContext);
+	CGContextTranslateCTM(currentContext, VX(point.x), VY(point.y));
+	CGContextRotateCTM(currentContext, rotation);
+	[self.image drawInRect:CGRectMake(-self.width/2.0, -self.width/2, self.width, self.width)];
+	CGContextRestoreGState(currentContext);
+}
+
 @end

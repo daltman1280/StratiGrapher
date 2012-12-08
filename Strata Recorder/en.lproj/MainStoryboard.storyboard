@@ -36,6 +36,9 @@
                                             </label>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="IXZ-O4-lDA" appends="YES" id="0dP-op-B2w"/>
+                                        </connections>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -180,6 +183,11 @@
                         <action selector="handlePanGesture:" destination="laN-41-imc" id="Qha-Fh-Xj4"/>
                     </connections>
                 </panGestureRecognizer>
+                <rotationGestureRecognizer id="IXZ-O4-lDA">
+                    <connections>
+                        <action selector="handleRotationGesture:" destination="laN-41-imc" id="tHE-l5-KBD"/>
+                    </connections>
+                </rotationGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-294" y="-384"/>
         </scene>
