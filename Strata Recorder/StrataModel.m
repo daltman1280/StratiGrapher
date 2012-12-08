@@ -118,6 +118,9 @@
 	self = [super init];
 	self.frame = [aDecoder decodeCGRectForKey:@"frame"];
 	self.materialNumber = [aDecoder decodeIntForKey:@"material"];
+	self.hasPageCutter = [aDecoder decodeBoolForKey:@"hasPageCutter"];
+	self.hasAnchor = [aDecoder decodeBoolForKey:@"hasAnchor"];
+	self.paleoCurrents = [aDecoder decodeObjectForKey:@"paleocurrents"];
 	return self;
 }
 
@@ -125,6 +128,29 @@
 {
 	[aCoder encodeCGRect:self.frame forKey:@"frame"];
 	[aCoder encodeInt:self.materialNumber forKey:@"material"];
+	[aCoder encodeBool:self.hasPageCutter forKey:@"hasPageCutter"];
+	[aCoder encodeBool:self.hasAnchor forKey:@"hasAnchor"];
+	[aCoder encodeObject:self.paleoCurrents forKey:@"paleocurrents"];
+}
+
+@end
+
+@implementation PaleoCurrent
+
+#pragma mark NSCoder protocol
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+	self = [super init];
+	self.rotation = [aDecoder decodeFloatForKey:@"rotatin"];
+	self.origin = [aDecoder decodeCGPointForKey:@"origin"];
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+	[aCoder encodeFloat:self.rotation forKey:@"rotation"];
+	[aCoder encodeCGPoint:self.origin forKey:@"origin"];
 }
 
 @end

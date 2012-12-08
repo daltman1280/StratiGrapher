@@ -30,7 +30,17 @@
 
 - (id)initWithFrame:(CGRect)frame;
 
-@property CGRect	frame;				// in user coordinates
-@property int		materialNumber;
+@property CGRect			frame;				// in user coordinates
+@property int				materialNumber;
+@property BOOL				hasPageCutter;		// does it have a page boundary attached?
+@property BOOL				hasAnchor;			// does it have an anchor attached?
+@property NSMutableArray*	paleoCurrents;		// of PaleoCurrent's
+
+@end
+
+@interface PaleoCurrent : NSObject <NSCoding>
+
+@property float				rotation;			// in radians, counter-clockwise from vertical
+@property CGPoint			origin;				// with respect to LR corner of stratum
 
 @end

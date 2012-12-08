@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Don Altman. All rights reserved.
 //
 
-#define XORIGIN .5												// distance in inches of origin from LL of view
+#define XORIGIN .75												// distance in inches of origin from LL of view
 #define YORIGIN .5												// distance in inches of origin from LL of view
 
 #import "IconImage.h"

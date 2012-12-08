@@ -6,6 +6,9 @@
 //  Copyright (c) 2012 Don Altman. All rights reserved.
 //
 
+#define XORIGIN .75												// distance in inches of origin from LL of view
+#define YORIGIN .5												// distance in inches of origin from LL of view
+
 #import "StrataViewController.h"
 #import "StrataView.h"
 #import "StratumMaterialsTableController.h"
@@ -42,13 +45,18 @@
 @property (weak, nonatomic) IBOutlet UIImageView *scissorsDragView;
 @property (weak, nonatomic) IBOutlet UIImageView *anchorDragView;
 @property (weak, nonatomic) IBOutlet UIImageView *paleoCurrentDragView;
-
+// for graphics.h
+@property CGRect bounds;
 @end
 
 @implementation StrataViewController
 
 - (IBAction)handlePanGesture:(UIPanGestureRecognizer *)gestureRecognizer
 {
+	/*
+	 Handle drags that originate in tool area.
+	 Drags of tools that have been placed in model have their drags handled in StrataView touchesBegan:withEvent:
+	 */
 	if (gestureRecognizer.view == self.scissorsView || gestureRecognizer.view == self.anchorView || gestureRecognizer.view == self.paleoCurrentView) {
 		if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {     // beginning a pan of a tool, make a copy in the main view to start dragging it
 			if (gestureRecognizer.view == self.scissorsView) {
@@ -77,16 +85,86 @@
 			[gestureRecognizer setTranslation:CGPointZero inView:self.view];
         } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
 			if (gestureRecognizer.view == self.scissorsView) {
-//				[self handlePlaceScissors];
+				[self handlePlaceToolAtStratumOrigin:ToolScissors usingView:self.scissorsDragView originalView:self.scissorsView];
 			} else if (gestureRecognizer.view == self.anchorView) {
+				[self handlePlaceToolAtStratumOrigin:ToolAnchor usingView:self.anchorDragView originalView:self.anchorView];
 			} else if (gestureRecognizer.view == self.paleoCurrentView) {
+				[self handlePlaceToolAtStratumOrigin:ToolArrow usingView:self.paleoCurrentDragView originalView:self.paleoCurrentView];
 			} else
 				NSAssert1(NO, @"Unexpected view attached to gesture recognizer, view = %@", gestureRecognizer.view);
-//			self.scissorsDragView.hidden = YES;
-//			self.anchorDragView.hidden = YES;
-//			self.paleoCurrentDragView.hidden = YES;
 		}
     }
+}
+
+typedef enum {
+	ToolScissors,
+	ToolAnchor,
+	ToolArrow
+} toolTypeEnum;
+
+- (void)handlePlaceToolAtStratumOrigin:(toolTypeEnum)toolType usingView:(UIView *)view originalView:(UIView *)originalView
+{
+	CGPoint dropPoint = [self.view convertPoint:view.center toView:self.strataView];
+	CGPoint dropPointUser = CGPointMake(UX(dropPoint.x), UY(dropPoint.y));														// in user coordinates
+	if (toolType != ToolArrow && dropPointUser.x > 0.5)
+		[self putAwayTool:view toOriginalView:originalView];																	// discard if not near left gutter
+	else if (toolType != ToolArrow) {
+		float distance = HUGE;
+		Stratum *closestStratum;
+		for (Stratum *stratum in self.strataView.activeDocument.strata) {
+			if (fabsf(dropPointUser.y-stratum.frame.origin.y) < distance) {
+				distance = fabsf(dropPointUser.y-stratum.frame.origin.y);
+				closestStratum = stratum;
+			}
+		}
+		if (distance != HUGE) {
+			if ([self.strataView.activeDocument.strata indexOfObject:closestStratum] == 0) {									// can't attach these to first stratum
+				[self putAwayTool:view toOriginalView:originalView];
+				return;
+			}
+			if (toolType == ToolScissors)
+				closestStratum.hasPageCutter = YES;
+			else
+				closestStratum.hasAnchor = YES;
+			float xOrigin = toolType == ToolScissors ? -0.25 : -0.5;						// TODO: parametrize X origin in animation with StrataView drawRect:
+			[UIView animateWithDuration:0.25
+							 animations:^{
+								 CGPoint viewOrigin = CGPointMake(VX(xOrigin), VY(closestStratum.frame.origin.y));				// in strataView coordinates
+								 CGPoint viewOriginDragView = [self.strataView convertPoint:viewOrigin toView:self.view];
+								 view.center = viewOriginDragView;
+							 }
+							 completion:^(BOOL fin) { view.alpha = 1; view.hidden = YES; [self.strataView setNeedsDisplay]; }];
+		}
+	} else if (toolType == ToolArrow) {
+		for (Stratum *stratum in self.strataView.activeDocument.strata) {
+			if (dropPointUser.y >= stratum.frame.origin.y && dropPointUser.y <= stratum.frame.origin.y+stratum.frame.size.height) {
+				if (dropPointUser.x > stratum.frame.size.width) {
+					PaleoCurrent *paleoCurrent = [[PaleoCurrent alloc] init];
+					paleoCurrent.rotation = 0;
+					paleoCurrent.origin = CGPointMake(dropPointUser.x-stratum.frame.size.width, dropPointUser.y-stratum.frame.origin.y);	// relative to LR corner of stratum
+					if (!stratum.paleoCurrents) stratum.paleoCurrents = [[NSMutableArray alloc] init];
+					[stratum.paleoCurrents addObject:paleoCurrent];
+					view.hidden = YES;
+					[self.strataView setNeedsDisplay];
+					return;
+				} else {
+					[self putAwayTool:view toOriginalView:originalView];														// paleocurrent must be placed to the right of the stratum
+					return;
+				}
+			}
+		}
+	}
+}
+
+- (void)putAwayTool:(UIView *)view toOriginalView:(UIView *)originalView
+{
+	[UIView animateWithDuration:0.5 delay:0
+						options:UIViewAnimationOptionBeginFromCurrentState
+					 animations:^{
+						 view.center = [originalView.superview convertPoint:originalView.center toView:self.view];	// reposition the drag icon to coincide with the tool
+						 view.alpha = 0;
+					 }
+					 completion:^(BOOL fin){ view.alpha = 1; view.hidden = YES; }];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -124,6 +202,7 @@
 	self.strataView.locationLabel = self.locationLabel;
 	self.strataView.dimensionLabel = self.dimensionLabel;
 	self.strataView.delegate = self;
+	self.bounds = self.strataView.bounds;
 	
 	self.strataPageView.activeDocument = self.activeDocument;
 	self.strataPageScrollView.contentSize = self.strataPageView.bounds.size;
@@ -156,6 +235,7 @@
 		CGRect frame = CGRectMake(0, 0, self.strataView.frame.size.width, [[[NSUserDefaults standardUserDefaults] objectForKey:@"strataHeight"] floatValue]*PPI);
 		self.strataView.frame = frame;														// modifying bounds would affect frame origin
 		self.strataView.bounds = frame;
+		self.bounds = frame;
 	}
 	self.scrollView.contentSize = self.strataView.bounds.size;
 	[self.strataView handleStrataHeightChanged:self];

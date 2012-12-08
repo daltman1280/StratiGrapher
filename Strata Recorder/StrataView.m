@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Don Altman. All rights reserved.
 //
 
-#define XORIGIN .5												// distance in inches of origin from LL of view
+#define XORIGIN .75												// distance in inches of origin from LL of view
 #define YORIGIN .5												// distance in inches of origin from LL of view
 
 #import "StrataView.h"
@@ -35,7 +35,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 @property IconImage* moveIcon;							// icon used to display drag sensitive locations for moving the upper-right corner of strata rectangles
 @property IconImage* moveIconSelected;
 @property IconImage* infoIcon;							// display touch sensitive location for info popovers
-@property NSMutableArray* iconLocations;				// CGPoint dictionaries, in user coordinates
+@property IconImage* scissorsIcon;
+@property IconImage* anchorIcon;
+@property IconImage* arrowIcon;
+@property NSMutableArray* iconLocations;				// CGPoint dictionaries, in user coordinates, for moveIcon's
 @property CGSize dragOffsetFromCenter;					// the offset of the drag coordinate from center of dragged object, to track movement of icon's center coordinates
 @property CGPoint dragConstraint;						// lower left limit of dragging allowed, don't allow negative height/width
 @property BOOL dragActive;								// tracks dragging state
@@ -79,6 +82,9 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	float width = 50.*921./555.;														// ratio of image size, relative to move icon, because of "flare" imagery
 	self.moveIconSelected = [[IconImage alloc] initWithImageName:@"move icon selected.png" offset:CGPointMake(25./width, 25./width) width:width viewBounds:self.bounds];
 	self.infoIcon = [[IconImage alloc] initWithImageName:@"info icon.png" offset:CGPointMake(.5, .5) width:25 viewBounds:self.bounds];
+	self.scissorsIcon = [[IconImage alloc] initWithImageName:@"cut.png" offset:CGPointMake(.5, .5) width:25 viewBounds:self.bounds];
+	self.anchorIcon = [[IconImage alloc] initWithImageName:@"anchor.png" offset:CGPointMake(.5, .5) width:25 viewBounds:self.bounds];
+	self.arrowIcon = [[IconImage alloc] initWithImageName:@"paleocurrent.png" offset:CGPointMake(.5, .5) width:25 viewBounds:self.bounds];
 	UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
 	[self addGestureRecognizer:longPress];
 	longPress.cancelsTouchesInView = NO;
@@ -216,6 +222,12 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			CGContextFillRect(currentContext, myRect);											// draw fill pattern
 		}
 		CGContextStrokeRect(currentContext, myRect);										// draw boundary
+		if (stratum.hasPageCutter) [self.scissorsIcon drawAtPoint:CGPointMake(-0.25, stratum.frame.origin.y) scale:self.scale];
+		if (stratum.hasAnchor) [self.anchorIcon drawAtPoint:CGPointMake(-0.5, stratum.frame.origin.y) scale:self.scale];
+		for (PaleoCurrent *paleo in stratum.paleoCurrents) {
+			NSLog(@"x = %f, y = %f", stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y);
+			[self.arrowIcon drawAtPoint:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1];
+		}
 		if (!self.dragActive && stratum != self.activeDocument.strata.lastObject)			// draw info icon, unless this is the last (empty) stratum
 			[self.infoIcon drawAtPoint:CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1) scale:self.scale];
 	}
