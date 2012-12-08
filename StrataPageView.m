@@ -15,19 +15,20 @@
 
 @implementation StrataPageView
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
 - (void)setActiveDocument:(StrataDocument *)activeDocument
 {
 	_activeDocument = activeDocument;
 	self.bounds = CGRectMake(0, 0, self.activeDocument.pageDimension.width*PPI, self.activeDocument.pageDimension.height*PPI);
+	self.arrowIcon.bounds = self.bounds;						// bounds for icons must also be updated
+}
+
+//	do initialization here
+
+- (id)initWithCoder:(NSCoder *)decoder
+{
+	self = [super initWithCoder:decoder];
+	self.arrowIcon = [[IconImage alloc] initWithImageName:@"paleocurrent greyscale.png" offset:CGPointMake(.5, .5) width:25 viewBounds:self.bounds];
+	return self;
 }
 
 // convert from unit to view coordinates
@@ -104,12 +105,16 @@
 		stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);
 		float stratumTop = stratumRect.origin.y+stratumRect.size.height;
 		if (stratumTop > pageTop) {
-			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);					// undo the offset
+			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);					// undo the offset from current column
 			offset.x -= maxWidth+self.activeDocument.pageMargins.width/2.0;					// horizontal adjustment using maxwidth, and adding horizontal page margin
 			offset.y = -stratumRect.origin.y+self.activeDocument.pageMargins.height;		// vertical adjustment to make stratum sit on base page margin
-			stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);					// give it the same offset as succeeding strata
+			stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);					// give it the same offset as succeeding strata in next column
 		}
-		stratumRect = [self RectUtoV:stratumRect];
+		for (PaleoCurrent *paleo in stratum.paleoCurrents) {
+			CGPoint paleoOrigin = CGPointMake(stratumRect.origin.x+stratumRect.size.width+paleo.origin.x/scale, stratumRect.origin.y+paleo.origin.y/scale);
+			[self.arrowIcon drawAtPointWithRotation:paleoOrigin scale:1 rotation:paleo.rotation];
+		}
+		stratumRect = [self RectUtoV:stratumRect];											// convert to view coordinates
 		if ([self.activeDocument.strata indexOfObject:stratum] == self.activeDocument.strata.count-1) break;	// don't draw last empty stratum
 		CGContextFillRect(currentContext, stratumRect);
 		CGContextStrokeRect(currentContext, stratumRect);

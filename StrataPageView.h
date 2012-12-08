@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "StrataModel.h"
+#import "IconImage.h"
 
 typedef enum {
 	graphMode,
@@ -16,6 +17,7 @@ typedef enum {
 
 @interface StrataPageView : UIView
 
+@property IconImage*							arrowIcon;
 @property (nonatomic) StrataDocument*			activeDocument;
 @property NSMutableArray*						patternsPageArray;
 @property drawMode								mode;

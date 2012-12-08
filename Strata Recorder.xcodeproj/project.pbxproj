@@ -34,6 +34,7 @@
 		258CF6CC1658D2A1001E8D20 /* darkBlueButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6C81658D2A1001E8D20 /* darkBlueButton.png */; };
 		258CF6CD1658D2A1001E8D20 /* darkRedButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6C91658D2A1001E8D20 /* darkRedButton.png */; };
 		258CF6CE1658D2A1001E8D20 /* redButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6CA1658D2A1001E8D20 /* redButton.png */; };
+		258D907916731436007EEC9A /* paleocurrent greyscale.png in Resources */ = {isa = PBXBuildFile; fileRef = 258D907816731436007EEC9A /* paleocurrent greyscale.png */; };
 		258E34BE1656E6C200E09A3A /* StrataPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258E34BD1656E6C200E09A3A /* StrataPageView.m */; };
 		258E73851642F14500C12D43 /* move icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E73841642F14500C12D43 /* move icon.png */; };
 		258FABA516433356005A00A8 /* IconImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 258FABA416433356005A00A8 /* IconImage.m */; };
@@ -84,6 +85,7 @@
 		258CF6C81658D2A1001E8D20 /* darkBlueButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkBlueButton.png; path = images/darkBlueButton.png; sourceTree = "<group>"; };
 		258CF6C91658D2A1001E8D20 /* darkRedButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkRedButton.png; path = images/darkRedButton.png; sourceTree = "<group>"; };
 		258CF6CA1658D2A1001E8D20 /* redButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = redButton.png; path = images/redButton.png; sourceTree = "<group>"; };
+		258D907816731436007EEC9A /* paleocurrent greyscale.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "paleocurrent greyscale.png"; path = "images/paleocurrent greyscale.png"; sourceTree = "<group>"; };
 		258E34BC1656E6C200E09A3A /* StrataPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StrataPageView.h; path = ../StrataPageView.h; sourceTree = "<group>"; };
 		258E34BD1656E6C200E09A3A /* StrataPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StrataPageView.m; path = ../StrataPageView.m; sourceTree = "<group>"; };
 		258E34C11657157C00E09A3A /* StrataNotifications.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrataNotifications.h; sourceTree = "<group>"; };
@@ -257,6 +259,7 @@
 		2590C55416423E1000DB9C98 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				258D907816731436007EEC9A /* paleocurrent greyscale.png */,
 				258C982D166C1A7300665158 /* paleocurrent.png */,
 				25066EE2166A79040095C3CC /* anchor.png */,
 				25066EE0166A67CB0095C3CC /* cut.png */,
@@ -361,6 +364,7 @@
 				25066EE3166A79040095C3CC /* anchor.png in Resources */,
 				2590CEC5166B24C2009525D8 /* patterns1 multipage.pdf in Resources */,
 				258C982E166C1A7300665158 /* paleocurrent.png in Resources */,
+				258D907916731436007EEC9A /* paleocurrent greyscale.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
