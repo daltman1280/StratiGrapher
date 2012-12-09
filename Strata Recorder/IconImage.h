@@ -10,11 +10,14 @@
 
 @interface IconImage : NSObject
 
-- (id)initWithImageName:(NSString *)imageName offset:(CGPoint)offset width:(CGFloat)width viewBounds:(CGRect)bounds;
+- (id)initWithImageName:(NSString *)imageName offset:(CGPoint)offset width:(CGFloat)width viewBounds:(CGRect)bounds viewOrigin:(CGPoint)viewOrigin;
 - (void)drawAtPoint:(CGPoint)point scale:(CGFloat)scale;
 - (void)drawAtPointWithRotation:(CGPoint)point scale:(CGFloat)scale rotation:(CGFloat)rotation;
 
+// for graphics.h
+
 @property CGRect bounds;				// this must be updated whenever parent view's bounds change
+@property CGPoint origin;
 
 @end
 

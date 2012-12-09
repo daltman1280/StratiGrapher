@@ -32,4 +32,8 @@ void patternDrawingCallback(void *info, CGContextRef context);
 @property CGPoint infoSelectionPoint;							// for stratum info popover
 @property (nonatomic) StrataDocument* activeDocument;			// current StrataDocument being edited/displayed
 
+// for graphics.h
+
+@property CGPoint origin;
+
 @end

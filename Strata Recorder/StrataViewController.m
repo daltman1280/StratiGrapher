@@ -47,6 +47,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *paleoCurrentDragView;
 // for graphics.h
 @property CGRect bounds;
+@property CGPoint origin;
 // for rotating paleocurrent
 @property PaleoCurrent *selectedPaleoCurrent;
 @property Stratum *selectedPaleoCurrentStratum;
@@ -235,7 +236,9 @@ typedef enum {
 	self.strataView.locationLabel = self.locationLabel;
 	self.strataView.dimensionLabel = self.dimensionLabel;
 	self.strataView.delegate = self;
+	// for graphics.h
 	self.bounds = self.strataView.bounds;
+	self.origin = CGPointMake(XORIGIN, YORIGIN);
 	
 	self.strataPageView.activeDocument = self.activeDocument;
 	self.strataPageScrollView.contentSize = self.strataPageView.bounds.size;

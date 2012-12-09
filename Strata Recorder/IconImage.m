@@ -24,13 +24,14 @@
 
 //	designated initializer
 
-- (id)initWithImageName:(NSString *)imageName offset:(CGPoint)offset width:(CGFloat)width viewBounds:(CGRect)bounds
+- (id)initWithImageName:(NSString *)imageName offset:(CGPoint)offset width:(CGFloat)width viewBounds:(CGRect)bounds viewOrigin:(CGPoint)viewOrigin
 {
 	if (self = [super init]) {
 		self.offset = offset;
 		self.image = [UIImage imageNamed:imageName];
 		self.width = width;
 		self.bounds = bounds;									// must be updated whenever parent view's bounds change
+		self.origin = viewOrigin;								// must be updated whenever parent view's bounds change
 	}
 	return self;
 }

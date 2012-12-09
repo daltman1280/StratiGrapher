@@ -22,4 +22,7 @@ typedef enum {
 @property NSMutableArray*						patternsPageArray;
 @property drawMode								mode;
 
+// for graphics.h
+@property CGPoint								origin;
+
 @end
