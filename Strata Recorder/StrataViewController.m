@@ -85,6 +85,7 @@
 	}
 }
 
+
 - (IBAction)handlePanGesture:(UIPanGestureRecognizer *)gestureRecognizer
 {
 	/*

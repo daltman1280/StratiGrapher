@@ -43,6 +43,9 @@ void patternDrawingCallback(void *info, CGContextRef context)
 @property CGPoint dragConstraint;						// lower left limit of dragging allowed, don't allow negative height/width
 @property BOOL dragActive;								// tracks dragging state
 @property int activeDragIndex;							// index in strata of dragged item
+@property Stratum* selectedScissorsStratum;
+@property Stratum* selectedAnchorStratum;
+@property CGPoint iconOrigin;							// for dragging anchor or scissors icon
 @end
 
 @implementation StrataView
@@ -108,6 +111,9 @@ void patternDrawingCallback(void *info, CGContextRef context)
     self.dimensionLabel.frame = CGRectMake(VX(stratum.frame.origin.x+stratum.frame.size.width/2.)-self.dimensionLabel.bounds.size.width/2., VY(stratum.frame.origin.y+stratum.frame.size.height/2.)-self.dimensionLabel.bounds.size.height/2., self.dimensionLabel.frame.size.width, self.dimensionLabel.frame.size.height);
 }
 
+#define ANCHOR_X (-0.5)
+#define SCISSORS_X (-0.25)
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 {
 	CGPoint dragPoint = [self getDragPoint:event];
@@ -129,14 +135,22 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			break;
 		}
 	}
-	for (Stratum *stratum in self.activeDocument.strata) {												// check info icons
+	for (Stratum *stratum in self.activeDocument.strata) {												// check info icons and paleocurrents, anchors, and scissors
 		if (stratum != self.activeDocument.strata.lastObject) {
 			CGPoint iconLocation = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1);
 			if ((dragPoint.x-iconLocation.x)*(dragPoint.x-iconLocation.x)+
-				(dragPoint.y-iconLocation.y)*(dragPoint.y-iconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected
+				(dragPoint.y-iconLocation.y)*(dragPoint.y-iconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on move icon
 				self.selectedStratum = stratum;															// for our delegate's use
 				self.infoSelectionPoint = CGPointMake(VX(iconLocation.x), VY(iconLocation.y));			// for our delegate's use
 				[self.delegate handleStratumInfo:self];													// tell our delegate to create the navigation controller for managing stratum properties
+			} else if (stratum.hasAnchor && (dragPoint.x-ANCHOR_X)*(dragPoint.x-ANCHOR_X)+
+					   (dragPoint.y-stratum.frame.origin.y)*(dragPoint.y-stratum.frame.origin.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on anchor icon
+				self.selectedAnchorStratum = stratum;
+				stratum.hasAnchor = NO;																	// user is removing it (might return it at touchesEnded
+			} else if (stratum.hasPageCutter && (dragPoint.x-SCISSORS_X)*(dragPoint.x-SCISSORS_X)+
+					   (dragPoint.y-stratum.frame.origin.y)*(dragPoint.y-stratum.frame.origin.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on scissors icon
+				self.selectedScissorsStratum = stratum;
+				stratum.hasPageCutter = NO;																// user is removing it (might return it at touchesEnded
 			} else {																					// look for paleocurrents in the stratum
 				for (PaleoCurrent *paleo in stratum.paleoCurrents) {
 					CGPoint paleoLocation = CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y);
@@ -172,6 +186,9 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		if (newOrigin.y > self.selectedStratum.frame.size.height) newOrigin.y = self.selectedStratum.frame.size.height;
 		self.selectedPaleoCurrent.origin = newOrigin;
 		[self setNeedsDisplay];
+	} else if (self.selectedAnchorStratum || self.selectedScissorsStratum) {
+		self.iconOrigin = dragPoint;																	// so we can display it as it's dragged
+		[self setNeedsDisplay];																			// to display the dragged icon
 	}
 }
 
@@ -186,6 +203,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		Stratum *newStratum = [[Stratum alloc] initWithFrame:CGRectMake(0, lastStratum.frame.origin.y+lastStratum.frame.size.height, 0, 0)];
 		newStratum.materialNumber = lastStratum.materialNumber;											// arbitrary material, for now
 		[self.activeDocument.strata addObject:newStratum];
+	} else if (self.selectedAnchorStratum) {
+		self.selectedAnchorStratum = nil;																// reset it
+	} else if (self.selectedScissorsStratum) {
+		self.selectedScissorsStratum = nil;																// reset it
 	}
 	self.dragActive = NO;
 	self.selectedPaleoCurrent = nil;
@@ -243,15 +264,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		CGContextStrokeRect(currentContext, myRect);										// draw boundary
 		if (stratum.hasPageCutter) [self.scissorsIcon drawAtPoint:CGPointMake(-0.25, stratum.frame.origin.y) scale:self.scale];
 		if (stratum.hasAnchor) [self.anchorIcon drawAtPoint:CGPointMake(-0.5, stratum.frame.origin.y) scale:self.scale];
-		for (PaleoCurrent *paleo in stratum.paleoCurrents) {
-//			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1 rotation:M_PI_4*.8];
-//			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1 rotation:M_PI_4*.9];
-//			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1 rotation:M_PI_4];
-//			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1 rotation:M_PI_4*1.1];
-//			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1 rotation:M_PI_4*1.2];
-//			[self.arrowIcon drawAtPoint:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1];
+		for (PaleoCurrent *paleo in stratum.paleoCurrents)
 			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1 rotation:paleo.rotation];
-		}
 		if (!self.dragActive && stratum != self.activeDocument.strata.lastObject)			// draw info icon, unless this is the last (empty) stratum
 			[self.infoIcon drawAtPoint:CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1) scale:self.scale];
 	}
@@ -264,6 +278,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		} else
 			[self.moveIcon drawAtPoint:iconLocation scale:self.scale];
 	}
+	if (self.selectedScissorsStratum)
+		[self.scissorsIcon drawAtPoint:self.iconOrigin scale:self.scale];
+	if (self.selectedAnchorStratum)
+		[self.anchorIcon drawAtPoint:self.iconOrigin scale:self.scale];
 }
 
 - (void)drawGraphPaper:(CGRect)rect

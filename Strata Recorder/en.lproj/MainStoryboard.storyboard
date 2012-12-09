@@ -168,17 +168,17 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T4p-aq-TNC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="WQD-Lg-vSs">
+                <panGestureRecognizer minimumNumberOfTouches="1" id="WQD-Lg-vSs" userLabel="Pan Gesture Recognizer - scissors">
                     <connections>
                         <action selector="handlePanGesture:" destination="laN-41-imc" id="uOG-dW-M8j"/>
                     </connections>
                 </panGestureRecognizer>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="rX2-M0-nBo">
+                <panGestureRecognizer minimumNumberOfTouches="1" id="rX2-M0-nBo" userLabel="Pan Gesture Recognizer - anchor">
                     <connections>
                         <action selector="handlePanGesture:" destination="laN-41-imc" id="Yj4-11-ESb"/>
                     </connections>
                 </panGestureRecognizer>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="96w-NU-UFi">
+                <panGestureRecognizer minimumNumberOfTouches="1" id="96w-NU-UFi" userLabel="Pan Gesture Recognizer - arrow">
                     <connections>
                         <action selector="handlePanGesture:" destination="laN-41-imc" id="Qha-Fh-Xj4"/>
                     </connections>
