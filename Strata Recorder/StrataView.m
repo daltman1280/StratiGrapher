@@ -194,6 +194,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
 {
+	CGPoint dragPoint = [self getDragPoint:event];
 	[self.locationLabel setHidden:YES];
 	[self.dimensionLabel setHidden:YES];
 	if (self.dragActive && self.activeDragIndex == self.activeDocument.strata.count-1 &&
@@ -203,10 +204,31 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		Stratum *newStratum = [[Stratum alloc] initWithFrame:CGRectMake(0, lastStratum.frame.origin.y+lastStratum.frame.size.height, 0, 0)];
 		newStratum.materialNumber = lastStratum.materialNumber;											// arbitrary material, for now
 		[self.activeDocument.strata addObject:newStratum];
-	} else if (self.selectedAnchorStratum) {
-		self.selectedAnchorStratum = nil;																// reset it
-	} else if (self.selectedScissorsStratum) {
-		self.selectedScissorsStratum = nil;																// reset it
+	} else if (self.selectedAnchorStratum || self.selectedScissorsStratum) {
+		if (dragPoint.x < 0.5) {																		// otherwise, throw it away
+			float distance = HUGE;
+			Stratum *closestStratum;
+			for (Stratum *stratum in self.activeDocument.strata) {
+				if (fabsf(dragPoint.y-stratum.frame.origin.y) < distance) {
+					distance = fabsf(dragPoint.y-stratum.frame.origin.y);
+					closestStratum = stratum;
+				}
+			}
+			if (distance != HUGE) {
+				if ([self.activeDocument.strata indexOfObject:closestStratum] != 0) {					// can't attach these to first stratum
+					if (self.selectedAnchorStratum)
+						closestStratum.hasAnchor = YES;													// tool has already been deselected, this selects it
+					else
+						closestStratum.hasPageCutter = YES;												// tool has already been deselected, this selects it
+				}
+			}
+		}
+		self.selectedAnchorStratum = self.selectedScissorsStratum = nil;
+	} else if (self.selectedPaleoCurrent) {
+		if (dragPoint.x > self.selectedStratum.frame.origin.x+self.selectedStratum.frame.size.width+2.0) {	// user dragged more than 2 units to the right of the stratum, throw it away
+			int paleoIndex = [self.selectedStratum.paleoCurrents indexOfObject:self.selectedPaleoCurrent];
+			[self.selectedStratum.paleoCurrents removeObjectAtIndex:paleoIndex];
+		}
 	}
 	self.dragActive = NO;
 	self.selectedPaleoCurrent = nil;

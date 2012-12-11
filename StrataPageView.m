@@ -105,7 +105,7 @@
 		stratumRect = CGRectStandardize(stratumRect);
 		stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);
 		float stratumTop = stratumRect.origin.y+stratumRect.size.height;
-		if (stratumTop > pageTop) {
+		if (stratumTop > pageTop || stratum.hasPageCutter) {
 			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);					// undo the offset from current column
 			offset.x -= maxWidth+self.activeDocument.pageMargins.width/2.0;					// horizontal adjustment using maxwidth, and adding horizontal page margin
 			offset.y = -stratumRect.origin.y+self.activeDocument.pageMargins.height;		// vertical adjustment to make stratum sit on base page margin
