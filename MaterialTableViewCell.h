@@ -11,8 +11,8 @@
 
 @interface MaterialTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UITextField *title;
-@property (weak, nonatomic) IBOutlet UILabel *subtitle;
-@property (weak, nonatomic) IBOutlet MaterialPatternView *pattern;
+@property (nonatomic) IBOutlet UITextField *title;
+@property (nonatomic) IBOutlet UILabel *subtitle;
+@property (nonatomic) IBOutlet MaterialPatternView *pattern;
 
 @end

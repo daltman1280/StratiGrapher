@@ -10,8 +10,8 @@
 
 @interface RenameViewController ()
 
-@property (weak, nonatomic) IBOutlet UIButton *renameOKButton;
-@property (weak, nonatomic) IBOutlet UIButton *renameCancelButton;
+@property (nonatomic) IBOutlet UIButton *renameOKButton;
+@property (nonatomic) IBOutlet UIButton *renameCancelButton;
 @property (weak, nonatomic) IBOutlet UITextField *renameText;
 
 @end

@@ -21,14 +21,14 @@
 
 @interface StrataViewController () <UIScrollViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet StrataView *strataView;
+@property (nonatomic) IBOutlet UIScrollView *scrollView;
+@property (nonatomic) IBOutlet StrataView *strataView;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dimensionLabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *strataGraphScrollView;
 @property UIPopoverController *popover;
 @property (weak, nonatomic) IBOutlet UIScrollView *strataPageScrollView;
-@property (weak, nonatomic) IBOutlet StrataPageView *strataPageView;
+@property (nonatomic) IBOutlet StrataPageView *strataPageView;
 @property StrataDocument *activeDocument;
 @property (weak, nonatomic) IBOutlet StrataPageView *renameDialog;
 @property (weak, nonatomic) IBOutlet UITextField *renameText;
@@ -42,9 +42,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView *anchorView;
 @property (weak, nonatomic) IBOutlet UIImageView *paleoCurrentView;
 // equivalent icons in main view, for dragging
-@property (weak, nonatomic) IBOutlet UIImageView *scissorsDragView;
-@property (weak, nonatomic) IBOutlet UIImageView *anchorDragView;
-@property (weak, nonatomic) IBOutlet UIImageView *paleoCurrentDragView;
+@property (nonatomic) IBOutlet UIImageView *scissorsDragView;
+@property (nonatomic) IBOutlet UIImageView *anchorDragView;
+@property (nonatomic) IBOutlet UIImageView *paleoCurrentDragView;
 // for graphics.h
 @property CGRect bounds;
 @property CGPoint origin;

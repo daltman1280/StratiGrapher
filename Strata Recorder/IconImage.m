@@ -15,7 +15,7 @@
 @interface IconImage()
 
 @property (nonatomic) CGPoint offset;	// offset of origin w respect to UL corner, in fraction of width
-@property (weak, nonatomic) UIImage *image;
+@property (nonatomic) UIImage *image;
 @property (nonatomic) CGFloat width;	// width to display icon
 
 @end
