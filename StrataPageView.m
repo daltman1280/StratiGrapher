@@ -51,11 +51,12 @@
 	if (self.mode == PDFMode)
 		UIGraphicsBeginPDFPage();
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
-	CGFloat colorComponents[4] = {0, 0, 0, 1.};
+	CGFloat colorComponentsBlack[4] = {0, 0, 0, 1.};
+	CGFloat colorComponentsWhite[4] = {1, 1, 1, 1.};
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-	CGColorRef color = CGColorCreate(colorSpace, colorComponents);
-	CGContextSetStrokeColorWithColor(currentContext, color);
-	CFRelease(color);
+	CGColorRef colorBlack = CGColorCreate(colorSpace, colorComponentsBlack);
+	CGColorRef colorWhite = CGColorCreate(colorSpace, colorComponentsWhite);
+	CGContextSetStrokeColorWithColor(currentContext, colorBlack);
 	CFRelease(colorSpace);
 	// draw page boundaries
 	CGContextSetLineWidth(currentContext, 3);
@@ -71,6 +72,7 @@
 	CGContextRotateCTM(currentContext, -M_PI_2);
 	[[self.activeDocument.units isEqualToString:@"Metric"] ? @"1 Meter" : @"1 Foot" drawAtPoint:CGPointZero withFont:[UIFont systemFontOfSize:10]];
 	CGContextRestoreGState(currentContext);
+	// calculate maximum width of strata
 	CGFloat maxWidth = 0;
 	for (Stratum *stratum in self.activeDocument.strata)
 		if (stratum.frame.size.width > maxWidth) maxWidth = stratum.frame.size.width;
@@ -87,11 +89,6 @@
 	CGColorSpaceRelease(patternSpace);
 	// setup graphic attributes for drawing strata rectangles
 	CGContextSetLineWidth(currentContext, self.activeDocument.lineThickness);
-	colorSpace = CGColorSpaceCreateDeviceRGB();
-	color = CGColorCreate(colorSpace, colorComponents);
-	CGContextSetStrokeColorWithColor(currentContext, color);
-	CFRelease(color);
-	CFRelease(colorSpace);
 	gScale = 1;
 	float scale = self.activeDocument.scale;
 	float pageTop = self.activeDocument.pageDimension.height-self.activeDocument.pageMargins.height;
@@ -99,8 +96,6 @@
 	CGPoint offset = CGPointMake(self.activeDocument.pageDimension.width-self.activeDocument.pageMargins.width-maxWidth, self.activeDocument.pageMargins.height);
 	// draw strata
 	for (Stratum *stratum in self.activeDocument.strata) {
-		CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
-		CGContextSetFillPattern(currentContext, pattern, &alpha);
 		CGRect stratumRect = CGRectMake(stratum.frame.origin.x/scale, stratum.frame.origin.y/scale, stratum.frame.size.width/scale, stratum.frame.size.height/scale);
 		stratumRect = CGRectStandardize(stratumRect);
 		stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);
@@ -117,6 +112,14 @@
 		}
 		stratumRect = [self RectUtoV:stratumRect];											// convert to view coordinates
 		if ([self.activeDocument.strata indexOfObject:stratum] == self.activeDocument.strata.count-1) break;	// don't draw last empty stratum
+		if (self.mode == PDFMode) {															// fill it with white
+			CGContextSetFillColorWithColor(currentContext, colorWhite);
+			CGContextFillRect(currentContext, stratumRect);
+			CGContextSetStrokeColorWithColor(currentContext, colorBlack);
+			CGContextStrokeRect(currentContext, stratumRect);
+		}
+		CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
+		CGContextSetFillPattern(currentContext, pattern, &alpha);
 		CGContextFillRect(currentContext, stratumRect);
 		CGContextStrokeRect(currentContext, stratumRect);
 	}
@@ -125,6 +128,8 @@
 		self.mode = graphMode;
 		PPI = 160.;																			// reset it from PDF to graphics resolution
 	}
+	CFRelease(colorWhite);
+	CFRelease(colorBlack);
 }
 
 @end

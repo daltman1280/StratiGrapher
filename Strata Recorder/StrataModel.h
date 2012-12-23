@@ -13,6 +13,7 @@
 - (void)adjustStratumSize:(CGSize)size atIndex:(int)index;
 - (void)save;
 + (id)loadFromFile:(NSString *)name;
++ (NSString *)documentsFolderPath;
 
 @property NSString*			name;			// not a part of persistent document, just for housekeeping purposes
 //	persistent properties

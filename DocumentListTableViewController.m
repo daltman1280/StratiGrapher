@@ -6,11 +6,13 @@
 //  Copyright (c) 2012 Don Altman. All rights reserved.
 //
 
+#import "StrataModel.h"
 #import "DocumentListTableViewController.h"
 
 @interface DocumentListTableViewController ()
 
 @property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (strong, nonatomic) NSMutableArray *strataFiles;
 
 @end
 
@@ -42,21 +44,30 @@
 						 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
 						 self.actionDocument,
 						 nil];
+	NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[StrataDocument documentsFolderPath] error:nil];
+	self.strataFiles = [[NSMutableArray alloc] init];
+	for (NSString *filename in files) {
+		if ([filename hasSuffix:@".strata"])
+			[self.strataFiles addObject:[filename stringByDeletingPathExtension]];
+	}
     self.clearsSelectionOnViewWillAppear = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-#if 0
 	[self.tableView reloadData];
 	NSUInteger indexes[2];
 	indexes[0] = 0;
-	indexes[1] = [paperNames indexOfObject:[TermPaperModel activeTermPaper].name];
+	indexes[1] = [self.strataFiles indexOfObject:self.activeDocument.name];
 	NSIndexPath *indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
 	[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
-#endif
 	self.contentSizeForViewInPopover = CGSizeMake(300, 342);		// TODO: get the appropriate size
-//	[self setDeleteButtonEnabled];
+	[self setDeleteButtonEnabled];
+}
+
+- (void)setDeleteButtonEnabled
+{
+	self.deleteDocument.enabled = self.strataFiles.count > 1;
 }
 
 - (void)didReceiveMemoryWarning
@@ -70,47 +81,55 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 0;
+    return self.strataFiles.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"Strata Document Identifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
     
-    return cell;
+	int strataFileIndex = 0;
+	for (NSString *filename in self.strataFiles) {
+		if (strataFileIndex == [indexPath indexAtPosition:1]) {
+			cell.textLabel.text = [filename stringByDeletingPathExtension];
+			return cell;
+		}
+		++strataFileIndex;
+	}
+	return nil;
 }
 
-/*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
-*/
 
-/*
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+		int i = [indexPath indexAtPosition:1];
+		NSString *filename = [[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:self.strataFiles[i]] stringByAppendingPathExtension:@"strata"];
+		[[NSFileManager defaultManager] removeItemAtPath:filename error:nil];
+		[self.strataFiles removeObjectAtIndex:i];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-*/
 
 /*
 // Override to support rearranging the table view.

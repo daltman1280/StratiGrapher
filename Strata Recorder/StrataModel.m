@@ -9,8 +9,6 @@
 #import "StrataModel.h"
 #import "Graphics.h"
 
-#define documentsFolderPath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]
-
 @interface StrataDocument()
 
 @end
@@ -43,7 +41,7 @@
 
 + (id)loadFromFile:(NSString *)name
 {
-	NSString *filepath = [documentsFolderPath stringByAppendingPathComponent:[name stringByAppendingPathExtension:@"strata"]];
+	NSString *filepath = [[StrataDocument documentsFolderPath] stringByAppendingPathComponent:[name stringByAppendingPathExtension:@"strata"]];
 	if (![[NSFileManager defaultManager] fileExistsAtPath:filepath])
 		return nil;
 	StrataDocument *doc = [NSKeyedUnarchiver unarchiveObjectWithFile:filepath];
@@ -51,11 +49,16 @@
 	return doc;
 }
 
++ (NSString *)documentsFolderPath
+{
+	return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+}
+
 - (void)save
 {
 	self.name = @"test";
 	NSAssert(self.name, @"nil name for StrataDocument:save");
-	[NSKeyedArchiver archiveRootObject:self toFile:[documentsFolderPath stringByAppendingPathComponent:[self.name stringByAppendingPathExtension:@"strata"]]];
+	[NSKeyedArchiver archiveRootObject:self toFile:[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:[self.name stringByAppendingPathExtension:@"strata"]]];
 }
 
 - (void)adjustStratumSize:(CGSize)size atIndex:(int)index

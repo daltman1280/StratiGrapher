@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *renameDocument;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *duplicateDocument;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *actionDocument;
-@property id		delegate;
+@property id									delegate;
+@property StrataDocument*						activeDocument;
 
 @end
