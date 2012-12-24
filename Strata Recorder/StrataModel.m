@@ -30,15 +30,9 @@
 //		((Stratum *)self.strata[2]).materialNumber = 611;
 //		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 9*GRID_WIDTH, 0*GRID_WIDTH, 0*GRID_WIDTH)]];
 //		((Stratum *)self.strata[3]).materialNumber = 605;
-		NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[StrataDocument documentsFolderPath] error:nil];
-		NSMutableArray *strataFiles = [[NSMutableArray alloc] init];
-		for (NSString *filename in files) {
-			if ([filename hasSuffix:@".strata"])
-				[strataFiles addObject:[filename stringByDeletingPathExtension]];
-		}
+		[self populateStrataFiles];
 		for (int i=1; i<100; ++i) {
-			
-			if ([strataFiles indexOfObject:[NSString stringWithFormat:@"Untitled %d", i]] == NSNotFound) {
+			if ([self.strataFiles indexOfObject:[NSString stringWithFormat:@"Untitled %d", i]] == NSNotFound) {
 				self.name = [NSString stringWithFormat:@"Untitled %d", i];
 				break;
 			}
@@ -51,6 +45,33 @@
 		self.lineThickness = 2;
 	}
 	return self;
+}
+
+- (void)populateStrataFiles
+{
+	NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[StrataDocument documentsFolderPath] error:nil];
+	self.strataFiles = [[NSMutableArray alloc] init];
+	for (NSString *filename in files) {
+		if ([filename hasSuffix:@".strata"])
+			[self.strataFiles addObject:[filename stringByDeletingPathExtension]];
+	}
+}
+
+- (StrataDocument *)duplicate
+{
+	NSString *newName;
+	[self populateStrataFiles];
+	for (int i=1; i<100; ++i) {
+		if ([self.strataFiles indexOfObject:[NSString stringWithFormat:@"%@ Copy %d", self.name, i]] == NSNotFound) {
+			newName = [NSString stringWithFormat:@"%@ Copy %d", self.name, i];
+			[[NSFileManager defaultManager] copyItemAtPath:[[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:self.name] stringByAppendingPathExtension:@"strata"]
+													toPath:[[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:newName] stringByAppendingPathExtension:@"strata"]
+													 error:nil];
+			return [StrataDocument loadFromFile:newName];
+			break;
+		}
+	}
+	return nil;
 }
 
 + (id)loadFromFile:(NSString *)name

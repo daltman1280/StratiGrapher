@@ -12,10 +12,12 @@
 
 - (void)adjustStratumSize:(CGSize)size atIndex:(int)index;
 - (void)save;
+- (StrataDocument *)duplicate;
 + (id)loadFromFile:(NSString *)name;
 + (NSString *)documentsFolderPath;
 
 @property NSString*			name;			// not a part of persistent document, just for housekeeping purposes
+@property NSMutableArray*	strataFiles;	// similar
 //	persistent properties
 @property NSMutableArray*	strata;			// array of Strata*
 @property CGSize			pageDimension;	// in inches

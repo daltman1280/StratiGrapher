@@ -36,7 +36,13 @@
 }
 
 - (IBAction)handleDuplicateDocument:(id)sender {
-	
+	StrataDocument *document = [self.activeDocument duplicate];
+	[self populateDocumentsList];
+	[self.tableView reloadData];
+	int index = [self.strataFiles indexOfObject:document.name];
+	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
+	[self.delegate setActiveStrataDocument:self.strataFiles[index]];
 }
 
 - (IBAction)handleActionDocument:(id)sender {
