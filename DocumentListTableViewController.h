@@ -13,8 +13,8 @@
 
 @interface DocumentListTableViewController : UITableViewController <UIPopoverControllerDelegate, MFMailComposeViewControllerDelegate, UIActionSheetDelegate> {
 	
-	UIActionSheet*								exportPaperActionSheet;
-	UIActionSheet*								deletePaperActionSheet;
+	UIActionSheet*								exportDocumentActionSheet;
+	UIActionSheet*								deleteDocumentActionSheet;
 }
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addDocument;

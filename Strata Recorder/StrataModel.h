@@ -13,6 +13,7 @@
 - (void)adjustStratumSize:(CGSize)size atIndex:(int)index;
 - (void)save;
 - (StrataDocument *)duplicate;
+- (void)remove;
 + (id)loadFromFile:(NSString *)name;
 + (NSString *)documentsFolderPath;
 

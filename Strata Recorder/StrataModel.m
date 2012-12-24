@@ -74,6 +74,12 @@
 	return nil;
 }
 
+- (void)remove
+{
+	[[NSFileManager defaultManager] removeItemAtPath:[[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:self.name] stringByAppendingPathExtension:@"strata"]
+											   error:nil];
+}
+
 + (id)loadFromFile:(NSString *)name
 {
 	NSString *filepath = [[StrataDocument documentsFolderPath] stringByAppendingPathComponent:[name stringByAppendingPathExtension:@"strata"]];

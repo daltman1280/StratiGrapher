@@ -30,6 +30,8 @@
 }
 
 - (IBAction)handleDeleteDocument:(id)sender {
+	deleteDocumentActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Document" otherButtonTitles:nil];
+	[deleteDocumentActionSheet showFromBarButtonItem:self.actionDocument animated:YES];
 }
 
 - (IBAction)handleRenameDocument:(id)sender {
@@ -46,8 +48,8 @@
 }
 
 - (IBAction)handleActionDocument:(id)sender {
-	exportPaperActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Feedback…", @"Email .docx", @"Export .docx", @"Email PDF", @"Export PDF",nil];
-	[exportPaperActionSheet showFromBarButtonItem:self.actionDocument animated:YES];
+	exportDocumentActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Feedback…", @"Email .docx", @"Export .docx", @"Email PDF", @"Export PDF",nil];
+	[exportDocumentActionSheet showFromBarButtonItem:self.actionDocument animated:YES];
 }
 
 - (void)viewDidLoad
@@ -211,23 +213,19 @@
 {
 //	exportPaperActionSheetVisible = NO;
 	if (buttonIndex == actionSheet.cancelButtonIndex) return;									// user canceled
-	if (actionSheet == deletePaperActionSheet) {
-#if 0
-		int previousSelectionIndex = [paperNames indexOfObject:[TermPaperModel activeTermPaper].name];
-		[[TermPaperModel activeTermPaper] remove];
-		if (previousSelectionIndex >= paperNames.count) --previousSelectionIndex;					// in case user has deleted the last paper in the list
-		NSUInteger indexes[2];
-		indexes[0] = 0;
-		indexes[1] = previousSelectionIndex;
-		NSIndexPath *indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+	if (actionSheet == deleteDocumentActionSheet) {
+		int previousSelectionIndex = [self.strataFiles indexOfObject:self.activeDocument.name];
+		[self.activeDocument remove];
+		if (previousSelectionIndex >= self.strataFiles.count) --previousSelectionIndex;			// in case user has deleted the last paper in the list
+		[self populateDocumentsList];
 		[self.tableView reloadData];
-		if (self.paperNames.count > 0) {
-			[self handlePaperPick:[paperNames objectAtIndex:previousSelectionIndex]];
-			[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
+		if (self.strataFiles.count > 0) {
+			[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:previousSelectionIndex inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+			[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:previousSelectionIndex inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
+			[self.delegate setActiveStrataDocument:self.strataFiles[previousSelectionIndex]];
 		}
 		[self setDeleteButtonEnabled];
-#endif
-	} else if (actionSheet == exportPaperActionSheet) {
+	} else if (actionSheet == exportDocumentActionSheet) {
 		switch (buttonIndex) {
 			case 0:
 //				[self handleEmailFeedbackButton:self];
