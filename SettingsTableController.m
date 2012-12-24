@@ -113,6 +113,12 @@
 {
     [super viewDidLoad];
 	self.toolbarItems = [NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], self.cancelItem, self.saveItem, nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
+}
+
+- (void)handleActiveDocumentSelectionChanged:(NSNotification *)notification
+{
+	self.activeDocument = [notification.userInfo objectForKey:@"activeDocument"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

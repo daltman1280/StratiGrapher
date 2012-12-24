@@ -42,6 +42,7 @@
     [super viewDidLoad];
 
 	self.clearsSelectionOnViewWillAppear = NO;
+	if (self.stratum.materialNumber == 0) return;										// default value
  
 	NSString *descriptions = [NSString stringWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"patterns descriptive text" ofType:@"txt"] encoding:NSASCIIStringEncoding error:nil];
 	int i = 0;

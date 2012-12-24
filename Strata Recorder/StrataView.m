@@ -13,6 +13,7 @@
 #import "IconImage.h"
 #import "Graphics.h"
 #import "StrataViewController.h"
+#import "StrataNotifications.h"
 
 /*
  A static callback function for drawing stratigraphic patterns. Uses a matrix of pattern swatches contained in a manually prepared
@@ -68,17 +69,23 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	self.moveIcon.bounds = self.bounds;
 	self.moveIconSelected.bounds = self.bounds;
 	self.infoIcon.bounds = self.bounds;
+	self.scissorsIcon.bounds = self.bounds;
+	self.anchorIcon.bounds = self.bounds;
+	self.arrowIcon.bounds = self.bounds;
 }
 
 - (void)setActiveDocument:(StrataDocument *)activeDocument
 {
 	_activeDocument = activeDocument;
+	[self handleStrataHeightChanged:self];
 	[self populateIconLocations];														// we're overriding the setter, because this is a good time to do this
 }
 
 /*
  initWithCoder and initWithFrame are not reliably called, so we call this from the view controller in its UIApplicationDidBecomeActiveNotification
+ This is to be called once.
  */
+
 - (void)initialize
 {
 	self.origin = CGPointMake(XORIGIN, YORIGIN);
@@ -92,6 +99,12 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
 	[self addGestureRecognizer:longPress];
 	longPress.cancelsTouchesInView = NO;
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
+}
+
+- (void)handleActiveDocumentSelectionChanged:(NSNotification *)notification
+{
+	self.activeDocument = [notification.userInfo objectForKey:@"activeDocument"];
 }
 
 //	return in user coordinates

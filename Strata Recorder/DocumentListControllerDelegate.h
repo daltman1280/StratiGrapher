@@ -11,5 +11,6 @@
 @protocol DocumentListControllerDelegate <NSObject>
 
 - (void)handleExportPDFButton:(id)sender;
+- (void)setActiveStrataDocument:(NSString *)name;
 
 @end

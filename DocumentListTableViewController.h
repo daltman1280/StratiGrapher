@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 #import <MessageUI/MFMailComposeViewController.h>
+#import "DocumentListControllerDelegate.h"
 
 @interface DocumentListTableViewController : UITableViewController <UIPopoverControllerDelegate, MFMailComposeViewControllerDelegate, UIActionSheetDelegate> {
 	
@@ -21,7 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *renameDocument;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *duplicateDocument;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *actionDocument;
-@property id									delegate;
+@property id		delegate;
 @property StrataDocument*						activeDocument;
 
 @end

@@ -29,7 +29,7 @@
 @property UIPopoverController *popover;
 @property (weak, nonatomic) IBOutlet UIScrollView *strataPageScrollView;
 @property (nonatomic) IBOutlet StrataPageView *strataPageView;
-@property StrataDocument *activeDocument;
+@property (nonatomic) StrataDocument *activeDocument;
 @property (weak, nonatomic) IBOutlet StrataPageView *renameDialog;
 @property (weak, nonatomic) IBOutlet UITextField *renameText;
 @property (weak, nonatomic) IBOutlet UIButton *renameOKButton;
@@ -207,6 +207,7 @@ typedef enum {
 	if ([segue.identifier isEqualToString:@"documents"]) {
 		((DocumentListTableViewController *)((UINavigationController *)segue.destinationViewController).topViewController).activeDocument = self.activeDocument;
 		((DocumentListTableViewController *)((UINavigationController *)segue.destinationViewController).topViewController).delegate = self;			// set up ourselves as delegate
+		[self.activeDocument save];
 	} else if ([segue.identifier isEqualToString:@"settings"]) {
 		UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
 		self.settingsTableController = ((SettingsTableController *)((UINavigationController *)segue.destinationViewController).topViewController);
@@ -223,11 +224,30 @@ typedef enum {
 	// settings from user preferences
 	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"])
 		self.activeDocument = [StrataDocument loadFromFile:[[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"]];
-	else {
-		self.activeDocument = [[StrataDocument alloc] init];
+	else
+		self.activeDocument = [[StrataDocument alloc] init];							// empty document
+	NSURL *url = [[NSBundle mainBundle] URLForResource:@"patterns1 multipage" withExtension:@"pdf"];
+	CGPDFDocumentRef document = CGPDFDocumentCreateWithURL((__bridge CFURLRef)(url));
+	CGPDFPageRef page;
+	self.strataView.patternsPageArray = [[NSMutableArray alloc] init];
+	for (int i=1; i<=28; ++i) {
+		page = CGPDFDocumentGetPage(document, i);
+		[self.strataView.patternsPageArray addObject:[NSValue valueWithPointer:page]];
+		CFRetain(page);
 	}
-	if (!self.activeDocument)
-		self.activeDocument = [[StrataDocument alloc] init];
+	CGPDFDocumentRelease(document);
+	self.strataPageView.patternsPageArray = self.strataView.patternsPageArray;
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationEnteredBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationBecameActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleStrataHeightChanged:) name:SRStrataHeightChangedNotification object:nil];
+}
+
+- (void)setActiveDocument:(StrataDocument *)document
+{
+	_activeDocument = document;
+	if (!_activeDocument)
+		_activeDocument = [[StrataDocument alloc] init];
+	// do necessary initialization when the current document is changed
 	CGRect frame = CGRectMake(0, 0, self.strataView.frame.size.width, self.activeDocument.strataHeight*PPI);
 	self.strataView.frame = frame;														// modifying bounds would affect frame origin
 	self.toolbarTitle.title = self.activeDocument.name;
@@ -246,20 +266,9 @@ typedef enum {
 	self.strataPageScrollView.contentSize = self.strataPageView.bounds.size;
 	self.strataPageScrollView.contentOffset = CGPointMake(0, self.strataPageView.bounds.size.height-self.strataPageScrollView.bounds.size.height);
 	self.strataPageScrollView.hidden = YES;
-	NSURL *url = [[NSBundle mainBundle] URLForResource:@"patterns1 multipage" withExtension:@"pdf"];
-	CGPDFDocumentRef document = CGPDFDocumentCreateWithURL((__bridge CFURLRef)(url));
-	CGPDFPageRef page;
-	self.strataView.patternsPageArray = [[NSMutableArray alloc] init];
-	for (int i=1; i<=28; ++i) {
-		page = CGPDFDocumentGetPage(document, i);
-		[self.strataView.patternsPageArray addObject:[NSValue valueWithPointer:page]];
-		CFRetain(page);
-	}
-	CGPDFDocumentRelease(document);
-	self.strataPageView.patternsPageArray = self.strataView.patternsPageArray;
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationEnteredBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationBecameActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleStrataHeightChanged:) name:SRStrataHeightChangedNotification object:nil];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:SRActiveDocumentSelectionChanged object:self userInfo:[NSDictionary dictionaryWithObject:self.activeDocument forKey:@"activeDocument"]];
+	[self.strataView setNeedsDisplay];
 }
 
 - (void)handleApplicationBecameActive:(id)sender
@@ -355,6 +364,13 @@ typedef enum {
 	[self.strataPageView setNeedsDisplayInRect:self.strataPageView.bounds];
 	self.strataPageView.mode = PDFMode;
 }
+
+- (void)setActiveStrataDocument:(NSString *)name
+{
+	self.activeDocument = [StrataDocument loadFromFile:name];
+}
+
+#pragma mark -
 
 - (void)didReceiveMemoryWarning
 {

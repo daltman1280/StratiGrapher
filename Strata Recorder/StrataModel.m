@@ -20,15 +20,29 @@
 	self = [super init];
 	if (self) {												// default test document
 		self.strata = [[NSMutableArray alloc] init];
-		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 0*GRID_WIDTH, 2*GRID_WIDTH, 3*GRID_WIDTH)]];
-		((Stratum *)self.strata[0]).materialNumber = 703;
-		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 3*GRID_WIDTH, 1*GRID_WIDTH, 2*GRID_WIDTH)]];
-		((Stratum *)self.strata[1]).materialNumber = 671;
-		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 5*GRID_WIDTH, 3*GRID_WIDTH, 4*GRID_WIDTH)]];
-		((Stratum *)self.strata[2]).materialNumber = 611;
-		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 9*GRID_WIDTH, 0*GRID_WIDTH, 0*GRID_WIDTH)]];
-		((Stratum *)self.strata[3]).materialNumber = 605;
-		self.name = @"test";
+		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 0*GRID_WIDTH, 0*GRID_WIDTH, 0*GRID_WIDTH)]];
+		((Stratum *)self.strata[0]).materialNumber = 0;
+//		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 0*GRID_WIDTH, 2*GRID_WIDTH, 3*GRID_WIDTH)]];
+//		((Stratum *)self.strata[0]).materialNumber = 703;
+//		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 3*GRID_WIDTH, 1*GRID_WIDTH, 2*GRID_WIDTH)]];
+//		((Stratum *)self.strata[1]).materialNumber = 671;
+//		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 5*GRID_WIDTH, 3*GRID_WIDTH, 4*GRID_WIDTH)]];
+//		((Stratum *)self.strata[2]).materialNumber = 611;
+//		[self.strata addObject:[[Stratum alloc] initWithFrame:CGRectMake(0*GRID_WIDTH, 9*GRID_WIDTH, 0*GRID_WIDTH, 0*GRID_WIDTH)]];
+//		((Stratum *)self.strata[3]).materialNumber = 605;
+		NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[StrataDocument documentsFolderPath] error:nil];
+		NSMutableArray *strataFiles = [[NSMutableArray alloc] init];
+		for (NSString *filename in files) {
+			if ([filename hasSuffix:@".strata"])
+				[strataFiles addObject:[filename stringByDeletingPathExtension]];
+		}
+		for (int i=1; i<100; ++i) {
+			
+			if ([strataFiles indexOfObject:[NSString stringWithFormat:@"Untitled %d", i]] == NSNotFound) {
+				self.name = [NSString stringWithFormat:@"Untitled %d", i];
+				break;
+			}
+		}
 		self.units = @"Metric";
 		self.strataHeight = 10;
 		self.pageDimension = CGSizeMake(3.5, 5.);							// hard-coded until we support document settings
@@ -56,7 +70,7 @@
 
 - (void)save
 {
-	self.name = @"test";
+//	self.name = @"test";
 	NSAssert(self.name, @"nil name for StrataDocument:save");
 	[NSKeyedArchiver archiveRootObject:self toFile:[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:[self.name stringByAppendingPathExtension:@"strata"]]];
 }

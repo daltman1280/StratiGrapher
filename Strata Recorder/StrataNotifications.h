@@ -17,5 +17,6 @@ static NSString* SRMarginWidthChangedNotification = @"SRMarginWidthChangedNotifi
 static NSString* SRMarginHeightChangedNotification = @"SRMarginHeightChangedNotification";
 static NSString* SRPageScaleChangedNotification = @"SRPageScaleChangedNotification";
 static NSString* SRLineThicknessChangedNotification = @"SRLineThicknessChangedNotification";
+static NSString* SRActiveDocumentSelectionChanged = @"SRActiveDocumentSelectionChanged";
 
 #endif

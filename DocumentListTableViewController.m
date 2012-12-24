@@ -8,6 +8,7 @@
 
 #import "StrataModel.h"
 #import "DocumentListTableViewController.h"
+#import "StrataNotifications.h"
 
 @interface DocumentListTableViewController ()
 
@@ -18,13 +19,26 @@
 
 @implementation DocumentListTableViewController
 - (IBAction)handleAddDocument:(id)sender {
+	StrataDocument *document = [[StrataDocument alloc] init];
+	[document save];
+	[self populateDocumentsList];
+	[self.tableView reloadData];
+	int index = [self.strataFiles indexOfObject:document.name];
+	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
+	[self.delegate setActiveStrataDocument:self.strataFiles[index]];
 }
+
 - (IBAction)handleDeleteDocument:(id)sender {
 }
+
 - (IBAction)handleRenameDocument:(id)sender {
 }
+
 - (IBAction)handleDuplicateDocument:(id)sender {
+	
 }
+
 - (IBAction)handleActionDocument:(id)sender {
 	exportPaperActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Feedback…", @"Email .docx", @"Export .docx", @"Email PDF", @"Export PDF",nil];
 	[exportPaperActionSheet showFromBarButtonItem:self.actionDocument animated:YES];
@@ -44,13 +58,24 @@
 						 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
 						 self.actionDocument,
 						 nil];
+	[self populateDocumentsList];
+    self.clearsSelectionOnViewWillAppear = YES;
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
+}
+
+- (void)populateDocumentsList
+{
 	NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[StrataDocument documentsFolderPath] error:nil];
 	self.strataFiles = [[NSMutableArray alloc] init];
 	for (NSString *filename in files) {
 		if ([filename hasSuffix:@".strata"])
 			[self.strataFiles addObject:[filename stringByDeletingPathExtension]];
 	}
-    self.clearsSelectionOnViewWillAppear = YES;
+}
+
+- (void)handleActiveDocumentSelectionChanged:(NSNotification *)notification
+{
+	self.activeDocument = [notification.userInfo objectForKey:@"activeDocument"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -151,13 +176,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+	int index = [indexPath indexAtPosition:1];
+	if ([(NSString *)(self.strataFiles[index]) isEqualToString:self.activeDocument.name]) return;			// user picked current document
+	[self.delegate setActiveStrataDocument:self.strataFiles[index]];
 }
 
 - (void)viewDidUnload {

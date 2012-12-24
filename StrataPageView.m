@@ -12,6 +12,7 @@
 #import "StrataPageView.h"
 #import "StrataView.h"											// pattern drawing
 #import "Graphics.h"
+#import "StrataNotifications.h"
 
 @implementation StrataPageView
 
@@ -29,7 +30,13 @@
 	self = [super initWithCoder:decoder];
 	self.origin = CGPointMake(XORIGIN, YORIGIN);
 	self.arrowIcon = [[IconImage alloc] initWithImageName:@"paleocurrent greyscale.png" offset:CGPointMake(.5, .5) width:25 viewBounds:self.bounds viewOrigin:self.origin];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
 	return self;
+}
+
+- (void)handleActiveDocumentSelectionChanged:(NSNotification *)notification
+{
+	self.activeDocument = [notification.userInfo objectForKey:@"activeDocument"];
 }
 
 // convert from unit to view coordinates
