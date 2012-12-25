@@ -30,10 +30,6 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *strataPageScrollView;
 @property (nonatomic) IBOutlet StrataPageView *strataPageView;
 @property (nonatomic) StrataDocument *activeDocument;
-@property (weak, nonatomic) IBOutlet StrataPageView *renameDialog;
-@property (weak, nonatomic) IBOutlet UITextField *renameText;
-@property (weak, nonatomic) IBOutlet UIButton *renameOKButton;
-@property (weak, nonatomic) IBOutlet UIButton *renameCancelButton;
 @property UINavigationController* stratumMaterialsNavigationController;
 @property StratumMaterialsTableController* stratumMaterialsTableController;
 @property SettingsTableController* settingsTableController;
@@ -84,7 +80,6 @@
 		if (self.selectedPaleoCurrent) self.selectedPaleoCurrent = nil;
 	}
 }
-
 
 - (IBAction)handlePanGesture:(UIPanGestureRecognizer *)gestureRecognizer
 {
@@ -422,10 +417,6 @@ typedef enum {
 	[self setTitle:nil];
 	[self setTitle:nil];
 	[self setToolbarTitle:nil];
-	[self setRenameDialog:nil];
-	[self setRenameText:nil];
-	[self setRenameOKButton:nil];
-	[self setRenameCancelButton:nil];
 	[self setScissorsView:nil];
 	[self setAnchorView:nil];
 	[self setPaleoCurrentView:nil];

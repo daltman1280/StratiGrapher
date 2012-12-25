@@ -7,17 +7,19 @@
 //
 
 #import "StrataModel.h"
+#import "RenameViewController.h"
 #import "DocumentListTableViewController.h"
 #import "StrataNotifications.h"
 
 @interface DocumentListTableViewController ()
 
-@property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
-@property (strong, nonatomic) NSMutableArray *strataFiles;
+@property (strong, nonatomic) IBOutlet UIToolbar*	toolbar;
+@property (strong, nonatomic) NSMutableArray*		strataFiles;
 
 @end
 
 @implementation DocumentListTableViewController
+
 - (IBAction)handleAddDocument:(id)sender {
 	StrataDocument *document = [[StrataDocument alloc] init];
 	[document save];
@@ -34,10 +36,28 @@
 	[deleteDocumentActionSheet showFromBarButtonItem:self.actionDocument animated:YES];
 }
 
-- (IBAction)handleRenameDocument:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+	RenameViewController *controller = (RenameViewController *)(segue.destinationViewController);
+	controller.currentName = self.activeDocument.name;
+	controller.strataFiles = self.strataFiles;
+	controller.delegate = self;
 }
 
-- (IBAction)handleDuplicateDocument:(id)sender {
+- (IBAction)handleRenameDocument:(id)sender
+{
+	NSString *newName = ((RenameViewController *)sender).currentName;
+	[self.activeDocument rename:newName];
+	[self populateDocumentsList];
+	[self.tableView reloadData];
+	int index = [self.strataFiles indexOfObject:self.activeDocument.name];
+	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
+	[self.delegate setActiveStrataDocument:self.strataFiles[index]];
+}
+
+- (IBAction)handleDuplicateDocument:(id)sender
+{
 	StrataDocument *document = [self.activeDocument duplicate];
 	[self populateDocumentsList];
 	[self.tableView reloadData];
@@ -254,3 +274,4 @@
 }
 
 @end
+

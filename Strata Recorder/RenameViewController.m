@@ -12,32 +12,21 @@
 
 @property (nonatomic) IBOutlet UIButton *renameOKButton;
 @property (nonatomic) IBOutlet UIButton *renameCancelButton;
-@property (weak, nonatomic) IBOutlet UITextField *renameText;
 
 @end
 
 @implementation RenameViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 - (IBAction)handleRenameConfirm:(id)sender {
 	[self dismissModalViewControllerAnimated:YES];
 	if (sender != self.renameOKButton) return;
-//	[[TermPaperModel activeTermPaper] rename:renameText.text];
-//	[self.tableView reloadData];
-//	[self handlePaperPick:renameText.text];
+	self.currentName = self.renameText.text;
+	[self.delegate performSelector:@selector(handleRenameDocument:) withObject:self];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
 	// setup Rename buttons
 	UIImage *buttonImageNormal = [UIImage imageNamed:@"redButton.png"];
 	UIImage *stretchableButtonImageNormal = [buttonImageNormal stretchableImageWithLeftCapWidth:12 topCapHeight:0];
@@ -50,8 +39,12 @@
 	
 	[self.renameOKButton setBackgroundImage:stretchableButtonImageNormal forState:UIControlStateNormal];
 	[self.renameOKButton setBackgroundImage:stretchableButtonImagePressed forState:UIControlStateHighlighted];
+	self.renameOKButton.enabled = NO;
 	[self.renameCancelButton setBackgroundImage:stretchableButtonImageCancelNormal forState:UIControlStateNormal];
 	[self.renameCancelButton setBackgroundImage:stretchableButtonImageCancelPressed forState:UIControlStateHighlighted];
+	
+	self.renameText.text = self.currentName;												// should have been initialized in prepareForSegue
+	
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(renameTextDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
@@ -59,7 +52,7 @@
 {
 	if (self.renameText.text.length == 0)
 		self.renameOKButton.enabled = NO;
-	else if ([self.modelNames containsObject:self.renameText.text])
+	else if ([self.strataFiles containsObject:self.renameText.text])
 		self.renameOKButton.enabled = NO;
 	else
 		self.renameOKButton.enabled = YES;
@@ -78,6 +71,7 @@
 	[self setRenameCancelButton:nil];
 	[self setRenameText:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self setRenameText:nil];
 	[super viewDidUnload];
 }
 @end

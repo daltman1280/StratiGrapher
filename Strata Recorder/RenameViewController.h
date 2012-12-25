@@ -10,6 +10,9 @@
 
 @interface RenameViewController : UIViewController
 
-@property NSArray*		modelNames;
+@property (weak, nonatomic) IBOutlet UITextField*	renameText;
+@property NSString*									currentName;
+@property NSArray*									strataFiles;
+@property id										delegate;
 
 @end

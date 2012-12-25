@@ -14,6 +14,7 @@
 - (void)save;
 - (StrataDocument *)duplicate;
 - (void)remove;
+- (void)rename:(NSString *)name;
 + (id)loadFromFile:(NSString *)name;
 + (NSString *)documentsFolderPath;
 

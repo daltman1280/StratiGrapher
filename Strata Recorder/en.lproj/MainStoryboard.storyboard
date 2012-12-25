@@ -155,7 +155,6 @@
                         <outlet property="locationLabel" destination="lno-m9-rOY" id="qAi-eG-sau"/>
                         <outlet property="paleoCurrentDragView" destination="rbt-p4-yVS" id="QO0-vj-zwC"/>
                         <outlet property="paleoCurrentView" destination="FLT-gJ-BHO" id="Kih-Z7-qf6"/>
-                        <outlet property="renameDialog" destination="a0A-EG-Gec" id="Joh-HH-ucM"/>
                         <outlet property="scissorsDragView" destination="CKd-Wg-9zQ" id="Z6A-e5-W1a"/>
                         <outlet property="scissorsView" destination="aMK-PI-4Q4" id="hmz-kp-MNq"/>
                         <outlet property="scrollView" destination="y2N-2I-zTn" id="mHW-Tr-REw"/>
@@ -632,7 +631,6 @@
                         </barButtonItem>
                         <barButtonItem image="rename.tif" id="m0x-r6-gSG">
                             <connections>
-                                <action selector="handleRenameDocument:" destination="4F8-GC-SJo" id="9A6-IG-Oe7"/>
                                 <segue destination="9H2-Bm-wBM" kind="modal" modalPresentationStyle="currentContext" modalTransitionStyle="coverVertical" id="Jtz-Vd-PuA"/>
                             </connections>
                         </barButtonItem>
@@ -713,7 +711,7 @@
                     <connections>
                         <outlet property="renameCancelButton" destination="cl2-si-nF2" id="cyy-gh-VhC"/>
                         <outlet property="renameOKButton" destination="Auz-4p-n6Z" id="Bfs-yX-rWK"/>
-                        <outlet property="renameText" destination="dpX-Q0-Nfo" id="hlm-aw-1Ec"/>
+                        <outlet property="renameText" destination="dpX-Q0-Nfo" id="nN6-hO-XZZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K8z-FJ-PLd" userLabel="First Responder" sceneMemberID="firstResponder"/>

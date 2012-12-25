@@ -74,6 +74,14 @@
 	return nil;
 }
 
+- (void)rename:(NSString *)name
+{
+	[[NSFileManager defaultManager] moveItemAtPath:[[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:self.name] stringByAppendingPathExtension:@"strata"]
+											toPath:[[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"strata"]
+											 error:nil];
+	self.name = name;
+}
+
 - (void)remove
 {
 	[[NSFileManager defaultManager] removeItemAtPath:[[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:self.name] stringByAppendingPathExtension:@"strata"]
