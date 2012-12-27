@@ -236,8 +236,8 @@
 	if (actionSheet == deleteDocumentActionSheet) {
 		int previousSelectionIndex = [self.strataFiles indexOfObject:self.activeDocument.name];
 		[self.activeDocument remove];
-		if (previousSelectionIndex >= self.strataFiles.count) --previousSelectionIndex;			// in case user has deleted the last paper in the list
 		[self populateDocumentsList];
+		if (previousSelectionIndex >= self.strataFiles.count) --previousSelectionIndex;			// in case user has deleted the last paper in the list
 		[self.tableView reloadData];
 		if (self.strataFiles.count > 0) {
 			[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:previousSelectionIndex inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];

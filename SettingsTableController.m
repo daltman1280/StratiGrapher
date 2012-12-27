@@ -112,6 +112,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.title = [NSString stringWithFormat:@"%@ Settings", self.activeDocument.name];
 	self.toolbarItems = [NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], self.cancelItem, self.saveItem, nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
 }
