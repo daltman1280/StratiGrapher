@@ -41,6 +41,7 @@
 		258FABA91643782D005A00A8 /* StrataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 258FABA81643782D005A00A8 /* StrataModel.m */; };
 		2590CEC5166B24C2009525D8 /* patterns1 multipage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2590CEC3166B1105009525D8 /* patterns1 multipage.pdf */; };
 		259129E81648491200C08897 /* move icon selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 259129E71648491200C08897 /* move icon selected.png */; };
+		25921D2C168C04D30038E9D9 /* post-it-pencil.png in Resources */ = {isa = PBXBuildFile; fileRef = 25921D2B168C04D30038E9D9 /* post-it-pencil.png */; };
 		25E7D2701652C56800109376 /* info icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E7D26F1652C56800109376 /* info icon.png */; };
 		25E91B2016633CC600AFFC0E /* SettingsTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E91B1F16633CC600AFFC0E /* SettingsTableController.m */; };
 		25F3F2F2165B568F001A2F53 /* RenameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F3F2F1165B568F001A2F53 /* RenameViewController.m */; };
@@ -107,6 +108,7 @@
 		259129E71648491200C08897 /* move icon selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move icon selected.png"; sourceTree = "<group>"; };
 		2591C0A8165890C100A622A8 /* PaperListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaperListTableViewController.h; sourceTree = "<group>"; };
 		2591C0A9165890C100A622A8 /* PaperListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaperListTableViewController.m; sourceTree = "<group>"; };
+		25921D2B168C04D30038E9D9 /* post-it-pencil.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "post-it-pencil.png"; path = "images/post-it-pencil.png"; sourceTree = "<group>"; };
 		2592B9EF166487E6006A4497 /* StratumMaterialsControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = StratumMaterialsControllerDelegate.h; path = ../StratumMaterialsControllerDelegate.h; sourceTree = "<group>"; };
 		2594F0991677158600F1958D /* Strata Recorder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Strata Recorder.entitlements"; sourceTree = "<group>"; };
 		259FDA57165DE9300010867E /* DocumentListControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentListControllerDelegate.h; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 		2590C55416423E1000DB9C98 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				25921D2B168C04D30038E9D9 /* post-it-pencil.png */,
 				258D907816731436007EEC9A /* paleocurrent greyscale.png */,
 				258C982D166C1A7300665158 /* paleocurrent.png */,
 				25066EE2166A79040095C3CC /* anchor.png */,
@@ -367,6 +370,7 @@
 				2590CEC5166B24C2009525D8 /* patterns1 multipage.pdf in Resources */,
 				258C982E166C1A7300665158 /* paleocurrent.png in Resources */,
 				258D907916731436007EEC9A /* paleocurrent greyscale.png in Resources */,
+				25921D2C168C04D30038E9D9 /* post-it-pencil.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -39,6 +39,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 @property IconImage* scissorsIcon;
 @property IconImage* anchorIcon;
 @property IconImage* arrowIcon;
+@property IconImage* pencilIcon;
 @property NSMutableArray* iconLocations;				// CGPoint dictionaries, in user coordinates, for moveIcon's
 @property CGSize dragOffsetFromCenter;					// the offset of the drag coordinate from center of dragged object, to track movement of icon's center coordinates
 @property CGPoint dragConstraint;						// lower left limit of dragging allowed, don't allow negative height/width
@@ -72,6 +73,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	self.scissorsIcon.bounds = self.bounds;
 	self.anchorIcon.bounds = self.bounds;
 	self.arrowIcon.bounds = self.bounds;
+	self.pencilIcon.bounds = self.bounds;
 }
 
 - (void)setActiveDocument:(StrataDocument *)activeDocument
@@ -96,6 +98,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	self.scissorsIcon = [[IconImage alloc] initWithImageName:@"cut.png" offset:CGPointMake(.5, .5) width:25 viewBounds:self.bounds viewOrigin:self.origin];
 	self.anchorIcon = [[IconImage alloc] initWithImageName:@"anchor.png" offset:CGPointMake(.5, .5) width:25 viewBounds:self.bounds viewOrigin:self.origin];
 	self.arrowIcon = [[IconImage alloc] initWithImageName:@"paleocurrent.png" offset:CGPointMake(.5, .5) width:25 viewBounds:self.bounds viewOrigin:self.origin];
+	self.pencilIcon = [[IconImage alloc] initWithImageName:@"post-it-pencil.png" offset:CGPointMake(.5, .5) width:50 viewBounds:self.bounds viewOrigin:self.origin];
 	UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
 	[self addGestureRecognizer:longPress];
 	longPress.cancelsTouchesInView = NO;
@@ -294,7 +297,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
 			CGContextSetFillPattern(currentContext, pattern, &alpha);
 			gScale = self.scale;
-			CGContextFillRect(currentContext, myRect);											// draw fill pattern
+			CGContextFillRect(currentContext, myRect);										// draw fill pattern
 		}
 		CGContextStrokeRect(currentContext, myRect);										// draw boundary
 		if (stratum.hasPageCutter) [self.scissorsIcon drawAtPoint:CGPointMake(-0.25, stratum.frame.origin.y) scale:self.scale];
@@ -303,6 +306,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1 rotation:paleo.rotation];
 		if (!self.dragActive && stratum != self.activeDocument.strata.lastObject)			// draw info icon, unless this is the last (empty) stratum
 			[self.infoIcon drawAtPoint:CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1) scale:self.scale];
+		if (!self.dragActive && stratum != self.activeDocument.strata.lastObject)			// draw pencil icon, unless this is the last (empty) stratum
+			[self.pencilIcon drawAtPoint:CGPointMake(stratum.frame.origin.x+(stratum.frame.size.width/2.0), stratum.frame.origin.y+(stratum.frame.size.height/2.0)) scale:self.scale];
 	}
 	for (NSDictionary *dict in self.iconLocations) {										// draw move icons
 		CGPoint iconLocation;
