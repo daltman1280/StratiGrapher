@@ -45,8 +45,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 @property CGPoint dragConstraint;						// lower left limit of dragging allowed, don't allow negative height/width
 @property BOOL dragActive;								// tracks dragging state
 @property int activeDragIndex;							// index in strata of dragged item
+@property BOOL pencilActive;
 @property Stratum* selectedScissorsStratum;
 @property Stratum* selectedAnchorStratum;
+@property Stratum* selectedPencilStratum;
 @property CGPoint iconOrigin;							// for dragging anchor or scissors icon
 @end
 
@@ -129,11 +131,29 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 #define ANCHOR_X (-0.5)
 #define SCISSORS_X (-0.25)
+#define HIT_DISTANCE 1./6.
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+- (void)handlePencilTouch:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	CGPoint dragPoint = [self getDragPoint:event];
-#define HIT_DISTANCE 1./6.
+	// first, check if the user has tried to exit pencil mode by tapping the selected pencil icon
+	Stratum *stratum = self.selectedPencilStratum;
+	CGPoint pencilIconLocation = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width/2.0, stratum.frame.origin.y+stratum.frame.size.height/2.0);
+	if ((dragPoint.x-pencilIconLocation.x)*(dragPoint.x-pencilIconLocation.x)+
+		(dragPoint.y-pencilIconLocation.y)*(dragPoint.y-pencilIconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on pencil icon
+		self.pencilActive = NO;
+		[self setNeedsDisplay];
+		return;
+	}
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	CGPoint dragPoint = [self getDragPoint:event];
+	if (self.pencilActive) {																			// treat this modally, it overrides all else
+		[self handlePencilTouch:touches withEvent:event];
+		return;
+	}
 	for (NSDictionary *dict in self.iconLocations) {													// first check move icons
 		CGPoint iconLocation;
 		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &iconLocation);
@@ -151,14 +171,21 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			break;
 		}
 	}
-	for (Stratum *stratum in self.activeDocument.strata) {												// check info icons and paleocurrents, anchors, and scissors
+	for (Stratum *stratum in self.activeDocument.strata) {												// check info and pencil icons and paleocurrents, anchors, and scissors
 		if (stratum != self.activeDocument.strata.lastObject) {
-			CGPoint iconLocation = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1);
-			if ((dragPoint.x-iconLocation.x)*(dragPoint.x-iconLocation.x)+
-				(dragPoint.y-iconLocation.y)*(dragPoint.y-iconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on move icon
+			CGPoint infoIconLocation = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1);
+			CGPoint pencilIconLocation = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width/2.0, stratum.frame.origin.y+stratum.frame.size.height/2.0);
+			if ((dragPoint.x-infoIconLocation.x)*(dragPoint.x-infoIconLocation.x)+
+				(dragPoint.y-infoIconLocation.y)*(dragPoint.y-infoIconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on info icon
 				self.selectedStratum = stratum;															// for our delegate's use
-				self.infoSelectionPoint = CGPointMake(VX(iconLocation.x), VY(iconLocation.y));			// for our delegate's use
+				self.infoSelectionPoint = CGPointMake(VX(infoIconLocation.x), VY(infoIconLocation.y));	// for our delegate's use
 				[self.delegate handleStratumInfo:self];													// tell our delegate to create the navigation controller for managing stratum properties
+			} else if ((dragPoint.x-pencilIconLocation.x)*(dragPoint.x-pencilIconLocation.x)+
+					   (dragPoint.y-pencilIconLocation.y)*(dragPoint.y-pencilIconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on pencil icon
+				self.pencilActive = YES;
+				self.selectedPencilStratum = stratum;
+				[self setNeedsDisplay];
+				return;
 			} else if (stratum.hasAnchor && (dragPoint.x-ANCHOR_X)*(dragPoint.x-ANCHOR_X)+
 					   (dragPoint.y-stratum.frame.origin.y)*(dragPoint.y-stratum.frame.origin.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on anchor icon
 				self.selectedAnchorStratum = stratum;
@@ -322,6 +349,35 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		[self.scissorsIcon drawAtPoint:self.iconOrigin scale:self.scale];
 	if (self.selectedAnchorStratum)
 		[self.anchorIcon drawAtPoint:self.iconOrigin scale:self.scale];
+	if (self.pencilActive)
+		[self drawPencilHighlighting];
+}
+
+- (void)drawPencilHighlighting
+{
+	const float kPencilMargin = 0.1;
+	CGContextRef currentContext = UIGraphicsGetCurrentContext();
+	CGFloat colorComponents[4] = {0, 0, 0, 0.3};
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	CGColorRef color = CGColorCreate(colorSpace, colorComponents);
+	CGContextSetFillColorWithColor(currentContext, color);
+	CFRelease(color);
+	CFRelease(colorSpace);
+	/*
+	 Draw a grey transparent background everywhere except for the margins of stratum boundary, where
+	 the user is allowed to draw/edit the boundary in freehand.
+	 */
+	Stratum *stratum = self.selectedPencilStratum;
+	CGRect myRect = CGRectMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y+kPencilMargin), VDX(stratum.frame.size.width-kPencilMargin), VDY(stratum.frame.size.height-2*kPencilMargin));
+	CGContextFillRect(currentContext, myRect);
+	myRect = CGRectMake(VX(-XORIGIN), VY(-YORIGIN), VDX(XORIGIN), VDY(self.activeDocument.strataHeight));
+	CGContextFillRect(currentContext, myRect);
+	myRect = CGRectMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y+stratum.frame.size.height+kPencilMargin), self.bounds.size.width, VDY(self.activeDocument.strataHeight));
+	CGContextFillRect(currentContext, myRect);
+	myRect = CGRectMake(VX(stratum.frame.origin.x+stratum.frame.size.width+kPencilMargin), VY(stratum.frame.origin.y-kPencilMargin), self.bounds.size.width, VDY(stratum.frame.size.height+2*kPencilMargin));
+	CGContextFillRect(currentContext, myRect);
+	myRect = CGRectMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y-kPencilMargin), self.bounds.size.width, -VDY(self.activeDocument.strataHeight));
+	CGContextFillRect(currentContext, myRect);
 }
 
 - (void)drawGraphPaper:(CGRect)rect
