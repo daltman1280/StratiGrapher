@@ -119,12 +119,12 @@
 		}
 		stratumRect = [self RectUtoV:stratumRect];											// convert to view coordinates
 		if ([self.activeDocument.strata indexOfObject:stratum] == self.activeDocument.strata.count-1) break;	// don't draw last empty stratum
-		if (self.mode == PDFMode) {															// fill it with white
-			CGContextSetFillColorWithColor(currentContext, colorWhite);
-			CGContextFillRect(currentContext, stratumRect);
-			CGContextSetStrokeColorWithColor(currentContext, colorBlack);
-			CGContextStrokeRect(currentContext, stratumRect);
-		}
+//		if (self.mode == PDFMode) {															// fill it with white
+//			CGContextSetFillColorWithColor(currentContext, colorWhite);
+//			CGContextFillRect(currentContext, stratumRect);
+//			CGContextSetStrokeColorWithColor(currentContext, colorBlack);
+//			CGContextStrokeRect(currentContext, stratumRect);
+//		}
 		CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
 		CGContextSetFillPattern(currentContext, pattern, &alpha);
 		CGContextFillRect(currentContext, stratumRect);

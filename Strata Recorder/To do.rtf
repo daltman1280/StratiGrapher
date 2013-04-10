@@ -32,8 +32,17 @@
 {\listtext	\uc0\u8259 	}notes\
 \pard\tx220\tx720\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li720\fi-720\pardirnatural
 \ls1\ilvl0\cf0 {\listtext	\'95	}document archiving\uc0\u8730 \
-{\listtext	\'95	}bug: press and drag on info icon creates popover and processes pan gesture\
-{\listtext	\'95	}startup/shutdown state\
+{\listtext	\'95	}bugs\
+\pard\tx940\tx1440\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li1440\fi-1440\pardirnatural
+\ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}press and drag on info icon creates popover and processes pan gesture\
+{\listtext	\uc0\u8259 	}suppress multiple popovers\
+{\listtext	\uc0\u8259 	}update scrollview when strata height changes\
+{\listtext	\uc0\u8259 	}boundary condition of single stratum, missing icons\
+{\listtext	\uc0\u8259 	}incorrectly handles short-click and drag on move icon\
+{\listtext	\uc0\u8259 	}can't select tool icons when they're attached to topmost stratum\
+{\listtext	\uc0\u8259 	}selecting settings dialog: displays (null) as active document name\
+\pard\tx220\tx720\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li720\fi-720\pardirnatural
+\ls1\ilvl0\cf0 {\listtext	\'95	}startup/shutdown state\
 {\listtext	\'95	}Documents popup\
 \pard\tx940\tx1440\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li1440\fi-1440\pardirnatural
 \ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}rename\uc0\u8730 \
@@ -43,6 +52,8 @@
 \pard\tx1660\tx2160\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li2160\fi-2160\pardirnatural
 \ls1\ilvl2\cf0 {\listtext	\uc0\u8259 	}image formats\
 {\listtext	\uc0\u8259 	}iCloud\
+{\listtext	\uc0\u8259 	}DropBox\
+{\listtext	\uc0\u8259 	}email\
 \pard\tx940\tx1440\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li1440\fi-1440\pardirnatural
 \ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}new\uc0\u8730 \
 {\listtext	\uc0\u8259 	}duplicate\uc0\u8730 \
@@ -55,11 +66,9 @@
 {\listtext	\uc0\u8259 	}units\uc0\u8730 \
 {\listtext	\uc0\u8259 	}strata height\uc0\u8730 \
 {\listtext	\uc0\u8259 	}pattern pitch\
+{\listtext	\uc0\u8259 	}top down vs. bottom up measurements/entry\
 \pard\tx220\tx720\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li720\fi-720\pardirnatural
-\ls1\ilvl0\cf0 {\listtext	\'95	}bug: suppress multiple popovers\
-{\listtext	\'95	}bug: update scrollview when strata height changes\
-{\listtext	\'95	}bug: boundary condition of single stratum, missing icons\
-{\listtext	\'95	}tools\
+\ls1\ilvl0\cf0 {\listtext	\'95	}tools\
 \pard\tx940\tx1440\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li1440\fi-1440\pardirnatural
 \ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}drag from tools to model\uc0\u8730 \
 {\listtext	\uc0\u8259 	}drag from model\
@@ -67,6 +76,11 @@
 \ls1\ilvl2\cf0 {\listtext	\uc0\u8259 	}remove\uc0\u8730 \
 {\listtext	\uc0\u8259 	}move\uc0\u8730 \
 {\listtext	\uc0\u8259 	}edit and draw paleocurrent rotation\uc0\u8730 \
+\pard\tx940\tx1440\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li1440\fi-1440\pardirnatural
+\ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}performance\
+\pard\tx1660\tx2160\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li2160\fi-2160\pardirnatural
+\ls1\ilvl2\cf0 {\listtext	\uc0\u8259 	}hilighted selection status in model\
+{\listtext	\uc0\u8259 	}drag in separate view for performance\
 \pard\tx220\tx720\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li720\fi-720\pardirnatural
 \ls1\ilvl0\cf0 {\listtext	\'95	}page view\
 \pard\tx940\tx1440\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li1440\fi-1440\pardirnatural
@@ -77,7 +91,8 @@
 {\listtext	\uc0\u8259 	}horizontal scale markings\
 {\listtext	\uc0\u8259 	}draw meter scale indicator icon\uc0\u8730 \
 {\listtext	\uc0\u8259 	}section labeling\
-{\listtext	\uc0\u8259 	}paleocurrent\
+{\listtext	\uc0\u8259 	}paleocurrents\uc0\u8730 \
+{\listtext	\uc0\u8259 	}individual stratum labels\
 {\listtext	\uc0\u8259 	}figure labels (bottom)\
 {\listtext	\uc0\u8259 	}strata line thickness\uc0\u8730 \
 {\listtext	\uc0\u8259 	}pattern pitch (?)\
@@ -90,18 +105,20 @@
 \ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}page cutter\uc0\u8730 \
 {\listtext	\uc0\u8259 	}anchor\uc0\u8730 \
 {\listtext	\uc0\u8259 	}paleocurrent (refine gradient colors)\
+{\listtext	\uc0\u8259 	}appllication\
+{\listtext	\uc0\u8259 	}startup views\
+{\listtext	\uc0\u8259 	}display higher resolution icons at zoom\
 \pard\tx220\tx720\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li720\fi-720\pardirnatural
 \ls1\ilvl0\cf0 {\listtext	\'95	}deleting stratum\
 {\listtext	\'95	}offer to convert stratum when user changes units setting\
 {\listtext	\'95	}performance: isolating patterns into separate pdf pages/files\uc0\u8730 \
 {\listtext	\'95	}irregular strata edges\
-{\listtext	\'95	}measurement base icons\
 {\listtext	\'95	}hit testing icons based on mask\
-{\listtext	\'95	}application icon\
-{\listtext	\'95	}bug: incorrectly handles short-click and drag on move icon\
-{\listtext	\'95	}bug: can't select tool icons when they're attached to topmost stratum\
 {\listtext	\'95	}device rotation\uc0\u8730 \
-{\listtext	\'95	}preferences\
+\pard\tx940\tx1440\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li1440\fi-1440\pardirnatural
+\ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}should stretch page\
+\pard\tx220\tx720\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li720\fi-720\pardirnatural
+\ls1\ilvl0\cf0 {\listtext	\'95	}preferences\
 \pard\tx940\tx1440\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li1440\fi-1440\pardirnatural
 \ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}labeling grid in document view\
 \pard\tx220\tx720\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li720\fi-720\pardirnatural
@@ -118,6 +135,7 @@
 {\listtext	\uc0\u8259 	}Cocoa Design Patterns\
 {\listtext	\uc0\u8259 	}archive versions\
 {\listtext	\uc0\u8259 	}schemes, configurations, in XCode\
+{\listtext	\uc0\u8259 	}2D, 3D transforms\
 \pard\tx220\tx720\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li720\fi-720\pardirnatural
 \ls1\ilvl0\cf0 {\listtext	\'95	}iPhone (?)\
 }

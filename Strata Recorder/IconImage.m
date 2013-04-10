@@ -28,7 +28,12 @@
 {
 	if (self = [super init]) {
 		self.offset = offset;
-		self.image = [UIImage imageNamed:imageName];
+		UIImage *image = [UIImage imageNamed:imageName];
+		UIGraphicsBeginImageContextWithOptions(CGSizeMake(width, width), NO, 0);
+		[image drawInRect:CGRectMake(0, 0, width, width)];
+		UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+		self.image = scaledImage;
 		self.width = width;
 		self.bounds = bounds;									// must be updated whenever parent view's bounds change
 		self.origin = viewOrigin;								// must be updated whenever parent view's bounds change
@@ -42,6 +47,7 @@
 {
 	scale = 1;		// temporary: always display at this scale
 	[self.image drawInRect:CGRectMake(VX(point.x)-self.offset.x*self.width, VY(point.y)-self.width+self.offset.y*self.width, self.width, self.width)];
+//	[self.image drawAtPoint:CGPointMake(VX(point.x)-self.offset.x*self.width, VY(point.y)-self.width+self.offset.y*self.width)];
 }
 
 - (void)drawAtPointWithRotation:(CGPoint)point scale:(CGFloat)scale rotation:(CGFloat)rotation
