@@ -112,7 +112,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.title = [NSString stringWithFormat:@"%@ Settings", self.activeDocument.name];
 	self.toolbarItems = [NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], self.cancelItem, self.saveItem, nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
 }
@@ -125,6 +124,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 	// populate the properties from active document
+	self.title = [NSString stringWithFormat:@"%@ Settings", self.activeDocument.name];
 	self.strataHeight = self.activeDocument.strataHeight;
 	self.units = self.activeDocument.units;
 	self.paperWidth = self.activeDocument.pageDimension.width;
