@@ -369,13 +369,7 @@ typedef enum {
 	self.activeDocument = [StrataDocument loadFromFile:name];
 }
 
-#pragma mark -
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+#pragma mark UIScrollViewDelegate
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)sender
 {
@@ -385,19 +379,19 @@ typedef enum {
 		return self.strataPageView;
 }
 
-#if 0
-//	continuous, if we want to continuously vary the drawn detail
-- (void)scrollViewDidZoom:(UIScrollView *)scrollView
-{
-	NSLog(@"scrollViewDidZoom");
-	[self.strataView setNeedsDisplay];
-}
-#endif
-
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale
 {
-	self.strataView.scale = self.scrollView.zoomScale;
-	[self.strataView setNeedsDisplay];
+	view.contentScaleFactor = scale * [UIScreen mainScreen].scale;
+//	self.strataView.scale = self.scrollView.zoomScale;
+//	[self.strataView setNeedsDisplay];
+}
+
+#pragma mark -
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 - (BOOL)shouldAutorotate
