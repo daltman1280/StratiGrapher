@@ -163,7 +163,6 @@
                         <outlet property="paleoCurrentView" destination="FLT-gJ-BHO" id="Kih-Z7-qf6"/>
                         <outlet property="scissorsDragView" destination="CKd-Wg-9zQ" id="Z6A-e5-W1a"/>
                         <outlet property="scissorsView" destination="aMK-PI-4Q4" id="hmz-kp-MNq"/>
-                        <outlet property="scrollView" destination="y2N-2I-zTn" id="mHW-Tr-REw"/>
                         <outlet property="strataGraphScrollView" destination="y2N-2I-zTn" id="j5e-aX-0Hy"/>
                         <outlet property="strataPageScrollView" destination="po3-cT-cer" id="nAZ-vW-iFS"/>
                         <outlet property="strataPageView" destination="a0A-EG-Gec" id="tFg-eG-cqm"/>
@@ -787,6 +786,112 @@
         <image name="paleocurrent.png" width="249" height="342"/>
         <image name="rename.tif" width="20" height="20"/>
     </resources>
+    <classes>
+        <class className="DocumentListTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DocumentListTableViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="handleActionDocument:"/>
+                <relationship kind="action" name="handleAddDocument:"/>
+                <relationship kind="action" name="handleDeleteDocument:"/>
+                <relationship kind="action" name="handleDuplicateDocument:"/>
+                <relationship kind="action" name="handleExportPDFButton:"/>
+                <relationship kind="action" name="handleRenameDocument:"/>
+                <relationship kind="outlet" name="actionDocument" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="addDocument" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="deleteDocument" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="duplicateDocument" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="renameDocument" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+            </relationships>
+        </class>
+        <class className="FreehandStrataView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FreehandStrataView.h"/>
+        </class>
+        <class className="MaterialPatternView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MaterialPatternView.h"/>
+        </class>
+        <class className="MaterialTableViewCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MaterialTableViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="pattern" candidateClass="MaterialPatternView"/>
+                <relationship kind="outlet" name="subtitle" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="title" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="RenameViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RenameViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="handleRenameConfirm:"/>
+                <relationship kind="action" name="renameTextDidChange:"/>
+                <relationship kind="outlet" name="renameCancelButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="renameOKButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="renameText" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="SettingsTableController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsTableController.h"/>
+            <relationships>
+                <relationship kind="action" name="handleCancel:"/>
+                <relationship kind="action" name="handlePageScaleSlider:"/>
+                <relationship kind="action" name="handlePageScaleText:"/>
+                <relationship kind="action" name="handleSave:"/>
+                <relationship kind="action" name="handleStrataHeightStepper:"/>
+                <relationship kind="action" name="handleStrataHeightText:"/>
+                <relationship kind="outlet" name="cancelItem" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="lineThicknessText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="marginHeightText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="marginWidthText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="pageScaleSlider" candidateClass="UISlider"/>
+                <relationship kind="outlet" name="pageScaleText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="paperHeightText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="paperWidthText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="patternPitchText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="saveItem" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="strataHeightStepper" candidateClass="UIStepper"/>
+                <relationship kind="outlet" name="strataHeightText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="unitsSelector" candidateClass="UISegmentedControl"/>
+            </relationships>
+        </class>
+        <class className="StrataPageView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StrataPageView.h"/>
+        </class>
+        <class className="StrataToolsView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StrataToolsView.h"/>
+        </class>
+        <class className="StrataView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StrataView.h"/>
+        </class>
+        <class className="StrataViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StrataViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="handleModeSwitch:"/>
+                <relationship kind="action" name="handlePanGesture:" candidateClass="UIPanGestureRecognizer"/>
+                <relationship kind="action" name="handleRotationGesture:" candidateClass="UIRotationGestureRecognizer"/>
+                <relationship kind="outlet" name="anchorDragView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="anchorView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="dimensionLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="freehandView" candidateClass="FreehandStrataView"/>
+                <relationship kind="outlet" name="graphPageToggle" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="locationLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="paleoCurrentDragView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="paleoCurrentView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="scissorsDragView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="scissorsView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="strataGraphScrollView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="strataPageScrollView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="strataPageView" candidateClass="StrataPageView"/>
+                <relationship kind="outlet" name="strataView" candidateClass="StrataView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+                <relationship kind="outlet" name="toolbarTitle" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="StratumMaterialsTableController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumMaterialsTableController.h"/>
+            <relationships>
+                <relationship kind="action" name="handleOK:"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>

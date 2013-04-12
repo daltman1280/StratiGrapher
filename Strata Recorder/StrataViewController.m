@@ -22,12 +22,11 @@
 
 @interface StrataViewController () <UIScrollViewDelegate>
 
-@property (nonatomic) IBOutlet UIScrollView *scrollView;
 @property (nonatomic) IBOutlet StrataView *strataView;
 @property (weak, nonatomic) IBOutlet FreehandStrataView *freehandView;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dimensionLabel;
-@property (weak, nonatomic) IBOutlet UIScrollView *strataGraphScrollView;
+@property (strong, nonatomic) IBOutlet UIScrollView *strataGraphScrollView;
 @property UIPopoverController *popover;
 @property (weak, nonatomic) IBOutlet UIScrollView *strataPageScrollView;
 @property (nonatomic) IBOutlet StrataPageView *strataPageView;
@@ -251,9 +250,9 @@ typedef enum {
 	self.toolbarTitle.title = self.activeDocument.name;
 	self.strataView.activeDocument = self.activeDocument;
 	self.freehandView.activeDocument = self.activeDocument;
-	self.scrollView.contentSize = self.strataView.bounds.size;
-	self.scrollView.contentOffset = CGPointMake(0, self.strataView.bounds.size.height-self.scrollView.bounds.size.height);
-	self.strataView.scale = self.scrollView.zoomScale;
+	self.strataGraphScrollView.contentSize = self.strataView.bounds.size;
+	self.strataGraphScrollView.contentOffset = CGPointMake(0, self.strataView.bounds.size.height-self.strataGraphScrollView.bounds.size.height);
+	self.strataView.scale = self.strataGraphScrollView.zoomScale;
 	self.strataView.locationLabel = self.locationLabel;
 	self.strataView.dimensionLabel = self.dimensionLabel;
 	self.strataView.delegate = self;
@@ -283,9 +282,9 @@ typedef enum {
 		self.strataView.bounds = frame;
 		self.bounds = frame;
 	}
-	self.scrollView.contentSize = self.strataView.bounds.size;
+	self.strataGraphScrollView.contentSize = self.strataView.bounds.size;
 	[self.strataView handleStrataHeightChanged:self];
-	[self.scrollView setNeedsDisplay];														// TODO: unsuccessful at displaying new view height
+	[self.strataGraphScrollView setNeedsDisplay];														// TODO: unsuccessful at displaying new view height
 	[self.strataView setNeedsDisplay];
 }
 
@@ -373,7 +372,7 @@ typedef enum {
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)sender
 {
-	if (sender == self.scrollView)
+	if (sender == self.strataGraphScrollView)
 		return self.strataView;
 	else
 		return self.strataPageView;
