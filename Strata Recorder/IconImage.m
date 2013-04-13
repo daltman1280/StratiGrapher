@@ -30,8 +30,8 @@
 		self.offset = offset;
 		// scale and resample from image file
 		UIImage *image = [UIImage imageNamed:imageName];
-		UIGraphicsBeginImageContextWithOptions(CGSizeMake(width, width), NO, 0);
-		[image drawInRect:CGRectMake(0, 0, width, width)];
+		UIGraphicsBeginImageContextWithOptions(CGSizeMake(width*2, width*2), NO, 0);
+		[image drawInRect:CGRectMake(0, 0, width*2, width*2)];
 		UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
 		UIGraphicsEndImageContext();
 		self.image = scaledImage;
