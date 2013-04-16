@@ -43,6 +43,7 @@
 		258FABA516433356005A00A8 /* IconImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 258FABA416433356005A00A8 /* IconImage.m */; };
 		258FABA91643782D005A00A8 /* StrataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 258FABA81643782D005A00A8 /* StrataModel.m */; };
 		2590CEC5166B24C2009525D8 /* patterns1 multipage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2590CEC3166B1105009525D8 /* patterns1 multipage.pdf */; };
+		2590DC97171CE43600CEA001 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2590DC96171CE43600CEA001 /* QuartzCore.framework */; };
 		259129E81648491200C08897 /* move icon selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 259129E71648491200C08897 /* move icon selected.png */; };
 		25921D2C168C04D30038E9D9 /* post-it-pencil.png in Resources */ = {isa = PBXBuildFile; fileRef = 25921D2B168C04D30038E9D9 /* post-it-pencil.png */; };
 		25C20BB117111F40003ED123 /* ApplicationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C20BB017111F40003ED123 /* ApplicationIcon.png */; };
@@ -113,6 +114,7 @@
 		2590A8731650BC8E004FF6B5 /* patterns1.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = patterns1.pdf; path = "stratigraphic swatches/patterns1.pdf"; sourceTree = "<group>"; };
 		2590CEBF166B0485009525D8 /* patterns1 opt.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "patterns1 opt.pdf"; path = "stratigraphic swatches/patterns1 opt.pdf"; sourceTree = "<group>"; };
 		2590CEC3166B1105009525D8 /* patterns1 multipage.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "patterns1 multipage.pdf"; path = "stratigraphic swatches/patterns1 multipage.pdf"; sourceTree = "<group>"; };
+		2590DC96171CE43600CEA001 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		259129E71648491200C08897 /* move icon selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move icon selected.png"; sourceTree = "<group>"; };
 		2591C0A8165890C100A622A8 /* PaperListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaperListTableViewController.h; sourceTree = "<group>"; };
 		2591C0A9165890C100A622A8 /* PaperListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaperListTableViewController.m; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				2589CF07163F897C00E43147 /* UIKit.framework in Frameworks */,
 				2589CF09163F897C00E43147 /* Foundation.framework in Frameworks */,
 				2589CF0B163F897C00E43147 /* CoreGraphics.framework in Frameworks */,
+				2590DC97171CE43600CEA001 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,6 +185,7 @@
 		2589CF05163F897C00E43147 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2590DC96171CE43600CEA001 /* QuartzCore.framework */,
 				2589CF06163F897C00E43147 /* UIKit.framework */,
 				2589CF08163F897C00E43147 /* Foundation.framework */,
 				2589CF0A163F897C00E43147 /* CoreGraphics.framework */,

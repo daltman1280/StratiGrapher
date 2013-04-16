@@ -14,6 +14,7 @@
 #import "Graphics.h"
 #import "StrataViewController.h"
 #import "StrataNotifications.h"
+#import <QuartzCore/QuartzCore.h>
 
 /*
  A static callback function for drawing stratigraphic patterns. Uses a matrix of pattern swatches contained in a manually prepared
@@ -31,6 +32,73 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	CGContextTranslateCTM(context, -(55*columnIndex)+.1, +.3);									// so the ith element in the row will be at the origin
 	CGContextDrawPDFPage(context, [((NSValue *)gPageArray[patternIndex/5]) pointerValue]);		// draw the requested pattern rectangle from the PDF materials patterns page
 }
+
+/*
+ ContainerLayer class: CALayer subclass, to host OverlayLayer
+ 
+ OverlayLayer class: CALayer subclass
+ 
+ Purpose: to display pencil mode highlighting without requiring a StrataView redraw
+ */
+
+@interface OverlayLayer : CALayer
+@end
+
+@implementation OverlayLayer
+@end
+
+@interface ContainerLayer : CALayer
+
+@property OverlayLayer*		overlay;
+@property BOOL				overlayVisible;
+
+// cloned from StrataView parent, to allow drawPencilHighlighting to work
+@property Stratum* selectedPencilStratum;
+@property CGPoint origin;
+@property (nonatomic) StrataDocument* activeDocument;			// current StrataDocument being edited/displayed
+
+@end
+
+@implementation ContainerLayer
+
+- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx
+{
+	UIGraphicsPushContext(ctx);
+	// toggle visibility of layer
+	self.overlayVisible = !self.overlayVisible;
+	if (self.overlayVisible)
+		[self drawPencilHighlighting];
+	UIGraphicsPopContext();
+}
+
+- (void)drawPencilHighlighting
+{
+	const float kPencilMargin = 0.1;
+	CGContextRef currentContext = UIGraphicsGetCurrentContext();
+	CGFloat colorComponents[4] = {0, 0, 0, 0.3};
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	CGColorRef color = CGColorCreate(colorSpace, colorComponents);
+	CGContextSetFillColorWithColor(currentContext, color);
+	CFRelease(color);
+	CFRelease(colorSpace);
+	/*
+	 Draw a grey transparent background everywhere except for the margins of stratum boundary, where
+	 the user is allowed to draw/edit the boundary in freehand.
+	 */
+	Stratum *stratum = self.selectedPencilStratum;
+	CGRect myRect = CGRectMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y+kPencilMargin), VDX(stratum.frame.size.width-kPencilMargin), VDY(stratum.frame.size.height-2*kPencilMargin));
+	CGContextFillRect(currentContext, myRect);
+	myRect = CGRectMake(VX(-XORIGIN), VY(-YORIGIN), VDX(XORIGIN), VDY(self.activeDocument.strataHeight));
+	CGContextFillRect(currentContext, myRect);
+	myRect = CGRectMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y+stratum.frame.size.height+kPencilMargin), self.bounds.size.width, VDY(self.activeDocument.strataHeight));
+	CGContextFillRect(currentContext, myRect);
+	myRect = CGRectMake(VX(stratum.frame.origin.x+stratum.frame.size.width+kPencilMargin), VY(stratum.frame.origin.y-kPencilMargin), self.bounds.size.width, VDY(stratum.frame.size.height+2*kPencilMargin));
+	CGContextFillRect(currentContext, myRect);
+	myRect = CGRectMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y-kPencilMargin), self.bounds.size.width, -VDY(self.activeDocument.strataHeight));
+	CGContextFillRect(currentContext, myRect);
+}
+
+@end
 
 @interface StrataView() <UIGestureRecognizerDelegate>
 @property IconImage* moveIcon;							// icon used to display drag sensitive locations for moving the upper-right corner of strata rectangles
@@ -50,6 +118,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 @property Stratum* selectedAnchorStratum;
 @property Stratum* selectedPencilStratum;
 @property CGPoint iconOrigin;							// for dragging anchor or scissors icon
+@property ContainerLayer *overlayContainer;				// to display pencil mode highlighting in overlay sublayer
 @end
 
 @implementation StrataView
@@ -104,6 +173,14 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
 	[self addGestureRecognizer:longPress];
 	longPress.cancelsTouchesInView = NO;
+	// instantiate sublayer and its sublayer for pencil mode highlighting overlay
+	self.overlayContainer = [[ContainerLayer alloc] init];
+	self.overlayContainer.frame = self.bounds;
+	[self.layer addSublayer:self.overlayContainer];
+	self.overlayContainer.overlay = [[OverlayLayer alloc] init];
+	self.overlayContainer.overlay.frame = self.bounds;
+	[self.overlayContainer addSublayer:self.overlayContainer.overlay];
+	self.overlayContainer.overlay.delegate = self.overlayContainer;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
 }
 
@@ -142,7 +219,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	if ((dragPoint.x-pencilIconLocation.x)*(dragPoint.x-pencilIconLocation.x)+
 		(dragPoint.y-pencilIconLocation.y)*(dragPoint.y-pencilIconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on pencil icon
 		self.pencilActive = NO;
-		[self setNeedsDisplay];
+		[self.overlayContainer.overlay setNeedsDisplay];
 		return;
 	}
 }
@@ -184,7 +261,11 @@ void patternDrawingCallback(void *info, CGContextRef context)
 					   (dragPoint.y-pencilIconLocation.y)*(dragPoint.y-pencilIconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on pencil icon
 				self.pencilActive = YES;
 				self.selectedPencilStratum = stratum;
-				[self setNeedsDisplay];
+				// clone properties to support drawPencilHighlighting
+				self.overlayContainer.selectedPencilStratum = stratum;
+				self.overlayContainer.origin = self.origin;
+				self.overlayContainer.activeDocument = self.activeDocument;
+				[self.overlayContainer.overlay setNeedsDisplay];
 				return;
 			} else if (stratum.hasAnchor && (dragPoint.x-ANCHOR_X)*(dragPoint.x-ANCHOR_X)+
 					   (dragPoint.y-stratum.frame.origin.y)*(dragPoint.y-stratum.frame.origin.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on anchor icon
@@ -276,7 +357,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	self.dragActive = NO;
 	self.selectedPaleoCurrent = nil;
 	[self populateIconLocations];																		// re-populate move icon coordinates
-	[self setNeedsDisplay];
+	if (!self.pencilActive)
+		[self setNeedsDisplay];																			// still causes extra redraw when exiting pencil highlighting mode
 }
 
 //	when is this called?
@@ -349,35 +431,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		[self.scissorsIcon drawAtPoint:self.iconOrigin scale:self.scale];
 	if (self.selectedAnchorStratum)
 		[self.anchorIcon drawAtPoint:self.iconOrigin scale:self.scale];
-	if (self.pencilActive)
-		[self drawPencilHighlighting];
-}
-
-- (void)drawPencilHighlighting
-{
-	const float kPencilMargin = 0.1;
-	CGContextRef currentContext = UIGraphicsGetCurrentContext();
-	CGFloat colorComponents[4] = {0, 0, 0, 0.3};
-	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-	CGColorRef color = CGColorCreate(colorSpace, colorComponents);
-	CGContextSetFillColorWithColor(currentContext, color);
-	CFRelease(color);
-	CFRelease(colorSpace);
-	/*
-	 Draw a grey transparent background everywhere except for the margins of stratum boundary, where
-	 the user is allowed to draw/edit the boundary in freehand.
-	 */
-	Stratum *stratum = self.selectedPencilStratum;
-	CGRect myRect = CGRectMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y+kPencilMargin), VDX(stratum.frame.size.width-kPencilMargin), VDY(stratum.frame.size.height-2*kPencilMargin));
-	CGContextFillRect(currentContext, myRect);
-	myRect = CGRectMake(VX(-XORIGIN), VY(-YORIGIN), VDX(XORIGIN), VDY(self.activeDocument.strataHeight));
-	CGContextFillRect(currentContext, myRect);
-	myRect = CGRectMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y+stratum.frame.size.height+kPencilMargin), self.bounds.size.width, VDY(self.activeDocument.strataHeight));
-	CGContextFillRect(currentContext, myRect);
-	myRect = CGRectMake(VX(stratum.frame.origin.x+stratum.frame.size.width+kPencilMargin), VY(stratum.frame.origin.y-kPencilMargin), self.bounds.size.width, VDY(stratum.frame.size.height+2*kPencilMargin));
-	CGContextFillRect(currentContext, myRect);
-	myRect = CGRectMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y-kPencilMargin), self.bounds.size.width, -VDY(self.activeDocument.strataHeight));
-	CGContextFillRect(currentContext, myRect);
 }
 
 - (void)drawGraphPaper:(CGRect)rect
