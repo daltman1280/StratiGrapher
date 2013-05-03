@@ -38,6 +38,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <connections>
                                             <outletCollection property="gestureRecognizers" destination="IXZ-O4-lDA" appends="YES" id="0dP-op-B2w"/>
+                                            <outletCollection property="gestureRecognizers" destination="wZy-Mo-2OV" appends="YES" id="8X4-3V-L89"/>
                                         </connections>
                                     </view>
                                     <view hidden="YES" contentMode="scaleToFill" id="Obb-ra-PiM" customClass="FreehandStrataView">
@@ -76,7 +77,7 @@
                                         </connections>
                                     </imageView>
                                     <imageView contentMode="scaleToFill" image="paleocurrent.png" id="FLT-gJ-BHO">
-                                        <rect key="frame" x="17" y="156" width="40" height="40"/>
+                                        <rect key="frame" x="11" y="156" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                         <connections>
                                             <outletCollection property="gestureRecognizers" destination="96w-NU-UFi" appends="YES" id="nRI-Ih-7oF"/>
@@ -150,8 +151,17 @@
                                 <rect key="frame" x="364" y="482" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                             </imageView>
+                            <imageView hidden="YES" contentMode="scaleToFill" image="paleocurrent selected.png" id="Bd0-LL-QRe">
+                                <rect key="frame" x="344" y="462" width="80" height="80"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="aSt-yS-Chf" appends="YES" id="9M4-HS-43F"/>
+                                </connections>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                     </view>
                     <connections>
                         <outlet property="anchorDragView" destination="KjJ-ro-Bgf" id="SN3-EZ-YSM"/>
@@ -160,7 +170,9 @@
                         <outlet property="freehandView" destination="Obb-ra-PiM" id="7OY-tG-OX4"/>
                         <outlet property="locationLabel" destination="lno-m9-rOY" id="qAi-eG-sau"/>
                         <outlet property="paleoCurrentDragView" destination="rbt-p4-yVS" id="QO0-vj-zwC"/>
+                        <outlet property="paleoCurrentSelectedView" destination="Bd0-LL-QRe" id="JcA-ET-YgZ"/>
                         <outlet property="paleoCurrentView" destination="FLT-gJ-BHO" id="Kih-Z7-qf6"/>
+                        <outlet property="rotationGestureRecognizer" destination="IXZ-O4-lDA" id="S6k-gQ-CGI"/>
                         <outlet property="scissorsDragView" destination="CKd-Wg-9zQ" id="Z6A-e5-W1a"/>
                         <outlet property="scissorsView" destination="aMK-PI-4Q4" id="hmz-kp-MNq"/>
                         <outlet property="strataGraphScrollView" destination="y2N-2I-zTn" id="j5e-aX-0Hy"/>
@@ -187,11 +199,21 @@
                         <action selector="handlePanGesture:" destination="laN-41-imc" id="Qha-Fh-Xj4"/>
                     </connections>
                 </panGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="aSt-yS-Chf" userLabel="Pan Gesture Recognizer - selected arrow">
+                    <connections>
+                        <action selector="handlePanGesture:" destination="laN-41-imc" id="1OB-fx-b9H"/>
+                    </connections>
+                </panGestureRecognizer>
                 <rotationGestureRecognizer id="IXZ-O4-lDA">
                     <connections>
                         <action selector="handleRotationGesture:" destination="laN-41-imc" id="tHE-l5-KBD"/>
                     </connections>
                 </rotationGestureRecognizer>
+                <tapGestureRecognizer id="wZy-Mo-2OV">
+                    <connections>
+                        <action selector="handleTapGesture:" destination="laN-41-imc" id="wV3-cP-AVc"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-1190" y="-48"/>
         </scene>
@@ -783,7 +805,8 @@
         <image name="anchor.png" width="128" height="128"/>
         <image name="cut.png" width="128" height="128"/>
         <image name="duplicate.tif" width="20" height="20"/>
-        <image name="paleocurrent.png" width="249" height="342"/>
+        <image name="paleocurrent selected.png" width="533" height="533"/>
+        <image name="paleocurrent.png" width="533" height="533"/>
         <image name="rename.tif" width="20" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

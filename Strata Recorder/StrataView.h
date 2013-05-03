@@ -21,6 +21,8 @@ void patternDrawingCallback(void *info, CGContextRef context);
 
 - (void)initialize;
 - (void)handleStrataHeightChanged:(id)sender;
+- (void)handlePencilTap:(Stratum *)stratum;
+- (void)handlePaleoTap:(PaleoCurrent *)paleo inStratum:(Stratum *)stratum;
 
 @property CGFloat scale;
 @property UILabel* locationLabel;
@@ -31,6 +33,7 @@ void patternDrawingCallback(void *info, CGContextRef context);
 @property PaleoCurrent* selectedPaleoCurrent;
 @property CGPoint infoSelectionPoint;							// for stratum info popover
 @property (nonatomic) StrataDocument* activeDocument;			// current StrataDocument being edited/displayed
+@property BOOL touchesEnabled;
 
 // for graphics.h
 

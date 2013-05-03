@@ -107,6 +107,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 @property IconImage* scissorsIcon;
 @property IconImage* anchorIcon;
 @property IconImage* arrowIcon;
+@property IconImage* arrowIconSelected;
 @property IconImage* pencilIcon;
 @property NSMutableArray* iconLocations;				// CGPoint dictionaries, in user coordinates, for moveIcon's
 @property CGSize dragOffsetFromCenter;					// the offset of the drag coordinate from center of dragged object, to track movement of icon's center coordinates
@@ -116,7 +117,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 @property BOOL pencilActive;
 @property Stratum* selectedScissorsStratum;
 @property Stratum* selectedAnchorStratum;
-@property Stratum* selectedPencilStratum;
 @property CGPoint iconOrigin;							// for dragging anchor or scissors icon
 @property ContainerLayer *overlayContainer;				// to display pencil mode highlighting in overlay sublayer
 @end
@@ -162,6 +162,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 - (void)initialize
 {
 	self.origin = CGPointMake(XORIGIN, YORIGIN);
+	self.touchesEnabled = YES;
 	self.moveIcon = [[IconImage alloc] initWithImageName:@"move icon.png" offset:CGPointMake(9./50., 9./50.) width:50 viewBounds:self.bounds viewOrigin:self.origin];
 	float width = 50.*921./555.;														// ratio of image size, relative to move icon, because of "flare" imagery
 	self.moveIconSelected = [[IconImage alloc] initWithImageName:@"move icon selected.png" offset:CGPointMake(25./width, 25./width) width:width viewBounds:self.bounds viewOrigin:self.origin];
@@ -210,27 +211,29 @@ void patternDrawingCallback(void *info, CGContextRef context)
 #define SCISSORS_X (-0.25)
 #define HIT_DISTANCE 1./6.
 
-- (void)handlePencilTouch:(NSSet *)touches withEvent:(UIEvent *)event
+/*
+ Toggle the pencil highlighting mode
+ */
+
+- (void)handlePencilTap:(Stratum *)stratum
 {
-	CGPoint dragPoint = [self getDragPoint:event];
-	// first, check if the user has tried to exit pencil mode by tapping the selected pencil icon
-	Stratum *stratum = self.selectedPencilStratum;
-	CGPoint pencilIconLocation = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width/2.0, stratum.frame.origin.y+stratum.frame.size.height/2.0);
-	if ((dragPoint.x-pencilIconLocation.x)*(dragPoint.x-pencilIconLocation.x)+
-		(dragPoint.y-pencilIconLocation.y)*(dragPoint.y-pencilIconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on pencil icon
-		self.pencilActive = NO;
-		[self.overlayContainer.overlay setNeedsDisplay];
-		return;
-	}
+	self.pencilActive = !self.pencilActive;
+	// clone properties to support drawPencilHighlighting
+	self.overlayContainer.selectedPencilStratum = stratum;
+	self.overlayContainer.origin = self.origin;
+	self.overlayContainer.activeDocument = self.activeDocument;
+	[self.overlayContainer.overlay setNeedsDisplay];
+}
+
+- (void)handlePaleoTap:(PaleoCurrent *)paleo inStratum:(Stratum *)stratum
+{
+	
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+	if (!self.touchesEnabled) return;
 	CGPoint dragPoint = [self getDragPoint:event];
-	if (self.pencilActive) {																			// treat this modally, it overrides all else
-		[self handlePencilTouch:touches withEvent:event];
-		return;
-	}
 	for (NSDictionary *dict in self.iconLocations) {													// first check move icons
 		CGPoint iconLocation;
 		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &iconLocation);
@@ -250,24 +253,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	}
 	for (Stratum *stratum in self.activeDocument.strata) {												// check info and pencil icons and paleocurrents, anchors, and scissors
 		if (stratum != self.activeDocument.strata.lastObject) {
-			CGPoint infoIconLocation = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1);
-			CGPoint pencilIconLocation = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width/2.0, stratum.frame.origin.y+stratum.frame.size.height/2.0);
-			if ((dragPoint.x-infoIconLocation.x)*(dragPoint.x-infoIconLocation.x)+
-				(dragPoint.y-infoIconLocation.y)*(dragPoint.y-infoIconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on info icon
-				self.selectedStratum = stratum;															// for our delegate's use
-				self.infoSelectionPoint = CGPointMake(VX(infoIconLocation.x), VY(infoIconLocation.y));	// for our delegate's use
-				[self.delegate handleStratumInfo:self];													// tell our delegate to create the navigation controller for managing stratum properties
-			} else if ((dragPoint.x-pencilIconLocation.x)*(dragPoint.x-pencilIconLocation.x)+
-					   (dragPoint.y-pencilIconLocation.y)*(dragPoint.y-pencilIconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on pencil icon
-				self.pencilActive = YES;
-				self.selectedPencilStratum = stratum;
-				// clone properties to support drawPencilHighlighting
-				self.overlayContainer.selectedPencilStratum = stratum;
-				self.overlayContainer.origin = self.origin;
-				self.overlayContainer.activeDocument = self.activeDocument;
-				[self.overlayContainer.overlay setNeedsDisplay];
-				return;
-			} else if (stratum.hasAnchor && (dragPoint.x-ANCHOR_X)*(dragPoint.x-ANCHOR_X)+
+			if (stratum.hasAnchor && (dragPoint.x-ANCHOR_X)*(dragPoint.x-ANCHOR_X)+
 					   (dragPoint.y-stratum.frame.origin.y)*(dragPoint.y-stratum.frame.origin.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on anchor icon
 				self.selectedAnchorStratum = stratum;
 				stratum.hasAnchor = NO;																	// user is removing it (might return it at touchesEnded
@@ -275,16 +261,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 					   (dragPoint.y-stratum.frame.origin.y)*(dragPoint.y-stratum.frame.origin.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on scissors icon
 				self.selectedScissorsStratum = stratum;
 				stratum.hasPageCutter = NO;																// user is removing it (might return it at touchesEnded
-			} else {																					// look for paleocurrents in the stratum
-				for (PaleoCurrent *paleo in stratum.paleoCurrents) {
-					CGPoint paleoLocation = CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y);
-					if ((dragPoint.x-paleoLocation.x)*(dragPoint.x-paleoLocation.x)+
-						(dragPoint.y-paleoLocation.y)*(dragPoint.y-paleoLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected
-						self.selectedPaleoCurrent = paleo;
-						self.selectedStratum = stratum;
-						self.dragConstraint = CGPointMake(stratum.frame.size.width, stratum.frame.origin.y);
-					}
-				}
 			}
 		}
 	}
@@ -292,6 +268,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 {
+	if (!self.touchesEnabled) return;
 	CGPoint dragPoint = [self getDragPoint:event];
 	if (self.dragActive) {																				// if dragging is active, modify the selected stratum
 		CGPoint offsetDragPoint = CGPointMake(dragPoint.x-self.dragOffsetFromCenter.width, dragPoint.y-self.dragOffsetFromCenter.height);	// coordinates of icon center
@@ -303,13 +280,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		CFRelease(dict);
 		[self updateCoordinateText:offsetDragPoint stratum:stratum];
 		[self setNeedsDisplay];
-	} else if (self.selectedPaleoCurrent) {
-		CGPoint newOrigin = CGPointMake(dragPoint.x-self.selectedStratum.frame.size.width, dragPoint.y-self.selectedStratum.frame.origin.y);
-		if (newOrigin.x < 0) newOrigin.x = 0;
-		if (newOrigin.y < 0) newOrigin.y = 0;
-		if (newOrigin.y > self.selectedStratum.frame.size.height) newOrigin.y = self.selectedStratum.frame.size.height;
-		self.selectedPaleoCurrent.origin = newOrigin;
-		[self setNeedsDisplay];
 	} else if (self.selectedAnchorStratum || self.selectedScissorsStratum) {
 		self.iconOrigin = dragPoint;																	// so we can display it as it's dragged
 		[self setNeedsDisplay];																			// to display the dragged icon
@@ -318,6 +288,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
 {
+	if (!self.touchesEnabled) return;
 	CGPoint dragPoint = [self getDragPoint:event];
 	[self.locationLabel setHidden:YES];
 	[self.dimensionLabel setHidden:YES];
@@ -348,11 +319,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			}
 		}
 		self.selectedAnchorStratum = self.selectedScissorsStratum = nil;
-	} else if (self.selectedPaleoCurrent) {
-		if (dragPoint.x > self.selectedStratum.frame.origin.x+self.selectedStratum.frame.size.width+2.0) {	// user dragged more than 2 units to the right of the stratum, throw it away
-			int paleoIndex = [self.selectedStratum.paleoCurrents indexOfObject:self.selectedPaleoCurrent];
-			[self.selectedStratum.paleoCurrents removeObjectAtIndex:paleoIndex];
-		}
 	}
 	self.dragActive = NO;
 	self.selectedPaleoCurrent = nil;
