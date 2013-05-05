@@ -40,6 +40,9 @@
 @property BOOL				hasPageCutter;		// does it have a page boundary attached?
 @property BOOL				hasAnchor;			// does it have an anchor attached?
 @property NSMutableArray*	paleoCurrents;		// of PaleoCurrent's
+@property NSMutableArray*	outlineTop;			// of NSNumbers, which represent displacement of outline
+@property NSMutableArray*	outlineRight;
+@property NSMutableArray*	outlineBottom;
 
 @end
 

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import "StrataViewController.h"
 #import "StrataModel.h"
 
@@ -17,12 +18,32 @@ CGFloat gScale;
 
 void patternDrawingCallback(void *info, CGContextRef context);
 
+@interface OverlayLayer : CALayer
+@end
+
+@class StrataView;
+
+@interface ContainerLayer : CALayer
+
+@property OverlayLayer*		overlay;
+@property BOOL				overlayVisible;
+@property StrataView*		strataView;
+//@property NSMutableArray*	points;
+
+// cloned from StrataView parent, to allow drawPencilHighlighting to work
+@property Stratum* selectedPencilStratum;
+@property CGPoint origin;
+@property (nonatomic) StrataDocument* activeDocument;			// current StrataDocument being edited/displayed
+
+@end
+
 @interface StrataView : UIView
 
 - (void)initialize;
 - (void)handleStrataHeightChanged:(id)sender;
 - (void)handlePencilTap:(Stratum *)stratum;
 - (void)handlePaleoTap:(PaleoCurrent *)paleo inStratum:(Stratum *)stratum;
+- (void)drawOutline:(Stratum *)stratum;
 
 @property CGFloat scale;
 @property UILabel* locationLabel;
@@ -34,6 +55,7 @@ void patternDrawingCallback(void *info, CGContextRef context);
 @property CGPoint infoSelectionPoint;							// for stratum info popover
 @property (nonatomic) StrataDocument* activeDocument;			// current StrataDocument being edited/displayed
 @property BOOL touchesEnabled;
+@property ContainerLayer *overlayContainer;				// to display pencil mode highlighting in overlay sublayer
 
 // for graphics.h
 

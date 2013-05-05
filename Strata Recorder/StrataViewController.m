@@ -77,21 +77,25 @@ typedef enum {
 			CGPoint infoIconLocation = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1);
 			CGPoint pencilIconLocation = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width/2.0, stratum.frame.origin.y+stratum.frame.size.height/2.0);
 			if ((hitPoint.x-infoIconLocation.x)*(hitPoint.x-infoIconLocation.x)+
-				(hitPoint.y-infoIconLocation.y)*(hitPoint.y-infoIconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on info icon
-				self.strataView.selectedStratum = stratum;															// for our delegate's use
-				self.strataView.infoSelectionPoint = CGPointMake(VX(infoIconLocation.x), VY(infoIconLocation.y));	// for our delegate's use
+				(hitPoint.y-infoIconLocation.y)*(hitPoint.y-infoIconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {					// hit detected on info icon
+				self.strataView.selectedStratum = stratum;																		// for our delegate's use
+				self.strataView.infoSelectionPoint = CGPointMake(VX(infoIconLocation.x), VY(infoIconLocation.y));				// for our delegate's use
 				[self handleStratumInfo:self.strataView];													// tell our delegate to create the navigation controller for managing stratum properties
 			} else if ((hitPoint.x-pencilIconLocation.x)*(hitPoint.x-pencilIconLocation.x)+
-					   (hitPoint.y-pencilIconLocation.y)*(hitPoint.y-pencilIconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on pencil icon
+					   (hitPoint.y-pencilIconLocation.y)*(hitPoint.y-pencilIconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {		// hit detected on pencil icon
 				self.currentTapState = tapStatePencilSelected;
 				self.selectedStratum = stratum;
 				[self.strataView handlePencilTap:stratum];
 				self.strataView.touchesEnabled = NO;
-			} else {																					// look for paleocurrents in the stratum
+				self.strataGraphScrollView.pinchGestureRecognizer.enabled = NO;													// temporary: should depend on location of touchesBegan
+				self.strataGraphScrollView.scrollEnabled = NO;																	// ditto
+				self.strataView.overlayContainer.overlayVisible = YES;
+			} else {																											// look for paleocurrents in each stratum
 				for (PaleoCurrent *paleo in stratum.paleoCurrents) {
 					CGPoint paleoLocation = CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y);
 					if ((hitPoint.x-paleoLocation.x)*(hitPoint.x-paleoLocation.x)+
-						(hitPoint.y-paleoLocation.y)*(hitPoint.y-paleoLocation.y) < HIT_DISTANCE*HIT_DISTANCE && self.selectedPaleoCurrent == nil) {// hit detected
+						(hitPoint.y-paleoLocation.y)*(hitPoint.y-paleoLocation.y) < HIT_DISTANCE*HIT_DISTANCE &&
+						self.selectedPaleoCurrent == nil) {																		// hit detected on paleocurrent
 						self.currentTapState = tapStatePaleoSelected;
 						self.paleoCurrentSelectedView.hidden = NO;
 						self.paleoCurrentSelectedView.center = [self.strataView convertPoint:CGPointMake(VX(paleoLocation.x), VY(paleoLocation.y)) toView:self.view];
@@ -100,15 +104,13 @@ typedef enum {
 						[self.strataView handlePaleoTap:paleo inStratum:stratum];
 						self.selectedPaleoCurrent = paleo;
 						self.selectedStratum = stratum;
-						self.strataView.selectedStratum = stratum;
-						//						self.strataView.dragConstraint = CGPointMake(stratum.frame.size.width, stratum.frame.origin.y);
-						self.strataGraphScrollView.scrollEnabled = NO;
+						self.strataView.selectedStratum = stratum;																// clone it
 						self.panGestureRecognizer.enabled = YES;
 						self.rotationGestureRecognizer.enabled = YES;
 						self.paleoCurrentDragStarted = NO;
 						self.strataView.touchesEnabled = NO;
-						//						self.strataView.userInteractionEnabled = NO;
 						self.strataGraphScrollView.pinchGestureRecognizer.enabled = NO;
+						self.strataGraphScrollView.scrollEnabled = NO;
 						break;
 					}
 				}
@@ -137,6 +139,10 @@ typedef enum {
 			self.currentTapState = tapStateNoneSelected;
 			[self.strataView handlePencilTap:stratum];
 			self.strataView.touchesEnabled = YES;
+			self.strataGraphScrollView.pinchGestureRecognizer.enabled = YES;												// temporary: should depend on location of touchesBegan
+			self.strataGraphScrollView.scrollEnabled = YES;																	// ditto
+			self.strataView.overlayContainer.overlayVisible = NO;
+			[self.strataView setNeedsDisplay];
 		}
 	}
 }

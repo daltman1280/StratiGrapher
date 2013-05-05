@@ -14,7 +14,8 @@
 #import "Graphics.h"
 #import "StrataViewController.h"
 #import "StrataNotifications.h"
-#import <QuartzCore/QuartzCore.h>
+
+static const float kPencilMargin = 0.1;
 
 /*
  A static callback function for drawing stratigraphic patterns. Uses a matrix of pattern swatches contained in a manually prepared
@@ -41,22 +42,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
  Purpose: to display pencil mode highlighting without requiring a StrataView redraw
  */
 
-@interface OverlayLayer : CALayer
-@end
-
 @implementation OverlayLayer
-@end
-
-@interface ContainerLayer : CALayer
-
-@property OverlayLayer*		overlay;
-@property BOOL				overlayVisible;
-
-// cloned from StrataView parent, to allow drawPencilHighlighting to work
-@property Stratum* selectedPencilStratum;
-@property CGPoint origin;
-@property (nonatomic) StrataDocument* activeDocument;			// current StrataDocument being edited/displayed
-
 @end
 
 @implementation ContainerLayer
@@ -64,16 +50,15 @@ void patternDrawingCallback(void *info, CGContextRef context)
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx
 {
 	UIGraphicsPushContext(ctx);
-	// toggle visibility of layer
-	self.overlayVisible = !self.overlayVisible;
-	if (self.overlayVisible)
+	if (self.overlayVisible) {
 		[self drawPencilHighlighting];
+		[self.strataView drawOutline:self.selectedPencilStratum];
+	}
 	UIGraphicsPopContext();
 }
 
 - (void)drawPencilHighlighting
 {
-	const float kPencilMargin = 0.1;
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
 	CGFloat colorComponents[4] = {0, 0, 0, 0.3};
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -115,13 +100,109 @@ void patternDrawingCallback(void *info, CGContextRef context)
 @property BOOL dragActive;								// tracks dragging state
 @property int activeDragIndex;							// index in strata of dragged item
 @property BOOL pencilActive;
+@property BOOL pencilTouchBeganInEditRegion;
 @property Stratum* selectedScissorsStratum;
 @property Stratum* selectedAnchorStratum;
 @property CGPoint iconOrigin;							// for dragging anchor or scissors icon
-@property ContainerLayer *overlayContainer;				// to display pencil mode highlighting in overlay sublayer
 @end
 
+static int outlineCount = 50;
+
 @implementation StrataView
+
+- (void)drawOutline:(Stratum *)stratum
+{
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGContextSaveGState(context);
+	UIBezierPath *path = [UIBezierPath bezierPath];
+	// draw left boundary
+	[path moveToPoint:CGPointMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y))];
+	[path addLineToPoint:CGPointMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y+stratum.frame.size.height))];
+	for (int i=0; i<outlineCount; ++i) {												// top
+		// unadusted point, proceeding from top/left to top/right
+		CGPoint uPoint = CGPointMake(stratum.frame.origin.x+((float)i*stratum.frame.size.width/(float)outlineCount), stratum.frame.origin.y+stratum.frame.size.height);
+		if (stratum.outlineTop[i] != [NSNull null]) uPoint.y += [stratum.outlineTop[i] floatValue];
+		CGPoint vPoint = CGPointMake(VX(uPoint.x), VY(uPoint.y));
+		[path addLineToPoint:vPoint];
+	}
+	for (int i=0; i<outlineCount; ++i) {												// right
+		// unadjusted point, proceeding from top/right to bottom/right
+		CGPoint uPoint = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width, stratum.frame.origin.y+stratum.frame.size.height-((float)i*stratum.frame.size.height/(float)outlineCount));
+		if (stratum.outlineRight[i] != [NSNull null]) uPoint.x += [stratum.outlineRight[i] floatValue];
+		CGPoint vPoint = CGPointMake(VX(uPoint.x), VY(uPoint.y));
+		[path addLineToPoint:vPoint];
+	}
+	for (int i=0; i<outlineCount; ++i) {												// bottom
+		// unadjusted point, proceeding from bottm/right to bottom/left
+		CGPoint uPoint = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-((float)i*stratum.frame.size.width/(float)outlineCount), stratum.frame.origin.y);
+		if (stratum.outlineBottom[i] != [NSNull null]) uPoint.y += [stratum.outlineBottom[i] floatValue];
+		CGPoint vPoint = CGPointMake(VX(uPoint.x), VY(uPoint.y));
+		[path addLineToPoint:vPoint];
+	}
+	[path closePath];
+	path.lineWidth = 2;
+	[[UIColor blackColor] setStroke];
+	[path stroke];
+	CGContextRestoreGState(context);
+}
+
+- (BOOL)inPencilEditRegion:(CGPoint)point
+{
+	CGRect frame = self.selectedStratum.frame;
+	return ((point.x >= frame.origin.x &&												// top
+			 point.x <= frame.origin.x + frame.size.width + kPencilMargin &&
+			 point.y >= frame.origin.y + frame.size.height - kPencilMargin &&
+			 point.y <= frame.origin.y + frame.size.height + kPencilMargin) ||
+			(point.x >= frame.origin.x + frame.size.width - kPencilMargin &&			// right
+			 point.x <= frame.origin.x + frame.size.width + kPencilMargin &&
+			 point.y >= frame.origin.y - kPencilMargin &&
+			 point.y <= frame.origin.y + frame.size.height + kPencilMargin) ||
+			(point.x >= frame.origin.x &&												// bottom
+			 point.x <= frame.origin.x + frame.size.width + kPencilMargin &&
+			 point.y >= frame.origin.y - kPencilMargin &&
+			 point.y <= frame.origin.y + kPencilMargin));
+}
+
+- (void)editOutline:(CGPoint)point
+{
+	Stratum *stratum = self.selectedStratum;
+	if (point.y > stratum.frame.origin.y + stratum.frame.size.height - kPencilMargin) {												// top
+		int index = (float)outlineCount*(point.x-stratum.frame.origin.x)/stratum.frame.size.width;									// with respect to top/left corner (clockwise)
+		if (index>=0 && index<outlineCount)
+			stratum.outlineTop[index] = [NSNumber numberWithFloat:point.y-(stratum.frame.origin.y+stratum.frame.size.height)];
+	} else if (point.x > stratum.frame.origin.x + stratum.frame.size.width - kPencilMargin) {										// right
+		int index = (float)outlineCount*-(point.y-(stratum.frame.origin.y+stratum.frame.size.height))/stratum.frame.size.height;	// with respect to top/right corner (clockwise)
+		if (index>= 0 && index<outlineCount)
+			stratum.outlineRight[index] = [NSNumber numberWithFloat:point.x-(stratum.frame.origin.x+stratum.frame.size.width)];
+	} else {																														// bottom
+		int index = (float)outlineCount*-(point.x-(stratum.frame.origin.x+stratum.frame.size.width))/stratum.frame.size.width;		// with respect to bottom/right corner (clockwise)
+		if (index>= 0 && index<outlineCount)
+			stratum.outlineBottom[index] = [NSNumber numberWithFloat:point.y-stratum.frame.origin.y];
+	}
+	
+}
+
+- (void)pencilTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	CGPoint dragPoint = [self getDragPoint:event];
+	self.pencilTouchBeganInEditRegion = [self inPencilEditRegion:dragPoint];
+	if (!self.pencilTouchBeganInEditRegion) return;
+	[self editOutline:dragPoint];
+}
+
+- (void)pencilTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
+{
+	if (!self.pencilTouchBeganInEditRegion) return;
+	CGPoint dragPoint = [self getDragPoint:event];
+	[self editOutline:dragPoint];
+//	[self.overlayContainer.overlay setNeedsDisplay];
+}
+
+- (void)pencilTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
+{
+	if (!self.pencilTouchBeganInEditRegion) return;
+	[self.overlayContainer.overlay setNeedsDisplay];
+}
 
 - (void)populateIconLocations
 {
@@ -220,8 +301,25 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	self.pencilActive = !self.pencilActive;
 	// clone properties to support drawPencilHighlighting
 	self.overlayContainer.selectedPencilStratum = stratum;
+	self.selectedStratum = stratum;
 	self.overlayContainer.origin = self.origin;
 	self.overlayContainer.activeDocument = self.activeDocument;
+	self.overlayContainer.strataView = self;
+	if (stratum.outlineTop == nil) {
+		stratum.outlineTop = [[NSMutableArray alloc] init];
+		for (int i=0; i<outlineCount; ++i)
+			[stratum.outlineTop addObject:[NSNull null]];
+	}
+	if (stratum.outlineRight == nil) {
+		stratum.outlineRight = [[NSMutableArray alloc] init];
+		for (int i=0; i<outlineCount; ++i)
+			[stratum.outlineRight addObject:[NSNull null]];
+	}
+	if (stratum.outlineBottom == nil) {
+		stratum.outlineBottom = [[NSMutableArray alloc] init];
+		for (int i=0; i<outlineCount; ++i)
+			[stratum.outlineBottom addObject:[NSNull null]];
+	}
 	[self.overlayContainer.overlay setNeedsDisplay];
 }
 
@@ -232,6 +330,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+	if (self.pencilActive) [self pencilTouchesBegan:touches withEvent:event];
 	if (!self.touchesEnabled) return;
 	CGPoint dragPoint = [self getDragPoint:event];
 	for (NSDictionary *dict in self.iconLocations) {													// first check move icons
@@ -268,6 +367,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 {
+	if (self.pencilActive) [self pencilTouchesMoved:touches withEvent:event];
 	if (!self.touchesEnabled) return;
 	CGPoint dragPoint = [self getDragPoint:event];
 	if (self.dragActive) {																				// if dragging is active, modify the selected stratum
@@ -288,6 +388,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
 {
+	if (self.pencilActive) [self pencilTouchesEnded:touches withEvent:event];
 	if (!self.touchesEnabled) return;
 	CGPoint dragPoint = [self getDragPoint:event];
 	[self.locationLabel setHidden:YES];
@@ -375,6 +476,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			CGContextFillRect(currentContext, myRect);										// draw fill pattern
 		}
 		CGContextStrokeRect(currentContext, myRect);										// draw boundary
+		[self drawOutline:stratum];
 		if (stratum.hasPageCutter) [self.scissorsIcon drawAtPoint:CGPointMake(-0.25, stratum.frame.origin.y) scale:self.scale];
 		if (stratum.hasAnchor) [self.anchorIcon drawAtPoint:CGPointMake(-0.5, stratum.frame.origin.y) scale:self.scale];
 		for (PaleoCurrent *paleo in stratum.paleoCurrents)
