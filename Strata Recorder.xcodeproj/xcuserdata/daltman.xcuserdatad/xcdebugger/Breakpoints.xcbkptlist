@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Strata Recorder/StrataView.m"
-         timestampString = "389311083.944874"
+         timestampString = "389493445.297087"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "439"
-         endingLineNumber = "439"
+         startingLineNumber = "481"
+         endingLineNumber = "481"
          landmarkName = "-drawRect:"
          landmarkType = "5">
          <Actions>
@@ -29,11 +29,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Strata Recorder/StrataView.m"
-         timestampString = "389311083.944874"
+         timestampString = "389493445.297087"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "502"
-         endingLineNumber = "502"
+         startingLineNumber = "544"
+         endingLineNumber = "544"
          landmarkName = "-drawRect:"
          landmarkType = "5">
          <Actions>

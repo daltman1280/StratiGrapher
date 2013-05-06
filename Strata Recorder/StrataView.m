@@ -34,6 +34,35 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	CGContextDrawPDFPage(context, [((NSValue *)gPageArray[patternIndex/5]) pointerValue]);		// draw the requested pattern rectangle from the PDF materials patterns page
 }
 
+@implementation TraceLayer
+@end
+
+@implementation TraceLayerContainer
+
+- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx
+{
+	UIGraphicsPushContext(ctx);
+	UIBezierPath *path = [UIBezierPath bezierPath];
+	for (NSDictionary *dict in self.tracePoints) {
+		CGPoint point;
+		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(dict), &point);
+		if ([self.tracePoints indexOfObject:dict] == 0)
+			[path moveToPoint:point];
+		else
+			[path addLineToPoint:point];
+		CFRelease((__bridge CFTypeRef)(dict));
+	}
+	[path stroke];
+	UIGraphicsPopContext();
+}
+
+- (void)addPoint:(CGPoint)point
+{
+	if (!self.tracePoints) self.tracePoints = [[NSMutableArray alloc] init];
+	[self.tracePoints addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(point))];
+}
+
+@end
 /*
  ContainerLayer class: CALayer subclass, to host OverlayLayer
  
@@ -45,7 +74,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 @implementation OverlayLayer
 @end
 
-@implementation ContainerLayer
+@implementation OverlayLayerContainer
 
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx
 {
@@ -195,12 +224,17 @@ static int outlineCount = 50;
 	if (!self.pencilTouchBeganInEditRegion) return;
 	CGPoint dragPoint = [self getDragPoint:event];
 	[self editOutline:dragPoint];
+	CGPoint viewPoint = CGPointMake(VX(dragPoint.x), VY(dragPoint.y));
+	[self.traceContainer addPoint:viewPoint];
+	[self.traceContainer.trace setNeedsDisplay];
 //	[self.overlayContainer.overlay setNeedsDisplay];
 }
 
 - (void)pencilTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
 {
 	if (!self.pencilTouchBeganInEditRegion) return;
+	[self.traceContainer.tracePoints removeAllObjects];
+	[self.traceContainer.trace setNeedsDisplay];
 	[self.overlayContainer.overlay setNeedsDisplay];
 }
 
@@ -256,13 +290,21 @@ static int outlineCount = 50;
 	[self addGestureRecognizer:longPress];
 	longPress.cancelsTouchesInView = NO;
 	// instantiate sublayer and its sublayer for pencil mode highlighting overlay
-	self.overlayContainer = [[ContainerLayer alloc] init];
+	self.overlayContainer = [[OverlayLayerContainer alloc] init];
 	self.overlayContainer.frame = self.bounds;
 	[self.layer addSublayer:self.overlayContainer];
 	self.overlayContainer.overlay = [[OverlayLayer alloc] init];
 	self.overlayContainer.overlay.frame = self.bounds;
 	[self.overlayContainer addSublayer:self.overlayContainer.overlay];
 	self.overlayContainer.overlay.delegate = self.overlayContainer;
+	// instantiate sublayer and its sublayer for pencil trace overlay
+	self.traceContainer = [[TraceLayerContainer alloc] init];
+	self.traceContainer.frame = self.bounds;
+	[self.layer addSublayer:self.traceContainer];
+	self.traceContainer.trace = [[TraceLayer alloc] init];
+	self.traceContainer.trace.frame = self.bounds;
+	[self.traceContainer addSublayer:self.traceContainer.trace];
+	self.traceContainer.trace.delegate = self.traceContainer;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
 }
 

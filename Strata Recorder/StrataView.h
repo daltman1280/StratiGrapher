@@ -18,17 +18,25 @@ CGFloat gScale;
 
 void patternDrawingCallback(void *info, CGContextRef context);
 
+@interface TraceLayer : CALayer
+@end
+
+@interface TraceLayerContainer : CALayer
+@property TraceLayer*		trace;
+@property BOOL				traceVisible;
+@property NSMutableArray*	tracePoints;
+@end
+
 @interface OverlayLayer : CALayer
 @end
 
 @class StrataView;
 
-@interface ContainerLayer : CALayer
+@interface OverlayLayerContainer : CALayer
 
 @property OverlayLayer*		overlay;
 @property BOOL				overlayVisible;
 @property StrataView*		strataView;
-//@property NSMutableArray*	points;
 
 // cloned from StrataView parent, to allow drawPencilHighlighting to work
 @property Stratum* selectedPencilStratum;
@@ -55,7 +63,8 @@ void patternDrawingCallback(void *info, CGContextRef context);
 @property CGPoint infoSelectionPoint;							// for stratum info popover
 @property (nonatomic) StrataDocument* activeDocument;			// current StrataDocument being edited/displayed
 @property BOOL touchesEnabled;
-@property ContainerLayer *overlayContainer;				// to display pencil mode highlighting in overlay sublayer
+@property OverlayLayerContainer *overlayContainer;				// to display pencil mode highlighting in overlay sublayer
+@property TraceLayerContainer *traceContainer;
 
 // for graphics.h
 
