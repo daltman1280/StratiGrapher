@@ -34,6 +34,15 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	CGContextDrawPDFPage(context, [((NSValue *)gPageArray[patternIndex/5]) pointerValue]);		// draw the requested pattern rectangle from the PDF materials patterns page
 }
 
+/*
+ TraceLayerContainer class: CALayer subclass, to host TraceLayer
+ 
+ TraceLayer class: custom CALayer
+ 
+ Purpose: to display the path representing the touch events during the sequence of events. We can't keep up with the touch events if we have to call drawOutline for each 
+ touch event. We simply display the path of touch events, until touchesEnded.
+ */
+
 @implementation TraceLayer
 @end
 
@@ -63,10 +72,11 @@ void patternDrawingCallback(void *info, CGContextRef context)
 }
 
 @end
+
 /*
  ContainerLayer class: CALayer subclass, to host OverlayLayer
  
- OverlayLayer class: CALayer subclass
+ OverlayLayer class: custom CALayer
  
  Purpose: to display pencil mode highlighting without requiring a StrataView redraw
  */
@@ -110,6 +120,12 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	CGContextFillRect(currentContext, myRect);
 	myRect = CGRectMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y-kPencilMargin), self.bounds.size.width, -VDY(self.activeDocument.strataHeight));
 	CGContextFillRect(currentContext, myRect);
+}
+
+- (void)addPoint:(CGPoint)point
+{
+	if (!self.tracePoints) self.tracePoints = [[NSMutableArray alloc] init];
+	[self.tracePoints addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(point))];
 }
 
 @end
@@ -192,9 +208,43 @@ static int outlineCount = 50;
 			 point.y <= frame.origin.y + kPencilMargin));
 }
 
-- (void)editOutline:(CGPoint)point
+- (void)editOutline
 {
+	NSLog(@"editOutline");
+	CGPoint point, pointPrevious;
 	Stratum *stratum = self.selectedStratum;
+	for (int index = 1; index < self.overlayContainer.tracePoints.count; ++index) {
+		NSDictionary *dict = self.overlayContainer.tracePoints[index];
+		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(dict), &point);
+		NSDictionary *dictPrevious = self.overlayContainer.tracePoints[index-1];
+		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(dictPrevious), &pointPrevious);
+		NSLog(@"index = %d, x = %f, y = %f, xPrev = %f, yPrev = %f", index, point.x, point.y, pointPrevious.x, pointPrevious.y);
+		if (point.y > stratum.frame.origin.y + stratum.frame.size.height - kPencilMargin) {												// top
+			int quartilePoint = ((point.x-stratum.frame.origin.x)/stratum.frame.size.width)*outlineCount;								// quartile to which the current point belongs
+			int quartilePrevious = ((pointPrevious.x-stratum.frame.origin.x)/stratum.frame.size.width)*outlineCount;					// quartile to which the previous point belongs
+			float yPrevious = pointPrevious.y-(stratum.frame.origin.y+stratum.frame.size.height);										// y displacement of previous point
+			float y = point.y-(stratum.frame.origin.y+stratum.frame.size.height);														// y displacement of current point
+			if (point.x < pointPrevious.x) {																							// if x is decreasing, swap
+				int temp = quartilePoint;
+				quartilePoint = quartilePrevious;
+				quartilePrevious = temp;
+				float yTemp = y;
+				y = yPrevious;
+				yPrevious = yTemp;
+			}
+			for (int i=quartilePrevious; i<quartilePoint; ++i) {																		// for each intervening quartile
+				float xQuartileI = stratum.frame.origin.x+((float)quartilePrevious*stratum.frame.size.width/(float)outlineCount);		// x coordinate of ith quartile
+				float yQuartile = yPrevious+(y-yPrevious)*((xQuartileI-pointPrevious.x)/(point.x-pointPrevious.x));						// y displacement using interpolation of current and previous
+				NSLog(@"i = %d, xQuartileI = %f, yQuartile = %f", i, xQuartileI, yQuartile);
+				stratum.outlineTop[i] = [NSNumber numberWithFloat:yQuartile];
+			}
+		} else if (point.x > stratum.frame.origin.x + stratum.frame.size.width - kPencilMargin) {										// right
+		} else {																														// bottom
+		}
+		CFRelease((__bridge CFTypeRef)(dict));
+		CFRelease((__bridge CFTypeRef)(dictPrevious));
+	}
+#if 0
 	if (point.y > stratum.frame.origin.y + stratum.frame.size.height - kPencilMargin) {												// top
 		int index = (float)outlineCount*(point.x-stratum.frame.origin.x)/stratum.frame.size.width;									// with respect to top/left corner (clockwise)
 		if (index>=0 && index<outlineCount)
@@ -208,7 +258,7 @@ static int outlineCount = 50;
 		if (index>= 0 && index<outlineCount)
 			stratum.outlineBottom[index] = [NSNumber numberWithFloat:point.y-stratum.frame.origin.y];
 	}
-	
+#endif
 }
 
 - (void)pencilTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -216,17 +266,21 @@ static int outlineCount = 50;
 	CGPoint dragPoint = [self getDragPoint:event];
 	self.pencilTouchBeganInEditRegion = [self inPencilEditRegion:dragPoint];
 	if (!self.pencilTouchBeganInEditRegion) return;
-	[self editOutline:dragPoint];
+	CGPoint viewPoint = CGPointMake(VX(dragPoint.x), VY(dragPoint.y));
+	[self.traceContainer addPoint:viewPoint];
+	[self.overlayContainer addPoint:dragPoint];
+//	[self editOutline:dragPoint];
 }
 
 - (void)pencilTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 {
 	if (!self.pencilTouchBeganInEditRegion) return;
 	CGPoint dragPoint = [self getDragPoint:event];
-	[self editOutline:dragPoint];
+//	[self editOutline:dragPoint];
 	CGPoint viewPoint = CGPointMake(VX(dragPoint.x), VY(dragPoint.y));
 	[self.traceContainer addPoint:viewPoint];
 	[self.traceContainer.trace setNeedsDisplay];
+	[self.overlayContainer addPoint:dragPoint];
 //	[self.overlayContainer.overlay setNeedsDisplay];
 }
 
@@ -235,6 +289,7 @@ static int outlineCount = 50;
 	if (!self.pencilTouchBeganInEditRegion) return;
 	[self.traceContainer.tracePoints removeAllObjects];
 	[self.traceContainer.trace setNeedsDisplay];
+	[self editOutline];
 	[self.overlayContainer.overlay setNeedsDisplay];
 }
 

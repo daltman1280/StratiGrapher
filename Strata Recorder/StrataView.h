@@ -37,6 +37,7 @@ void patternDrawingCallback(void *info, CGContextRef context);
 @property OverlayLayer*		overlay;
 @property BOOL				overlayVisible;
 @property StrataView*		strataView;
+@property NSMutableArray*	tracePoints;
 
 // cloned from StrataView parent, to allow drawPencilHighlighting to work
 @property Stratum* selectedPencilStratum;
