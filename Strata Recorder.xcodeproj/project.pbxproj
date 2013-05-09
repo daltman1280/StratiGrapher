@@ -122,6 +122,7 @@
 		2591C0A9165890C100A622A8 /* PaperListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaperListTableViewController.m; sourceTree = "<group>"; };
 		25921D2B168C04D30038E9D9 /* post-it-pencil.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "post-it-pencil.png"; path = "images/post-it-pencil.png"; sourceTree = "<group>"; };
 		2592B9EF166487E6006A4497 /* StratumMaterialsControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = StratumMaterialsControllerDelegate.h; path = ../StratumMaterialsControllerDelegate.h; sourceTree = "<group>"; };
+		259339B9173C4560009B60E6 /* Paper with illustrator strat columns.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Paper with illustrator strat columns.pdf"; sourceTree = "<group>"; };
 		2594F0991677158600F1958D /* Strata Recorder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Strata Recorder.entitlements"; sourceTree = "<group>"; };
 		259FDA57165DE9300010867E /* DocumentListControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentListControllerDelegate.h; sourceTree = "<group>"; };
 		25C20BB017111F40003ED123 /* ApplicationIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ApplicationIcon.png; sourceTree = "<group>"; };
@@ -216,6 +217,7 @@
 			children = (
 				2590A829164F294F004FF6B5 /* Stratigraphic pattern swatches */,
 				258E73881642F9EA00C12D43 /* Notes.rtf */,
+				259339B9173C4560009B60E6 /* Paper with illustrator strat columns.pdf */,
 				258E738A1642FAB400C12D43 /* To do.rtf */,
 				2589CF0E163F897C00E43147 /* Strata Recorder-Info.plist */,
 				2589CF0F163F897C00E43147 /* InfoPlist.strings */,

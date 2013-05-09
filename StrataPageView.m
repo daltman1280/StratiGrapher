@@ -117,18 +117,28 @@
 			CGPoint paleoOrigin = CGPointMake(stratumRect.origin.x+stratumRect.size.width+paleo.origin.x/scale, stratumRect.origin.y+paleo.origin.y/scale);
 			[self.arrowIcon drawAtPointWithRotation:paleoOrigin scale:1 rotation:paleo.rotation];
 		}
-		stratumRect = [self RectUtoV:stratumRect];											// convert to view coordinates
 		if ([self.activeDocument.strata indexOfObject:stratum] == self.activeDocument.strata.count-1) break;	// don't draw last empty stratum
-//		if (self.mode == PDFMode) {															// fill it with white
-//			CGContextSetFillColorWithColor(currentContext, colorWhite);
-//			CGContextFillRect(currentContext, stratumRect);
-//			CGContextSetStrokeColorWithColor(currentContext, colorBlack);
-//			CGContextStrokeRect(currentContext, stratumRect);
-//		}
 		CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
 		CGContextSetFillPattern(currentContext, pattern, &alpha);
-		CGContextFillRect(currentContext, stratumRect);
-		CGContextStrokeRect(currentContext, stratumRect);
+		if (stratum.outlineTop == nil && stratum.outlineRight == nil && stratum.outlineBottom == nil) {		// no outline, treat it as a rectangle
+			stratumRect = [self RectUtoV:stratumRect];											// convert to view coordinates
+#if 0
+			if (self.mode == PDFMode) {															// fill it with white
+				CGContextSetFillColorWithColor(currentContext, colorWhite);
+				CGContextFillRect(currentContext, stratumRect);
+				CGContextSetStrokeColorWithColor(currentContext, colorBlack);
+				CGContextStrokeRect(currentContext, stratumRect);
+			}
+#endif
+			CGContextFillRect(currentContext, stratumRect);
+			CGContextStrokeRect(currentContext, stratumRect);
+		} else {																			// has an outline
+			CGContextSetFillPattern(currentContext, pattern, &alpha);
+			CGContextSetLineWidth(currentContext, self.activeDocument.lineThickness);
+			CGContextSetStrokeColorWithColor(currentContext, colorBlack);
+			[self addOutline:stratum offset:offset];
+			CGContextDrawPath(currentContext, kCGPathFillStroke);
+		}
 	}
 	if (self.mode == PDFMode) {
 		UIGraphicsEndPDFContext();
@@ -137,6 +147,44 @@
 	}
 	CFRelease(colorWhite);
 	CFRelease(colorBlack);
+}
+
+static int outlineCount = 50;
+
+- (void)addOutline:(Stratum *)stratum offset:(CGPoint)offset
+{
+	float scale = self.activeDocument.scale;
+	CGContextRef currentContext = UIGraphicsGetCurrentContext();
+	CGMutablePathRef mPath = CGPathCreateMutable();
+	// draw left boundary
+	CGContextBeginPath(currentContext);
+	CGPathMoveToPoint(mPath, NULL, VX(offset.x+stratum.frame.origin.x/scale), VY(offset.y+stratum.frame.origin.y/scale));
+	CGPathAddLineToPoint(mPath, NULL, VX(offset.x+stratum.frame.origin.x/scale), VY(offset.y+(stratum.frame.origin.y+stratum.frame.size.height)/scale));
+	
+	for (int i=0; i<outlineCount; ++i) {												// top
+		// unadusted point, proceeding from top/left to top/right
+		CGPoint uPoint = CGPointMake(offset.x+(stratum.frame.origin.x+((float)i*stratum.frame.size.width/(float)outlineCount))/scale, offset.y+(stratum.frame.origin.y+stratum.frame.size.height)/scale);
+		if (stratum.outlineTop[i] != [NSNull null]) uPoint.y += [stratum.outlineTop[i] floatValue];
+		CGPathAddLineToPoint(mPath, NULL, VX(uPoint.x), VY(uPoint.y));
+	}
+	for (int i=0; i<outlineCount; ++i) {												// right
+		// unadjusted point, proceeding from top/right to bottom/right
+		CGPoint uPoint = CGPointMake(offset.x+(stratum.frame.origin.x+stratum.frame.size.width)/scale, offset.y+(stratum.frame.origin.y+stratum.frame.size.height-((float)i*stratum.frame.size.height/(float)outlineCount))/scale);
+		if (stratum.outlineRight[i] != [NSNull null]) uPoint.x += [stratum.outlineRight[i] floatValue];
+		CGPathAddLineToPoint(mPath, NULL, VX(uPoint.x), VY(uPoint.y));
+	}
+	for (int i=0; i<outlineCount; ++i) {												// bottom
+		// unadjusted point, proceeding from bottm/right to bottom/left
+		CGPoint uPoint = CGPointMake(offset.x+(stratum.frame.origin.x+stratum.frame.size.width-((float)i*stratum.frame.size.width/(float)outlineCount))/scale, offset.y+stratum.frame.origin.y/scale);
+		if (stratum.outlineBottom[i] != [NSNull null]) uPoint.y += [stratum.outlineBottom[i] floatValue];
+		CGPathAddLineToPoint(mPath, NULL, VX(uPoint.x), VY(uPoint.y));
+	}
+//	CGPathCloseSubpath(mPath);
+	CGContextAddPath(currentContext, mPath);
+	CGContextSetLineWidth(currentContext, self.activeDocument.lineThickness);
+	CGPathRelease(mPath);
+//	[[UIColor blackColor] setStroke];
+//	[[UIColor whiteColor] setFill];
 }
 
 @end

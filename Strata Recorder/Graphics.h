@@ -19,7 +19,7 @@ static CGFloat PPI = 132.0;												// pixels per inch (this might be differe
 #define VX(x1) (x1)*PPI+PPI*self.origin.x								// convert user (in meters) to view units (pixels)
 #define VY(y1) -(y1)*PPI+self.bounds.size.height-PPI*self.origin.y		// convert user (in meters) to view units (pixels)
 #define VDX(d) (d)*PPI													// convert distance in X to view units
-#define VDY(d) -(d)*PPI													// convert distance in X to view units
+#define VDY(d) -(d)*PPI													// convert distance in Y to view units
 
 #define GRID_WIDTH .25													// in inches
 
