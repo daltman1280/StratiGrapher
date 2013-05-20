@@ -27,8 +27,8 @@ static const float kPencilMargin = 0.1;
  */
 void patternDrawingCallback(void *info, CGContextRef context)
 {
-	if ((int) info <= 0) return;
-	int patternIndex = (int) info-601;
+	if ((int) info < 0) return;
+	int patternIndex = (info) ? (int) info-601 : 3;												// treat pattern 0 as 604 (which is blank)
 	int columnIndex = patternIndex % 5;
 	CGContextTranslateCTM(context, -(55*columnIndex)+.1, +.3);									// so the ith element in the row will be at the origin
 	CGContextDrawPDFPage(context, [((NSValue *)gPageArray[patternIndex/5]) pointerValue]);		// draw the requested pattern rectangle from the PDF materials patterns page
@@ -514,7 +514,7 @@ static int outlineCount = 50;
 		((Stratum *)self.activeDocument.strata.lastObject).frame.size.height) {							// user has modified last (empty) stratum, create a new empty stratum
 		Stratum *lastStratum = self.activeDocument.strata.lastObject;
 		Stratum *newStratum = [[Stratum alloc] initWithFrame:CGRectMake(0, lastStratum.frame.origin.y+lastStratum.frame.size.height, 0, 0)];
-		newStratum.materialNumber = lastStratum.materialNumber;											// arbitrary material, for now
+		newStratum.materialNumber = 0;																	// unassigned material
 		[self.activeDocument.strata addObject:newStratum];
 	} else if (self.selectedAnchorStratum || self.selectedScissorsStratum) {
 		if (dragPoint.x < 0.5) {																		// otherwise, throw it away

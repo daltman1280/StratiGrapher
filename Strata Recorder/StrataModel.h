@@ -18,16 +18,18 @@
 + (id)loadFromFile:(NSString *)name;
 + (NSString *)documentsFolderPath;
 
-@property NSString*			name;			// not a part of persistent document, just for housekeeping purposes
-@property NSMutableArray*	strataFiles;	// similar
+// not a part of persistent document, just for housekeeping purposes
+@property NSString*			name;					// document name (not including extension)
+@property NSMutableArray*	strataFiles;			// list of strata files in sandbox
+@property NSMutableSet*		materialNumbersPalette;	// NSNumbers, list of materials to display in materials palette
 //	persistent properties
-@property NSMutableArray*	strata;			// array of Strata*
-@property CGSize			pageDimension;	// in inches
-@property CGSize			pageMargins;	// in inches
-@property CGFloat			scale;			// of page presentation, in physical units/inch
-@property int				lineThickness;	// of page presentation, strata edges, in points
-@property NSString*			units;			// English or Metric
-@property float				strataHeight;	// height of model view (in physical units)
+@property NSMutableArray*	strata;					// array of Strata*
+@property CGSize			pageDimension;			// in inches
+@property CGSize			pageMargins;			// in inches
+@property CGFloat			scale;					// of page presentation, in physical units/inch
+@property int				lineThickness;			// of page presentation, strata edges, in points
+@property NSString*			units;					// English or Metric
+@property float				strataHeight;			// height of model view (in physical units)
 
 @end
 

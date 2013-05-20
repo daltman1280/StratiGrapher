@@ -12,6 +12,7 @@
 #import "StrataViewController.h"
 #import "StrataView.h"
 #import "StratumMaterialsTableController.h"
+#import "StratumInfoTableViewController.h"
 #import "StrataPageView.h"
 #import "StrataModel.h"
 #import "DocumentListTableViewController.h"
@@ -40,8 +41,9 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIScrollView *strataPageScrollView;
 @property (nonatomic) IBOutlet StrataPageView *strataPageView;
 @property (nonatomic) StrataDocument *activeDocument;
-@property UINavigationController* stratumMaterialsNavigationController;
+@property UINavigationController* stratumInfoNavigationController;
 @property StratumMaterialsTableController* stratumMaterialsTableController;
+@property StratumInfoTableViewController* stratumInfoTableViewController;
 @property SettingsTableController* settingsTableController;
 // tools
 @property (weak, nonatomic) IBOutlet UIImageView *scissorsView;
@@ -420,7 +422,7 @@ typedef enum {
 	}
 }
 
-#pragma mark strata info popover
+#pragma mark stratum info popover
 
 /*
  Create a popover which contains a navigation controller, containing a table controller for managing the material number
@@ -429,11 +431,13 @@ typedef enum {
 - (void)handleStratumInfo:(id)sender
 {
 	// get the UITableController and initialize its properties, so it can manage the properties of the selected stratum
-	self.stratumMaterialsNavigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"StratumInfoNavigationController"];
-	self.stratumMaterialsTableController = self.stratumMaterialsNavigationController.viewControllers[0];
-	self.stratumMaterialsTableController.stratum = ((StrataView *)sender).selectedStratum;					// tell the table controller what stratum is selected
-	self.stratumMaterialsTableController.delegate = self;
-	self.popover = [[UIPopoverController alloc] initWithContentViewController:self.stratumMaterialsNavigationController];
+	self.stratumInfoNavigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"StratumInfoNavigationController"];
+	self.stratumInfoTableViewController = self.stratumInfoNavigationController.viewControllers[0];
+	self.stratumInfoTableViewController.stratum = ((StrataView *)sender).selectedStratum;
+	self.stratumInfoTableViewController.delegate = self;
+	self.stratumInfoNavigationController.delegate = self.stratumInfoTableViewController;
+	self.stratumInfoTableViewController.activeDocument = self.activeDocument;
+	self.popover = [[UIPopoverController alloc] initWithContentViewController:self.stratumInfoNavigationController];
 	[self.popover setPopoverContentSize:CGSizeMake(380, 500)];
 	[self.popover presentPopoverFromRect:CGRectMake(self.strataView.infoSelectionPoint.x, self.strataView.infoSelectionPoint.y, 1, 1) inView:self.strataView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }

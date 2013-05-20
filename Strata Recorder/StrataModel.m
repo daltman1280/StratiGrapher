@@ -95,6 +95,11 @@
 		return nil;
 	StrataDocument *doc = [NSKeyedUnarchiver unarchiveObjectWithFile:filepath];
 	doc.name = name;
+	doc.materialNumbersPalette = [[NSMutableSet alloc] init];
+	for (Stratum *stratum in doc.strata) {
+		if (stratum.materialNumber)
+			[doc.materialNumbersPalette addObject:[NSNumber numberWithInt:stratum.materialNumber]];
+	}
 	return doc;
 }
 

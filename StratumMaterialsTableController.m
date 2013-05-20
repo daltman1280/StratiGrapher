@@ -11,6 +11,9 @@
 
 @interface StratumMaterialsTableController ()
 
+@property NSMutableArray *unusedMaterialIndexes;
+@property NSMutableArray *unusedMaterialTitles;
+@property NSMutableArray *unusedMaterialSubtitles;
 @end
 
 @implementation StratumMaterialsTableController
@@ -25,16 +28,36 @@
 }
 
 /*
- OK Bar Button Item pressed. We want to update the stratum's material number, using the currently selected
- material row in our table. We want our delegate to dismiss the popover that owns us.
+ Add bar button item pressed. Add material number to our parent's and active document's palette.
  */
 
-- (IBAction)handleOK:(id)sender {
+- (IBAction)handleAdd:(id)sender {
 	int lineNumber = [self.tableView indexPathForSelectedRow].row;
+	[self.materialIndexes addObject:self.unusedMaterialIndexes[lineNumber]];
+	[self.activeDocument.materialNumbersPalette addObject:self.unusedMaterialIndexes[lineNumber]];
+	[self populateUnusedMaterials];
+	[self.tableView reloadData];
+	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+}
+
+- (void)populateUnusedMaterials
+{
+	if (!self.unusedMaterialIndexes) self.unusedMaterialIndexes = [[NSMutableArray alloc] init];
+	[self.unusedMaterialIndexes removeAllObjects];
+	if (!self.unusedMaterialTitles) self.unusedMaterialTitles = [[NSMutableArray alloc] init];
+	[self.unusedMaterialTitles removeAllObjects];
+	if (!self.unusedMaterialSubtitles) self.unusedMaterialSubtitles = [[NSMutableArray alloc] init];
+	[self.unusedMaterialSubtitles removeAllObjects];
+	
 	NSString *descriptions = [NSString stringWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"patterns descriptive text" ofType:@"txt"] encoding:NSASCIIStringEncoding error:nil];
-	NSString *line = [descriptions componentsSeparatedByString:@"\n"][lineNumber];
-	self.stratum.materialNumber = [[line substringToIndex:3] intValue];
-	[self.delegate performSelector:@selector(handleStratumInfoComplete:) withObject:self];
+	for (NSString *line in [descriptions componentsSeparatedByString:@"\n"]) {
+		NSNumber *materialNumber = [NSNumber numberWithInt:[[line substringToIndex:3] intValue]];
+		if (![self.materialIndexes containsObject:materialNumber]) {
+			[self.unusedMaterialIndexes addObject:materialNumber];
+			[self.unusedMaterialTitles addObject:[line substringToIndex:3]];
+			[self.unusedMaterialSubtitles addObject:[line substringFromIndex:4]];
+		}
+	}
 }
 
 - (void)viewDidLoad
@@ -42,16 +65,8 @@
     [super viewDidLoad];
 
 	self.clearsSelectionOnViewWillAppear = NO;
-	if (self.stratum.materialNumber == 0) return;										// default value
- 
-	NSString *descriptions = [NSString stringWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"patterns descriptive text" ofType:@"txt"] encoding:NSASCIIStringEncoding error:nil];
-	int i = 0;
-	for (NSString *line in [descriptions componentsSeparatedByString:@"\n"]) {
-		if (self.stratum.materialNumber == [[line substringToIndex:3] intValue])
-			break;
-		++i;
-	}
-	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
+	[self populateUnusedMaterials];
+	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];		// always select first row
 	[self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
@@ -70,19 +85,16 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	NSString *descriptions = [NSString stringWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"patterns descriptive text" ofType:@"txt"] encoding:NSASCIIStringEncoding error:nil];
-	return [descriptions componentsSeparatedByString:@"\n"].count;
+	return self.unusedMaterialIndexes.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	MaterialTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"material"];
     // Configure the cell...
-	NSString *descriptions = [NSString stringWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"patterns descriptive text" ofType:@"txt"] encoding:NSASCIIStringEncoding error:nil];
-	NSString *line = [descriptions componentsSeparatedByString:@"\n"][indexPath.row];
-    [cell.title setText:[line substringToIndex:3]];
-	[cell.subtitle setText:[line substringFromIndex:4]];
-	cell.pattern.patternNumber = [[line substringToIndex:3] intValue];
+	[cell.title setText:self.unusedMaterialTitles[indexPath.row]];
+	[cell.subtitle setText:self.unusedMaterialSubtitles[indexPath.row]];
+	cell.pattern.patternNumber = [self.unusedMaterialIndexes[indexPath.row] intValue];
 	[cell.pattern setNeedsDisplay];
     return cell;
 }
@@ -100,4 +112,7 @@
      */
 }
 
+- (void)viewDidUnload {
+	[super viewDidUnload];
+}
 @end

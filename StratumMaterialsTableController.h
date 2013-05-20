@@ -13,5 +13,7 @@
 
 @property Stratum *stratum;
 @property UIViewController *delegate;
+@property StrataDocument *activeDocument;
+@property NSMutableArray* materialIndexes;										// cached, sorted, material numbers from StrataDocument materialNumbersPalette
 
 @end

@@ -217,10 +217,81 @@
             </objects>
             <point key="canvasLocation" x="-1190" y="-48"/>
         </scene>
+        <!--Stratum Info Table Controller-->
+        <scene sceneID="dKy-CH-20H">
+            <objects>
+                <tableViewController storyboardIdentifier="StratumInfoTableController" title="StratumInfo" modalPresentationStyle="currentContext" id="wdO-RA-Jri" userLabel="Stratum Info Table Controller" customClass="StratumInfoTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="57" sectionHeaderHeight="22" sectionFooterHeight="22" id="e8N-7q-IOT">
+                        <rect key="frame" x="0.0" y="64" width="768" height="916"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="material" rowHeight="57" id="FoV-vn-ngs" customClass="MaterialTableViewCell">
+                                <rect key="frame" x="0.0" y="22" width="768" height="57"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="56"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="601" minimumFontSize="17" id="p9i-ox-gVV">
+                                            <rect key="frame" x="20" y="13" width="39" height="26"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                        <view contentMode="TopLeft" id="gmy-0q-e7h" customClass="MaterialPatternView">
+                                            <rect key="frame" x="308" y="1" width="70" height="55"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Gravel or conglomerate (1st option)    x" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HUa-Y0-Zw5">
+                                            <rect key="frame" x="67" y="1" width="230" height="50"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <connections>
+                                    <outlet property="pattern" destination="gmy-0q-e7h" id="jUT-Ux-Q2P"/>
+                                    <outlet property="subtitle" destination="HUa-Y0-Zw5" id="rst-FA-Iic"/>
+                                    <outlet property="title" destination="p9i-ox-gVV" id="bRY-oa-YPD"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="wdO-RA-Jri" id="cb4-fa-R7C"/>
+                            <outlet property="delegate" destination="wdO-RA-Jri" id="o2Q-DB-Ha6"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="wnL-Fe-Qtj"/>
+                        <barButtonItem systemItem="save" id="wsa-DV-qK2">
+                            <connections>
+                                <action selector="handleOK:" destination="wdO-RA-Jri" id="sDB-kk-Je2"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="Stratum Info" id="cEx-cb-oZH">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="A4G-C8-HPm">
+                            <connections>
+                                <segue destination="Scy-hI-L0Y" kind="push" id="IuR-pl-5Fd"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <value key="contentSizeForViewInPopover" type="size" width="380" height="400"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z6t-7R-eN0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3937" y="674"/>
+        </scene>
         <!--Stratum Materials Table Controller - StratumMaterials-->
         <scene sceneID="bPm-Mi-bze">
             <objects>
-                <tableViewController storyboardIdentifier="MaterialsInfoTableController" title="StratumMaterials" id="Scy-hI-L0Y" customClass="StratumMaterialsTableController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="MaterialsInfoTableController" title="StratumMaterials" modalPresentationStyle="currentContext" id="Scy-hI-L0Y" customClass="StratumMaterialsTableController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="57" sectionHeaderHeight="22" sectionFooterHeight="22" id="26a-Fj-XdZ">
                         <rect key="frame" x="0.0" y="64" width="768" height="916"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -265,18 +336,19 @@
                     </tableView>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Na6-Ey-oTn"/>
-                        <barButtonItem title="OK" id="5Ya-q3-6gn">
+                        <barButtonItem title="Add" id="5Ya-q3-6gn">
                             <connections>
-                                <action selector="handleOK:" destination="Scy-hI-L0Y" id="i8P-S0-6qJ"/>
+                                <action selector="handleAdd:" destination="Scy-hI-L0Y" id="3fj-7z-7oj"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Stratum Materials" id="2O3-Xv-ZHp"/>
+                    <navigationItem key="navigationItem" title="Materials Selection" id="2O3-Xv-ZHp"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="380" height="400"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="brf-nw-Kwz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2617" y="-234"/>
+            <point key="canvasLocation" x="4773" y="660"/>
         </scene>
         <!--Settings Menu Table-->
         <scene sceneID="kyr-4h-rP4">
@@ -571,10 +643,10 @@
             </objects>
             <point key="canvasLocation" x="1753" y="-1791"/>
         </scene>
-        <!--Stratum Materials Navigation-->
+        <!--Stratum Info Navigation-->
         <scene sceneID="IyS-gV-bJ7">
             <objects>
-                <navigationController storyboardIdentifier="StratumInfoNavigationController" toolbarHidden="NO" id="c5q-y6-TUJ" userLabel="Stratum Materials Navigation" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="StratumInfoNavigationController" toolbarHidden="NO" id="c5q-y6-TUJ" userLabel="Stratum Info Navigation" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="Qv8-b4-zuc"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
@@ -588,12 +660,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
-                        <segue destination="Scy-hI-L0Y" kind="relationship" relationship="rootViewController" id="5Qt-SZ-bgf"/>
+                        <segue destination="wdO-RA-Jri" kind="relationship" relationship="rootViewController" id="sHD-kv-zky"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="atv-Ea-TIO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1635" y="-178"/>
+            <point key="canvasLocation" x="2643" y="-242"/>
         </scene>
         <!--Document List Menu Table-->
         <scene sceneID="YqO-nk-QhJ">
