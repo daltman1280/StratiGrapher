@@ -120,7 +120,7 @@
 		if ([self.activeDocument.strata indexOfObject:stratum] == self.activeDocument.strata.count-1) break;	// don't draw last empty stratum
 		CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
 		CGContextSetFillPattern(currentContext, pattern, &alpha);
-		if (stratum.outlineTop == nil && stratum.outlineRight == nil && stratum.outlineBottom == nil) {		// no outline, treat it as a rectangle
+		if (stratum.outline == nil) {															// no outline, treat it as a rectangle
 			stratumRect = [self RectUtoV:stratumRect];											// convert to view coordinates
 #if 0
 			if (self.mode == PDFMode) {															// fill it with white
@@ -149,10 +149,10 @@
 	CFRelease(colorBlack);
 }
 
-static int outlineCount = 50;
-
 - (void)addOutline:(Stratum *)stratum offset:(CGPoint)offset
 {
+#if 1
+#else
 	float scale = self.activeDocument.scale;
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
 	CGMutablePathRef mPath = CGPathCreateMutable();
@@ -179,12 +179,10 @@ static int outlineCount = 50;
 		if (stratum.outlineBottom[i] != [NSNull null]) uPoint.y += [stratum.outlineBottom[i] floatValue];
 		CGPathAddLineToPoint(mPath, NULL, VX(uPoint.x), VY(uPoint.y));
 	}
-//	CGPathCloseSubpath(mPath);
 	CGContextAddPath(currentContext, mPath);
 	CGContextSetLineWidth(currentContext, self.activeDocument.lineThickness);
 	CGPathRelease(mPath);
-//	[[UIColor blackColor] setStroke];
-//	[[UIColor whiteColor] setFill];
+#endif
 }
 
 @end

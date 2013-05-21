@@ -110,15 +110,20 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	 the user is allowed to draw/edit the boundary in freehand.
 	 */
 	Stratum *stratum = self.selectedPencilStratum;
-	CGRect myRect = CGRectMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y+kPencilMargin), VDX(stratum.frame.size.width-kPencilMargin), VDY(stratum.frame.size.height-2*kPencilMargin));
+	// center
+	CGRect myRect = CGRectMake(VX(stratum.frame.origin.x-kPencilMargin), VY(stratum.frame.origin.y+kPencilMargin), VDX(stratum.frame.size.width), VDY(stratum.frame.size.height-2*kPencilMargin));
 	CGContextFillRect(currentContext, myRect);
-	myRect = CGRectMake(VX(-XORIGIN), VY(-YORIGIN), VDX(XORIGIN), VDY(self.activeDocument.strataHeight));
+	// left
+	myRect = CGRectMake(VX(-XORIGIN), VY(-YORIGIN), VDX(XORIGIN-kPencilMargin), VDY(self.activeDocument.strataHeight));
 	CGContextFillRect(currentContext, myRect);
-	myRect = CGRectMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y+stratum.frame.size.height+kPencilMargin), self.bounds.size.width, VDY(self.activeDocument.strataHeight));
+	// top/right
+	myRect = CGRectMake(VX(stratum.frame.origin.x-kPencilMargin), VY(stratum.frame.origin.y+stratum.frame.size.height+kPencilMargin), self.bounds.size.width, VDY(self.activeDocument.strataHeight));
 	CGContextFillRect(currentContext, myRect);
+	// right
 	myRect = CGRectMake(VX(stratum.frame.origin.x+stratum.frame.size.width+kPencilMargin), VY(stratum.frame.origin.y-kPencilMargin), self.bounds.size.width, VDY(stratum.frame.size.height+2*kPencilMargin));
 	CGContextFillRect(currentContext, myRect);
-	myRect = CGRectMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y-kPencilMargin), self.bounds.size.width, -VDY(self.activeDocument.strataHeight));
+	// bottom/right
+	myRect = CGRectMake(VX(stratum.frame.origin.x-kPencilMargin), VY(stratum.frame.origin.y-kPencilMargin), self.bounds.size.width, -VDY(self.activeDocument.strataHeight));
 	CGContextFillRect(currentContext, myRect);
 }
 
@@ -151,45 +156,59 @@ void patternDrawingCallback(void *info, CGContextRef context)
 @property CGPoint iconOrigin;							// for dragging anchor or scissors icon
 @end
 
-static int outlineCount = 50;
-
 @implementation StrataView
 
 - (void)drawOutline:(Stratum *)stratum
 {
+	if (stratum.outline.count == 0) return;
+	NSMutableArray *controlPoints = [[NSMutableArray alloc] init];
+	float t = .5;
+	for (int index = 0; index < stratum.outline.count-2; ++index) {
+		CGPoint point;
+		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(stratum.outline[index]), &point);
+		float x0 = point.x;
+		float y0 = point.y;
+		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(stratum.outline[index+1]), &point);
+		float x1 = point.x;
+		float y1 = point.y;
+		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(stratum.outline[index+2]), &point);
+		float x2 = point.x;
+		float y2 = point.y;
+		float d01 = sqrtf((x1-x0)*(x1-x0)+(y1-y0)*(y1-y0));
+		float d12 = sqrtf((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
+		float fa = t*d01/(d01+d12);
+		float fb = t*d12/(d01+d12);
+		float p1x = x1-fa*(x2-x0);
+		float p1y = y1-fa*(y2-y0);
+		float p2x = x1+fb*(x2-x0);
+		float p2y = y1+fb*(y2-y0);
+		[controlPoints addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(p1x, p1y)))];
+		[controlPoints addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(p2x, p2y)))];
+	}
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
 	CGContextSaveGState(currentContext);
-	UIBezierPath *path = [UIBezierPath bezierPath];
-	// draw left boundary
-	[path moveToPoint:CGPointMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y))];
-	[path addLineToPoint:CGPointMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y+stratum.frame.size.height))];
-	for (int i=0; i<outlineCount; ++i) {												// top
-		// unadusted point, proceeding from top/left to top/right
-		CGPoint uPoint = CGPointMake(stratum.frame.origin.x+((float)i*stratum.frame.size.width/(float)outlineCount), stratum.frame.origin.y+stratum.frame.size.height);
-		if (stratum.outlineTop[i] != [NSNull null]) uPoint.y += [stratum.outlineTop[i] floatValue];
-		CGPoint vPoint = CGPointMake(VX(uPoint.x), VY(uPoint.y));
-		[path addLineToPoint:vPoint];
+	CGMutablePathRef mPath = CGPathCreateMutable();
+	CGPoint point;
+	CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(stratum.outline[0]), &point);
+	CGPathMoveToPoint(mPath, NULL, VX(point.x), VY(point.y));
+	CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(stratum.outline[1]), &point);
+	CGPoint cPoint;
+	CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(controlPoints[0]), &cPoint);
+	CGPathAddQuadCurveToPoint(mPath, NULL, VX(cPoint.x), VY(cPoint.y), VX(point.x), VY(point.y));
+	int cpIndex = 1;
+	for (int index = 2; index < stratum.outline.count-3; ++index) {
+		CGPoint cPoint1, cPoint2;
+		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(stratum.outline[index]), &point);
+		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(controlPoints[cpIndex++]), &cPoint1);
+		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(controlPoints[cpIndex++]), &cPoint2);
+		CGPathAddCurveToPoint(mPath, NULL, VX(cPoint1.x), VY(cPoint1.y), VX(cPoint2.x), VY(cPoint2.y), VX(point.x), VY(point.y));
 	}
-	for (int i=0; i<outlineCount; ++i) {												// right
-		// unadjusted point, proceeding from top/right to bottom/right
-		CGPoint uPoint = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width, stratum.frame.origin.y+stratum.frame.size.height-((float)i*stratum.frame.size.height/(float)outlineCount));
-		if (stratum.outlineRight[i] != [NSNull null]) uPoint.x += [stratum.outlineRight[i] floatValue];
-		CGPoint vPoint = CGPointMake(VX(uPoint.x), VY(uPoint.y));
-		[path addLineToPoint:vPoint];
-	}
-	for (int i=0; i<outlineCount; ++i) {												// bottom
-		// unadjusted point, proceeding from bottm/right to bottom/left
-		CGPoint uPoint = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-((float)i*stratum.frame.size.width/(float)outlineCount), stratum.frame.origin.y);
-		if (stratum.outlineBottom[i] != [NSNull null]) uPoint.y += [stratum.outlineBottom[i] floatValue];
-		CGPoint vPoint = CGPointMake(VX(uPoint.x), VY(uPoint.y));
-		[path addLineToPoint:vPoint];
-	}
-	[path closePath];
-	path.lineWidth = 3;
-	[[UIColor blackColor] setStroke];
-	[[UIColor whiteColor] setFill];
-//	[path fill];
-	[path stroke];
+	CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(controlPoints[cpIndex]), &cPoint);
+	CGPointMakeWithDictionaryRepresentation(CFBridgingRetain([stratum.outline lastObject]), &point);
+	CGPathAddQuadCurveToPoint(mPath, NULL, VX(cPoint.x), VY(cPoint.y), VX(point.x), VY(point.y));
+	CGPathCloseSubpath(mPath);
+	CGContextAddPath(currentContext, mPath);
+	CGPathRelease(mPath);
 	// apparently, we need to do this in the current context, can't cache it
 	CGColorSpaceRef patternSpace = CGColorSpaceCreatePattern(NULL);
 	CGContextSetFillColorSpace(currentContext, patternSpace);
@@ -199,13 +218,9 @@ static int outlineCount = 50;
 	};
 	CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
 	CGFloat alpha = 1;
-//	NSLog(@"mat = %d", stratum.materialNumber);
-	if (!self.dragActive) {
-		CGContextSetFillPattern(currentContext, pattern, &alpha);
-		gScale = self.scale;
-		//	CGContextFillPath(context);
-		[path fill];
-	}
+	CGContextSetFillPattern(currentContext, pattern, &alpha);
+	gScale = self.scale;
+	CGContextDrawPath(currentContext, kCGPathFillStroke);
 	CGContextRestoreGState(currentContext);
 }
 
@@ -228,71 +243,34 @@ static int outlineCount = 50;
 
 - (void)updateOutlineFromTrace
 {
-//	NSLog(@"updateOutlineFromTrace");
-	CGPoint point, pointPrevious;
 	Stratum *stratum = self.selectedStratum;
-	for (int index = 1; index < self.overlayContainer.tracePoints.count; ++index) {
-		NSDictionary *dict = self.overlayContainer.tracePoints[index];
-		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(dict), &point);
-		NSDictionary *dictPrevious = self.overlayContainer.tracePoints[index-1];
-		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(dictPrevious), &pointPrevious);
-		if (point.y > stratum.frame.origin.y + stratum.frame.size.height - kPencilMargin) {												// top
-			int quartilePoint = ((point.x-stratum.frame.origin.x)/stratum.frame.size.width)*outlineCount;								// quartile to which the current point belongs
-			int quartilePrevious = ((pointPrevious.x-stratum.frame.origin.x)/stratum.frame.size.width)*outlineCount;					// quartile to which the previous point belongs
-			float yPrevious = pointPrevious.y-(stratum.frame.origin.y+stratum.frame.size.height);										// y displacement of previous point
-			float y = point.y-(stratum.frame.origin.y+stratum.frame.size.height);														// y displacement of current point
-//			NSLog(@"index = %d, x = %f, y = %f, xPrev = %f, yPrev = %f", index, point.x, y, pointPrevious.x, yPrevious);
-			if (point.x < pointPrevious.x) {																							// if x is decreasing, swap
-				int temp = quartilePoint;
-				quartilePoint = quartilePrevious;
-				quartilePrevious = temp;
-				float yTemp = y;
-				y = yPrevious;
-				yPrevious = yTemp;
-			}
-			for (int i=quartilePrevious; i<quartilePoint; ++i) {																		// for each intervening quartile
-				float xQuartileI = stratum.frame.origin.x+((float)i*stratum.frame.size.width/(float)outlineCount);						// x coordinate of ith quartile
-				float yQuartile = yPrevious+(y-yPrevious)*((xQuartileI-pointPrevious.x)/(point.x-pointPrevious.x));						// y displacement using interpolation of current and previous
-//				NSLog(@"i = %d, xQuartileI = %f, yQuartile = %f", i, xQuartileI, yQuartile);
-				stratum.outlineTop[i] = [NSNumber numberWithFloat:yQuartile];
-			}
-		} else if (point.x > stratum.frame.origin.x + stratum.frame.size.width - kPencilMargin) {										// right
-		} else {																														// bottom
-		}
-		CFRelease((__bridge CFTypeRef)(dict));
-		CFRelease((__bridge CFTypeRef)(dictPrevious));
-	}
-#if 0
-	if (point.y > stratum.frame.origin.y + stratum.frame.size.height - kPencilMargin) {												// top
-		int index = (float)outlineCount*(point.x-stratum.frame.origin.x)/stratum.frame.size.width;									// with respect to top/left corner (clockwise)
-		if (index>=0 && index<outlineCount)
-			stratum.outlineTop[index] = [NSNumber numberWithFloat:point.y-(stratum.frame.origin.y+stratum.frame.size.height)];
-	} else if (point.x > stratum.frame.origin.x + stratum.frame.size.width - kPencilMargin) {										// right
-		int index = (float)outlineCount*-(point.y-(stratum.frame.origin.y+stratum.frame.size.height))/stratum.frame.size.height;	// with respect to top/right corner (clockwise)
-		if (index>= 0 && index<outlineCount)
-			stratum.outlineRight[index] = [NSNumber numberWithFloat:point.x-(stratum.frame.origin.x+stratum.frame.size.width)];
-	} else {																														// bottom
-		int index = (float)outlineCount*-(point.x-(stratum.frame.origin.x+stratum.frame.size.width))/stratum.frame.size.width;		// with respect to bottom/right corner (clockwise)
-		if (index>= 0 && index<outlineCount)
-			stratum.outlineBottom[index] = [NSNumber numberWithFloat:point.y-stratum.frame.origin.y];
-	}
-#endif
+	[stratum.outline removeAllObjects];
+	if (!stratum.outline) stratum.outline = [[NSMutableArray alloc] init];
+	for (int index = 0; index < self.overlayContainer.tracePoints.count; index += 10)
+		[stratum.outline addObject:self.overlayContainer.tracePoints[index]];
+	[stratum.outline addObject:[self.overlayContainer.tracePoints lastObject]];
 }
+
+/*
+ Handle touch events in pencil mode
+ */
 
 - (void)pencilTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	CGPoint dragPoint = [self getDragPoint:event];
 	self.pencilTouchBeganInEditRegion = [self inPencilEditRegion:dragPoint];
-	if (!self.pencilTouchBeganInEditRegion) return;
+//	if (!self.pencilTouchBeganInEditRegion) return;
 	CGPoint viewPoint = CGPointMake(VX(dragPoint.x), VY(dragPoint.y));
+	[self.traceContainer.tracePoints removeAllObjects];
 	[self.traceContainer addPoint:viewPoint];
+	[self.overlayContainer.tracePoints removeAllObjects];
 	[self.overlayContainer addPoint:dragPoint];
 //	[self editOutline:dragPoint];
 }
 
 - (void)pencilTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 {
-	if (!self.pencilTouchBeganInEditRegion) return;
+//	if (!self.pencilTouchBeganInEditRegion) return;
 	CGPoint dragPoint = [self getDragPoint:event];
 //	[self editOutline:dragPoint];
 	CGPoint viewPoint = CGPointMake(VX(dragPoint.x), VY(dragPoint.y));
@@ -304,7 +282,7 @@ static int outlineCount = 50;
 
 - (void)pencilTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
 {
-	if (!self.pencilTouchBeganInEditRegion) return;
+//	if (!self.pencilTouchBeganInEditRegion) return;
 	[self.traceContainer.tracePoints removeAllObjects];
 	[self.traceContainer.trace setNeedsDisplay];
 	[self updateOutlineFromTrace];
@@ -421,20 +399,8 @@ static int outlineCount = 50;
 	self.overlayContainer.origin = self.origin;
 	self.overlayContainer.activeDocument = self.activeDocument;
 	self.overlayContainer.strataView = self;
-	if (stratum.outlineTop == nil) {
-		stratum.outlineTop = [[NSMutableArray alloc] init];
-		for (int i=0; i<outlineCount; ++i)
-			[stratum.outlineTop addObject:[NSNull null]];
-	}
-	if (stratum.outlineRight == nil) {
-		stratum.outlineRight = [[NSMutableArray alloc] init];
-		for (int i=0; i<outlineCount; ++i)
-			[stratum.outlineRight addObject:[NSNull null]];
-	}
-	if (stratum.outlineBottom == nil) {
-		stratum.outlineBottom = [[NSMutableArray alloc] init];
-		for (int i=0; i<outlineCount; ++i)
-			[stratum.outlineBottom addObject:[NSNull null]];
+	if (stratum.outline == nil) {
+		stratum.outline = [[NSMutableArray alloc] init];
 	}
 	[self.overlayContainer.overlay setNeedsDisplay];
 }
@@ -581,7 +547,7 @@ static int outlineCount = 50;
 			CGSize newSize = CGSizeMake(iconLocation.x-stratum.frame.origin.x, iconLocation.y-stratum.frame.origin.y);
 			[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];	// here's where the work is done
 		}
-		if (stratum.outlineTop == nil && stratum.outlineRight == nil && stratum.outlineBottom == nil) {
+		if (stratum.outline == nil) {
 			CGRect myRect = CGRectMake(VX(stratum.frame.origin.x),							// stratum rectangle
 									   VY(stratum.frame.origin.y),
 									   VDX(stratum.frame.size.width),

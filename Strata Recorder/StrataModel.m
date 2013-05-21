@@ -178,9 +178,7 @@
 	self.hasPageCutter = [aDecoder decodeBoolForKey:@"hasPageCutter"];
 	self.hasAnchor = [aDecoder decodeBoolForKey:@"hasAnchor"];
 	self.paleoCurrents = [aDecoder decodeObjectForKey:@"paleocurrents"];
-	self.outlineTop = [aDecoder decodeObjectForKey:@"outlineTop"];
-	self.outlineRight = [aDecoder decodeObjectForKey:@"outlineRight"];
-	self.outlineBottom = [aDecoder decodeObjectForKey:@"outlineBottom"];
+	self.outline = [aDecoder decodeObjectForKey:@"outline"];
 	return self;
 }
 
@@ -191,9 +189,7 @@
 	[aCoder encodeBool:self.hasPageCutter forKey:@"hasPageCutter"];
 	[aCoder encodeBool:self.hasAnchor forKey:@"hasAnchor"];
 	[aCoder encodeObject:self.paleoCurrents forKey:@"paleocurrents"];
-	[aCoder encodeObject:self.outlineTop forKey:@"outlineTop"];
-	[aCoder encodeObject:self.outlineRight forKey:@"outlineRight"];
-	[aCoder encodeObject:self.outlineBottom forKey:@"outlineBottom"];
+	[aCoder encodeObject:self.outline forKey:@"outline"];
 }
 
 @end
