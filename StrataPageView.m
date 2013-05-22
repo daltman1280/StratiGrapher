@@ -121,16 +121,8 @@
 		if ([self.activeDocument.strata indexOfObject:stratum] == self.activeDocument.strata.count-1) break;	// don't draw last empty stratum
 		CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
 		CGContextSetFillPattern(currentContext, pattern, &alpha);
-		if (stratum.outline == nil) {															// no outline, treat it as a rectangle
-			stratumRect = [self RectUtoV:stratumRect];											// convert to view coordinates
-#if 0
-			if (self.mode == PDFMode) {															// fill it with white
-				CGContextSetFillColorWithColor(currentContext, colorWhite);
-				CGContextFillRect(currentContext, stratumRect);
-				CGContextSetStrokeColorWithColor(currentContext, colorBlack);
-				CGContextStrokeRect(currentContext, stratumRect);
-			}
-#endif
+		if (stratum.outline == nil) {														// no outline, treat it as a rectangle
+			stratumRect = [self RectUtoV:stratumRect];										// convert to view coordinates
 			CGContextFillRect(currentContext, stratumRect);
 			CGContextStrokeRect(currentContext, stratumRect);
 		} else {																			// has an outline
