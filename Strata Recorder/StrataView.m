@@ -29,6 +29,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	int patternIndex = (info) ? (int) info-601 : 3;												// treat pattern 0 as 604 (which is blank)
 	int columnIndex = patternIndex % 5;
 	CGContextTranslateCTM(context, -(55*columnIndex)+.1, +.3);									// so the ith element in the row will be at the origin
+	if (!gTransparent) {
+		CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+		CGContextFillRect(context, CGContextGetClipBoundingBox(context));
+	}
 	CGContextDrawPDFPage(context, [((NSValue *)gPageArray[patternIndex/5]) pointerValue]);		// draw the requested pattern rectangle from the PDF materials patterns page
 }
 
@@ -551,6 +555,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 					
 - (void)drawRect:(CGRect)rect
 {
+	gTransparent = YES;
 	[self drawGraphPaper:rect];
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
 	CGContextSetShouldAntialias(currentContext, YES);

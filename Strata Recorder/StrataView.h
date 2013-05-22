@@ -17,6 +17,7 @@ static const float kPencilMargin = 0.1;
 
 NSMutableArray *gPageArray;										// array of NSValue containing CGPDFPageRef's, one per page
 CGFloat gScale;
+BOOL gTransparent;
 
 void patternDrawingCallback(void *info, CGContextRef context);
 

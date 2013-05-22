@@ -48,6 +48,7 @@
 
 - (void)drawRect:(CGRect)rect
 {
+	gTransparent = NO;
 	if (self.mode == PDFMode) {
 		NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 		NSString *pdfFile = [documentsFolder stringByAppendingFormat:@"/%@.pdf", self.activeDocument.name];
