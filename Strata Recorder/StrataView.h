@@ -11,6 +11,8 @@
 #import "StrataViewController.h"
 #import "StrataModel.h"
 
+static const float kPencilMargin = 0.1;
+
 //	globals for use with callback function
 
 NSMutableArray *gPageArray;										// array of NSValue containing CGPDFPageRef's, one per page
@@ -53,6 +55,7 @@ void patternDrawingCallback(void *info, CGContextRef context);
 - (void)handlePencilTap:(Stratum *)stratum;
 - (void)handlePaleoTap:(PaleoCurrent *)paleo inStratum:(Stratum *)stratum;
 - (void)drawOutline:(Stratum *)stratum;
++ (NSMutableArray *)populateControlPoints:(Stratum *)stratum;
 
 @property CGFloat scale;
 @property UILabel* locationLabel;

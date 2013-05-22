@@ -15,8 +15,6 @@
 #import "StrataViewController.h"
 #import "StrataNotifications.h"
 
-static const float kPencilMargin = 0.1;
-
 /*
  A static callback function for drawing stratigraphic patterns. Uses a matrix of pattern swatches contained in a manually prepared
  PDF, which contains rows of 5 elements each, one row per PDF page, arranged sequentially according to pattern number. Each item is a rectangle of 55
@@ -61,6 +59,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			[path addLineToPoint:point];
 		CFRelease((__bridge CFTypeRef)(dict));
 	}
+	[path setLineWidth:3];
 	[path stroke];
 	UIGraphicsPopContext();
 }
@@ -158,20 +157,20 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 @implementation StrataView
 
-- (void)drawOutline:(Stratum *)stratum
++ (NSMutableArray *)populateControlPoints:(Stratum *)stratum
 {
-	if (stratum.outline.count == 0) return;
 	NSMutableArray *controlPoints = [[NSMutableArray alloc] init];
-	float t = .5;
+	float t = .5;															// smoothness coefficient, arbitrary value
+	// create a pair of control points for each vertex (except for first and last vertex)
 	for (int index = 0; index < stratum.outline.count-2; ++index) {
 		CGPoint point;
-		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(stratum.outline[index]), &point);
+		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(stratum.outline[index]), &point);
 		float x0 = point.x;
 		float y0 = point.y;
-		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(stratum.outline[index+1]), &point);
+		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(stratum.outline[index+1]), &point);
 		float x1 = point.x;
 		float y1 = point.y;
-		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(stratum.outline[index+2]), &point);
+		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(stratum.outline[index+2]), &point);
 		float x2 = point.x;
 		float y2 = point.y;
 		float d01 = sqrtf((x1-x0)*(x1-x0)+(y1-y0)*(y1-y0));
@@ -185,26 +184,47 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		[controlPoints addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(p1x, p1y)))];
 		[controlPoints addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(p2x, p2y)))];
 	}
+	return controlPoints;
+}
+
+- (void)drawOutline:(Stratum *)stratum
+{
+	if (stratum.outline.count == 0) return;
+	NSMutableArray *controlPoints = [StrataView populateControlPoints:stratum];
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
 	CGContextSaveGState(currentContext);
+	CGContextSetLineWidth(currentContext, 3);
+	// draw left boundary, before setting clipping path
+	CGContextMoveToPoint(currentContext, VX(stratum.frame.origin.x), VY(stratum.frame.origin.y));
+	CGContextAddLineToPoint(currentContext, VX(stratum.frame.origin.x), VY(stratum.frame.origin.y+stratum.frame.size.height));
+	CGContextStrokePath(currentContext);
+	// set clipping rectangle
+	CGContextBeginPath(currentContext);
+	// it's larger than the stratum boundary
+	CGContextAddRect(currentContext, CGRectMake(VX(stratum.frame.origin.x), VY(stratum.frame.origin.y-kPencilMargin), VDX(stratum.frame.size.width+kPencilMargin), VDY(stratum.frame.size.height+2*kPencilMargin)));
+	CGContextClip(currentContext);
+	// construct bezier path
 	CGMutablePathRef mPath = CGPathCreateMutable();
 	CGPoint point;
-	CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(stratum.outline[0]), &point);
-	CGPathMoveToPoint(mPath, NULL, VX(point.x), VY(point.y));
-	CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(stratum.outline[1]), &point);
+	CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(stratum.outline[0]), &point);
+	CGPathMoveToPoint(mPath, NULL, VX(point.x+stratum.frame.origin.x), VY(point.y+stratum.frame.origin.y));
+	CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(stratum.outline[1]), &point);
 	CGPoint cPoint;
-	CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(controlPoints[0]), &cPoint);
-	CGPathAddQuadCurveToPoint(mPath, NULL, VX(cPoint.x), VY(cPoint.y), VX(point.x), VY(point.y));
+	CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(controlPoints[0]), &cPoint);
+	// first and last curves have only a single control point
+	CGPathAddQuadCurveToPoint(mPath, NULL, VX(cPoint.x+stratum.frame.origin.x), VY(cPoint.y+stratum.frame.origin.y), VX(point.x+stratum.frame.origin.x), VY(point.y+stratum.frame.origin.y));
 	int cpIndex = 1;
 	for (int index = 2; index < stratum.outline.count-3; ++index) {
 		CGPoint cPoint1, cPoint2;
-		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(stratum.outline[index]), &point);
-		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(controlPoints[cpIndex++]), &cPoint1);
-		CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(controlPoints[cpIndex++]), &cPoint2);
-		CGPathAddCurveToPoint(mPath, NULL, VX(cPoint1.x), VY(cPoint1.y), VX(cPoint2.x), VY(cPoint2.y), VX(point.x), VY(point.y));
+		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(stratum.outline[index]), &point);
+		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(controlPoints[cpIndex++]), &cPoint1);
+		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(controlPoints[cpIndex++]), &cPoint2);
+		// grab the next pair of control points and use them for the next curve
+		CGPathAddCurveToPoint(mPath, NULL, VX(cPoint1.x+stratum.frame.origin.x), VY(cPoint1.y+stratum.frame.origin.y), VX(cPoint2.x+stratum.frame.origin.x), VY(cPoint2.y+stratum.frame.origin.y), VX(point.x+stratum.frame.origin.x), VY(point.y+stratum.frame.origin.y));
 	}
-	CGPointMakeWithDictionaryRepresentation(CFBridgingRetain(controlPoints[cpIndex]), &cPoint);
-	CGPointMakeWithDictionaryRepresentation(CFBridgingRetain([stratum.outline lastObject]), &point);
+	CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(controlPoints[cpIndex]), &cPoint);
+	CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)([stratum.outline lastObject]), &point);
+	// last curve again has a single control point
 	CGPathAddQuadCurveToPoint(mPath, NULL, VX(cPoint.x), VY(cPoint.y), VX(point.x), VY(point.y));
 	CGPathCloseSubpath(mPath);
 	CGContextAddPath(currentContext, mPath);
@@ -220,7 +240,14 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	CGFloat alpha = 1;
 	CGContextSetFillPattern(currentContext, pattern, &alpha);
 	gScale = self.scale;
-	CGContextDrawPath(currentContext, kCGPathFillStroke);
+	CGContextDrawPath(currentContext, kCGPathFillStroke);								// does fill and stroke
+	// draw points in red for debugging purposes
+	CGContextSetStrokeColorWithColor(currentContext, [UIColor colorWithRed:1 green:0 blue:0 alpha:1.0].CGColor);
+	for (NSDictionary *dict in stratum.outline) {
+		CGPoint point;
+		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &point);
+		CGContextStrokeRect(currentContext, CGRectMake(VX(point.x+stratum.frame.origin.x), VY(point.y+stratum.frame.origin.y), 1, 1));
+	}
 	CGContextRestoreGState(currentContext);
 }
 
@@ -246,8 +273,14 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	Stratum *stratum = self.selectedStratum;
 	[stratum.outline removeAllObjects];
 	if (!stratum.outline) stratum.outline = [[NSMutableArray alloc] init];
-	for (int index = 0; index < self.overlayContainer.tracePoints.count; index += 10)
-		[stratum.outline addObject:self.overlayContainer.tracePoints[index]];
+	for (int index = 0; index < self.overlayContainer.tracePoints.count; index += 5) {
+		// make its user coordinates relative to stratum frame origin
+		CGPoint point;
+		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &point);
+		point.x -= stratum.frame.origin.x;
+		point.y -= stratum.frame.origin.y;
+		[stratum.outline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(point))];
+	}
 	[stratum.outline addObject:[self.overlayContainer.tracePoints lastObject]];
 }
 

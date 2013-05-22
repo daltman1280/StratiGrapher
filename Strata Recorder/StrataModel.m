@@ -118,9 +118,21 @@
 - (void)adjustStratumSize:(CGSize)size atIndex:(int)index
 {
 	Stratum *stratum = self.strata[index];
-	CGRect frame = stratum.frame;
-	CGSize adjustment = CGSizeMake(size.width-frame.size.width, size.height-frame.size.height);
+	CGRect oldFrame = stratum.frame;
+	CGSize adjustment = CGSizeMake(size.width-oldFrame.size.width, size.height-oldFrame.size.height);
 	stratum.frame = CGRectMake(stratum.frame.origin.x, stratum.frame.origin.y, size.width, size.height);
+	if (stratum.outline && stratum.outline.count) {
+		float xScale = stratum.frame.size.width/oldFrame.size.width;
+		float yScale = stratum.frame.size.height/oldFrame.size.height;
+		for (int index = 0; index < stratum.outline.count; ++index) {
+			NSDictionary *dict = stratum.outline[index];
+			CGPoint point;
+			CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &point);
+			point.x *= xScale;
+			point.y *= yScale;
+			[stratum.outline replaceObjectAtIndex:index withObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(point))];
+		}
+	}
 	for (int i=index+1; i<self.strata.count; ++i) {															// offset origins of all following strata
 		Stratum *stratum = self.strata[i];
 		stratum.frame = CGRectOffset(stratum.frame, 0, adjustment.height);

@@ -37,6 +37,7 @@
 
 - (id)initWithFrame:(CGRect)frame;
 
+// persistent properties
 @property CGRect			frame;				// in user coordinates
 @property int				materialNumber;
 @property BOOL				hasPageCutter;		// does it have a page boundary attached?
