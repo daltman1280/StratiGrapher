@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Strata Recorder/StrataView.m"
-         timestampString = "390964146.475129"
+         timestampString = "391011971.049877"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "625"
-         endingLineNumber = "625"
+         startingLineNumber = "632"
+         endingLineNumber = "632"
          landmarkName = "-drawRect:"
          landmarkType = "5">
          <Actions>
@@ -29,11 +29,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Strata Recorder/StrataView.m"
-         timestampString = "390964146.475129"
+         timestampString = "391011971.049877"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "691"
-         endingLineNumber = "691"
+         startingLineNumber = "698"
+         endingLineNumber = "698"
          landmarkName = "@implementation StrataView"
          landmarkType = "3">
          <Actions>
@@ -50,11 +50,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Strata Recorder/StrataView.m"
-         timestampString = "390964146.475129"
+         timestampString = "391011971.049877"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "513"
-         endingLineNumber = "513"
+         startingLineNumber = "520"
+         endingLineNumber = "520"
          landmarkName = "-handlePaleoTap:inStratum:"
          landmarkType = "5">
       </FileBreakpoint>
