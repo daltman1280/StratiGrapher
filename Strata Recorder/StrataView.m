@@ -280,6 +280,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 {
 	Stratum *stratum = self.selectedStratum;
 	if (stratum.outline && stratum.outline.count > 0 && self.overlayContainer.tracePoints.count > 1) {				// edit existing stratum outline
+		// case 1: endpoints of trace are near interior points of outline, replace a section of outline with trace
+		BOOL traceReversed = NO;																					// trace is in opposite polarity from outline
 		CGPoint p1, p2;
 		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.overlayContainer.tracePoints[0]), &p1);
 		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)([self.overlayContainer.tracePoints lastObject]), &p2);
@@ -287,7 +289,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		p1.y -= stratum.frame.origin.y;
 		p2.x -= stratum.frame.origin.x;
 		p2.y -= stratum.frame.origin.y;
-		// case 1: endpoints of trace are near interior points of outline, replace a section of outline with trace
 		float d1Min = HUGE_VALF, d2Min = HUGE_VALF;
 		int d1MinIndex = -1, d2MinIndex = -1;																		// -1 indicates it's uninitialized
 		for (int index = 0; index < stratum.outline.count; ++index) {
@@ -304,22 +305,36 @@ void patternDrawingCallback(void *info, CGContextRef context)
 				d2MinIndex = index;
 			}
 		}
+		if (d1MinIndex > d2MinIndex) {																				// d1MinIndex must always preceed d2MinIndex
+			traceReversed = YES;
+			int temp = d1MinIndex;
+			d1MinIndex = d2MinIndex;
+			d2MinIndex = temp;
+		}
 		// replace points in outline between d1MinIndex and d2MinIndex with filtered trace points (minus endpoints)
 		NSMutableArray *newOutline = [[NSMutableArray alloc] init];
-		for (int index = 0; index < d1MinIndex; ++index)
+		for (int index = 0; index < d1MinIndex; ++index)															// initial segment of original outline
 			[newOutline addObject:stratum.outline[index]];
-		for (int index = 1; index < self.overlayContainer.tracePoints.count-1; index += 5) {
-			CGPoint p1;
-			CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &p1);
-			p1.x -= stratum.frame.origin.x;
-			p1.y -= stratum.frame.origin.y;
-			p2.x -= stratum.frame.origin.x;
-			p2.y -= stratum.frame.origin.y;
-			[newOutline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(p1))];
+		if (!traceReversed) {																						// add points from trace in original order
+			for (int index = 1; index < self.overlayContainer.tracePoints.count-1; index += 5) {
+				CGPoint p1;
+				CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &p1);
+				p1.x -= stratum.frame.origin.x;
+				p1.y -= stratum.frame.origin.y;
+				[newOutline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(p1))];
+			}
+		} else {																									// add points from trace in reversed order
+			for (int index = self.overlayContainer.tracePoints.count-2; index > 0; index -= 5) {
+				CGPoint p1;
+				CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &p1);
+				p1.x -= stratum.frame.origin.x;
+				p1.y -= stratum.frame.origin.y;
+				[newOutline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(p1))];
+			}
 		}
-		for (int index = d2MinIndex; index < stratum.outline.count; ++index)
+		for (int index = d2MinIndex; index < stratum.outline.count; ++index)										// remaining segment of original outline
 			[newOutline addObject:stratum.outline[index]];
-		stratum.outline = newOutline;
+		stratum.outline = newOutline;																				// replace outline
 	} else if (stratum.outline && stratum.outline.count > 0 && self.overlayContainer.tracePoints.count == 1) {		// delete existing outline
 		[stratum.outline removeAllObjects];
 	} else {																										// no existing outline, make a new one
