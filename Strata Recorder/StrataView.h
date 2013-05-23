@@ -55,7 +55,7 @@ void patternDrawingCallback(void *info, CGContextRef context);
 - (void)handleStrataHeightChanged:(id)sender;
 - (void)handlePencilTap:(Stratum *)stratum;
 - (void)handlePaleoTap:(PaleoCurrent *)paleo inStratum:(Stratum *)stratum;
-- (void)drawOutline:(Stratum *)stratum;
+- (void)drawStratumOutline:(Stratum *)stratum;
 + (NSMutableArray *)populateControlPoints:(Stratum *)stratum;
 
 @property CGFloat scale;

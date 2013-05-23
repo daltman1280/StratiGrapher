@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Strata Recorder/StrataView.m"
-         timestampString = "390901564.4228"
+         timestampString = "390961998.570292"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "559"
-         endingLineNumber = "559"
+         startingLineNumber = "611"
+         endingLineNumber = "611"
          landmarkName = "-drawRect:"
          landmarkType = "5">
          <Actions>
@@ -29,13 +29,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Strata Recorder/StrataView.m"
-         timestampString = "390901564.4228"
+         timestampString = "390961998.570292"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "625"
-         endingLineNumber = "625"
-         landmarkName = "-drawRect:"
-         landmarkType = "5">
+         startingLineNumber = "677"
+         endingLineNumber = "677"
+         landmarkName = "@implementation StrataView"
+         landmarkType = "3">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.Sound">
@@ -44,6 +44,19 @@
                </ActionContent>
             </BreakpointActionProxy>
          </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Strata Recorder/StrataView.m"
+         timestampString = "390961998.570292"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "499"
+         endingLineNumber = "499"
+         landmarkName = "-handlePaleoTap:inStratum:"
+         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
    <SymbolicBreakpoints>

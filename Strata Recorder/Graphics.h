@@ -26,4 +26,6 @@ static CGFloat PPI = 132.0;												// pixels per inch (this might be differe
 #define UX(x1) (x1-PPI*self.origin.x)/PPI								// convert view (pixels) to user units (meters)
 #define UY(y1) -(y1-self.bounds.size.height+PPI*self.origin.y)/PPI		// convert view (pixels) to user units (meters)
 
+#define distance(p1,p2) sqrtf((p1.x-p2.x)*(p1.x-p2.x)+(p1.y-p2.y)*(p1.y-p2.y))
+
 #endif

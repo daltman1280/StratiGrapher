@@ -41,7 +41,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
  
  TraceLayer class: custom CALayer
  
- Purpose: to display the path representing the touch events during the sequence of events. We can't keep up with the touch events if we have to call drawOutline for each 
+ Purpose: to display the path representing the touch events during the sequence of events. We can't keep up with the touch events if we have to call drawStratumOutline for each
  touch event. We simply display the path of touch events, until touchesEnded.
  */
 
@@ -94,7 +94,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	UIGraphicsPushContext(ctx);
 	if (self.overlayVisible) {
 		[self drawPencilHighlighting];
-		[self.strataView drawOutline:self.selectedPencilStratum];
+		[self.strataView drawStratumOutline:self.selectedPencilStratum];
 	}
 	UIGraphicsPopContext();
 }
@@ -113,7 +113,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	 the user is allowed to draw/edit the boundary in freehand.
 	 */
 	Stratum *stratum = self.selectedPencilStratum;
-	// center
+	// center: TODO: bypass if stratum is too shallow
 	CGRect myRect = CGRectMake(VX(stratum.frame.origin.x-kPencilMargin), VY(stratum.frame.origin.y+kPencilMargin), VDX(stratum.frame.size.width), VDY(stratum.frame.size.height-2*kPencilMargin));
 	CGContextFillRect(currentContext, myRect);
 	// left
@@ -161,11 +161,15 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 @implementation StrataView
 
+/*
+ Algorithm from http://scaledinnovation.com/analytics/splines/aboutSplines.html
+ */
+
 + (NSMutableArray *)populateControlPoints:(Stratum *)stratum
 {
 	NSMutableArray *controlPoints = [[NSMutableArray alloc] init];
 	float t = .5;															// smoothness coefficient, arbitrary value
-	// create a pair of control points for each vertex (except for first and last vertex)
+	// create a pair of control points shared between each pair of adjoining vertices
 	for (int index = 0; index < stratum.outline.count-2; ++index) {
 		CGPoint point;
 		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(stratum.outline[index]), &point);
@@ -191,7 +195,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	return controlPoints;
 }
 
-- (void)drawOutline:(Stratum *)stratum
+- (void)drawStratumOutline:(Stratum *)stratum
 {
 	if (stratum.outline.count == 0) return;
 	NSMutableArray *controlPoints = [StrataView populateControlPoints:stratum];
@@ -229,7 +233,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(controlPoints[cpIndex]), &cPoint);
 	CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)([stratum.outline lastObject]), &point);
 	// last curve again has a single control point
-	CGPathAddQuadCurveToPoint(mPath, NULL, VX(cPoint.x), VY(cPoint.y), VX(point.x), VY(point.y));
+	CGPathAddQuadCurveToPoint(mPath, NULL, VX(cPoint.x+stratum.frame.origin.x), VY(cPoint.y+stratum.frame.origin.y), VX(point.x+stratum.frame.origin.x), VY(point.y+stratum.frame.origin.y));
 	CGPathCloseSubpath(mPath);
 	CGContextAddPath(currentContext, mPath);
 	CGPathRelease(mPath);
@@ -275,17 +279,65 @@ void patternDrawingCallback(void *info, CGContextRef context)
 - (void)updateOutlineFromTrace
 {
 	Stratum *stratum = self.selectedStratum;
-	[stratum.outline removeAllObjects];
-	if (!stratum.outline) stratum.outline = [[NSMutableArray alloc] init];
-	for (int index = 0; index < self.overlayContainer.tracePoints.count; index += 5) {
-		// make its user coordinates relative to stratum frame origin
+	if (stratum.outline && stratum.outline.count > 0 && self.overlayContainer.tracePoints.count > 1) {				// edit existing stratum outline
+		CGPoint p1, p2;
+		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.overlayContainer.tracePoints[0]), &p1);
+		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)([self.overlayContainer.tracePoints lastObject]), &p2);
+		p1.x -= stratum.frame.origin.x;
+		p1.y -= stratum.frame.origin.y;
+		p2.x -= stratum.frame.origin.x;
+		p2.y -= stratum.frame.origin.y;
+		// case 1: endpoints of trace are near interior points of outline, replace a section of outline with trace
+		float d1Min = HUGE_VALF, d2Min = HUGE_VALF;
+		int d1MinIndex = -1, d2MinIndex = -1;																		// -1 indicates it's uninitialized
+		for (int index = 0; index < stratum.outline.count; ++index) {
+			CGPoint pOutline;
+			CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(stratum.outline[index]), &pOutline);
+			float d1 = distance(pOutline, p1);
+			if (d1 < d1Min) {
+				d1Min = d1;
+				d1MinIndex = index;
+			}
+			float d2 = distance(pOutline, p2);
+			if (d2 < d2Min) {
+				d2Min = d2;
+				d2MinIndex = index;
+			}
+		}
+		// replace points in outline between d1MinIndex and d2MinIndex with filtered trace points (minus endpoints)
+		NSMutableArray *newOutline = [[NSMutableArray alloc] init];
+		for (int index = 0; index < d1MinIndex; ++index)
+			[newOutline addObject:stratum.outline[index]];
+		for (int index = 1; index < self.overlayContainer.tracePoints.count-1; index += 5) {
+			CGPoint p1;
+			CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &p1);
+			p1.x -= stratum.frame.origin.x;
+			p1.y -= stratum.frame.origin.y;
+			p2.x -= stratum.frame.origin.x;
+			p2.y -= stratum.frame.origin.y;
+			[newOutline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(p1))];
+		}
+		for (int index = d2MinIndex; index < stratum.outline.count; ++index)
+			[newOutline addObject:stratum.outline[index]];
+		stratum.outline = newOutline;
+	} else if (stratum.outline && stratum.outline.count > 0 && self.overlayContainer.tracePoints.count == 1) {		// delete existing outline
+		[stratum.outline removeAllObjects];
+	} else {																										// no existing outline, make a new one
+		// TODO: this is very crude, it should recognize significant points, take curvature into account
+		if (!stratum.outline) stratum.outline = [[NSMutableArray alloc] init];
 		CGPoint point;
-		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &point);
+		for (int index = 0; index < self.overlayContainer.tracePoints.count; index += 5) {
+			// make its user coordinates relative to stratum frame origin
+			CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &point);
+			point.x -= stratum.frame.origin.x;
+			point.y -= stratum.frame.origin.y;
+			[stratum.outline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(point))];
+		}
+		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)([self.overlayContainer.tracePoints lastObject]), &point);
 		point.x -= stratum.frame.origin.x;
 		point.y -= stratum.frame.origin.y;
 		[stratum.outline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(point))];
 	}
-	[stratum.outline addObject:[self.overlayContainer.tracePoints lastObject]];
 }
 
 /*
@@ -302,14 +354,12 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	[self.traceContainer addPoint:viewPoint];
 	[self.overlayContainer.tracePoints removeAllObjects];
 	[self.overlayContainer addPoint:dragPoint];
-//	[self editOutline:dragPoint];
 }
 
 - (void)pencilTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 {
 //	if (!self.pencilTouchBeganInEditRegion) return;
 	CGPoint dragPoint = [self getDragPoint:event];
-//	[self editOutline:dragPoint];
 	CGPoint viewPoint = CGPointMake(VX(dragPoint.x), VY(dragPoint.y));
 	[self.traceContainer addPoint:viewPoint];
 	[self.traceContainer.trace setNeedsDisplay];
@@ -326,7 +376,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	[self.overlayContainer.overlay setNeedsDisplay];
 }
 
-- (void)populateIconLocations
+- (void)populateMoveIconLocations
 {
 	self.iconLocations = [[NSMutableArray alloc] init];
     for (Stratum *stratum in self.activeDocument.strata) {
@@ -354,7 +404,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 {
 	_activeDocument = activeDocument;
 	[self handleStrataHeightChanged:self];
-	[self populateIconLocations];														// we're overriding the setter, because this is a good time to do this
+	[self populateMoveIconLocations];														// we're overriding the setter, because this is a good time to do this
 }
 
 /*
@@ -542,7 +592,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	}
 	self.dragActive = NO;
 	self.selectedPaleoCurrent = nil;
-	[self populateIconLocations];																		// re-populate move icon coordinates
+	[self populateMoveIconLocations];																		// re-populate move icon coordinates
 	if (!self.pencilActive)
 		[self setNeedsDisplay];																			// still causes extra redraw when exiting pencil highlighting mode
 }
@@ -585,7 +635,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			CGSize newSize = CGSizeMake(iconLocation.x-stratum.frame.origin.x, iconLocation.y-stratum.frame.origin.y);
 			[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];	// here's where the work is done
 		}
-		if (stratum.outline == nil) {
+		if (stratum.outline == nil || stratum.outline.count == 0) {
 			CGRect myRect = CGRectMake(VX(stratum.frame.origin.x),							// stratum rectangle
 									   VY(stratum.frame.origin.y),
 									   VDX(stratum.frame.size.width),
@@ -599,7 +649,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			}
 			CGContextStrokeRect(currentContext, myRect);									// draw boundary
 		} else
-			[self drawOutline:stratum];
+			[self drawStratumOutline:stratum];
 		if (stratum.hasPageCutter) [self.scissorsIcon drawAtPoint:CGPointMake(-0.25, stratum.frame.origin.y) scale:self.scale];
 		if (stratum.hasAnchor) [self.anchorIcon drawAtPoint:CGPointMake(-0.5, stratum.frame.origin.y) scale:self.scale];
 		for (PaleoCurrent *paleo in stratum.paleoCurrents)
