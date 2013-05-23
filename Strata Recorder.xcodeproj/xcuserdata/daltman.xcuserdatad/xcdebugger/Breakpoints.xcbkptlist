@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Strata Recorder/StrataView.m"
-         timestampString = "391011971.049877"
+         timestampString = "391021952.868543"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "632"
-         endingLineNumber = "632"
+         startingLineNumber = "626"
+         endingLineNumber = "626"
          landmarkName = "-drawRect:"
          landmarkType = "5">
          <Actions>
@@ -29,11 +29,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Strata Recorder/StrataView.m"
-         timestampString = "391011971.049877"
+         timestampString = "391021952.868543"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "698"
-         endingLineNumber = "698"
+         startingLineNumber = "692"
+         endingLineNumber = "692"
          landmarkName = "@implementation StrataView"
          landmarkType = "3">
          <Actions>
@@ -50,12 +50,25 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Strata Recorder/StrataView.m"
-         timestampString = "391011971.049877"
+         timestampString = "391021952.868543"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "520"
-         endingLineNumber = "520"
+         startingLineNumber = "514"
+         endingLineNumber = "514"
          landmarkName = "-handlePaleoTap:inStratum:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Strata Recorder/StrataView.m"
+         timestampString = "391022783.617714"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "340"
+         endingLineNumber = "340"
+         landmarkName = "-updateOutlineFromTrace"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
