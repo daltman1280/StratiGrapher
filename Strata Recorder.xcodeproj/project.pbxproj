@@ -10,7 +10,6 @@
 		25066EDA166A5EF70095C3CC /* StrataToolsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25066ED9166A5EF70095C3CC /* StrataToolsView.m */; };
 		25066EE1166A67CB0095C3CC /* cut.png in Resources */ = {isa = PBXBuildFile; fileRef = 25066EE0166A67CB0095C3CC /* cut.png */; };
 		25066EE3166A79040095C3CC /* anchor.png in Resources */ = {isa = PBXBuildFile; fileRef = 25066EE2166A79040095C3CC /* anchor.png */; };
-		257D523616928DC1002F8B0E /* FreehandStrataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 257D523516928DC1002F8B0E /* FreehandStrataView.m */; };
 		25890D851655B2670007BC72 /* StratumMaterialsTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D841655B2670007BC72 /* StratumMaterialsTableController.m */; };
 		25890D881655D8990007BC72 /* MaterialPatternView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D871655D8990007BC72 /* MaterialPatternView.m */; };
 		25890D8B1655DAD20007BC72 /* MaterialTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D8A1655DAD20007BC72 /* MaterialTableViewCell.m */; };
@@ -59,8 +58,6 @@
 		25066ED9166A5EF70095C3CC /* StrataToolsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StrataToolsView.m; path = ../StrataToolsView.m; sourceTree = "<group>"; };
 		25066EE0166A67CB0095C3CC /* cut.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cut.png; path = images/cut.png; sourceTree = "<group>"; };
 		25066EE2166A79040095C3CC /* anchor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = anchor.png; path = images/anchor.png; sourceTree = "<group>"; };
-		257D523416928DC1002F8B0E /* FreehandStrataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FreehandStrataView.h; sourceTree = "<group>"; };
-		257D523516928DC1002F8B0E /* FreehandStrataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FreehandStrataView.m; sourceTree = "<group>"; };
 		25890D831655B2670007BC72 /* StratumMaterialsTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StratumMaterialsTableController.h; path = ../StratumMaterialsTableController.h; sourceTree = "<group>"; };
 		25890D841655B2670007BC72 /* StratumMaterialsTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StratumMaterialsTableController.m; path = ../StratumMaterialsTableController.m; sourceTree = "<group>"; };
 		25890D861655D8990007BC72 /* MaterialPatternView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MaterialPatternView.h; path = ../MaterialPatternView.h; sourceTree = "<group>"; };
@@ -172,8 +169,6 @@
 				258E5F8217152E6C006706B3 /* Default-Landscape~ipad.png */,
 				258E5F7D17152CEB006706B3 /* Default~ipad.png */,
 				25C20BB017111F40003ED123 /* ApplicationIcon.png */,
-				257D523416928DC1002F8B0E /* FreehandStrataView.h */,
-				257D523516928DC1002F8B0E /* FreehandStrataView.m */,
 				2589CF0C163F897C00E43147 /* Strata Recorder */,
 				2589CF05163F897C00E43147 /* Frameworks */,
 				2589CF03163F897C00E43147 /* Products */,
@@ -207,8 +202,6 @@
 				258E34C21657159B00E09A3A /* Views */,
 				2590C55416423E1000DB9C98 /* images */,
 				2589CF1E163F897D00E43147 /* MainStoryboard.storyboard */,
-				259339BB173C601E009B60E6 /* StratumInfoTableViewController.h */,
-				259339BC173C601E009B60E6 /* StratumInfoTableViewController.m */,
 				25890D8C16562B190007BC72 /* Materials */,
 				2589CF0D163F897C00E43147 /* Supporting Files */,
 				258E34C3165715F200E09A3A /* General */,
@@ -322,6 +315,8 @@
 				25E91B1E16633CC600AFFC0E /* SettingsTableController.h */,
 				25E91B1F16633CC600AFFC0E /* SettingsTableController.m */,
 				25E91B251663FBBF00AFFC0E /* SettingsControllerDelegate.h */,
+				259339BB173C601E009B60E6 /* StratumInfoTableViewController.h */,
+				259339BC173C601E009B60E6 /* StratumInfoTableViewController.m */,
 			);
 			name = "Popover Menus";
 			sourceTree = "<group>";
@@ -427,7 +422,6 @@
 				25F3F2F2165B568F001A2F53 /* RenameViewController.m in Sources */,
 				25E91B2016633CC600AFFC0E /* SettingsTableController.m in Sources */,
 				25066EDA166A5EF70095C3CC /* StrataToolsView.m in Sources */,
-				257D523616928DC1002F8B0E /* FreehandStrataView.m in Sources */,
 				259339BD173C601E009B60E6 /* StratumInfoTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

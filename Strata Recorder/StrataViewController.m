@@ -19,7 +19,6 @@
 #import "SettingsTableController.h"
 #import "StrataNotifications.h"
 #import "Graphics.h"
-#import "FreehandStrataView.h"
 
 typedef enum {
 	tapStateNoneSelected,
@@ -33,7 +32,6 @@ typedef enum {
 @interface StrataViewController () <UIScrollViewDelegate>
 
 @property (nonatomic) IBOutlet StrataView *strataView;
-@property (weak, nonatomic) IBOutlet FreehandStrataView *freehandView;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dimensionLabel;
 @property (strong, nonatomic) IBOutlet UIScrollView *strataGraphScrollView;
@@ -352,10 +350,8 @@ typedef enum {
 	// do necessary initialization when the current document is changed
 	CGRect frame = CGRectMake(0, 0, self.strataView.frame.size.width, self.activeDocument.strataHeight*PPI);
 	self.strataView.frame = frame;														// modifying bounds would affect frame origin
-	self.freehandView.frame = frame;
 	self.toolbarTitle.title = self.activeDocument.name;
 	self.strataView.activeDocument = self.activeDocument;
-	self.freehandView.activeDocument = self.activeDocument;
 	self.strataGraphScrollView.contentSize = self.strataView.bounds.size;
 	self.strataGraphScrollView.contentOffset = CGPointMake(0, self.strataView.bounds.size.height-self.strataGraphScrollView.bounds.size.height);
 	self.strataView.scale = self.strataGraphScrollView.zoomScale;
@@ -528,7 +524,6 @@ typedef enum {
 	[self setScissorsDragView:nil];
 	[self setAnchorDragView:nil];
 	[self setPaleoCurrentDragView:nil];
-	[self setFreehandView:nil];
 	[self setPanGestureRecognizer:nil];
 	[self setPaleoCurrentSelectedView:nil];
 	[self setRotationGestureRecognizer:nil];
