@@ -2,64 +2,24 @@
 //  StratumInfoTableViewController.m
 //  Strata Recorder
 //
-//  Created by daltman on 5/9/13.
+//  Created by daltman on 5/23/13.
 //  Copyright (c) 2013 Don Altman. All rights reserved.
 //
 
+#import "StrataModel.h"
 #import "StratumInfoTableViewController.h"
-#import "StratumMaterialsTableController.h"
-#import "MaterialTableViewCell.h"
+#import "StratumMaterialsPaletteTableViewController.h"
 
 @interface StratumInfoTableViewController ()
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *addButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *removeButton;
+@property (weak, nonatomic) IBOutlet UITextField *materialTitleText;
+@property (strong, nonatomic) IBOutlet MaterialPatternView *pattern;
+@property (weak, nonatomic) IBOutlet UILabel *subtitle;
+@property (weak, nonatomic) IBOutlet UITextField *stratumWidthText;
+@property (weak, nonatomic) IBOutlet UITextField *stratumHeightText;
 
-@property NSMutableArray* materialIndexes;										// cached, sorted, material numbers from StrataDocument materialNumbersPalette
 @end
 
 @implementation StratumInfoTableViewController
-
-/*
- UINavigationControllerDelegate function
- 
- After we pop back from the Materials list, we need to rebuild the Materials Palette, in
- case we've added materials to the palette.
- */
-
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-	if (viewController == self) {
-		self.materialIndexes = [NSMutableArray arrayWithArray:[self.activeDocument.materialNumbersPalette sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"intValue" ascending:YES]]]];
-		[self.tableView reloadData];
-		int i = (self.stratum.materialNumber) ? [self.materialIndexes indexOfObject:[NSNumber numberWithInt:self.stratum.materialNumber]]+1 : 0;
-		[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
-		[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
-	}
-}
-
-/*
- OK Bar Button Item pressed. We want to update the stratum's material number, using the currently selected
- material row in our table. We want our delegate to dismiss the popover that owns us.
- */
-
-- (IBAction)handleOK:(id)sender {
-	int lineNumber = [self.tableView indexPathForSelectedRow].row;
-	if (lineNumber)														// first line is for unassigned materials
-		self.stratum.materialNumber = [self.materialIndexes[lineNumber-1] intValue];
-	else
-		self.stratum.materialNumber = 0;
-	[self.delegate performSelector:@selector(handleStratumInfoComplete:) withObject:self];
-}
-
-- (IBAction)handleRemoveMaterial:(id)sender {
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-	StratumMaterialsTableController *controller = (StratumMaterialsTableController *) segue.destinationViewController;
-	controller.activeDocument = self.activeDocument;					// so it can manage materials palette
-	controller.materialIndexes = self.materialIndexes;
-}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -70,11 +30,63 @@
     return self;
 }
 
+- (IBAction)handleSave:(id)sender {
+	self.stratum.materialNumber = self.materialNumber;
+	self.stratum.frame = CGRectMake(self.stratum.frame.origin.x, self.stratum.frame.origin.y, self.stratumWidthText.text.floatValue, self.stratumHeightText.text.floatValue);
+	[self.delegate performSelector:@selector(handleStratumInfoComplete:) withObject:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+	StratumMaterialsPaletteTableViewController *controller = (StratumMaterialsPaletteTableViewController *) segue.destinationViewController;
+	controller.materialNumber = self.materialNumber;
+	controller.activeDocument = self.activeDocument;
+	controller.stratumInfoTableViewController = self;
+	self.stratumInfoNavigationController.delegate = controller;
+}
+
+- (IBAction)handleEraseOutline:(id)sender {
+	self.stratum.outline = nil;
+}
+
+- (void)handleMaterialSelectionChanged:(int)materialNumber
+{
+	self.materialNumber = materialNumber;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-	self.clearsSelectionOnViewWillAppear = NO;
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+ 
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+	if (self.materialNumber == 0) {
+		self.materialTitleText.text = @"";
+		self.subtitle.text = @"Unassigned";
+		self.pattern.patternNumber = 0;
+		[self.pattern setNeedsDisplay];
+	} else {
+		NSString *descriptions = [NSString stringWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"patterns descriptive text" ofType:@"txt"] encoding:NSASCIIStringEncoding error:nil];
+		for (NSString *line in [descriptions componentsSeparatedByString:@"\n"]) {										// look for a material whose number matches materialNumber
+			if ([[line substringToIndex:3] intValue] == self.materialNumber) {
+				self.materialTitleText.text = [line substringToIndex:3];
+				self.subtitle.text = [line substringFromIndex:4];
+				self.pattern.patternNumber = [[line substringToIndex:3] intValue];
+				[self.pattern setNeedsDisplay];
+				break;
+			}
+		}
+	}
+	self.stratumWidthText.text = [NSString stringWithFormat:@"%.1f", self.stratum.frame.size.width];
+	self.stratumHeightText.text = [NSString stringWithFormat:@"%.1f", self.stratum.frame.size.height];
 }
 
 - (void)didReceiveMemoryWarning
@@ -85,43 +97,32 @@
 
 #pragma mark - Table view data source
 
+#if 0
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+#warning Incomplete method implementation.
     // Return the number of rows in the section.
-	return self.activeDocument.materialNumbersPalette.count+1;														// first row is for unassigned
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	MaterialTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"material"];
-	if (indexPath.row == 0) {																						// first cell is unassigned
-		[cell.title setText:@""];
-		[cell.subtitle setText:@"Unassigned"];
-		cell.pattern.patternNumber = 0;
-		[cell.pattern setNeedsDisplay];
-		return cell;
-	}
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
     // Configure the cell...
-	NSString *descriptions = [NSString stringWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"patterns descriptive text" ofType:@"txt"] encoding:NSASCIIStringEncoding error:nil];
-	int materialNumber = [self.materialIndexes[indexPath.row-1] intValue];											// convert NSSet to an array, and access indexed value
-	for (NSString *line in [descriptions componentsSeparatedByString:@"\n"]) {										// look for a material whose number matches materialNumber
-		if ([[line substringToIndex:3] intValue] == materialNumber) {
-			[cell.title setText:[line substringToIndex:3]];
-			[cell.subtitle setText:[line substringFromIndex:4]];
-			cell.pattern.patternNumber = [[line substringToIndex:3] intValue];
-			[cell.pattern setNeedsDisplay];
-			return cell;
-		}
-	}
-	return nil;
+    
+    return cell;
 }
 
+#endif
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -175,8 +176,11 @@
 }
 
 - (void)viewDidUnload {
-	[self setAddButton:nil];
-	[self setRemoveButton:nil];
+	[self setTitle:nil];
+	[self setPattern:nil];
+	[self setSubtitle:nil];
+	[self setStratumWidthText:nil];
+	[self setStratumHeightText:nil];
 	[super viewDidUnload];
 }
 @end

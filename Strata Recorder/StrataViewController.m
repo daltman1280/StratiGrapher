@@ -11,8 +11,9 @@
 
 #import "StrataViewController.h"
 #import "StrataView.h"
-#import "StratumMaterialsTableController.h"
 #import "StratumInfoTableViewController.h"
+#import "StratumMaterialsPaletteTableViewController.h"
+#import "StratumMaterialsTableController.h"
 #import "StrataPageView.h"
 #import "StrataModel.h"
 #import "DocumentListTableViewController.h"
@@ -430,11 +431,12 @@ typedef enum {
 	self.stratumInfoNavigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"StratumInfoNavigationController"];
 	self.stratumInfoTableViewController = self.stratumInfoNavigationController.viewControllers[0];
 	self.stratumInfoTableViewController.stratum = ((StrataView *)sender).selectedStratum;
-	self.stratumInfoTableViewController.delegate = self;
-	self.stratumInfoNavigationController.delegate = self.stratumInfoTableViewController;
+	self.stratumInfoTableViewController.materialNumber = self.stratumInfoTableViewController.stratum.materialNumber;
 	self.stratumInfoTableViewController.activeDocument = self.activeDocument;
+	self.stratumInfoTableViewController.stratumInfoNavigationController = self.stratumInfoNavigationController;
+	self.stratumInfoTableViewController.delegate = self;
 	self.popover = [[UIPopoverController alloc] initWithContentViewController:self.stratumInfoNavigationController];
-	[self.popover setPopoverContentSize:CGSizeMake(380, 500)];
+	[self.popover setPopoverContentSize:CGSizeMake(400, 370)];
 	[self.popover presentPopoverFromRect:CGRectMake(self.strataView.infoSelectionPoint.x, self.strataView.infoSelectionPoint.y, 1, 1) inView:self.strataView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
