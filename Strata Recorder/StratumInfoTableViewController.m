@@ -11,7 +11,7 @@
 #import "StratumMaterialsPaletteTableViewController.h"
 
 @interface StratumInfoTableViewController ()
-@property (weak, nonatomic) IBOutlet UITextField *materialTitleText;
+@property (weak, nonatomic) IBOutlet UILabel *materialTitleText;
 @property (strong, nonatomic) IBOutlet MaterialPatternView *pattern;
 @property (weak, nonatomic) IBOutlet UILabel *subtitle;
 @property (weak, nonatomic) IBOutlet UITextField *stratumWidthText;
@@ -86,8 +86,8 @@
 			}
 		}
 	}
-	self.stratumWidthText.text = [NSString stringWithFormat:@"%.1f", self.stratum.frame.size.width];
-	self.stratumHeightText.text = [NSString stringWithFormat:@"%.1f", self.stratum.frame.size.height];
+	self.stratumWidthText.text = [NSString stringWithFormat:@"%.2f", self.stratum.frame.size.width];
+	self.stratumHeightText.text = [NSString stringWithFormat:@"%.2f", self.stratum.frame.size.height];
 }
 
 - (void)didReceiveMemoryWarning

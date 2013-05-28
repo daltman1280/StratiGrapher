@@ -11,7 +11,7 @@
 
 @interface MaterialTableViewCell : UITableViewCell
 
-@property (nonatomic) IBOutlet UITextField *title;
+@property (nonatomic) IBOutlet UILabel *title;
 @property (nonatomic) IBOutlet UILabel *subtitle;
 @property (nonatomic) IBOutlet MaterialPatternView *pattern;
 
