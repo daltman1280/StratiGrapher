@@ -32,7 +32,8 @@
 
 - (IBAction)handleSave:(id)sender {
 	self.stratum.materialNumber = self.materialNumber;
-	self.stratum.frame = CGRectMake(self.stratum.frame.origin.x, self.stratum.frame.origin.y, self.stratumWidthText.text.floatValue, self.stratumHeightText.text.floatValue);
+	if (self.stratumHeightText.text.floatValue != self.stratum.frame.size.height || self.stratumWidthText.text.floatValue != self.stratum.frame.size.width)
+		[self.activeDocument adjustStratumSize:CGSizeMake(self.stratumWidthText.text.floatValue, self.stratumHeightText.text.floatValue) atIndex:[self.activeDocument.strata indexOfObject:self.stratum]];
 	[self.delegate performSelector:@selector(handleStratumInfoComplete:) withObject:self];
 }
 

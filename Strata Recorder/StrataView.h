@@ -57,6 +57,8 @@ void patternDrawingCallback(void *info, CGContextRef context);
 - (void)handlePaleoTap:(PaleoCurrent *)paleo inStratum:(Stratum *)stratum;
 - (void)drawStratumOutline:(Stratum *)stratum;
 + (NSMutableArray *)populateControlPoints:(Stratum *)stratum;
+- (void)populateMoveIconLocations;
+
 
 @property CGFloat scale;
 @property UILabel* locationLabel;

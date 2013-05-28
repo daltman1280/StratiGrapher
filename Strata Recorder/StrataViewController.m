@@ -443,6 +443,7 @@ typedef enum {
 - (void)handleStratumInfoComplete:(id)sender
 {
 	[self.popover dismissPopoverAnimated:YES];
+	[self.strataView populateMoveIconLocations];
 	[self.strataView setNeedsDisplay];
 }
 
