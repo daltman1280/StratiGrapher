@@ -20,21 +20,21 @@
 @implementation StratumMaterialsPaletteTableViewController
 
 /*
- UINavigationControllerDelegate function
+ UINavigationControllerDelegate function (called from StratumInfoNavigationController's – navigationController:willShowViewController:animated:
  
  After we pop back from the Materials list, we need to rebuild the Materials Palette, in
  case we've added materials to the palette.
+ 
+ Delegate property initialized in StratumInfoTableViewController prepareForSegue
  */
 
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+- (void)willShowViewController
 {
-	if (viewController == self) {
-		self.materialIndexes = [NSMutableArray arrayWithArray:[self.activeDocument.materialNumbersPalette sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"intValue" ascending:YES]]]];
-		[self.tableView reloadData];
-		int i = (self.materialNumber) ? [self.materialIndexes indexOfObject:[NSNumber numberWithInt:self.materialNumber]]+1 : 0;
-		[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
-		[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
-	}
+	self.materialIndexes = [NSMutableArray arrayWithArray:[self.activeDocument.materialNumbersPalette sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"intValue" ascending:YES]]]];
+	[self.tableView reloadData];
+	int i = (self.materialNumber) ? [self.materialIndexes indexOfObject:[NSNumber numberWithInt:self.materialNumber]]+1 : 0;
+	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 }
 
 - (IBAction)handleRemoveMaterial:(id)sender {

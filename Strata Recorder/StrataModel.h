@@ -30,6 +30,7 @@
 @property int				lineThickness;			// of page presentation, strata edges, in points
 @property NSString*			units;					// English or Metric
 @property float				strataHeight;			// height of model view (in physical units)
+@property NSMutableArray*	sectionLabels;			// array of NSString's
 
 @end
 
@@ -51,5 +52,12 @@
 
 @property float				rotation;			// in radians, counter-clockwise from vertical
 @property CGPoint			origin;				// with respect to LR corner of stratum
+
+@end
+
+@interface SectionLabel : NSObject <NSCoding>
+
+@property int				numberOfStrataSpanned;
+@property NSString*			labelText;
 
 @end

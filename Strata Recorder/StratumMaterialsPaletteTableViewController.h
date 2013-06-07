@@ -10,11 +10,13 @@
 #import "StrataModel.h"
 #import "StratumInfoTableViewController.h"
 
-@interface StratumMaterialsPaletteTableViewController : UITableViewController <UINavigationControllerDelegate>
+@interface StratumMaterialsPaletteTableViewController : UITableViewController
 
 @property StrataDocument *activeDocument;
 @property int materialNumber;
 @property UIViewController *delegate;
 @property StratumInfoTableViewController *stratumInfoTableViewController;
+
+- (void)willShowViewController;
 
 @end

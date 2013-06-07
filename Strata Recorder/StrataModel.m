@@ -39,6 +39,7 @@
 		}
 		self.units = @"Metric";
 		self.strataHeight = 10;
+		self.sectionLabels = [[NSMutableArray alloc] init];
 		self.pageDimension = CGSizeMake(3.5, 5.);							// hard-coded until we support document settings
 		self.pageMargins = CGSizeMake(.5, .5);
 		self.scale = 2.;
@@ -94,6 +95,8 @@
 	if (![[NSFileManager defaultManager] fileExistsAtPath:filepath])
 		return nil;
 	StrataDocument *doc = [NSKeyedUnarchiver unarchiveObjectWithFile:filepath];
+	if (doc.sectionLabels == nil)
+		doc.sectionLabels = [[NSMutableArray alloc] init];
 	doc.name = name;
 	doc.materialNumbersPalette = [[NSMutableSet alloc] init];
 	for (Stratum *stratum in doc.strata) {
@@ -151,6 +154,7 @@
 	self.lineThickness = [aDecoder decodeIntForKey:@"lineThickness"];
 	self.units = [aDecoder decodeObjectForKey:@"units"];
 	self.strataHeight = [aDecoder decodeFloatForKey:@"strataHeight"];
+	self.sectionLabels = [aDecoder decodeObjectForKey:@"sectionLabels"];
 	return self;
 }
 
@@ -163,6 +167,7 @@
 	[aCoder encodeInt:self.lineThickness forKey:@"lineThickness"];
 	[aCoder encodeObject:self.units forKey:@"units"];
 	[aCoder encodeFloat:self.strataHeight forKey:@"strataHeight"];
+	[aCoder encodeObject:self.sectionLabels forKey:@"sectionLabels"];
 }
 
 @end
@@ -222,6 +227,26 @@
 {
 	[aCoder encodeFloat:self.rotation forKey:@"rotation"];
 	[aCoder encodeCGPoint:self.origin forKey:@"origin"];
+}
+
+@end
+
+@implementation SectionLabel
+
+#pragma mark NSCoder protocol
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+	self = [super init];
+	self.numberOfStrataSpanned = [aDecoder decodeIntForKey:@"numberOfStrataSpanned"];
+	self.labelText = [aDecoder decodeObjectForKey:@"labelText"];
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+	[aCoder encodeInt:self.numberOfStrataSpanned forKey:@"numberOfStrataSpanned"];
+	[aCoder encodeObject:self.labelText forKey:@"labelText"];
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import "SettingsTableController.h"
 #import "StrataNotifications.h"
+#import "SectionLabelsTableViewController.h"
 
 @interface SettingsTableController ()
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveItem;
@@ -39,6 +40,13 @@
 - (IBAction)handlePageScaleText:(id)sender {
 	self.pageScaleSlider.value = self.pageScaleText.text.floatValue;
 }
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+	SectionLabelsTableViewController *controller = (SectionLabelsTableViewController *) segue.destinationViewController;
+	controller.activeDocument = self.activeDocument;
+}
+
 
 - (IBAction)handleSave:(id)sender {
 	// initialize our properties from our current control settings, so our SettingsControllerDelegate can use them to propagate changes made
@@ -147,7 +155,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.modalInPopover = YES;									// make this view modal (if it's in a popover, ignore outside clicks)
-	self.contentSizeForViewInPopover = CGSizeMake(460, 454);		// TODO: get the appropriate size
+	self.contentSizeForViewInPopover = CGSizeMake(460, 490);		// TODO: get the appropriate size
 }
 
 - (void)didReceiveMemoryWarning

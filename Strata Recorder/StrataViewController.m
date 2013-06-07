@@ -40,7 +40,7 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIScrollView *strataPageScrollView;
 @property (nonatomic) IBOutlet StrataPageView *strataPageView;
 @property (nonatomic) StrataDocument *activeDocument;
-@property UINavigationController* stratumInfoNavigationController;
+@property StratumInfoNavigationController* stratumInfoNavigationController;
 @property StratumMaterialsTableController* stratumMaterialsTableController;
 @property StratumInfoTableViewController* stratumInfoTableViewController;
 @property SettingsTableController* settingsTableController;
