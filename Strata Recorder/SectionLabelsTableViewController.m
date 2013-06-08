@@ -60,9 +60,11 @@
 	}
 }
 
+// delegate function called from SectionLabelDetailTableViewController handleUpdateButton
+
 - (IBAction)handleUpdateButton:(id)sender {
 	[self.tableView reloadData];
-	[self dismissViewControllerAnimated:YES completion:NULL];
+	[self dismissViewControllerAnimated:YES completion:NULL];						// TODO: why doesn't this dismiss SectionLabelDetailTableViewController tableView?
 }
 
 - (void)viewDidAppear:(BOOL)animated {
