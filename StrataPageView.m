@@ -102,13 +102,70 @@
 	float pageTop = self.activeDocument.pageDimension.height-self.activeDocument.pageMargins.height;
 	// horizontal and vertical adjustments, in inches, which take into account column membership of a stratum
 	CGPoint offset = CGPointMake(self.activeDocument.pageDimension.width-self.activeDocument.pageMargins.width-maxWidth, self.activeDocument.pageMargins.height);
+	int sectionIndex = 0;
+	int stratumSectionLower = -1;
+	int stratumSectionUpper = -1;
+	if (self.activeDocument.sectionLabels.count > 0) {
+		stratumSectionLower = stratumSectionUpper + 1;
+		stratumSectionUpper = stratumSectionLower + ((SectionLabel *)self.activeDocument.sectionLabels[sectionIndex]).numberOfStrataSpanned-1;
+	}
 	// draw strata
 	for (Stratum *stratum in self.activeDocument.strata) {
 		CGRect stratumRect = CGRectMake(stratum.frame.origin.x/scale, stratum.frame.origin.y/scale, stratum.frame.size.width/scale, stratum.frame.size.height/scale);
 		stratumRect = CGRectStandardize(stratumRect);
 		stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);
 		float stratumTop = stratumRect.origin.y+stratumRect.size.height;
-		if (stratumTop > pageTop || stratum.hasPageCutter) {
+		// need to draw a section label?
+		if (stratumSectionUpper > -1 && (stratumTop > pageTop || stratum.hasPageCutter || [self.activeDocument.strata indexOfObject:stratum] == stratumSectionUpper)) {
+			float xSectionBottom, ySectionBottom, xSectionTop, ySectionTop;
+			NSString *labelText = ((SectionLabel *)self.activeDocument.sectionLabels[sectionIndex]).labelText;
+			UIFont *font = [UIFont systemFontOfSize:24.0];
+			CGSize size = [labelText sizeWithFont:font];
+			if (stratumTop > pageTop || stratum.hasPageCutter) {							// we're at the end of a column, need to draw section label, even if more strata remain
+				xSectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.x/scale + offset.x + maxWidth+0.1;
+				ySectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.y/scale + offset.y;
+				xSectionTop = stratum.frame.origin.x/scale + offset.x + maxWidth+0.1;
+				ySectionTop = stratum.frame.origin.y/scale + offset.y;						// use bottom of stratum
+			} else {
+				xSectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.x/scale + offset.x + maxWidth+0.1;
+				ySectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.y/scale + offset.y;
+				xSectionTop = stratum.frame.origin.x/scale + offset.x + maxWidth+0.1;
+				ySectionTop = stratum.frame.origin.y/scale + stratum.frame.size.height/scale + offset.y;
+				++sectionIndex;
+			}
+			UIBezierPath *sectionLabelLine = [UIBezierPath bezierPath];
+			[sectionLabelLine moveToPoint:CGPointMake(VX(xSectionBottom), VY(ySectionBottom))];
+			[sectionLabelLine addLineToPoint:CGPointMake(VX(xSectionTop), VY(ySectionTop))];
+			[sectionLabelLine stroke];
+			[sectionLabelLine moveToPoint:CGPointMake(VX(xSectionBottom-0.05), VY(ySectionBottom))];
+			[sectionLabelLine addLineToPoint:CGPointMake(VX(xSectionBottom+0.05), VY(ySectionBottom))];
+			[sectionLabelLine stroke];
+			[sectionLabelLine moveToPoint:CGPointMake(VX(xSectionTop-0.05), VY(ySectionTop))];
+			[sectionLabelLine addLineToPoint:CGPointMake(VX(xSectionTop+0.05), VY(ySectionTop))];
+			[sectionLabelLine stroke];
+			// temporary graphics context, rotated, translated, color fill pattern space
+			CGPoint center = CGPointMake(VX(xSectionBottom), VY(ySectionTop-(ySectionTop-ySectionBottom)/2.0));
+			CGContextRef tempContext = UIGraphicsGetCurrentContext();
+			CGContextSaveGState(tempContext);
+			CGContextTranslateCTM(UIGraphicsGetCurrentContext(), center.x-size.height/2.0, center.y+size.width/2.0);
+			CGContextRotateCTM(UIGraphicsGetCurrentContext(), -M_PI/2.0);
+			CGContextSetFillColorWithColor(tempContext, colorWhite);						// to counteract CGContextSetFillColorSpace and CGContextSetFillPattern
+			CGContextFillRect(tempContext, CGRectMake(0, 0, size.width, size.height));
+			CGContextSetFillColorWithColor(tempContext, colorBlack);						// to counteract CGContextSetFillColorSpace and CGContextSetFillPattern
+			[labelText drawAtPoint:CGPointZero withFont:font];
+			CGContextRestoreGState(tempContext);
+			// end temporary graphics context
+			if (sectionIndex < self.activeDocument.sectionLabels.count) {
+				if ((stratumTop > pageTop || stratum.hasPageCutter) && stratumSectionUpper > [self.activeDocument.strata indexOfObject:stratum]) {	// will continue label in next column
+					stratumSectionLower = [self.activeDocument.strata indexOfObject:stratum];
+				} else {																	// next label
+					stratumSectionLower = stratumSectionUpper + 1;
+					stratumSectionUpper = stratumSectionLower + ((SectionLabel *)self.activeDocument.sectionLabels[sectionIndex]).numberOfStrataSpanned-1;
+				}
+			} else
+				stratumSectionUpper = -1;													// disable further stratum section labels
+		}
+		if (stratumTop > pageTop || stratum.hasPageCutter) {								// reached top of column, need to start a new column
 			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);					// undo the offset from current column
 			offset.x -= maxWidth+self.activeDocument.pageMargins.width/2.0;					// horizontal adjustment using maxwidth, and adding horizontal page margin
 			offset.y = -stratumRect.origin.y+self.activeDocument.pageMargins.height;		// vertical adjustment to make stratum sit on base page margin
@@ -140,7 +197,7 @@
 			CGContextAddRect(currentContext, CGRectMake(VX(offset.x+stratum.frame.origin.x/scale), VY(offset.y+(stratum.frame.origin.y-kPencilMargin)/scale), VDX((stratum.frame.size.width+kPencilMargin)/scale), VDY((stratum.frame.size.height+2*kPencilMargin)/scale)));
 			CGContextClip(currentContext);
 			[self addOutline:stratum offset:offset];
-			CGContextDrawPath(currentContext, kCGPathFillStroke);
+			CGContextDrawPath(currentContext, kCGPathFillStroke);							// fills and strokes path
 			CGContextRestoreGState(currentContext);
 		}
 	}

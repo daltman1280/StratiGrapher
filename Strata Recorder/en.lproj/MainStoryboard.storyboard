@@ -752,7 +752,7 @@
                                                         <action selector="handlePageScaleText:" destination="0ij-0L-Qfo" eventType="editingDidEnd" id="4cZ-pP-cpv"/>
                                                     </connections>
                                                 </textField>
-                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="10" id="SNX-Ua-VV1">
+                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="3" id="SNX-Ua-VV1">
                                                     <rect key="frame" x="505" y="11" width="85" height="23"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                     <connections>
