@@ -10,7 +10,7 @@
 #define Strata_Recorder_Graphics_h
 
 /*
- Converts between User coordinates (in inches) and screen coordinates (points, which are the Core Graphics units.
+ Converts between User coordinates (in inches) and screen coordinates (points), which are the Core Graphics units.
  If the user scale is in meters/inch, then divide by user scale to obtain units in inches.
  */
 

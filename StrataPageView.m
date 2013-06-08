@@ -52,8 +52,7 @@
 	if (self.mode == PDFMode) {
 		NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 		NSString *pdfFile = [documentsFolder stringByAppendingFormat:@"/%@.pdf", self.activeDocument.name];
-		PPI = 72.;																			// this is the default resolution of PDF format
-		self.bounds = CGRectMake(0, 0, self.activeDocument.pageDimension.width*PPI, self.activeDocument.pageDimension.height*PPI);
+		CGContextScaleCTM(UIGraphicsGetCurrentContext(), 72./132., 72./132.);
 		UIGraphicsBeginPDFContextToFile(pdfFile, self.bounds, nil);
 	}
 	if (self.mode == PDFMode)
@@ -92,18 +91,11 @@
 	CGColorSpaceRelease(patternSpace);
 	// setup graphic attributes for drawing strata rectangles
 	CGContextSetLineWidth(currentContext, self.activeDocument.lineThickness);
-	gScale = 1;
+	// horizontal and vertical adjustments, in inches, which take into account column membership of a stratum
+	CGPoint offset = CGPointMake(0, self.activeDocument.pageMargins.height);						// don't need x offset at this point, just calculating column widths
 	float scale = self.activeDocument.scale;
 	float pageTop = self.activeDocument.pageDimension.height-self.activeDocument.pageMargins.height;
-	// horizontal and vertical adjustments, in inches, which take into account column membership of a stratum
-	CGPoint offset = CGPointMake(0, self.activeDocument.pageMargins.height);						// don't need x offset at this point
-	int sectionIndex = 0;
-	int stratumSectionLower = -1;
-	int stratumSectionUpper = -1;
-	if (self.activeDocument.sectionLabels.count > 0) {
-		stratumSectionLower = stratumSectionUpper + 1;
-		stratumSectionUpper = stratumSectionLower + ((SectionLabel *)self.activeDocument.sectionLabels[sectionIndex]).numberOfStrataSpanned-1;
-	}
+	float sectionLabelsMargin = self.activeDocument.sectionLabels.count > 0 ? .1 : 0;				// in inches
 	// calculate maximum width of each strata column
 	NSMutableArray *maxWidths = [[NSMutableArray alloc] init];
 	float maxWidthTemp = 0;
@@ -116,12 +108,21 @@
 			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);					// undo the offset from current column
 			offset.y = -stratumRect.origin.y+self.activeDocument.pageMargins.height;		// vertical adjustment to make stratum sit on base page margin
 			stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);					// give it the same offset as succeeding strata in next column
-			[maxWidths addObject:[NSNumber numberWithFloat:maxWidthTemp/self.activeDocument.scale]];
+			[maxWidths addObject:[NSNumber numberWithFloat:maxWidthTemp/scale+sectionLabelsMargin]];	// in inches
 			maxWidthTemp = stratum.frame.size.width;										// reinitialize it with width of current stratum
 		} else
 			if (stratum.frame.size.width > maxWidthTemp) maxWidthTemp = stratum.frame.size.width;
 	}
-	[maxWidths addObject:[NSNumber numberWithFloat:maxWidthTemp/self.activeDocument.scale]];// last column
+	[maxWidths addObject:[NSNumber numberWithFloat:maxWidthTemp/scale+sectionLabelsMargin]];// last column
+	gScale = 1;
+	int sectionIndex = 0;
+	int stratumSectionLower = -1;
+	int stratumSectionUpper = -1;
+	if (self.activeDocument.sectionLabels.count > 0) {
+		stratumSectionLower = stratumSectionUpper + 1;
+		stratumSectionUpper = stratumSectionLower + ((SectionLabel *)self.activeDocument.sectionLabels[sectionIndex]).numberOfStrataSpanned-1;
+	}
+	// initial offset
 	offset = CGPointMake(self.activeDocument.pageDimension.width-self.activeDocument.pageMargins.width-[maxWidths[0] floatValue], self.activeDocument.pageMargins.height);
 	int columnIndex = 0;
 	// draw strata
@@ -134,17 +135,17 @@
 		if (stratumSectionUpper > -1 && (stratumTop > pageTop || stratum.hasPageCutter || [self.activeDocument.strata indexOfObject:stratum] == stratumSectionUpper)) {
 			float xSectionBottom, ySectionBottom, xSectionTop, ySectionTop;
 			NSString *labelText = ((SectionLabel *)self.activeDocument.sectionLabels[sectionIndex]).labelText;
-			UIFont *font = [UIFont systemFontOfSize:24.0];
+			UIFont *font = [UIFont systemFontOfSize:18.0];
 			CGSize size = [labelText sizeWithFont:font];
 			if (stratumTop > pageTop || stratum.hasPageCutter) {							// we're at the end of a column, need to draw section label, even if more strata remain
-				xSectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.x/scale + offset.x + [maxWidths[columnIndex] floatValue]+0.1;
+				xSectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.x/scale + offset.x + [maxWidths[columnIndex] floatValue];
 				ySectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.y/scale + offset.y;
-				xSectionTop = stratum.frame.origin.x/scale + offset.x + [maxWidths[columnIndex] floatValue]+0.1;
+				xSectionTop = stratum.frame.origin.x/scale + offset.x + [maxWidths[columnIndex] floatValue];
 				ySectionTop = stratum.frame.origin.y/scale + offset.y;						// use bottom of stratum
 			} else {
-				xSectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.x/scale + offset.x + [maxWidths[columnIndex] floatValue]+0.1;
+				xSectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.x/scale + offset.x + [maxWidths[columnIndex] floatValue];
 				ySectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.y/scale + offset.y;
-				xSectionTop = stratum.frame.origin.x/scale + offset.x + [maxWidths[columnIndex] floatValue]+0.1;
+				xSectionTop = stratum.frame.origin.x/scale + offset.x + [maxWidths[columnIndex] floatValue];
 				ySectionTop = stratum.frame.origin.y/scale + stratum.frame.size.height/scale + offset.y;
 				++sectionIndex;
 			}
@@ -182,7 +183,7 @@
 		}
 		if (stratumTop > pageTop || stratum.hasPageCutter) {								// reached top of column, need to start a new column
 			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);					// undo the offset from current column
-			offset.x -= [maxWidths[++columnIndex] floatValue]+self.activeDocument.pageMargins.width/2.0;	// horizontal adjustment using maxwidth, and adding horizontal page margin
+			offset.x -= [maxWidths[++columnIndex] floatValue]+self.activeDocument.pageMargins.width;	// horizontal adjustment using maxwidth, and adding horizontal page margin
 			offset.y = -stratumRect.origin.y+self.activeDocument.pageMargins.height;		// vertical adjustment to make stratum sit on base page margin
 			stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);					// give it the same offset as succeeding strata in next column
 		}
@@ -219,7 +220,6 @@
 	if (self.mode == PDFMode) {
 		UIGraphicsEndPDFContext();
 		self.mode = graphMode;
-		PPI = 160.;																			// reset it from PDF to graphics resolution
 	}
 	CFRelease(colorWhite);
 	CFRelease(colorBlack);
