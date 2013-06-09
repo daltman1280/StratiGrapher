@@ -46,6 +46,19 @@
 	return CGRectMake(VX(rect.origin.x), VY(rect.origin.y), VDX(rect.size.width), VDY(rect.size.height));
 }
 
+- (void)drawCrossmark:(float)x y:(float)y
+{
+	float scale = self.activeDocument.scale;
+	UIBezierPath *bleed = [UIBezierPath bezierPath];
+	[bleed moveToPoint:CGPointMake(VX(x-.1/scale), VY(y))];
+	[bleed addLineToPoint:CGPointMake(VX(x+.1/scale), VY(y))];
+	[bleed moveToPoint:CGPointMake(VX(x), VY(y-.1/scale))];
+	[bleed addLineToPoint:CGPointMake(VX(x), VY(y+.1/scale))];
+	BOOL drawCrossmarks = NO;
+	if (drawCrossmarks)
+		[bleed stroke];
+}
+
 - (void)drawRect:(CGRect)rect
 {
 	gTransparent = NO;
@@ -65,6 +78,18 @@
 	CGColorRef colorWhite = CGColorCreate(colorSpace, colorComponentsWhite);
 	CGContextSetStrokeColorWithColor(currentContext, colorBlack);
 	CFRelease(colorSpace);
+	// draw bleeds
+	{
+		CGContextSetLineWidth(currentContext, 1);
+		float marginWidth = self.activeDocument.pageMargins.width;
+		float marginHeight = self.activeDocument.pageMargins.height;
+		float pageWidth = self.activeDocument.pageDimension.width;
+		float pageHeight = self.activeDocument.pageDimension.height;
+		[self drawCrossmark:marginWidth y:marginHeight];
+		[self drawCrossmark:marginWidth y:pageHeight-marginHeight];
+		[self drawCrossmark:pageWidth-marginWidth y:marginHeight];
+		[self drawCrossmark:pageWidth-marginWidth y:pageHeight-marginHeight];
+	}
 	// draw page boundaries
 	CGContextSetLineWidth(currentContext, 3);
 	CGContextStrokeRect(currentContext, self.bounds);
