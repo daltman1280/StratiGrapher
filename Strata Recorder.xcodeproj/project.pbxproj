@@ -170,6 +170,9 @@
 		25890D8C16562B190007BC72 /* Materials */ = {
 			isa = PBXGroup;
 			children = (
+				259339BB173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.h */,
+				259339BC173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m */,
+				25C5AA151755650600A66C08 /* AddSectionLabelViewController.h */,
 				25890D831655B2670007BC72 /* StratumMaterialsTableController.h */,
 				25890D841655B2670007BC72 /* StratumMaterialsTableController.m */,
 				2592B9EF166487E6006A4497 /* StratumMaterialsControllerDelegate.h */,
@@ -220,7 +223,6 @@
 				258E34C21657159B00E09A3A /* Views */,
 				2590C55416423E1000DB9C98 /* images */,
 				2589CF1E163F897D00E43147 /* MainStoryboard.storyboard */,
-				25890D8C16562B190007BC72 /* Materials */,
 				2589CF0D163F897C00E43147 /* Supporting Files */,
 				258E34C3165715F200E09A3A /* General */,
 				258E34C01656FC2E00E09A3A /* Model */,
@@ -286,20 +288,12 @@
 		259006C21757C865004DFDC8 /* Stratum Info */ = {
 			isa = PBXGroup;
 			children = (
-				258EEBB1175657A00097951A /* SectionLabelDetailTableViewController.h */,
-				258EEBB2175657A10097951A /* SectionLabelDetailTableViewController.m */,
-				25C5AA151755650600A66C08 /* AddSectionLabelViewController.h */,
-				25C5AA161755650600A66C08 /* AddSectionLabelViewController.m */,
-				259339BB173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.h */,
-				259339BC173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m */,
-				25911D15174F218100839ED5 /* StratumInfoTableViewController.h */,
-				25911D16174F218100839ED5 /* StratumInfoTableViewController.m */,
-				258FA2EA1755178B00E439FE /* SectionLabelsTableViewController.h */,
-				258FA2EB1755178B00E439FE /* SectionLabelsTableViewController.m */,
-				258FA2EE17551AC400E439FE /* SectionLabelCell.h */,
-				258FA2EF17551AC400E439FE /* SectionLabelCell.m */,
 				259006C41757F29E004DFDC8 /* StratumInfoNavigationController.h */,
 				259006C51757F29E004DFDC8 /* StratumInfoNavigationController.m */,
+				25911D15174F218100839ED5 /* StratumInfoTableViewController.h */,
+				25911D16174F218100839ED5 /* StratumInfoTableViewController.m */,
+				25890D8C16562B190007BC72 /* Materials */,
+				2591FC8F176657F30008E40E /* Section Labels */,
 			);
 			name = "Stratum Info";
 			sourceTree = "<group>";
@@ -351,6 +345,32 @@
 			name = images;
 			sourceTree = "<group>";
 		};
+		2591FC8F176657F30008E40E /* Section Labels */ = {
+			isa = PBXGroup;
+			children = (
+				25C5AA161755650600A66C08 /* AddSectionLabelViewController.m */,
+				258EEBB1175657A00097951A /* SectionLabelDetailTableViewController.h */,
+				258EEBB2175657A10097951A /* SectionLabelDetailTableViewController.m */,
+				258FA2EA1755178B00E439FE /* SectionLabelsTableViewController.h */,
+				258FA2EB1755178B00E439FE /* SectionLabelsTableViewController.m */,
+				258FA2EE17551AC400E439FE /* SectionLabelCell.h */,
+				258FA2EF17551AC400E439FE /* SectionLabelCell.m */,
+			);
+			name = "Section Labels";
+			sourceTree = "<group>";
+		};
+		2591FC901766581B0008E40E /* Document List */ = {
+			isa = PBXGroup;
+			children = (
+				258CF6C01658CE48001E8D20 /* DocumentListTableViewController.h */,
+				258CF6C11658CE48001E8D20 /* DocumentListTableViewController.m */,
+				259FDA57165DE9300010867E /* DocumentListControllerDelegate.h */,
+				25F3F2F0165B568F001A2F53 /* RenameViewController.h */,
+				25F3F2F1165B568F001A2F53 /* RenameViewController.m */,
+			);
+			name = "Document List";
+			sourceTree = "<group>";
+		};
 		25F3F2EA165AB54C001A2F53 /* Popover Menus */ = {
 			isa = PBXGroup;
 			children = (
@@ -358,11 +378,7 @@
 				259006C21757C865004DFDC8 /* Stratum Info */,
 				2591C0A8165890C100A622A8 /* PaperListTableViewController.h */,
 				2591C0A9165890C100A622A8 /* PaperListTableViewController.m */,
-				258CF6C01658CE48001E8D20 /* DocumentListTableViewController.h */,
-				258CF6C11658CE48001E8D20 /* DocumentListTableViewController.m */,
-				259FDA57165DE9300010867E /* DocumentListControllerDelegate.h */,
-				25F3F2F0165B568F001A2F53 /* RenameViewController.h */,
-				25F3F2F1165B568F001A2F53 /* RenameViewController.m */,
+				2591FC901766581B0008E40E /* Document List */,
 			);
 			name = "Popover Menus";
 			sourceTree = "<group>";
@@ -555,6 +571,7 @@
 		2589CF27163F897D00E43147 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJCPP_ARC_ABI = YES;
 				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = "Strata Recorder/Strata Recorder.entitlements";
@@ -571,6 +588,7 @@
 		2589CF28163F897D00E43147 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJCPP_ARC_ABI = YES;
 				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = "Strata Recorder/Strata Recorder.entitlements";
