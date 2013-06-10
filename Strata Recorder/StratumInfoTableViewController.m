@@ -47,7 +47,7 @@
 }
 
 - (IBAction)handleEraseOutline:(id)sender {
-	self.stratum.outline = nil;
+	[self.stratum initializeOutline];
 }
 
 - (void)handleMaterialSelectionChanged:(int)materialNumber

@@ -37,6 +37,7 @@
 @interface Stratum : NSObject <NSCoding>
 
 - (id)initWithFrame:(CGRect)frame;
+- (void)initializeOutline;
 
 // persistent properties
 @property CGRect			frame;				// in user coordinates
