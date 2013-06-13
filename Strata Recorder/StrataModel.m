@@ -44,6 +44,7 @@
 		self.pageMargins = CGSizeMake(.5, .5);
 		self.scale = 2.;
 		self.lineThickness = 2;
+		self.materialNumbersPalette = [[NSMutableSet alloc] init];
 	}
 	return self;
 }
