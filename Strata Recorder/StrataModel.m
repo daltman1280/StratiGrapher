@@ -190,14 +190,12 @@
 {
 	self.outline = [[NSMutableArray alloc] init];
 	float numberOfSegments = 5;
-	for (float x = self.frame.origin.x; x <= self.frame.origin.x+self.frame.size.width; x += self.frame.size.width/numberOfSegments)						// left to right on bottom
-		[self.outline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(x, self.frame.origin.y)))];
-	for (float y = self.frame.origin.y; y <= self.frame.origin.y+self.frame.size.height; y += self.frame.size.height/numberOfSegments)						// up right side
+	for (float x = self.frame.origin.x, segnum = 0; segnum <= numberOfSegments; x += self.frame.size.width/numberOfSegments, ++segnum)						// left to right, on bottom
+		[self.outline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(x, 0)))];
+	for (float y = 0, segnum = 0; segnum <= numberOfSegments; y += self.frame.size.height/numberOfSegments, ++segnum)										// bottom to top, on right side
 		[self.outline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(self.frame.origin.x+self.frame.size.width, y)))];
-	for (float x = self.frame.origin.x+self.frame.size.width; x >= self.frame.origin.x; x -= self.frame.size.width/numberOfSegments)						// right to left top
-		[self.outline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(x, self.frame.origin.y+self.frame.size.height)))];
-	// last for loop fails to add last point at x origin, so we add it
-	[self.outline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(self.frame.origin.x, self.frame.origin.y+self.frame.size.height)))];
+	for (float x = self.frame.origin.x+self.frame.size.width, segnum = 0; segnum <= numberOfSegments; x -= self.frame.size.width/numberOfSegments, ++segnum)// right to left, on top
+		[self.outline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(x, self.frame.size.height)))];
 }
 
 #pragma mark NSCoder protocol
