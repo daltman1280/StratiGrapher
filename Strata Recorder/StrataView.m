@@ -25,7 +25,7 @@
  */
 void patternDrawingCallback(void *info, CGContextRef context)
 {
-	if ((int) info < 0) return;
+	if ((int) info < 0 || ((int) info == 0 && gTransparent)) return;
 	int patternIndex = (info) ? (int) info-601 : 3;												// treat pattern 0 as 604 (which is blank)
 	int columnIndex = patternIndex % 5;
 	CGContextTranslateCTM(context, -(55*columnIndex)+.1, +.3);									// so the ith element in the row will be at the origin
@@ -93,6 +93,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 {
 	UIGraphicsPushContext(ctx);
 	if (self.overlayVisible) {
+		gTransparent = YES;
 		[self drawPencilHighlighting];
 		[self.strataView drawStratumOutline:self.selectedPencilStratum];
 	}
