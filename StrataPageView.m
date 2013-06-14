@@ -277,7 +277,7 @@
 	CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(controlPoints[cpIndex]), &cPoint);
 	CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)([stratum.outline lastObject]), &point);
 	// last curve again has a single control point
-	CGPathAddQuadCurveToPoint(mPath, NULL, VX(offset.x+cPoint.x/scale), VY(offset.y+cPoint.y/scale), VX(offset.x+point.x/scale), VY(offset.y+point.y/scale));
+	CGPathAddQuadCurveToPoint(mPath, NULL, VX(offset.x+(cPoint.x+stratum.frame.origin.x)/scale), VY(offset.y+(cPoint.y+stratum.frame.origin.y)/scale), VX(offset.x+(point.x+stratum.frame.origin.x)/scale), VY(offset.y+(point.y+stratum.frame.origin.y)/scale));
 	CGPathCloseSubpath(mPath);
 	CGContextAddPath(currentContext, mPath);
 	CGPathRelease(mPath);
