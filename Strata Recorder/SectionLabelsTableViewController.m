@@ -105,14 +105,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-#if 0
-    static NSString *CellIdentifier = @"sectionLabel";
-    SectionLabelCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    // Configure the cell...
-    cell.sectionLabelText.text = ((SectionLabel *)self.activeDocument.sectionLabels[indexPath.row]).labelText;
-    return cell;
-#else
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"sectionLabel"];
 	if (cell == nil)
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"sectionLabel"];
@@ -121,7 +113,6 @@
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.showsReorderControl = YES;
 	return cell;
-#endif
 }
 
 /*

@@ -42,7 +42,7 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (IBAction)handleUpdateButton:(id)sender {
+- (IBAction)handleSaveButton:(id)sender {
 	self.sectionLabel.labelText = self.sectionLabelText.text;
 	self.sectionLabel.numberOfStrataSpanned = self.stratumSpannedStepper.value;
 	[self.delegate handleUpdateButton:self];

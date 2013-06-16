@@ -959,9 +959,9 @@
                     </tableView>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="BGc-x7-Mff"/>
-                        <barButtonItem title="Update" id="FKr-0g-qCd">
+                        <barButtonItem title="Save" id="FKr-0g-qCd">
                             <connections>
-                                <action selector="handleUpdateButton:" destination="vXt-bU-Dn8" id="aAh-z1-pzA"/>
+                                <action selector="handleSaveButton:" destination="vXt-bU-Dn8" id="GUw-Eo-VQR"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
@@ -1294,12 +1294,6 @@
         <class className="DocumentListTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DocumentListTableViewController.h"/>
             <relationships>
-                <relationship kind="action" name="handleActionDocument:"/>
-                <relationship kind="action" name="handleAddDocument:"/>
-                <relationship kind="action" name="handleDeleteDocument:"/>
-                <relationship kind="action" name="handleDuplicateDocument:"/>
-                <relationship kind="action" name="handleExportPDFButton:"/>
-                <relationship kind="action" name="handleRenameDocument:"/>
                 <relationship kind="outlet" name="actionDocument" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="addDocument" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="deleteDocument" candidateClass="UIBarButtonItem"/>
@@ -1387,10 +1381,6 @@
         <class className="StrataViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/StrataViewController.h"/>
             <relationships>
-                <relationship kind="action" name="handleModeSwitch:"/>
-                <relationship kind="action" name="handlePanGesture:" candidateClass="UIPanGestureRecognizer"/>
-                <relationship kind="action" name="handleRotationGesture:" candidateClass="UIRotationGestureRecognizer"/>
-                <relationship kind="action" name="handleTapGesture:" candidateClass="UITapGestureRecognizer"/>
                 <relationship kind="outlet" name="anchorDragView" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="anchorView" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="dimensionLabel" candidateClass="UILabel"/>
@@ -1417,6 +1407,8 @@
         <class className="StratumInfoTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumInfoTableViewController.h"/>
             <relationships>
+                <relationship kind="action" name="handleEraseOutline:"/>
+                <relationship kind="action" name="handleSave:"/>
                 <relationship kind="outlet" name="materialTitleText" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="pattern" candidateClass="MaterialPatternView"/>
                 <relationship kind="outlet" name="stratumHeightText" candidateClass="UITextField"/>
