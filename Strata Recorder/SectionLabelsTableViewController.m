@@ -64,7 +64,7 @@
 
 - (IBAction)handleUpdateButton:(id)sender {
 	[self.tableView reloadData];
-	[self dismissViewControllerAnimated:YES completion:NULL];						// TODO: why doesn't this dismiss SectionLabelDetailTableViewController tableView?
+	[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

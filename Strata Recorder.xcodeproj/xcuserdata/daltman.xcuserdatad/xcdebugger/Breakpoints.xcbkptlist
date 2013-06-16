@@ -63,11 +63,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Strata Recorder/SectionLabelsTableViewController.m"
-         timestampString = "392401563.974395"
+         timestampString = "393051659.914545"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "176"
-         endingLineNumber = "176"
+         startingLineNumber = "177"
+         endingLineNumber = "177"
          landmarkName = "-setEditing:animated:"
          landmarkType = "5">
       </FileBreakpoint>
