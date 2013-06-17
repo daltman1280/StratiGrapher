@@ -20,6 +20,8 @@
 #import "SettingsTableController.h"
 #import "StrataNotifications.h"
 #import "Graphics.h"
+#import "LegendView.h"
+#import "MaterialPatternView.h"
 
 typedef enum {
 	tapStateNoneSelected,
@@ -64,6 +66,11 @@ typedef enum {
 @property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UIRotationGestureRecognizer *rotationGestureRecognizer;
 @property tapState currentTapState;
+// legend properties
+@property (strong, nonatomic) IBOutlet LegendView *legendView;
+@property (strong, nonatomic) IBOutlet UIView *legendLineContainer;
+@property (weak, nonatomic) IBOutlet UILabel *legendLineLabel;
+@property (weak, nonatomic) IBOutlet MaterialPatternView *legendLineMaterial;
 @end
 
 @implementation StrataViewController
@@ -341,6 +348,12 @@ typedef enum {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationEnteredBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationBecameActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleStrataHeightChanged:) name:SRStrataHeightChangedNotification object:nil];
+	// initialize legend
+	self.legendView.legendLineContainer = self.legendLineContainer;
+	self.legendView.legendLineLabel = self.legendLineLabel;
+	self.legendView.legendLineMaterial = self.legendLineMaterial;
+	[self.legendView populateLegend];
+	[self.legendView populateLegend];
 }
 
 - (void)setActiveDocument:(StrataDocument *)document
@@ -401,6 +414,7 @@ typedef enum {
 - (IBAction)handleModeSwitch:(id)sender {
 	int selection = [(UISegmentedControl *)sender selectedSegmentIndex];
 	if (selection == 1) {																						// switching to page mode
+		[self.legendView populateLegend];
 		[self.strataView resignFirstResponder];
 		self.strataPageScrollView.hidden = NO;
 		[UIView beginAnimations:@"GraphToPageTransition" context:nil];
@@ -530,6 +544,10 @@ typedef enum {
 	[self setPanGestureRecognizer:nil];
 	[self setPaleoCurrentSelectedView:nil];
 	[self setRotationGestureRecognizer:nil];
+	[self setLegendView:nil];
+	[self setLegendLineContainer:nil];
+	[self setLegendLineLabel:nil];
+	[self setLegendLineMaterial:nil];
 	[super viewDidUnload];
 }
 @end

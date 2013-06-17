@@ -33,7 +33,7 @@
 	CGContextSetFillColorSpace(currentContext, patternSpace);
 	CGColorSpaceRelease(patternSpace);
 	// setup graphic attributes for drawing strata rectangles
-	CGContextSetLineWidth(currentContext, 1);
+	CGContextSetLineWidth(currentContext, 2);
 	CGFloat colorComponents[4] = {0, 0, 0, 1.};
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 	CGColorRef color = CGColorCreate(colorSpace, colorComponents);
@@ -44,7 +44,12 @@
 	CGContextSetFillPattern(currentContext, pattern, &alpha);
 	gScale = 1;
 	CGContextFillRect(currentContext, self.bounds);										// draw fill pattern
-	CGContextStrokeRect(currentContext, self.bounds);									// draw boundary
+	CGRect bounds = self.bounds;
+	bounds.origin.x++;
+	bounds.origin.y++;
+	bounds.size.width -= 2;
+	bounds.size.height -= 2;
+	CGContextStrokeRect(currentContext, bounds);									// draw boundary
 }
 
 @end

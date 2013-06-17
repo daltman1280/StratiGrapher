@@ -51,6 +51,7 @@
 		25911D17174F218100839ED5 /* StratumInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25911D16174F218100839ED5 /* StratumInfoTableViewController.m */; };
 		259129E81648491200C08897 /* move icon selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 259129E71648491200C08897 /* move icon selected.png */; };
 		25921D2C168C04D30038E9D9 /* post-it-pencil.png in Resources */ = {isa = PBXBuildFile; fileRef = 25921D2B168C04D30038E9D9 /* post-it-pencil.png */; };
+		259318F8176E602600A6341A /* LegendView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259318F7176E602600A6341A /* LegendView.m */; };
 		259339BD173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 259339BC173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m */; };
 		25C20BB117111F40003ED123 /* ApplicationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C20BB017111F40003ED123 /* ApplicationIcon.png */; };
 		25C5AA171755650600A66C08 /* AddSectionLabelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C5AA161755650600A66C08 /* AddSectionLabelViewController.m */; };
@@ -136,6 +137,8 @@
 		2591C0A9165890C100A622A8 /* PaperListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaperListTableViewController.m; sourceTree = "<group>"; };
 		25921D2B168C04D30038E9D9 /* post-it-pencil.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "post-it-pencil.png"; path = "images/post-it-pencil.png"; sourceTree = "<group>"; };
 		2592B9EF166487E6006A4497 /* StratumMaterialsControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = StratumMaterialsControllerDelegate.h; path = ../StratumMaterialsControllerDelegate.h; sourceTree = "<group>"; };
+		259318F6176E602600A6341A /* LegendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LegendView.h; path = ../LegendView.h; sourceTree = "<group>"; };
+		259318F7176E602600A6341A /* LegendView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LegendView.m; path = ../LegendView.m; sourceTree = "<group>"; };
 		259339B9173C4560009B60E6 /* Paper with illustrator strat columns.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Paper with illustrator strat columns.pdf"; sourceTree = "<group>"; };
 		259339BB173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StratumMaterialsPaletteTableViewController.h; sourceTree = "<group>"; };
 		259339BC173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StratumMaterialsPaletteTableViewController.m; sourceTree = "<group>"; };
@@ -268,6 +271,8 @@
 				25066ED9166A5EF70095C3CC /* StrataToolsView.m */,
 				2589CF21163F897D00E43147 /* StrataViewController.h */,
 				2589CF22163F897D00E43147 /* StrataViewController.m */,
+				259318F6176E602600A6341A /* LegendView.h */,
+				259318F7176E602600A6341A /* LegendView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -491,6 +496,7 @@
 				25C5AA171755650600A66C08 /* AddSectionLabelViewController.m in Sources */,
 				258EEBB3175657A10097951A /* SectionLabelDetailTableViewController.m in Sources */,
 				259006C61757F29F004DFDC8 /* StratumInfoNavigationController.m in Sources */,
+				259318F8176E602600A6341A /* LegendView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
