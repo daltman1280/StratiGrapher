@@ -128,7 +128,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" id="QEO-iq-LHP" customClass="LegendView">
-                                                <rect key="frame" x="112" y="191" width="333" height="72"/>
+                                                <rect key="frame" x="120" y="223" width="333" height="72"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Legend" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QLt-fl-t4t">
@@ -1325,6 +1325,8 @@
         <class className="AddSectionLabelViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/AddSectionLabelViewController.h"/>
             <relationships>
+                <relationship kind="action" name="handleCancel:"/>
+                <relationship kind="action" name="handleSave:"/>
                 <relationship kind="outlet" name="cancelButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="saveButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="sectionLabelText" candidateClass="UITextField"/>
@@ -1333,6 +1335,12 @@
         <class className="DocumentListTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DocumentListTableViewController.h"/>
             <relationships>
+                <relationship kind="action" name="handleActionDocument:"/>
+                <relationship kind="action" name="handleAddDocument:"/>
+                <relationship kind="action" name="handleDeleteDocument:"/>
+                <relationship kind="action" name="handleDuplicateDocument:"/>
+                <relationship kind="action" name="handleExportPDFButton:"/>
+                <relationship kind="action" name="handleRenameDocument:"/>
                 <relationship kind="outlet" name="actionDocument" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="addDocument" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="deleteDocument" candidateClass="UIBarButtonItem"/>
@@ -1358,6 +1366,8 @@
         <class className="RenameViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/RenameViewController.h"/>
             <relationships>
+                <relationship kind="action" name="handleRenameConfirm:"/>
+                <relationship kind="action" name="renameTextDidChange:"/>
                 <relationship kind="outlet" name="renameCancelButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="renameOKButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="renameText" candidateClass="UITextField"/>
@@ -1383,13 +1393,18 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SectionLabelsTableViewController.h"/>
             <relationships>
                 <relationship kind="action" name="handleAddSectionLabel:"/>
-                <relationship kind="action" name="handleSectionLabelsEdit:"/>
                 <relationship kind="action" name="handleUpdateButton:"/>
             </relationships>
         </class>
         <class className="SettingsTableController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsTableController.h"/>
             <relationships>
+                <relationship kind="action" name="handleCancel:"/>
+                <relationship kind="action" name="handlePageScaleSlider:"/>
+                <relationship kind="action" name="handlePageScaleText:"/>
+                <relationship kind="action" name="handleSave:"/>
+                <relationship kind="action" name="handleStrataHeightStepper:"/>
+                <relationship kind="action" name="handleStrataHeightText:"/>
                 <relationship kind="outlet" name="cancelItem" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="lineThicknessText" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="marginHeightText" candidateClass="UITextField"/>
@@ -1447,6 +1462,8 @@
         <class className="StratumInfoTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumInfoTableViewController.h"/>
             <relationships>
+                <relationship kind="action" name="handleEraseOutline:"/>
+                <relationship kind="action" name="handleSave:"/>
                 <relationship kind="outlet" name="materialTitleText" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="pattern" candidateClass="MaterialPatternView"/>
                 <relationship kind="outlet" name="stratumHeightText" candidateClass="UITextField"/>
@@ -1464,6 +1481,9 @@
         </class>
         <class className="StratumMaterialsTableController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumMaterialsTableController.h"/>
+            <relationships>
+                <relationship kind="action" name="handleAdd:"/>
+            </relationships>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
