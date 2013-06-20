@@ -54,7 +54,6 @@
 	if (self.strataHeightText.text.floatValue) {
 		if (self.strataHeightText.text.intValue != self.strataHeight) {
 			self.strataHeight = self.strataHeightText.text.intValue;
-			[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataHeightChangedNotification object:self];
 		}
 	}
 	if (![self.units isEqualToString:(self.unitsSelector.selectedSegmentIndex) ? @"English" : @"Metric"]) {

@@ -392,12 +392,8 @@ typedef enum {
 
 - (void)handleStrataHeightChanged:(id)sender
 {
-	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"strataHeight"]) {
-		CGRect frame = CGRectMake(0, 0, self.strataView.frame.size.width, [[[NSUserDefaults standardUserDefaults] objectForKey:@"strataHeight"] floatValue]*PPI);
-		self.strataView.frame = frame;														// modifying bounds would affect frame origin
-		self.strataView.bounds = frame;
-		self.bounds = frame;
-	}
+	CGRect frame = CGRectMake(0, 0, self.strataView.frame.size.width, self.activeDocument.strataHeight*PPI);
+	self.strataView.frame = frame;														// modifying bounds would affect frame origin
 	self.strataGraphScrollView.contentSize = self.strataView.bounds.size;
 	[self.strataView handleStrataHeightChanged:self];
 	[self.strataGraphScrollView setNeedsDisplay];														// TODO: unsuccessful at displaying new view height
@@ -473,6 +469,7 @@ typedef enum {
 		self.activeDocument.lineThickness = self.settingsTableController.lineThickness;
 		self.activeDocument.units = self.settingsTableController.units;
 		self.activeDocument.strataHeight = self.settingsTableController.strataHeight;
+		[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataHeightChangedNotification object:self];
 	}
 }
 
