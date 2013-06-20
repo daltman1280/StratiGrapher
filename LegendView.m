@@ -40,6 +40,25 @@
 	self.activeDocument = [notification.userInfo objectForKey:@"activeDocument"];
 }
 
+/*
+ 
+ Method of rendering UILabels in PDF in vector mode instead of bitmap mode:
+ 
+ http://stackoverflow.com/questions/6423059/rendering-a-uiview-into-a-pdf-as-vectors-on-an-ipad-sometimes-renders-as-bitma
+ 
+ The only way I found to make it so labels are rendered vectorized is to use a subclass of UILabel with the following method:
+ 
+ // Overriding this CALayer delegate method is the magic that allows us to draw a vector version of the label into the layer instead of the default unscalable ugly bitmap
+- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx {
+    BOOL isPDF = !CGRectIsEmpty(UIGraphicsGetPDFContextBounds());
+    if (!layer.shouldRasterize && isPDF)
+        [self drawRect:self.bounds]; // draw unrasterized
+    else
+        [super drawLayer:layer inContext:ctx];
+}
+
+ */
+
 - (void)addLineToLegend:(NSString *)materialName materialNumber:(int)materialNumber
 {
 	if (self.numberOfLines == 0) {
