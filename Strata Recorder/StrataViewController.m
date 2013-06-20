@@ -394,9 +394,14 @@ typedef enum {
 {
 	CGRect frame = CGRectMake(0, 0, self.strataView.frame.size.width, self.activeDocument.strataHeight*PPI);
 	self.strataView.frame = frame;														// modifying bounds would affect frame origin
+	float oldScrollviewContentHeight = self.strataGraphScrollView.contentSize.height;
 	self.strataGraphScrollView.contentSize = self.strataView.bounds.size;
+	float newScrollviewContentHeight = self.strataGraphScrollView.contentSize.height;
 	[self.strataView handleStrataHeightChanged:self];
-	[self.strataGraphScrollView setNeedsDisplay];														// TODO: unsuccessful at displaying new view height
+	CGPoint contentOffset = self.strataGraphScrollView.contentOffset;
+	contentOffset.y += newScrollviewContentHeight-oldScrollviewContentHeight;
+	if (contentOffset.y < 0) contentOffset.y = 0;										// should be pinned to top of view
+	self.strataGraphScrollView.contentOffset = contentOffset;
 	[self.strataView setNeedsDisplay];
 }
 

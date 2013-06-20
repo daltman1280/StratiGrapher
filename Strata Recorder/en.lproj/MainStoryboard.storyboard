@@ -573,7 +573,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
-                                                <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minimumValue="7" maximumValue="100" id="7UI-4b-rFo">
+                                                <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minimumValue="8" maximumValue="100" id="7UI-4b-rFo">
                                                     <rect key="frame" x="570" y="8" width="94" height="27"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                     <connections>
@@ -1325,8 +1325,6 @@
         <class className="AddSectionLabelViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/AddSectionLabelViewController.h"/>
             <relationships>
-                <relationship kind="action" name="handleCancel:"/>
-                <relationship kind="action" name="handleSave:"/>
                 <relationship kind="outlet" name="cancelButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="saveButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="sectionLabelText" candidateClass="UITextField"/>
@@ -1335,12 +1333,6 @@
         <class className="DocumentListTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DocumentListTableViewController.h"/>
             <relationships>
-                <relationship kind="action" name="handleActionDocument:"/>
-                <relationship kind="action" name="handleAddDocument:"/>
-                <relationship kind="action" name="handleDeleteDocument:"/>
-                <relationship kind="action" name="handleDuplicateDocument:"/>
-                <relationship kind="action" name="handleExportPDFButton:"/>
-                <relationship kind="action" name="handleRenameDocument:"/>
                 <relationship kind="outlet" name="actionDocument" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="addDocument" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="deleteDocument" candidateClass="UIBarButtonItem"/>
@@ -1366,8 +1358,6 @@
         <class className="RenameViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/RenameViewController.h"/>
             <relationships>
-                <relationship kind="action" name="handleRenameConfirm:"/>
-                <relationship kind="action" name="renameTextDidChange:"/>
                 <relationship kind="outlet" name="renameCancelButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="renameOKButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="renameText" candidateClass="UITextField"/>
@@ -1393,6 +1383,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SectionLabelsTableViewController.h"/>
             <relationships>
                 <relationship kind="action" name="handleAddSectionLabel:"/>
+                <relationship kind="action" name="handleSectionLabelsEdit:"/>
                 <relationship kind="action" name="handleUpdateButton:"/>
             </relationships>
         </class>
@@ -1432,6 +1423,10 @@
         <class className="StrataViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/StrataViewController.h"/>
             <relationships>
+                <relationship kind="action" name="handleModeSwitch:"/>
+                <relationship kind="action" name="handlePanGesture:" candidateClass="UIPanGestureRecognizer"/>
+                <relationship kind="action" name="handleRotationGesture:" candidateClass="UIRotationGestureRecognizer"/>
+                <relationship kind="action" name="handleTapGesture:" candidateClass="UITapGestureRecognizer"/>
                 <relationship kind="outlet" name="anchorDragView" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="anchorView" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="dimensionLabel" candidateClass="UILabel"/>
@@ -1462,8 +1457,6 @@
         <class className="StratumInfoTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumInfoTableViewController.h"/>
             <relationships>
-                <relationship kind="action" name="handleEraseOutline:"/>
-                <relationship kind="action" name="handleSave:"/>
                 <relationship kind="outlet" name="materialTitleText" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="pattern" candidateClass="MaterialPatternView"/>
                 <relationship kind="outlet" name="stratumHeightText" candidateClass="UITextField"/>
@@ -1474,16 +1467,12 @@
         <class className="StratumMaterialsPaletteTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumMaterialsPaletteTableViewController.h"/>
             <relationships>
-                <relationship kind="action" name="handleRemoveMaterial:"/>
                 <relationship kind="outlet" name="addButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="removeButton" candidateClass="UIBarButtonItem"/>
             </relationships>
         </class>
         <class className="StratumMaterialsTableController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumMaterialsTableController.h"/>
-            <relationships>
-                <relationship kind="action" name="handleAdd:"/>
-            </relationships>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
