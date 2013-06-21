@@ -392,16 +392,18 @@ typedef enum {
 
 - (void)handleStrataHeightChanged:(id)sender
 {
-	CGRect frame = CGRectMake(0, 0, self.strataView.frame.size.width, self.activeDocument.strataHeight*PPI);
+	// update strata view frame
+	CGRect frame = CGRectMake(0, 0, self.strataView.frame.size.width, self.activeDocument.strataHeight*PPI*self.strataGraphScrollView.zoomScale);
 	self.strataView.frame = frame;														// modifying bounds would affect frame origin
-	float oldScrollviewContentHeight = self.strataGraphScrollView.contentSize.height;
-	self.strataGraphScrollView.contentSize = self.strataView.bounds.size;
-	float newScrollviewContentHeight = self.strataGraphScrollView.contentSize.height;
-	[self.strataView handleStrataHeightChanged:self];
+	float oldScrollviewContentHeight = self.strataGraphScrollView.contentSize.height;	// for adjusting offset of scroll view
+	CGSize contentSize = self.strataView.frame.size;
+	self.strataGraphScrollView.contentSize = contentSize;								// set contentSize of scroll view
+	float newScrollviewContentHeight = self.strataGraphScrollView.contentSize.height;	// for adjusting offset of scroll view
+	[self.strataView handleStrataHeightChanged:self];									// adjust locations of icons, because icon locations are measured from bottom left
 	CGPoint contentOffset = self.strataGraphScrollView.contentOffset;
 	contentOffset.y += newScrollviewContentHeight-oldScrollviewContentHeight;
 	if (contentOffset.y < 0) contentOffset.y = 0;										// should be pinned to top of view
-	self.strataGraphScrollView.contentOffset = contentOffset;
+	self.strataGraphScrollView.contentOffset = contentOffset;							// set content offset of scroll view
 	[self.strataView setNeedsDisplay];
 }
 
