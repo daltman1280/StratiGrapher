@@ -23,7 +23,6 @@
 @property (weak, nonatomic) IBOutlet UISwitch *fineSandSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *fineSiltAndClaySwitch;
 
-- (void)viewDidPop;
 - (IBAction)handleGrainSizeRadioButton:(id)sender;
 
 @end

@@ -50,15 +50,6 @@
 	self.contentSizeForViewInPopover = CGSizeMake(460, 533);		// TODO: get the appropriate size
 }
 
-/*
- Called by our Navigation Bar Delegate, which is a subclass of our Navigation Controller (SettingsNavigationController), to notify we are going away, and to save our settings
- */
-
-- (void)viewDidPop
-{
-	
-}
-
 - (IBAction)handleGrainSizeRadioButton:(id)sender {
 	self.grainSizesMask =
 		(self.boulderSwitch.on ? grainSizeBoulders : 0) |
