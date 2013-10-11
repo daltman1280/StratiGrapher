@@ -43,7 +43,7 @@
 	controller.materialNumber = self.materialNumber;
 	controller.activeDocument = self.activeDocument;
 	controller.stratumInfoTableViewController = self;
-	self.stratumInfoNavigationController.delegate = self.stratumInfoNavigationController;				// this is where we setup the UINavigationControllerDelegate
+	self.stratumInfoNavigationController.delegate = self.stratumInfoNavigationController;				// this is where we setup the UINavigationControllerDelegate (can't do this from IB)
 }
 
 - (IBAction)handleEraseOutline:(id)sender {

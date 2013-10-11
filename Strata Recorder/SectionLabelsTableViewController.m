@@ -69,7 +69,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 	self.title = [NSString stringWithFormat:@"%@ Labels", self.activeDocument.name];
-	self.contentSizeForViewInPopover = CGSizeMake(460, 490);		// TODO: get the appropriate size
+	self.contentSizeForViewInPopover = CGSizeMake(460, 533);		// TODO: get the appropriate size
 }
 
 - (void)viewDidLoad

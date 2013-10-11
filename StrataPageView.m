@@ -67,8 +67,6 @@
 		NSString *pdfFile = [documentsFolder stringByAppendingFormat:@"/%@.pdf", self.activeDocument.name];
 		CGContextScaleCTM(UIGraphicsGetCurrentContext(), 72./132., 72./132.);
 		UIGraphicsBeginPDFContextToFile(pdfFile, self.bounds, nil);
-	}
-	if (self.mode == PDFMode) {
 		UIGraphicsBeginPDFPage();
 		[self.layer renderInContext:UIGraphicsGetCurrentContext()];									// render the legend on a separate page
 		UIGraphicsBeginPDFPage();
@@ -240,8 +238,8 @@
 			// it's larger than the stratum boundary
 			CGContextAddRect(currentContext, CGRectMake(VX(offset.x+stratum.frame.origin.x/scale), VY(offset.y+(stratum.frame.origin.y-kPencilMargin)/scale), VDX((stratum.frame.size.width+kPencilMargin)/scale), VDY((stratum.frame.size.height+2*kPencilMargin)/scale)));
 			CGContextClip(currentContext);
-			[self addOutline:stratum offset:offset];
-			CGContextDrawPath(currentContext, kCGPathFillStroke);							// fills and strokes path
+			[self addOutline:stratum offset:offset];										// add outline of stratum to current context
+			CGContextDrawPath(currentContext, kCGPathFillStroke);							// fills and strokes the path
 			CGContextRestoreGState(currentContext);
 		}
 	}
@@ -252,6 +250,10 @@
 	CFRelease(colorWhite);
 	CFRelease(colorBlack);
 }
+
+/*
+ Add the outline of the current given stratum to the current context. Supports curved sections.
+ */
 
 - (void)addOutline:(Stratum *)stratum offset:(CGPoint)offset
 {

@@ -14,6 +14,8 @@
 		253650A01800AEE600114127 /* ApplicationIcon.ai in Resources */ = {isa = PBXBuildFile; fileRef = 2536509E1800AEE600114127 /* ApplicationIcon.ai */; };
 		253650A31800AF0C00114127 /* paleocurrent selected.ai in Resources */ = {isa = PBXBuildFile; fileRef = 253650A21800AF0C00114127 /* paleocurrent selected.ai */; };
 		253650A51800AF2D00114127 /* post-it-pencil.ai in Resources */ = {isa = PBXBuildFile; fileRef = 253650A41800AF2D00114127 /* post-it-pencil.ai */; };
+		253650AA18037E6100114127 /* GrainSizeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253650A918037E6000114127 /* GrainSizeTableViewController.m */; };
+		253650AE1803B55C00114127 /* SettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253650AD1803B55B00114127 /* SettingsNavigationController.m */; };
 		25890D851655B2670007BC72 /* StratumMaterialsTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D841655B2670007BC72 /* StratumMaterialsTableController.m */; };
 		25890D881655D8990007BC72 /* MaterialPatternView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D871655D8990007BC72 /* MaterialPatternView.m */; };
 		25890D8B1655DAD20007BC72 /* MaterialTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D8A1655DAD20007BC72 /* MaterialTableViewCell.m */; };
@@ -57,7 +59,6 @@
 		25921D2C168C04D30038E9D9 /* post-it-pencil.png in Resources */ = {isa = PBXBuildFile; fileRef = 25921D2B168C04D30038E9D9 /* post-it-pencil.png */; };
 		259318F8176E602600A6341A /* LegendView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259318F7176E602600A6341A /* LegendView.m */; };
 		259339BD173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 259339BC173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m */; };
-		25C20BB117111F40003ED123 /* ApplicationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C20BB017111F40003ED123 /* ApplicationIcon.png */; };
 		25C5AA171755650600A66C08 /* AddSectionLabelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C5AA161755650600A66C08 /* AddSectionLabelViewController.m */; };
 		25E7D2701652C56800109376 /* info icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E7D26F1652C56800109376 /* info icon.png */; };
 		25E91B2016633CC600AFFC0E /* SettingsTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E91B1F16633CC600AFFC0E /* SettingsTableController.m */; };
@@ -73,6 +74,12 @@
 		2536509E1800AEE600114127 /* ApplicationIcon.ai */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ApplicationIcon.ai; path = images/ApplicationIcon.ai; sourceTree = "<group>"; };
 		253650A21800AF0C00114127 /* paleocurrent selected.ai */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "paleocurrent selected.ai"; path = "images/paleocurrent selected.ai"; sourceTree = "<group>"; };
 		253650A41800AF2D00114127 /* post-it-pencil.ai */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "post-it-pencil.ai"; path = "images/post-it-pencil.ai"; sourceTree = "<group>"; };
+		253650A61800C8F100114127 /* grain size.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "grain size.jpg"; sourceTree = "<group>"; };
+		253650A71800C91300114127 /* soil classification.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "soil classification.jpg"; sourceTree = "<group>"; };
+		253650A818037E6000114127 /* GrainSizeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrainSizeTableViewController.h; sourceTree = "<group>"; };
+		253650A918037E6000114127 /* GrainSizeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrainSizeTableViewController.m; sourceTree = "<group>"; };
+		253650AC1803B55B00114127 /* SettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsNavigationController.h; path = ../SettingsNavigationController.h; sourceTree = "<group>"; };
+		253650AD1803B55B00114127 /* SettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsNavigationController.m; path = ../SettingsNavigationController.m; sourceTree = "<group>"; };
 		25890D831655B2670007BC72 /* StratumMaterialsTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StratumMaterialsTableController.h; path = ../StratumMaterialsTableController.h; sourceTree = "<group>"; };
 		25890D841655B2670007BC72 /* StratumMaterialsTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StratumMaterialsTableController.m; path = ../StratumMaterialsTableController.m; sourceTree = "<group>"; };
 		25890D861655D8990007BC72 /* MaterialPatternView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MaterialPatternView.h; path = ../MaterialPatternView.h; sourceTree = "<group>"; };
@@ -125,8 +132,8 @@
 		258FA2EF17551AC400E439FE /* SectionLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionLabelCell.m; sourceTree = "<group>"; };
 		258FABA316433356005A00A8 /* IconImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconImage.h; sourceTree = "<group>"; };
 		258FABA416433356005A00A8 /* IconImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconImage.m; sourceTree = "<group>"; };
-		258FABA71643782D005A00A8 /* StrataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrataModel.h; sourceTree = "<group>"; };
-		258FABA81643782D005A00A8 /* StrataModel.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = StrataModel.m; sourceTree = "<group>"; };
+		258FABA71643782D005A00A8 /* StrataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = StrataModel.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		258FABA81643782D005A00A8 /* StrataModel.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; lineEnding = 0; path = StrataModel.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		259006C41757F29E004DFDC8 /* StratumInfoNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StratumInfoNavigationController.h; sourceTree = "<group>"; };
 		259006C51757F29E004DFDC8 /* StratumInfoNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StratumInfoNavigationController.m; sourceTree = "<group>"; };
 		2590A827164CAC96004FF6B5 /* Graphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Graphics.h; sourceTree = "<group>"; };
@@ -178,6 +185,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		253650AB18037E9A00114127 /* Grain Sizes */ = {
+			isa = PBXGroup;
+			children = (
+				253650A818037E6000114127 /* GrainSizeTableViewController.h */,
+				253650A918037E6000114127 /* GrainSizeTableViewController.m */,
+			);
+			name = "Grain Sizes";
+			sourceTree = "<group>";
+		};
 		25890D8C16562B190007BC72 /* Materials */ = {
 			isa = PBXGroup;
 			children = (
@@ -233,10 +249,9 @@
 				25F3F2EA165AB54C001A2F53 /* Popover Menus */,
 				258E34C21657159B00E09A3A /* Views */,
 				2590C55416423E1000DB9C98 /* images */,
-				2589CF1E163F897D00E43147 /* MainStoryboard.storyboard */,
-				2589CF0D163F897C00E43147 /* Supporting Files */,
 				258E34C3165715F200E09A3A /* General */,
 				258E34C01656FC2E00E09A3A /* Model */,
+				2589CF0D163F897C00E43147 /* Supporting Files */,
 			);
 			path = "Strata Recorder";
 			sourceTree = "<group>";
@@ -244,6 +259,7 @@
 		2589CF0D163F897C00E43147 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2589CF1E163F897D00E43147 /* MainStoryboard.storyboard */,
 				2590A829164F294F004FF6B5 /* Stratigraphic pattern swatches */,
 				258E73881642F9EA00C12D43 /* Notes.rtf */,
 				259339B9173C4560009B60E6 /* Paper with illustrator strat columns.pdf */,
@@ -251,6 +267,8 @@
 				2589CF0E163F897C00E43147 /* Strata Recorder-Info.plist */,
 				2589CF0F163F897C00E43147 /* InfoPlist.strings */,
 				2589CF12163F897C00E43147 /* main.m */,
+				253650A61800C8F100114127 /* grain size.jpg */,
+				253650A71800C91300114127 /* soil classification.jpg */,
 				2589CF14163F897C00E43147 /* Strata Recorder-Prefix.pch */,
 				2589CF18163F897D00E43147 /* Default.png */,
 				2589CF1A163F897D00E43147 /* Default@2x.png */,
@@ -306,7 +324,6 @@
 				25911D15174F218100839ED5 /* StratumInfoTableViewController.h */,
 				25911D16174F218100839ED5 /* StratumInfoTableViewController.m */,
 				25890D8C16562B190007BC72 /* Materials */,
-				2591FC8F176657F30008E40E /* Section Labels */,
 			);
 			name = "Stratum Info";
 			sourceTree = "<group>";
@@ -317,6 +334,10 @@
 				25E91B1E16633CC600AFFC0E /* SettingsTableController.h */,
 				25E91B1F16633CC600AFFC0E /* SettingsTableController.m */,
 				25E91B251663FBBF00AFFC0E /* SettingsControllerDelegate.h */,
+				253650AC1803B55B00114127 /* SettingsNavigationController.h */,
+				253650AD1803B55B00114127 /* SettingsNavigationController.m */,
+				253650AB18037E9A00114127 /* Grain Sizes */,
+				2591FC8F176657F30008E40E /* Section Labels */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -473,7 +494,6 @@
 				258C982E166C1A7300665158 /* paleocurrent.png in Resources */,
 				258D907916731436007EEC9A /* paleocurrent greyscale.png in Resources */,
 				25921D2C168C04D30038E9D9 /* post-it-pencil.png in Resources */,
-				25C20BB117111F40003ED123 /* ApplicationIcon.png in Resources */,
 				258E5F7E17152CEB006706B3 /* Default~ipad.png in Resources */,
 				258E5F8317152E6C006706B3 /* Default-Landscape~ipad.png in Resources */,
 				258F8BBA171E611B0027EA4D /* paleocurrent selected.png in Resources */,
@@ -513,6 +533,8 @@
 				258EEBB3175657A10097951A /* SectionLabelDetailTableViewController.m in Sources */,
 				259006C61757F29F004DFDC8 /* StratumInfoNavigationController.m in Sources */,
 				259318F8176E602600A6341A /* LegendView.m in Sources */,
+				253650AA18037E6100114127 /* GrainSizeTableViewController.m in Sources */,
+				253650AE1803B55C00114127 /* SettingsNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

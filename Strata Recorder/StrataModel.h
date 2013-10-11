@@ -8,6 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+	grainSizeBoulders			= 1,
+	grainSizeCobbles			= 2,
+	grainSizeCoarseGravel		= 4,
+	grainSizeFineGravel			= 8,
+	grainSizeCoarseSand			= 16,
+	grainSizeMediumSand			= 32,
+	grainSizeFineSand			= 64,
+	grainSizeFineSiltAndClay	= 128
+} grainSizeEnum;
+
 @interface StrataDocument : NSObject <NSCoding>
 
 - (void)adjustStratumSize:(CGSize)size atIndex:(int)index;
@@ -31,6 +42,7 @@
 @property NSString*			units;					// English or Metric
 @property float				strataHeight;			// height of model view (in physical units)
 @property NSMutableArray*	sectionLabels;			// array of NSString's
+@property int				grainSizesMask;			// bit mask of active grain sizes
 
 @end
 
@@ -45,7 +57,7 @@
 @property BOOL				hasPageCutter;		// does it have a page boundary attached?
 @property BOOL				hasAnchor;			// does it have an anchor attached?
 @property NSMutableArray*	paleoCurrents;		// of PaleoCurrent's
-@property NSMutableArray*	outline;			// of NSDictionarys, defining endpoints and control points
+@property NSMutableArray*	outline;			// of NSDictionary's, defining endpoints and control points
 
 @end
 

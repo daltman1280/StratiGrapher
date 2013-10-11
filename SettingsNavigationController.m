@@ -1,8 +1,8 @@
 //
-//  StratumInfoNavigationController.m
+//  SettingsNavigationController.m
 //  Strata Recorder
 //
-//  Created by daltman on 5/30/13.
+//  Created by daltman on 10/7/13.
 //  Copyright (c) 2013 Don Altman. All rights reserved.
 //
 
@@ -13,14 +13,15 @@
  on the navigation stack.
  */
 
-#import "StratumInfoNavigationController.h"
-#import "StratumMaterialsPaletteTableViewController.h"
+#import "SettingsNavigationController.h"
+//#import "GrainSizeTableViewController.h"
+#import "SettingsTableController.h"
 
-@interface StratumInfoNavigationController ()
+@interface SettingsNavigationController ()
 
 @end
 
-@implementation StratumInfoNavigationController
+@implementation SettingsNavigationController
 
 /*
  Any view controllers who wish to be notified need to implement our ad hoc willShowViewController method
@@ -28,17 +29,18 @@
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+	NSLog(@"topviewcontroller = %@", navigationController.topViewController);
 	if ([viewController respondsToSelector:@selector(willShowViewController)])
 		[viewController performSelector:@selector(willShowViewController)];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (self) {
+		// Custom initialization
+	}
+	return self;
 }
 
 - (void)viewDidLoad

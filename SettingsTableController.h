@@ -25,5 +25,8 @@
 @property float				marginHeight;
 @property float				pageScale;
 @property int				lineThickness;
+@property int				grainSizesMask;
+
+- (void)willShowViewController;
 
 @end

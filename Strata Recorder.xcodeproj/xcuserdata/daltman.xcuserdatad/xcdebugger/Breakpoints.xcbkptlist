@@ -59,16 +59,29 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "SettingsNavigationController.m"
+         timestampString = "403136386.128896"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "33"
+         endingLineNumber = "33"
+         landmarkName = "-navigationController:willShowViewController:animated:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "Strata Recorder/SectionLabelsTableViewController.m"
-         timestampString = "393110569.807425"
+         filePath = "Strata Recorder/GrainSizeTableViewController.m"
+         timestampString = "403151908.029377"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "168"
-         endingLineNumber = "168"
-         landmarkName = "-setEditing:animated:"
+         startingLineNumber = "63"
+         endingLineNumber = "63"
+         landmarkName = "-viewDidPop"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

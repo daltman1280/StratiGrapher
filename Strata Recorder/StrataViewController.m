@@ -17,6 +17,7 @@
 #import "StrataPageView.h"
 #import "StrataModel.h"
 #import "DocumentListTableViewController.h"
+#import "SettingsNavigationController.h"
 #import "SettingsTableController.h"
 #import "StrataNotifications.h"
 #import "Graphics.h"
@@ -45,6 +46,7 @@ typedef enum {
 @property StratumInfoNavigationController* stratumInfoNavigationController;
 @property StratumMaterialsTableController* stratumMaterialsTableController;
 @property StratumInfoTableViewController* stratumInfoTableViewController;
+@property SettingsNavigationController* settingsNavigationController;
 @property SettingsTableController* settingsTableController;
 // tools
 @property (weak, nonatomic) IBOutlet UIImageView *scissorsView;
@@ -317,6 +319,8 @@ typedef enum {
 		[self.activeDocument save];
 	} else if ([segue.identifier isEqualToString:@"settings"]) {
 		UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
+		self.settingsNavigationController = segue.destinationViewController;
+		self.settingsNavigationController.delegate = self.settingsNavigationController;				// this is where we setup the UINavigationControllerDelegate (can't do this from IB)
 		self.settingsTableController = ((SettingsTableController *)((UINavigationController *)segue.destinationViewController).topViewController);
 		self.settingsTableController.delegate = self;																								// set up ourselves as delegate
 		self.settingsTableController.activeDocument = self.activeDocument;
@@ -476,6 +480,7 @@ typedef enum {
 		self.activeDocument.lineThickness = self.settingsTableController.lineThickness;
 		self.activeDocument.units = self.settingsTableController.units;
 		self.activeDocument.strataHeight = self.settingsTableController.strataHeight;
+		self.activeDocument.grainSizesMask = self.settingsTableController.grainSizesMask;
 		[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataHeightChangedNotification object:self];
 	}
 }

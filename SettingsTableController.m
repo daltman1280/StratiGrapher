@@ -9,6 +9,7 @@
 #import "SettingsTableController.h"
 #import "StrataNotifications.h"
 #import "SectionLabelsTableViewController.h"
+#import "GrainSizeTableViewController.h"
 
 @interface SettingsTableController ()
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveItem;
@@ -25,6 +26,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *lineThicknessText;
 @property (weak, nonatomic) IBOutlet UITextField *patternPitchText;
 
+@property GrainSizeTableViewController* grainSizeTableViewController;
+@property BOOL							didShowGrainSizeTableView;
 @end
 
 @implementation SettingsTableController
@@ -43,10 +46,34 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-	SectionLabelsTableViewController *controller = (SectionLabelsTableViewController *) segue.destinationViewController;
-	controller.activeDocument = self.activeDocument;
+	id destinationViewController = segue.destinationViewController;
+	if ([destinationViewController isKindOfClass:[SectionLabelsTableViewController class]])
+		((SectionLabelsTableViewController *)destinationViewController).activeDocument = self.activeDocument;
+	else if ([destinationViewController isKindOfClass:[GrainSizeTableViewController class]]) {
+		self.grainSizeTableViewController = destinationViewController;
+		self.grainSizeTableViewController.activeDocument = self.activeDocument;
+		self.grainSizeTableViewController.grainSizesMask = self.grainSizesMask;
+		self.didShowGrainSizeTableView = YES;														// so we'll know what table was active when we return (in willShowViewController)
+	} else
+		NSAssert1(FALSE, @"Unexpected controller for segue: %@", destinationViewController);
 }
 
+/*
+ UINavigationControllerDelegate function (called from SettingsNavigationController's – navigationController:willShowViewController:animated:
+ 
+ After we pop back from the Grain Sizes table, we need to save the settings from the table, in
+ case the user has made changes to the Grain Sizes.
+ 
+ Delegate property initialized in StrataViewController prepareForSegue
+ */
+
+- (void)willShowViewController
+{
+	if (self.didShowGrainSizeTableView) {
+		self.grainSizesMask = self.grainSizeTableViewController.grainSizesMask;						// in case user changed settings
+		self.didShowGrainSizeTableView = NO;														// reset it
+	}
+}
 
 - (IBAction)handleSave:(id)sender {
 	// initialize our properties from our current control settings, so our SettingsControllerDelegate can use them to propagate changes made
@@ -119,7 +146,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.didShowGrainSizeTableView = NO;
 	self.toolbarItems = [NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], self.cancelItem, self.saveItem, nil];
+	self.strataHeight = self.activeDocument.strataHeight;
+	self.units = self.activeDocument.units;
+	self.paperWidth = self.activeDocument.pageDimension.width;
+	self.paperHeight = self.activeDocument.pageDimension.height;
+	self.marginWidth = self.activeDocument.pageMargins.width;
+	self.marginHeight = self.activeDocument.pageMargins.height;
+	self.pageScale = self.activeDocument.scale;
+	self.lineThickness = self.activeDocument.lineThickness;
+	self.grainSizesMask = self.activeDocument.grainSizesMask;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
 }
 
@@ -132,14 +169,6 @@
     [super viewDidAppear:animated];
 	// populate the properties from active document
 	self.title = [NSString stringWithFormat:@"%@ Settings", self.activeDocument.name];
-	self.strataHeight = self.activeDocument.strataHeight;
-	self.units = self.activeDocument.units;
-	self.paperWidth = self.activeDocument.pageDimension.width;
-	self.paperHeight = self.activeDocument.pageDimension.height;
-	self.marginWidth = self.activeDocument.pageMargins.width;
-	self.marginHeight = self.activeDocument.pageMargins.height;
-	self.pageScale = self.activeDocument.scale;
-	self.lineThickness = self.activeDocument.lineThickness;
 	// populate the table's controls from property values
 	self.strataHeightText.text = [NSString stringWithFormat:@"%d", self.strataHeight];
 	self.strataHeightStepper.value = self.strataHeight;
@@ -154,7 +183,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.modalInPopover = YES;									// make this view modal (if it's in a popover, ignore outside clicks)
-	self.contentSizeForViewInPopover = CGSizeMake(460, 490);		// TODO: get the appropriate size
+	self.contentSizeForViewInPopover = CGSizeMake(460, 533);		// TODO: get the appropriate size
 }
 
 - (void)didReceiveMemoryWarning
