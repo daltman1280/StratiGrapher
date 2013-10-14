@@ -9,6 +9,10 @@
 #define XORIGIN .75												// distance in inches of origin from LL of view
 #define YORIGIN .5												// distance in inches of origin from LL of view
 
+static const int gGrainSizeOffsetInTickmarks = 4;				// x offset (in graph tickmarks), from origin to first grainsize location (fine silt and clay)
+static const NSString *gGrainSizeNames[] = { @"Fine Silt & Clay", @"Fine Sand", @"Medium Sand", @"Coarse Sand", @"Fine Gravel", @"Coarse Gravel", @"Cobbles", @"Boulders" };
+static const int gGrainSizeNamesCount = 8;
+
 #import "StrataView.h"
 #import "IconImage.h"
 #import "Graphics.h"
@@ -474,13 +478,33 @@ void patternDrawingCallback(void *info, CGContextRef context)
 {
 	CGPoint dragPoint = CGPointMake(UX([(UITouch *)[[event touchesForView:self] anyObject] locationInView:self].x),
 									UY([(UITouch *)[[event touchesForView:self] anyObject] locationInView:self].y));
-//	NSLog(@"getDragPoint x = %f, y = %f", dragPoint.x, dragPoint.y);
 	return dragPoint;
+}
+
+- (int)snapToGrainSizePoint:(float *)iconLocation
+{
+	float snapLocation;
+	int snapIndex;
+	float firstGrainSizeSnapX = gGrainSizeOffsetInTickmarks / 4.0;							// in user units (4 tick marks per user unit)
+	if (*iconLocation <= firstGrainSizeSnapX) {
+		snapLocation = firstGrainSizeSnapX;													// snap at first grain size
+		snapIndex = 0;
+	} else if (*iconLocation > firstGrainSizeSnapX+(gGrainSizeNamesCount-1)/4.0) {
+		snapLocation = firstGrainSizeSnapX+(gGrainSizeNamesCount-1)/4.0;					// snap at last grain size
+		snapIndex = gGrainSizeNamesCount-1;
+	} else {
+		snapLocation = trunc(4*(*iconLocation + 1./8.))/4.0;
+		snapIndex = (snapLocation - firstGrainSizeSnapX) * 4;
+	}
+	*iconLocation = snapLocation;
+	return snapIndex;
 }
 
 - (void)updateCoordinateText:(CGPoint)iconLocation stratum:(Stratum *)stratum
 {
-    [self.locationLabel setText:[NSString stringWithFormat:@"%4.2fm x %4.2fm", iconLocation.x, iconLocation.y]];
+	float snapLocation = iconLocation.x;
+	int snapIndex = [self snapToGrainSizePoint:&snapLocation];
+	[self.locationLabel setText:[NSString stringWithFormat:@"%4.2f, %@", iconLocation.y, gGrainSizeNames[snapIndex]]];
     self.locationLabel.frame = CGRectMake(VX(iconLocation.x+.1), VY(iconLocation.y+.25), self.locationLabel.frame.size.width, self.locationLabel.frame.size.height);
     [self.dimensionLabel setText:[NSString stringWithFormat:@"W %4.2fm x H %4.2fm", stratum.frame.size.width, stratum.frame.size.height]];
     self.dimensionLabel.frame = CGRectMake(VX(stratum.frame.origin.x+stratum.frame.size.width/2.)-self.dimensionLabel.bounds.size.width/2., VY(stratum.frame.origin.y+stratum.frame.size.height/2.)-self.dimensionLabel.bounds.size.height/2., self.dimensionLabel.frame.size.width, self.dimensionLabel.frame.size.height);
@@ -512,6 +536,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 {
 	
 }
+
+#pragma mark Touch events handling
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -585,6 +611,21 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		Stratum *newStratum = [[Stratum alloc] initWithFrame:CGRectMake(0, lastStratum.frame.origin.y+lastStratum.frame.size.height, 0, 0)];
 		newStratum.materialNumber = 0;																	// unassigned material
 		[self.activeDocument.strata addObject:newStratum];
+	} else if (self.dragActive) {																		// modified an existing stratum, snap to grain size point
+		CGPoint offsetDragPoint = CGPointMake(dragPoint.x-self.dragOffsetFromCenter.width, dragPoint.y-self.dragOffsetFromCenter.height);	// coordinates of icon center
+		if (offsetDragPoint.x < self.dragConstraint.x) offsetDragPoint.x = self.dragConstraint.x;		// constrain the dragged icon
+		if (offsetDragPoint.y < self.dragConstraint.y) offsetDragPoint.y = self.dragConstraint.y;
+		int grainSizeIndex = [self snapToGrainSizePoint:&offsetDragPoint.x];
+		Stratum *stratum = self.activeDocument.strata[self.activeDragIndex];							// selected stratum
+		stratum.grainSizeIndex = grainSizeIndex + 1;
+		CFDictionaryRef dict = CGPointCreateDictionaryRepresentation(offsetDragPoint);
+		[self.iconLocations replaceObjectAtIndex:self.activeDragIndex withObject:(__bridge id)(dict)];
+		CFRelease(dict);
+		CGPoint iconLocation;
+		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.iconLocations[self.activeDragIndex]), &iconLocation);
+		CGSize newSize = CGSizeMake(iconLocation.x-stratum.frame.origin.x, iconLocation.y-stratum.frame.origin.y);
+		[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];	// here's where the work is done
+		[self setNeedsDisplay];
 	} else if (self.selectedAnchorStratum || self.selectedScissorsStratum) {
 		if (dragPoint.x < 0.5) {																		// otherwise, throw it away
 			float distance = HUGE;
@@ -608,7 +649,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	}
 	self.dragActive = NO;
 	self.selectedPaleoCurrent = nil;
-	[self populateMoveIconLocations];																		// re-populate move icon coordinates
+	[self populateMoveIconLocations];																	// re-populate move icon coordinates
 	if (!self.pencilActive)
 		[self setNeedsDisplay];																			// still causes extra redraw when exiting pencil highlighting mode
 }
