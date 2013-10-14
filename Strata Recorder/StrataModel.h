@@ -58,6 +58,7 @@ typedef enum {
 @property BOOL				hasAnchor;			// does it have an anchor attached?
 @property NSMutableArray*	paleoCurrents;		// of PaleoCurrent's
 @property NSMutableArray*	outline;			// of NSDictionary's, defining endpoints and control points
+@property grainSizeEnum		grainSizeIndex;		// zero, if unassigned (new stratum), otherwise, index of applicable grain size enum + 1
 
 @end
 

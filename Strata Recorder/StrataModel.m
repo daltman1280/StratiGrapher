@@ -185,6 +185,7 @@
 	self = [super init];
 	if (self) {
 		self.frame = frame;
+		self.grainSizeIndex = 0;
 	}
 	return self;
 }
@@ -212,6 +213,7 @@
 	self.hasAnchor = [aDecoder decodeBoolForKey:@"hasAnchor"];
 	self.paleoCurrents = [aDecoder decodeObjectForKey:@"paleocurrents"];
 	self.outline = [aDecoder decodeObjectForKey:@"outline"];
+	self.grainSizeIndex = [aDecoder decodeIntForKey:@"grainSizeIndex"];
 	return self;
 }
 
@@ -223,6 +225,7 @@
 	[aCoder encodeBool:self.hasAnchor forKey:@"hasAnchor"];
 	[aCoder encodeObject:self.paleoCurrents forKey:@"paleocurrents"];
 	[aCoder encodeObject:self.outline forKey:@"outline"];
+	[aCoder encodeInt:self.grainSizeIndex forKey:@"grainSizeIndex"];
 }
 
 @end
