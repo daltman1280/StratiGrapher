@@ -122,6 +122,7 @@
 	float scale = self.activeDocument.scale;
 	float pageTop = self.activeDocument.pageDimension.height-self.activeDocument.pageMargins.height;
 	float sectionLabelsMargin = self.activeDocument.sectionLabels.count > 0 ? .1 : 0;				// in inches
+	
 	// calculate maximum width of each strata column
 	NSMutableArray *maxWidths = [[NSMutableArray alloc] init];
 	float maxWidthTemp = 0;
@@ -133,17 +134,17 @@
 		if (stratumTop > pageTop || stratum.hasPageCutter) {								// reached top of column, need to start a new column
 			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);					// undo the offset from current column
 			offset.y = -stratumRect.origin.y+self.activeDocument.pageMargins.height;		// vertical adjustment to make stratum sit on base page margin
-			stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);					// give it the same offset as succeeding strata in next column
 			[maxWidths addObject:[NSNumber numberWithFloat:maxWidthTemp/scale+sectionLabelsMargin]];	// in inches
 			maxWidthTemp = stratum.frame.size.width;										// reinitialize it with width of current stratum
 		} else
 			if (stratum.frame.size.width > maxWidthTemp) maxWidthTemp = stratum.frame.size.width;
 	}
 	[maxWidths addObject:[NSNumber numberWithFloat:maxWidthTemp/scale+sectionLabelsMargin]];// last column
+	
 	gScale = 1;
-	int sectionIndex = 0;
-	int stratumSectionLower = -1;
-	int stratumSectionUpper = -1;
+	int sectionIndex = 0;																	// index of current section
+	int stratumSectionLower = -1;															// index of first stratum for current section label
+	int stratumSectionUpper = -1;															// index of last stratum for current section label
 	if (self.activeDocument.sectionLabels.count > 0) {
 		stratumSectionLower = stratumSectionUpper + 1;
 		stratumSectionUpper = stratumSectionLower + ((SectionLabel *)self.activeDocument.sectionLabels[sectionIndex]).numberOfStrataSpanned-1;
@@ -151,30 +152,42 @@
 	// initial offset
 	offset = CGPointMake(self.activeDocument.pageDimension.width-self.activeDocument.pageMargins.width-[maxWidths[0] floatValue], self.activeDocument.pageMargins.height);
 	int columnIndex = 0;
+	
 	// draw strata
 	for (Stratum *stratum in self.activeDocument.strata) {
+		int indexOfStratum = [self.activeDocument.strata indexOfObject:stratum];
+		Stratum *nextStratum = indexOfStratum < self.activeDocument.strata.count-1 ? self.activeDocument.strata[indexOfStratum+1] : nil;
 		CGRect stratumRect = CGRectMake(stratum.frame.origin.x/scale, stratum.frame.origin.y/scale, stratum.frame.size.width/scale, stratum.frame.size.height/scale);
 		stratumRect = CGRectStandardize(stratumRect);
 		stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);
 		float stratumTop = stratumRect.origin.y+stratumRect.size.height;
+		// offset stratum rectangle for new column
+		if (stratumTop > pageTop || stratum.hasPageCutter) {								// reached top of column, need to start a new column
+			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);					// undo the offset from current column
+			offset.x -= [maxWidths[++columnIndex] floatValue]+self.activeDocument.pageMargins.width/2.0;	// horizontal adjustment using maxwidth, and adding horizontal page margin
+			offset.y = -stratumRect.origin.y+self.activeDocument.pageMargins.height;		// vertical adjustment to make stratum sit on base page margin
+			stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);					// give it the same offset as succeeding strata in next column
+		}
 		// need to draw a section label?
-		if (stratumSectionUpper > -1 && (stratumTop > pageTop || stratum.hasPageCutter || [self.activeDocument.strata indexOfObject:stratum] == stratumSectionUpper)) {
+		if (stratumSectionUpper > -1 && (stratumTop > pageTop || nextStratum.hasPageCutter || indexOfStratum == stratumSectionUpper)) {
 			float xSectionBottom, ySectionBottom, xSectionTop, ySectionTop;
 			NSString *labelText = ((SectionLabel *)self.activeDocument.sectionLabels[sectionIndex]).labelText;
 			UIFont *font = [UIFont systemFontOfSize:18.0];
 			CGSize size = [labelText sizeWithFont:font];
-			if (stratumTop > pageTop || stratum.hasPageCutter) {							// we're at the end of a column, need to draw section label, even if more strata remain
+			if (stratumTop > pageTop || nextStratum.hasPageCutter) {							// we're at the end of a column, need to draw section label, even if more strata remain
 				xSectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.x/scale + offset.x + [maxWidths[columnIndex] floatValue];
 				ySectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.y/scale + offset.y;
 				xSectionTop = stratum.frame.origin.x/scale + offset.x + [maxWidths[columnIndex] floatValue];
-				ySectionTop = stratum.frame.origin.y/scale + offset.y;						// use bottom of stratum
-			} else {
+				ySectionTop = stratum.frame.origin.y/scale + stratum.frame.size.height/scale + offset.y;
+//				ySectionTop = stratum.frame.origin.y/scale + offset.y;						// use bottom of stratum
+			} else {																		// normal case
 				xSectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.x/scale + offset.x + [maxWidths[columnIndex] floatValue];
 				ySectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.y/scale + offset.y;
 				xSectionTop = stratum.frame.origin.x/scale + offset.x + [maxWidths[columnIndex] floatValue];
 				ySectionTop = stratum.frame.origin.y/scale + stratum.frame.size.height/scale + offset.y;
 				++sectionIndex;
 			}
+			// draw section lines
 			UIBezierPath *sectionLabelLine = [UIBezierPath bezierPath];
 			[sectionLabelLine moveToPoint:CGPointMake(VX(xSectionBottom), VY(ySectionBottom))];
 			[sectionLabelLine addLineToPoint:CGPointMake(VX(xSectionTop), VY(ySectionTop))];
@@ -197,29 +210,28 @@
 			[labelText drawAtPoint:CGPointZero withFont:font];
 			CGContextRestoreGState(tempContext);
 			// end temporary graphics context
-			if (sectionIndex < self.activeDocument.sectionLabels.count) {
-				if ((stratumTop > pageTop || stratum.hasPageCutter) && stratumSectionUpper > [self.activeDocument.strata indexOfObject:stratum]) {	// will continue label in next column
-					stratumSectionLower = [self.activeDocument.strata indexOfObject:stratum];
-				} else {																	// next label
-					stratumSectionLower = stratumSectionUpper + 1;
+			
+			// adjust section label bounds indices
+			if (indexOfStratum == stratumSectionUpper) {									// did we complete the current section label (no end of column to interrupt it)?
+				if (sectionIndex < self.activeDocument.sectionLabels.count) {				// are there any section labels left in the document to be drawn?
+					stratumSectionLower = stratumSectionUpper + 1;							// adjust bounds indices
 					stratumSectionUpper = stratumSectionLower + ((SectionLabel *)self.activeDocument.sectionLabels[sectionIndex]).numberOfStrataSpanned-1;
-				}
-			} else
-				stratumSectionUpper = -1;													// disable further stratum section labels
-		}
-		if (stratumTop > pageTop || stratum.hasPageCutter) {								// reached top of column, need to start a new column
-			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);					// undo the offset from current column
-			offset.x -= [maxWidths[++columnIndex] floatValue]+self.activeDocument.pageMargins.width;	// horizontal adjustment using maxwidth, and adding horizontal page margin
-			offset.y = -stratumRect.origin.y+self.activeDocument.pageMargins.height;		// vertical adjustment to make stratum sit on base page margin
-			stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);					// give it the same offset as succeeding strata in next column
-		}
-		for (PaleoCurrent *paleo in stratum.paleoCurrents) {
+				} else
+					stratumSectionUpper = -1;												// no more labels to be drawn, disable further stratum section labels
+			} else																			// label continues in next column
+				stratumSectionLower = indexOfStratum + 1;									// only adjust lower bounds index, upper bounds has not changed
+		}	// end section label draw
+		
+		for (PaleoCurrent *paleo in stratum.paleoCurrents) {								// draw any paleocurrents owned by the stratum
 			CGPoint paleoOrigin = CGPointMake(stratumRect.origin.x+stratumRect.size.width+paleo.origin.x/scale, stratumRect.origin.y+paleo.origin.y/scale);
 			[self.arrowIcon drawAtPointWithRotation:paleoOrigin scale:1 rotation:paleo.rotation];
 		}
-		if ([self.activeDocument.strata indexOfObject:stratum] == self.activeDocument.strata.count-1) break;	// don't draw last empty stratum
+		// don't draw last empty stratum
+		if ([self.activeDocument.strata indexOfObject:stratum] == self.activeDocument.strata.count-1) break;
 		CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
 		CGContextSetFillPattern(currentContext, pattern, &alpha);
+		
+		// draw stratum
 		if (stratum.outline == nil) {														// no outline, treat it as a rectangle
 			stratumRect = [self RectUtoV:stratumRect];										// convert to view coordinates
 			CGContextFillRect(currentContext, stratumRect);
@@ -243,6 +255,7 @@
 			CGContextRestoreGState(currentContext);
 		}
 	}
+	
 	if (self.mode == PDFMode) {
 		UIGraphicsEndPDFContext();
 		self.mode = graphMode;
