@@ -14,6 +14,14 @@
 #import "Graphics.h"
 #import "StrataNotifications.h"
 
+@interface StrataPageView ()
+
+@property float columnVerticalMargin;
+@property float columnNumberHorizontalUnderhang;
+@property float columnNumberVerticalLocation;
+
+@end
+
 @implementation StrataPageView
 
 - (void)setActiveDocument:(StrataDocument *)activeDocument
@@ -57,6 +65,67 @@
 	BOOL drawCrossmarks = NO;
 	if (drawCrossmarks)
 		[bleed stroke];
+}
+
+/*
+ Draw column number and grain size legend underneath strata column.
+ 
+ columnNumber: 1 based
+ columnOrigin: in user units
+ minGrainSizeIndex: sets lower limit of grain size legend for this column (1 based)
+ maxGrainSizeIndex: sets upper limit of grain size legend for this column (1 based)
+ */
+
+- (void)drawColumnAdornments:(int)columnNumber columnOrigin:(CGPoint)columnOrigin minGrainSizeIndex:(int)minGrainSizeIndex maxGrainSizeIndex:(int)maxGrainSizeIndex
+{
+	{	// column number
+		CGContextRef tempContext = UIGraphicsGetCurrentContext();
+		CGContextSaveGState(tempContext);
+		CGPoint columnTextOrigin;																		// in view units
+		NSString *columnText = [NSString stringWithFormat:@"%d", columnNumber];
+		UIFont *font = [UIFont systemFontOfSize:26.0];
+		columnTextOrigin.x = VX(columnOrigin.x)+self.columnNumberHorizontalUnderhang;
+		columnTextOrigin.y = self.columnNumberVerticalLocation;
+		CGContextTranslateCTM(UIGraphicsGetCurrentContext(), columnTextOrigin.x, columnTextOrigin.y);
+		CGFloat colorComponentsBlack[4] = {0, 0, 0, 1.};
+		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+		CGColorRef colorBlack = CGColorCreate(colorSpace, colorComponentsBlack);
+		CGContextSetStrokeColorWithColor(tempContext, colorBlack);
+		CFRelease(colorSpace);
+		CGContextSetFillColorWithColor(tempContext, colorBlack);						// to counteract CGContextSetFillColorSpace and CGContextSetFillPattern
+		[columnText drawAtPoint:CGPointZero withFont:font];
+		CGContextRestoreGState(tempContext);
+	}
+	{	// grain sizes
+		CGContextRef tempContext = UIGraphicsGetCurrentContext();
+		CGContextSaveGState(tempContext);
+		CGPoint columnGrainPoint;
+		UIFont *font = [UIFont systemFontOfSize:10.0];
+		CGSize sizeOfGrainText = [@"dummy" sizeWithFont:font];
+		// origin of first grain size legend text
+		columnGrainPoint.x = VX(columnOrigin.x+(1.0+(float)(minGrainSizeIndex-1)/4.0)/self.activeDocument.scale)-sizeOfGrainText.height/2.0;	// split height of text in half
+		columnGrainPoint.y = VY(self.activeDocument.pageMargins.height) - (self.frame.size.height-self.grainSizeLegend.frame.origin.y)+self.grainSizeLegend.frame.size.height;
+		CGContextTranslateCTM(UIGraphicsGetCurrentContext(), columnGrainPoint.x, columnGrainPoint.y);
+		CGContextRotateCTM(UIGraphicsGetCurrentContext(), -M_PI_2);
+		CGFloat colorComponentsBlack[4] = {0, 0, 0, 1.};
+		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+		CGColorRef colorBlack = CGColorCreate(colorSpace, colorComponentsBlack);
+		CGContextSetStrokeColorWithColor(tempContext, colorBlack);
+		CFRelease(colorSpace);
+		CGContextSetFillColorWithColor(tempContext, colorBlack);						// to counteract CGContextSetFillColorSpace and CGContextSetFillPattern
+		for (int i=minGrainSizeIndex; i<=maxGrainSizeIndex; ++i) {
+			const NSString *grainText = gAbbreviatedGrainSizeNames[i-1];
+			[grainText drawAtPoint:CGPointZero withFont:font];							// text rotated by 90 degrees (rotated context)
+			// vertical lines for each legend entry
+			UIBezierPath *path = [UIBezierPath bezierPath];
+			// use grainSizeLegend label to establish lower & upper limits of X coordinates (in our rotated context)
+			[path moveToPoint:CGPointMake((self.grainSizeLegend.frame.origin.y+self.grainSizeLegend.frame.size.height)-(self.grainSizeLines.frame.origin.y+self.grainSizeLines.frame.size.height), sizeOfGrainText.height/2.0)];
+			[path addLineToPoint:CGPointMake((self.grainSizeLegend.frame.origin.y+self.grainSizeLegend.frame.size.height)-(self.grainSizeLines.frame.origin.y), sizeOfGrainText.height/2.0)];
+			[path stroke];
+			CGContextTranslateCTM(UIGraphicsGetCurrentContext(), 0, -VDY(0.25)/self.activeDocument.scale);		// our context is rotated 90 degrees, translate downwards to achieve horizontal spacing
+		}
+		CGContextRestoreGState(tempContext);
+	}
 }
 
 - (void)drawRect:(CGRect)rect
@@ -121,7 +190,7 @@
 	CGPoint offset = CGPointMake(0, self.activeDocument.pageMargins.height);						// don't need x offset at this point, just calculating column widths
 	float scale = self.activeDocument.scale;
 	float pageTop = self.activeDocument.pageDimension.height-self.activeDocument.pageMargins.height;
-	float sectionLabelsMargin = self.activeDocument.sectionLabels.count > 0 ? .1 : 0;				// in inches
+	float sectionLabelsMargin = self.activeDocument.sectionLabels.count > 0 ? .1 : 0;				// horizontal distance between widest stratum and label, in inches
 	
 	// calculate maximum width of each strata column
 	NSMutableArray *maxWidths = [[NSMutableArray alloc] init];
@@ -140,17 +209,43 @@
 			if (stratum.frame.size.width > maxWidthTemp) maxWidthTemp = stratum.frame.size.width;
 	}
 	[maxWidths addObject:[NSNumber numberWithFloat:maxWidthTemp/scale+sectionLabelsMargin]];// last column
+	// calculate minimum and maximum grain size indices of each strata column
+	NSMutableArray *minGrainSizeIndices = [[NSMutableArray alloc] init];
+	NSMutableArray *maxGrainSizeIndices = [[NSMutableArray alloc] init];
+	int minGrainSizeIndexTemp = 100;
+	int maxGrainSizeIndexTemp = -1;
+	for (Stratum *stratum in self.activeDocument.strata) {
+		CGRect stratumRect = CGRectMake(stratum.frame.origin.x/scale, stratum.frame.origin.y/scale, stratum.frame.size.width/scale, stratum.frame.size.height/scale);
+		stratumRect = CGRectStandardize(stratumRect);
+		if (stratumRect.size.width == 0) break;												// last stratum is empty, ignore it
+		stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);
+		float stratumTop = stratumRect.origin.y+stratumRect.size.height;
+		if (stratumTop > pageTop || stratum.hasPageCutter) {								// reached top of column, need to start a new column
+			[minGrainSizeIndices addObject:[NSNumber numberWithInt:minGrainSizeIndexTemp]];
+			[maxGrainSizeIndices addObject:[NSNumber numberWithInt:maxGrainSizeIndexTemp]];
+			minGrainSizeIndexTemp = maxGrainSizeIndexTemp = (int) stratum.grainSizeIndex;
+		} else {
+			int grainSizeIndex = stratum.grainSizeIndex;
+			if (grainSizeIndex > maxGrainSizeIndexTemp) maxGrainSizeIndexTemp = grainSizeIndex;
+			if (grainSizeIndex < minGrainSizeIndexTemp) minGrainSizeIndexTemp = grainSizeIndex;
+		}
+	}
+	[minGrainSizeIndices addObject:[NSNumber numberWithInt:minGrainSizeIndexTemp]];			// last column
+	[maxGrainSizeIndices addObject:[NSNumber numberWithInt:maxGrainSizeIndexTemp]];
 	
 	gScale = 1;
 	int sectionIndex = 0;																	// index of current section
 	int stratumSectionLower = -1;															// index of first stratum for current section label
 	int stratumSectionUpper = -1;															// index of last stratum for current section label
-	if (self.activeDocument.sectionLabels.count > 0) {
+	if (self.activeDocument.sectionLabels.count > 0) {										// initialize bounds indices for first section label
 		stratumSectionLower = stratumSectionUpper + 1;
 		stratumSectionUpper = stratumSectionLower + ((SectionLabel *)self.activeDocument.sectionLabels[sectionIndex]).numberOfStrataSpanned-1;
 	}
+	self.columnVerticalMargin = -UDY(self.strataPageView.frame.size.height-self.strataColumn.frame.origin.y-self.strataColumn.frame.size.height);	// to allow for column adornments
+	self.columnNumberHorizontalUnderhang = self.columnNumber.frame.origin.x-self.strataColumn.frame.origin.x;									// in view units, column number is horizontally inset
+	self.columnNumberVerticalLocation = VY(self.activeDocument.pageMargins.height)-self.columnNumber.frame.size.height;							// at bottom of page
 	// initial offset
-	offset = CGPointMake(self.activeDocument.pageDimension.width-self.activeDocument.pageMargins.width-[maxWidths[0] floatValue], self.activeDocument.pageMargins.height);
+	offset = CGPointMake(self.activeDocument.pageDimension.width-self.activeDocument.pageMargins.width-[maxWidths[0] floatValue], self.activeDocument.pageMargins.height+self.columnVerticalMargin);
 	int columnIndex = 0;
 	
 	// draw strata
@@ -161,25 +256,29 @@
 		stratumRect = CGRectStandardize(stratumRect);
 		stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);
 		float stratumTop = stratumRect.origin.y+stratumRect.size.height;
+		if (indexOfStratum == 0)
+			[self drawColumnAdornments:1 columnOrigin:stratumRect.origin minGrainSizeIndex:[minGrainSizeIndices[0] intValue] maxGrainSizeIndex:[maxGrainSizeIndices[0] intValue]];	// for first column
 		// offset stratum rectangle for new column
-		if (stratumTop > pageTop || stratum.hasPageCutter) {								// reached top of column, need to start a new column
-			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);					// undo the offset from current column
+		if (stratumTop > pageTop || stratum.hasPageCutter) {												// reached top of column, need to start a new column
+			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);									// undo the offset from current column
 			offset.x -= [maxWidths[++columnIndex] floatValue]+self.activeDocument.pageMargins.width/2.0;	// horizontal adjustment using maxwidth, and adding horizontal page margin
-			offset.y = -stratumRect.origin.y+self.activeDocument.pageMargins.height;		// vertical adjustment to make stratum sit on base page margin
-			stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);					// give it the same offset as succeeding strata in next column
+			offset.y = -stratumRect.origin.y+self.activeDocument.pageMargins.height+self.columnVerticalMargin;	// vertical adjustment to make stratum sit on base page margin
+			stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);									// give it the same offset as succeeding strata in next column
+			[self drawColumnAdornments:columnIndex+1 columnOrigin:stratumRect.origin
+					 minGrainSizeIndex:[minGrainSizeIndices[columnIndex] intValue]
+					 maxGrainSizeIndex:[maxGrainSizeIndices[columnIndex] intValue]];						// for subsequent columns
 		}
 		// need to draw a section label?
 		if (stratumSectionUpper > -1 && (stratumTop > pageTop || nextStratum.hasPageCutter || indexOfStratum == stratumSectionUpper)) {
 			float xSectionBottom, ySectionBottom, xSectionTop, ySectionTop;
 			NSString *labelText = ((SectionLabel *)self.activeDocument.sectionLabels[sectionIndex]).labelText;
 			UIFont *font = [UIFont systemFontOfSize:18.0];
-			CGSize size = [labelText sizeWithFont:font];
+			CGSize sizeOfLabelText = [labelText sizeWithFont:font];
 			if (stratumTop > pageTop || nextStratum.hasPageCutter) {							// we're at the end of a column, need to draw section label, even if more strata remain
 				xSectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.x/scale + offset.x + [maxWidths[columnIndex] floatValue];
 				ySectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.y/scale + offset.y;
 				xSectionTop = stratum.frame.origin.x/scale + offset.x + [maxWidths[columnIndex] floatValue];
 				ySectionTop = stratum.frame.origin.y/scale + stratum.frame.size.height/scale + offset.y;
-//				ySectionTop = stratum.frame.origin.y/scale + offset.y;						// use bottom of stratum
 			} else {																		// normal case
 				xSectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.x/scale + offset.x + [maxWidths[columnIndex] floatValue];
 				ySectionBottom = ((Stratum *)self.activeDocument.strata[stratumSectionLower]).frame.origin.y/scale + offset.y;
@@ -202,10 +301,10 @@
 			CGPoint center = CGPointMake(VX(xSectionBottom), VY(ySectionTop-(ySectionTop-ySectionBottom)/2.0));
 			CGContextRef tempContext = UIGraphicsGetCurrentContext();
 			CGContextSaveGState(tempContext);
-			CGContextTranslateCTM(UIGraphicsGetCurrentContext(), center.x-size.height/2.0, center.y+size.width/2.0);
+			CGContextTranslateCTM(UIGraphicsGetCurrentContext(), center.x-sizeOfLabelText.height/2.0, center.y+sizeOfLabelText.width/2.0);
 			CGContextRotateCTM(UIGraphicsGetCurrentContext(), -M_PI/2.0);
 			CGContextSetFillColorWithColor(tempContext, colorWhite);						// to counteract CGContextSetFillColorSpace and CGContextSetFillPattern
-			CGContextFillRect(tempContext, CGRectMake(0, 0, size.width, size.height));
+			CGContextFillRect(tempContext, CGRectMake(0, 0, sizeOfLabelText.width, sizeOfLabelText.height));
 			CGContextSetFillColorWithColor(tempContext, colorBlack);						// to counteract CGContextSetFillColorSpace and CGContextSetFillPattern
 			[labelText drawAtPoint:CGPointZero withFont:font];
 			CGContextRestoreGState(tempContext);

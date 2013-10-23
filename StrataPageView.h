@@ -25,4 +25,10 @@ typedef enum {
 // for graphics.h
 @property CGPoint								origin;
 
+@property (nonatomic) StrataPageView*			strataPageView;
+@property (weak, nonatomic) UILabel*			columnNumber;
+@property (weak, nonatomic) UILabel*			grainSizeLegend;
+@property (weak, nonatomic) UIView*				strataColumn;
+@property (weak, nonatomic) UILabel*			grainSizeLines;
+
 @end

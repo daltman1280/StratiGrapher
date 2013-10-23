@@ -48,6 +48,7 @@
 - (void)drawAtPoint:(CGPoint)point scale:(CGFloat)scale
 {
 	scale = 1;		// temporary: always display at this scale
+#pragma unused(scale)
 	[self.image drawInRect:CGRectMake(VX(point.x)-self.offset.x*self.width, VY(point.y)-self.width+self.offset.y*self.width, self.width, self.width)];
 }
 

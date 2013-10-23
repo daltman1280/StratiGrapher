@@ -29,7 +29,6 @@
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-	NSLog(@"topviewcontroller = %@", navigationController.topViewController);
 	if ([viewController respondsToSelector:@selector(willShowViewController)])
 		[viewController performSelector:@selector(willShowViewController)];
 }

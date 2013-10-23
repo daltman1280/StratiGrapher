@@ -9,10 +9,6 @@
 #define XORIGIN .75												// distance in inches of origin from LL of view
 #define YORIGIN .5												// distance in inches of origin from LL of view
 
-static const int gGrainSizeOffsetInTickmarks = 4;				// x offset (in graph tickmarks), from origin to first grainsize location (fine silt and clay)
-static const NSString *gGrainSizeNames[] = { @"Fine Silt & Clay", @"Fine Sand", @"Medium Sand", @"Coarse Sand", @"Fine Gravel", @"Coarse Gravel", @"Cobbles", @"Boulders" };
-static const int gGrainSizeNamesCount = 8;
-
 #import "StrataView.h"
 #import "IconImage.h"
 #import "Graphics.h"

@@ -73,6 +73,11 @@ typedef enum {
 @property (strong, nonatomic) IBOutlet UIView *legendLineContainer;
 @property (weak, nonatomic) IBOutlet UILabel *legendLineLabel;
 @property (weak, nonatomic) IBOutlet MaterialPatternView *legendLineMaterial;
+// page view strata column adornments
+@property (weak, nonatomic) IBOutlet UILabel *columnNumber;
+@property (weak, nonatomic) IBOutlet UILabel *grainSizeLegend;
+@property (weak, nonatomic) IBOutlet UIView *strataColumn;
+@property (weak, nonatomic) IBOutlet UILabel *grainSizeLines;
 @end
 
 @implementation StrataViewController
@@ -358,6 +363,12 @@ typedef enum {
 	self.legendView.legendLineMaterial = self.legendLineMaterial;
 	[self.legendView populateLegend];
 	[self.legendView populateLegend];
+	// initialize page view properties
+	self.strataPageView.strataPageView = self.strataPageView;
+	self.strataPageView.columnNumber = self.columnNumber;
+	self.strataPageView.grainSizeLegend = self.grainSizeLegend;
+	self.strataPageView.grainSizeLines = self.grainSizeLines;
+	self.strataPageView.strataColumn = self.strataColumn;
 }
 
 - (void)setActiveDocument:(StrataDocument *)document
@@ -557,6 +568,10 @@ typedef enum {
 	[self setLegendLineContainer:nil];
 	[self setLegendLineLabel:nil];
 	[self setLegendLineMaterial:nil];
+	[self setColumnNumber:nil];
+	[self setGrainSizeLegend:nil];
+	[self setStrataColumn:nil];
+	[self setGrainSizeLines:nil];
 	[super viewDidUnload];
 }
 @end

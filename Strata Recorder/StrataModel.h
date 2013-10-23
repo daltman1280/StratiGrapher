@@ -54,7 +54,7 @@ typedef enum {
 // persistent properties
 @property CGRect			frame;				// in user coordinates
 @property int				materialNumber;
-@property BOOL				hasPageCutter;		// does it have a page boundary attached?
+@property BOOL				hasPageCutter;		// does it have a page boundary attached? (it starts a new column)
 @property BOOL				hasAnchor;			// does it have an anchor attached?
 @property NSMutableArray*	paleoCurrents;		// of PaleoCurrent's
 @property NSMutableArray*	outline;			// of NSDictionary's, defining endpoints and control points
