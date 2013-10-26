@@ -92,7 +92,7 @@
 		CGColorRef colorBlack = CGColorCreate(colorSpace, colorComponentsBlack);
 		CGContextSetStrokeColorWithColor(tempContext, colorBlack);
 		CFRelease(colorSpace);
-		CGContextSetFillColorWithColor(tempContext, colorBlack);						// to counteract CGContextSetFillColorSpace and CGContextSetFillPattern
+		CGContextSetFillColorWithColor(tempContext, colorBlack);										// to counteract CGContextSetFillColorSpace and CGContextSetFillPattern
 		[columnText drawAtPoint:CGPointZero withFont:font];
 		CGContextRestoreGState(tempContext);
 	}
@@ -103,8 +103,10 @@
 		UIFont *font = [UIFont systemFontOfSize:10.0];
 		CGSize sizeOfGrainText = [@"dummy" sizeWithFont:font];
 		// origin of first grain size legend text
-		columnGrainPoint.x = VX(columnOrigin.x+(1.0+(float)(minGrainSizeIndex-1)/4.0)/self.activeDocument.scale)-sizeOfGrainText.height/2.0;	// split height of text in half
-		columnGrainPoint.y = VY(self.activeDocument.pageMargins.height)-self.columnNumber.frame.size.height-(self.columnNumber.frame.origin.y-self.grainSizeLegend.frame.origin.y)+self.grainSizeLegend.frame.size.height;
+		columnGrainPoint.x = VX(columnOrigin.x+(1.0+(float)(minGrainSizeIndex-1)/4.0)/self.activeDocument.scale)-sizeOfGrainText.height/2.0;	// split height of text in half to straddle line
+		// the VY transform will account for page size, and the rest consists of offsets between labels, in view coordinates
+		columnGrainPoint.y = VY(self.activeDocument.pageMargins.height)-
+			self.columnNumber.frame.size.height-(self.columnNumber.frame.origin.y-self.grainSizeLegend.frame.origin.y)+self.grainSizeLegend.frame.size.height;
 		CGContextTranslateCTM(UIGraphicsGetCurrentContext(), columnGrainPoint.x, columnGrainPoint.y);
 		CGContextRotateCTM(UIGraphicsGetCurrentContext(), -M_PI_2);
 		CGFloat colorComponentsBlack[4] = {0, 0, 0, 1.};
@@ -112,10 +114,10 @@
 		CGColorRef colorBlack = CGColorCreate(colorSpace, colorComponentsBlack);
 		CGContextSetStrokeColorWithColor(tempContext, colorBlack);
 		CFRelease(colorSpace);
-		CGContextSetFillColorWithColor(tempContext, colorBlack);						// to counteract CGContextSetFillColorSpace and CGContextSetFillPattern
+		CGContextSetFillColorWithColor(tempContext, colorBlack);										// to counteract CGContextSetFillColorSpace and CGContextSetFillPattern
 		for (int i=minGrainSizeIndex; i<=maxGrainSizeIndex; ++i) {
 			const NSString *grainText = gAbbreviatedGrainSizeNames[i-1];
-			[grainText drawAtPoint:CGPointZero withFont:font];							// text rotated by 90 degrees (rotated context)
+			[grainText drawAtPoint:CGPointZero withFont:font];											// text rotated by 90 degrees (rotated context)
 			// vertical lines for each legend entry
 			UIBezierPath *path = [UIBezierPath bezierPath];
 			// use grainSizeLegend label to establish lower & upper limits of X coordinates (in our rotated context)
