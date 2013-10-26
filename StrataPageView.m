@@ -271,6 +271,7 @@
 			offset.x -= [maxWidths[++columnIndex] floatValue]+self.activeDocument.pageMargins.width/2.0;	// horizontal adjustment using maxwidth, and adding horizontal page margin
 			offset.y = -stratumRect.origin.y+self.activeDocument.pageMargins.height+self.columnVerticalMargin;	// vertical adjustment to make stratum sit on base page margin
 			stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);									// give it the same offset as succeeding strata in next column
+			stratumTop = stratumRect.origin.y+stratumRect.size.height;										// recalculate it in new column
 			[self drawColumnAdornments:columnIndex+1 columnOrigin:stratumRect.origin
 					 minGrainSizeIndex:[minGrainSizeIndices[columnIndex] intValue]
 					 maxGrainSizeIndex:[maxGrainSizeIndices[columnIndex] intValue]];						// for subsequent columns
