@@ -22,6 +22,7 @@ typedef enum {
 @interface StrataDocument : NSObject <NSCoding>
 
 - (void)adjustStratumSize:(CGSize)size atIndex:(int)index;
+- (void)removeStratumAtIndex:(int)index;
 - (void)save;
 - (StrataDocument *)duplicate;
 - (void)remove;

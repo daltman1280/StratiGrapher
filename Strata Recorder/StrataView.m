@@ -621,6 +621,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			Stratum *newStratum = [[Stratum alloc] initWithFrame:CGRectMake(0, lastStratum.frame.origin.y+lastStratum.frame.size.height, 0, 0)];
 			newStratum.materialNumber = 0;																	// unassigned material
 			[self.activeDocument.strata addObject:newStratum];
+		} else if (stratum.grainSizeIndex == 1 && stratum.frame.size.height == 0) {						// user has dragged UR corner to LL corner, remove the stratum
+			if (self.activeDragIndex != self.activeDocument.strata.count-1) {							// last stratum is already empty, do nothing in this case
+				[self.activeDocument removeStratumAtIndex:self.activeDragIndex];
+			}
 		}
 		[self setNeedsDisplay];
 	} else if (self.selectedAnchorStratum || self.selectedScissorsStratum) {

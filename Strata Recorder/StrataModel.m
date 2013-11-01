@@ -144,6 +144,11 @@
 	}
 }
 
+- (void)removeStratumAtIndex:(int)index
+{
+	[self.strata removeObjectAtIndex:index];
+}
+
 #pragma mark NSCoder protocol
 
 - (id)initWithCoder:(NSCoder *)aDecoder
