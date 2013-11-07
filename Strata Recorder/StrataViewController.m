@@ -110,7 +110,7 @@ typedef enum {
 					CGPoint paleoLocation = CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y);
 					if ((hitPoint.x-paleoLocation.x)*(hitPoint.x-paleoLocation.x)+
 						(hitPoint.y-paleoLocation.y)*(hitPoint.y-paleoLocation.y) < HIT_DISTANCE*HIT_DISTANCE &&
-						self.selectedPaleoCurrent == nil) {																		// hit detected on paleocurrent
+						self.selectedPaleoCurrent == nil) {																		// hit detected on paleocurrent, select it
 						self.currentTapState = tapStatePaleoSelected;
 						self.paleoCurrentSelectedView.hidden = NO;
 						self.paleoCurrentSelectedView.center = [self.strataView convertPoint:CGPointMake(VX(paleoLocation.x), VY(paleoLocation.y)) toView:self.view];
@@ -124,8 +124,6 @@ typedef enum {
 						self.rotationGestureRecognizer.enabled = YES;
 						self.paleoCurrentDragStarted = NO;
 						self.strataView.touchesEnabled = NO;
-						self.strataGraphScrollView.pinchGestureRecognizer.enabled = NO;
-						self.strataGraphScrollView.scrollEnabled = NO;
 						break;
 					}
 				}
@@ -526,6 +524,18 @@ typedef enum {
 	view.contentScaleFactor = scale * [UIScreen mainScreen].scale;
 //	self.strataView.scale = self.scrollView.zoomScale;
 //	[self.strataView setNeedsDisplay];
+}
+
+//	Maintain the current screen position of selected paleocurrent
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	if (self.selectedPaleoCurrent) {
+		Stratum *stratum = self.selectedStratum;
+		PaleoCurrent *paleo = self.selectedPaleoCurrent;
+		CGPoint paleoLocation = CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y);
+		self.paleoCurrentSelectedView.center = [self.strataView convertPoint:CGPointMake(VX(paleoLocation.x), VY(paleoLocation.y)) toView:self.view];
+	}
 }
 
 #pragma mark -
