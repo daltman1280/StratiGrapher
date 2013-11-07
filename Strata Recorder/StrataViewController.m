@@ -132,7 +132,7 @@ typedef enum {
 			}
 			if (self.currentTapState != tapStateNoneSelected) break;
 		}
-	} else if (self.currentTapState == tapStatePaleoSelected) {
+	} else if (self.currentTapState == tapStatePaleoSelected) {																	// deselecting paleocurrent
 		self.paleoCurrentSelectedView.hidden = YES;
 		self.strataGraphScrollView.userInteractionEnabled = YES;
 		self.panGestureRecognizer.enabled = NO;
@@ -238,6 +238,8 @@ typedef enum {
 			if (dropPointUser.x < stratum.frame.size.width || dropPointUser.x > stratum.frame.size.width + 1 || dropPointUser.y < stratum.frame.origin.y || dropPointUser.y > stratum.frame.origin.y+stratum.frame.size.height) {
 				[self putAwayTool:self.paleoCurrentSelectedView toOriginalView:self.paleoCurrentView];
 				[stratum.paleoCurrents removeObject:self.selectedPaleoCurrent];
+				self.strataGraphScrollView.scrollEnabled = YES;
+				self.strataGraphScrollView.pinchGestureRecognizer.enabled = YES;
 				[self.strataView setNeedsDisplay];
 			}
 			self.paleoCurrentDragStarted = NO;
