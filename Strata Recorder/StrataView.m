@@ -251,12 +251,14 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	gScale = self.scale;
 	CGContextDrawPath(currentContext, kCGPathFillStroke);								// does fill and stroke
 	// draw points in red for debugging purposes
+#if 0
 	CGContextSetStrokeColorWithColor(currentContext, [UIColor colorWithRed:1 green:0 blue:0 alpha:1.0].CGColor);
 	for (NSDictionary *dict in stratum.outline) {
 		CGPoint point;
 		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &point);
 		CGContextStrokeRect(currentContext, CGRectMake(VX(point.x+stratum.frame.origin.x), VY(point.y+stratum.frame.origin.y), 1, 1));
 	}
+#endif
 	CGContextRestoreGState(currentContext);
 }
 
