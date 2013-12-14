@@ -190,7 +190,7 @@
 	self = [super init];
 	if (self) {
 		self.frame = frame;
-		self.grainSizeIndex = 0;
+		self.grainSizeIndex = 0;										// uninitialized value
 	}
 	return self;
 }

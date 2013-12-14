@@ -52,7 +52,8 @@
 
 - (void)didReceiveMemoryWarning
 {
-    [super didReceiveMemoryWarning];
+ 	NSLog(@"AddSectionLabelViewController didReceiveMemoryWarning");
+   [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 

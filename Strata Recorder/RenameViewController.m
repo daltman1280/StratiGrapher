@@ -61,6 +61,7 @@
 
 - (void)didReceiveMemoryWarning
 {
+	NSLog(@"RenameViewController didReceiveMemoryWarning");
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }

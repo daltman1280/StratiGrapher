@@ -125,6 +125,7 @@
 
 - (void)didReceiveMemoryWarning
 {
+	NSLog(@"DocumentListTableViewController didReceiveMemoryWarning");
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }

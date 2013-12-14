@@ -85,6 +85,7 @@
 
 - (void)didReceiveMemoryWarning
 {
+	NSLog(@"SectionLabelsTableViewController didReceiveMemoryWarning");
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }

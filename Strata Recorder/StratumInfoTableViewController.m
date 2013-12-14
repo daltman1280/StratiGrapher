@@ -92,7 +92,8 @@
 
 - (void)didReceiveMemoryWarning
 {
-    [super didReceiveMemoryWarning];
+	NSLog(@"StratumInfoTableViewController didReceiveMemoryWarning");
+	[super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 

@@ -542,6 +542,7 @@ typedef enum {
 
 - (void)didReceiveMemoryWarning
 {
+	NSLog(@"StrataViewController didReceiveMemoryWarning");
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }

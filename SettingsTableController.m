@@ -188,6 +188,7 @@
 
 - (void)didReceiveMemoryWarning
 {
+	NSLog(@"SettingsTableController didReceiveMemoryWarning");
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }

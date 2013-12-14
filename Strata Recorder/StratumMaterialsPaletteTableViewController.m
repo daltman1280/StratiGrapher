@@ -65,6 +65,7 @@
 
 - (void)didReceiveMemoryWarning
 {
+	NSLog(@"StratumMaterialsPaletteTableViewController didReceiveMemoryWarning");
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
