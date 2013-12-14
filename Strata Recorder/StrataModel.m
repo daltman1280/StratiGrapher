@@ -130,12 +130,21 @@
 		float xScale = stratum.frame.size.width/oldFrame.size.width;
 		float yScale = stratum.frame.size.height/oldFrame.size.height;
 		for (int index = 0; index < stratum.outline.count; ++index) {
+#ifdef MUTABLE
+			NSMutableDictionary *dict = stratum.outline[index];
+#else
 			NSDictionary *dict = stratum.outline[index];
+#endif
 			CGPoint point;
 			CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &point);
 			point.x *= xScale;
 			point.y *= yScale;
+#ifdef MUTABLE
+			[dict setObject:[NSNumber numberWithFloat:point.x] forKey:@"X"];
+			[dict setObject:[NSNumber numberWithFloat:point.y] forKey:@"Y"];
+#else
 			[stratum.outline replaceObjectAtIndex:index withObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(point))];
+#endif
 		}
 	}
 	for (int i=index+1; i<self.strata.count; ++i) {															// offset origins of all following strata
@@ -200,11 +209,23 @@
 	self.outline = [[NSMutableArray alloc] init];
 	float numberOfSegments = 5;
 	for (float x = self.frame.origin.x, segnum = 0; segnum <= numberOfSegments; x += self.frame.size.width/numberOfSegments, ++segnum)						// left to right, on bottom
-		[self.outline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(x, 0)))];
+#ifdef MUTABLE
+		[self.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(x, 0)))]];
+#else
+	[self.outline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(x, 0)))];
+#endif
 	for (float y = 0, segnum = 0; segnum <= numberOfSegments; y += self.frame.size.height/numberOfSegments, ++segnum)										// bottom to top, on right side
-		[self.outline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(self.frame.origin.x+self.frame.size.width, y)))];
+#ifdef MUTABLE
+		[self.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(self.frame.origin.x+self.frame.size.width, y)))]];
+#else
+	[self.outline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(self.frame.origin.x+self.frame.size.width, y)))];
+#endif
 	for (float x = self.frame.origin.x+self.frame.size.width, segnum = 0; segnum <= numberOfSegments; x -= self.frame.size.width/numberOfSegments, ++segnum)// right to left, on top
-		[self.outline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(x, self.frame.size.height)))];
+#ifdef MUTABLE
+		[self.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(x, self.frame.size.height)))]];
+#else
+	[self.outline addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(x, self.frame.size.height)))];
+#endif
 }
 
 #pragma mark NSCoder protocol
@@ -218,6 +239,13 @@
 	self.hasAnchor = [aDecoder decodeBoolForKey:@"hasAnchor"];
 	self.paleoCurrents = [aDecoder decodeObjectForKey:@"paleocurrents"];
 	self.outline = [aDecoder decodeObjectForKey:@"outline"];
+#ifdef MUTABLE
+	NSMutableArray *convertedOutline = [[NSMutableArray alloc] init];
+	int i = 0;
+	for (NSDictionary *dict in self.outline)
+		[convertedOutline addObject:[NSMutableDictionary dictionaryWithDictionary:self.outline[i++]]];
+	self.outline = convertedOutline;
+#endif
 	self.grainSizeIndex = [aDecoder decodeIntForKey:@"grainSizeIndex"];
 	return self;
 }
