@@ -520,7 +520,7 @@ typedef enum {
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale
 {
-	view.contentScaleFactor = scale * [UIScreen mainScreen].scale;
+//	view.contentScaleFactor = scale * [UIScreen mainScreen].scale;				// seems to conflict with CATiledLayer usage
 //	self.strataView.scale = self.scrollView.zoomScale;
 //	[self.strataView setNeedsDisplay];
 }
