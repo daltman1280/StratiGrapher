@@ -342,7 +342,7 @@
 		CGContextSetFillPattern(currentContext, pattern, &alpha);
 		
 		// draw stratum
-		if (stratum.outline == nil) {														// no outline, treat it as a rectangle
+		if (stratum.outline == nil || stratum.outline.count == 0) {							// no outline, treat it as a rectangle
 			stratumRect = [self RectUtoV:stratumRect];										// convert to view coordinates
 			CGContextFillRect(currentContext, stratumRect);
 			CGContextStrokeRect(currentContext, stratumRect);
