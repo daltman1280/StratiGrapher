@@ -78,6 +78,9 @@
 
 - (void)drawColumnAdornments:(int)columnNumber columnOrigin:(CGPoint)columnOrigin minGrainSizeIndex:(int)minGrainSizeIndex maxGrainSizeIndex:(int)maxGrainSizeIndex
 {
+	// fix, in case old versions of document do not have correct grainSizeIndex for each stratum
+	if (minGrainSizeIndex <= 0) minGrainSizeIndex = 1;
+	if (maxGrainSizeIndex < minGrainSizeIndex) maxGrainSizeIndex = minGrainSizeIndex;
 	{	// column number
 		CGContextRef tempContext = UIGraphicsGetCurrentContext();
 		CGContextSaveGState(tempContext);
