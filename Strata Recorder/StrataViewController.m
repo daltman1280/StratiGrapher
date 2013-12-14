@@ -355,7 +355,6 @@ typedef enum {
 	self.strataPageView.patternsPageArray = self.strataView.patternsPageArray;
 	self.rotationGestureRecognizer.enabled = NO;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationEnteredBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationBecameActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleStrataHeightChanged:) name:SRStrataHeightChangedNotification object:nil];
 	// initialize legend
 	self.legendView.legendLineContainer = self.legendLineContainer;
@@ -397,11 +396,6 @@ typedef enum {
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:SRActiveDocumentSelectionChanged object:self userInfo:[NSDictionary dictionaryWithObject:self.activeDocument forKey:@"activeDocument"]];
 	[self.strataView setNeedsDisplay];
-}
-
-- (void)handleApplicationBecameActive:(id)sender
-{
-	[self.strataView initialize];
 }
 
 - (void)handleStrataHeightChanged:(id)sender

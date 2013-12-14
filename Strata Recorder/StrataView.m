@@ -452,13 +452,9 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	[self populateMoveIconLocations];														// we're overriding the setter, because this is a good time to do this
 }
 
-/*
- initWithCoder and initWithFrame are not reliably called, so we call this from the view controller in its UIApplicationDidBecomeActiveNotification
- This is to be called once.
- */
-
-- (void)initialize
+- (id)initWithCoder:(NSCoder *)aDecoder
 {
+	self = [super initWithCoder:aDecoder];
 	CATiledLayer *tiledLayer = (CATiledLayer *)self.layer;
 	tiledLayer.levelsOfDetail = 5;
 	tiledLayer.levelsOfDetailBias = 2;
@@ -494,6 +490,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	[self.traceContainer addSublayer:self.traceContainer.trace];
 	self.traceContainer.trace.delegate = self.traceContainer;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
+	return self;
 }
 
 - (void)handleActiveDocumentSelectionChanged:(NSNotification *)notification
