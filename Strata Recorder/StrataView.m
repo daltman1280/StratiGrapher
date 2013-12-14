@@ -568,16 +568,38 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 #pragma mark Touch events handling
 
+/*
+ These are routed to StrataView, after determining that pan gesture on any of the tool icons has not fired (action methods are in StrataViewController).
+ 
+ We check to see whether user has hit a move icon, anchor icon, or scissors icon.
+ */
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	if (self.pencilActive) [self pencilTouchesBegan:touches withEvent:event];
 	if (!self.touchesEnabled) return;
 	CGPoint dragPoint = [self getDragPoint:event];
-	for (NSMutableDictionary *dict in self.iconLocations) {													// first check move icons
+	for (NSMutableDictionary *dict in self.iconLocations) {												// first check move icons
 		CGPoint iconLocation;
 		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &iconLocation);
 		if ((dragPoint.x-iconLocation.x)*(dragPoint.x-iconLocation.x)+
 			(dragPoint.y-iconLocation.y)*(dragPoint.y-iconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {	// hit detected
+#if 0		// from http://i-software-developers.com/2013/06/18/ios7-style-blurred-overlay-in-xcode/
+			// this takes a couple of seconds on simulator, completely fails on original iPad
+			UIGraphicsBeginImageContext(self.bounds.size);
+			[self.layer renderInContext:UIGraphicsGetCurrentContext()];
+			UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
+			UIGraphicsEndImageContext();
+			CIImage *imageToBlur = [CIImage imageWithCGImage:viewImage.CGImage];
+			CIFilter *gaussianBlurFilter = [CIFilter filterWithName:@"CIGaussianBlur"];
+			[gaussianBlurFilter setValue:imageToBlur forKey:@"inputImage"];
+			[gaussianBlurFilter setValue:[NSNumber numberWithFloat:10] forKey:@"inputRadius"];
+			CIImage *resultImage = [gaussianBlurFilter valueForKey:@"outputImage"];
+			UIImage *blurredImage = [[UIImage alloc] initWithCIImage:resultImage];
+			UIImageView *blurredImageView = [[UIImageView alloc] initWithFrame:self.bounds];
+			blurredImageView.image = blurredImage;
+			[self insertSubview:blurredImageView atIndex:0];
+#endif
 			self.dragActive = YES;
 			self.dragOffsetFromCenter = CGSizeMake(dragPoint.x-iconLocation.x, dragPoint.y-iconLocation.y);
 			self.activeDragIndex = [self.iconLocations indexOfObject:dict];								// index of selected object
@@ -590,7 +612,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			break;
 		}
 	}
-	for (Stratum *stratum in self.activeDocument.strata) {												// check info and pencil icons and paleocurrents, anchors, and scissors
+	for (Stratum *stratum in self.activeDocument.strata) {												// check anchors, and scissors
 		if (stratum != self.activeDocument.strata.lastObject) {
 			if (stratum.hasAnchor && (dragPoint.x-ANCHOR_X)*(dragPoint.x-ANCHOR_X)+
 				(dragPoint.y-stratum.frame.origin.y)*(dragPoint.y-stratum.frame.origin.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on anchor icon
@@ -671,6 +693,9 @@ void patternDrawingCallback(void *info, CGContextRef context)
 				[self.activeDocument removeStratumAtIndex:self.activeDragIndex];
 			}
 		}
+#if 0		// from http://i-software-developers.com/2013/06/18/ios7-style-blurred-overlay-in-xcode/
+		[[self subviews][0] removeFromSuperview];
+#endif
 		[self setNeedsDisplay];
 	} else if (self.selectedAnchorStratum || self.selectedScissorsStratum) {
 		if (dragPoint.x < 0.5) {																		// otherwise, throw it away
