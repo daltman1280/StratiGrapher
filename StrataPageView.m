@@ -334,7 +334,7 @@
 		
 		for (PaleoCurrent *paleo in stratum.paleoCurrents) {								// draw any paleocurrents owned by the stratum
 			CGPoint paleoOrigin = CGPointMake(stratumRect.origin.x+stratumRect.size.width+paleo.origin.x/scale, stratumRect.origin.y+paleo.origin.y/scale);
-			[self.arrowIcon drawAtPointWithRotation:paleoOrigin scale:1 rotation:paleo.rotation];
+			[self.arrowIcon drawAtPointWithRotation:paleoOrigin scale:1 rotation:paleo.rotation inContext:currentContext];
 		}
 		// don't draw last empty stratum
 		if ([self.activeDocument.strata indexOfObject:stratum] == self.activeDocument.strata.count-1) break;

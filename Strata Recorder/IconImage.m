@@ -16,7 +16,6 @@
 
 @property (nonatomic) CGPoint offset;	// offset of origin w respect to UL corner, in fraction of width
 @property (nonatomic) UIImage *image;
-@property (nonatomic) CGFloat width;	// width to display icon
 
 @end
 
@@ -45,20 +44,27 @@
 
 //	point in user coordinates
 
-- (void)drawAtPoint:(CGPoint)point scale:(CGFloat)scale
+- (void)drawAtPoint:(CGPoint)point scale:(CGFloat)scale inContext:(CGContextRef)currentContext
 {
 	scale = 1;		// temporary: always display at this scale
 #pragma unused(scale)
-	[self.image drawInRect:CGRectMake(VX(point.x)-self.offset.x*self.width, VY(point.y)-self.width+self.offset.y*self.width, self.width, self.width)];
+	CGContextSaveGState(currentContext);
+	CGContextTranslateCTM(currentContext, VX(point.x), VY(point.y));
+	CGContextScaleCTM(currentContext, 1, -1);
+	CGRect rect = CGRectMake(-self.offset.x*self.width, /*+self.width*/-self.offset.y*self.width, self.width, self.width);
+	CGImageRef image = self.image.CGImage;
+	CGContextDrawImage(currentContext, rect, image);
+	CGContextRestoreGState(currentContext);
 }
 
-- (void)drawAtPointWithRotation:(CGPoint)point scale:(CGFloat)scale rotation:(CGFloat)rotation
+- (void)drawAtPointWithRotation:(CGPoint)point scale:(CGFloat)scale rotation:(CGFloat)rotation inContext:(CGContextRef)currentContext
 {
-	CGContextRef currentContext = UIGraphicsGetCurrentContext();
 	CGContextSaveGState(currentContext);
 	CGContextTranslateCTM(currentContext, VX(point.x), VY(point.y));
 	CGContextRotateCTM(currentContext, rotation);
-	[self.image drawInRect:CGRectMake(-self.width/2.0, -self.width/2, self.width, self.width)];
+	CGContextScaleCTM(currentContext, 1, -1);
+	CGImageRef image = self.image.CGImage;
+	CGContextDrawImage(currentContext, CGRectMake(-self.width/2.0, -self.width/2, self.width, self.width), image);
 	CGContextRestoreGState(currentContext);
 }
 

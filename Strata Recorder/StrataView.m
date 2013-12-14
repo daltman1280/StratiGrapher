@@ -95,7 +95,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	if (self.overlayVisible) {
 		gTransparent = YES;
 		[self drawPencilHighlighting];
-		[self.strataView drawStratumOutline:self.selectedPencilStratum];
+		[self.strataView drawStratumOutline:self.selectedPencilStratum inContext:ctx];
 	}
 	UIGraphicsPopContext();
 }
@@ -162,6 +162,11 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 @implementation StrataView
 
++ (Class)layerClass
+{
+	return [CATiledLayer class];
+}
+
 /*
  Algorithm from http://scaledinnovation.com/analytics/splines/aboutSplines.html
  */
@@ -196,11 +201,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	return controlPoints;
 }
 
-- (void)drawStratumOutline:(Stratum *)stratum
+- (void)drawStratumOutline:(Stratum *)stratum inContext:(CGContextRef)currentContext
 {
 	if (stratum.outline.count == 0) return;
 	NSMutableArray *controlPoints = [StrataView populateControlPoints:stratum];
-	CGContextRef currentContext = UIGraphicsGetCurrentContext();
 	CGContextSaveGState(currentContext);
 	CGContextSetLineWidth(currentContext, 3);
 	// draw left boundary, before setting clipping path
@@ -368,7 +372,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 {
 	CGPoint dragPoint = [self getDragPoint:event];
 	self.pencilTouchBeganInEditRegion = [self inPencilEditRegion:dragPoint];
-//	if (!self.pencilTouchBeganInEditRegion) return;
+	//	if (!self.pencilTouchBeganInEditRegion) return;
 	CGPoint viewPoint = CGPointMake(VX(dragPoint.x), VY(dragPoint.y));
 	[self.traceContainer.tracePoints removeAllObjects];
 	[self.traceContainer addPoint:viewPoint];
@@ -378,18 +382,18 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)pencilTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 {
-//	if (!self.pencilTouchBeganInEditRegion) return;
+	//	if (!self.pencilTouchBeganInEditRegion) return;
 	CGPoint dragPoint = [self getDragPoint:event];
 	CGPoint viewPoint = CGPointMake(VX(dragPoint.x), VY(dragPoint.y));
 	[self.traceContainer addPoint:viewPoint];
 	[self.traceContainer.trace setNeedsDisplay];
 	[self.overlayContainer addPoint:dragPoint];
-//	[self.overlayContainer.overlay setNeedsDisplay];
+	//	[self.overlayContainer.overlay setNeedsDisplay];
 }
 
 - (void)pencilTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
 {
-//	if (!self.pencilTouchBeganInEditRegion) return;
+	//	if (!self.pencilTouchBeganInEditRegion) return;
 	[self.traceContainer.tracePoints removeAllObjects];
 	[self.traceContainer.trace setNeedsDisplay];
 	[self updateOutlineFromTrace];
@@ -434,6 +438,11 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)initialize
 {
+	CATiledLayer *tiledLayer = (CATiledLayer *)self.layer;
+	tiledLayer.levelsOfDetail = 5;
+	tiledLayer.levelsOfDetailBias = 2;
+	tiledLayer.tileSize = CGSizeMake(512, 512);
+	self.opaque = YES;
 	self.origin = CGPointMake(XORIGIN, YORIGIN);
 	self.touchesEnabled = YES;
 	self.moveIcon = [[IconImage alloc] initWithImageName:@"move icon.png" offset:CGPointMake(9./50., 9./50.) width:50 viewBounds:self.bounds viewOrigin:self.origin];
@@ -563,7 +572,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	for (Stratum *stratum in self.activeDocument.strata) {												// check info and pencil icons and paleocurrents, anchors, and scissors
 		if (stratum != self.activeDocument.strata.lastObject) {
 			if (stratum.hasAnchor && (dragPoint.x-ANCHOR_X)*(dragPoint.x-ANCHOR_X)+
-					   (dragPoint.y-stratum.frame.origin.y)*(dragPoint.y-stratum.frame.origin.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on anchor icon
+				(dragPoint.y-stratum.frame.origin.y)*(dragPoint.y-stratum.frame.origin.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on anchor icon
 				self.selectedAnchorStratum = stratum;
 				stratum.hasAnchor = NO;																	// user is removing it (might return it at touchesEnded
 			} else if (stratum.hasPageCutter && (dragPoint.x-SCISSORS_X)*(dragPoint.x-SCISSORS_X)+
@@ -663,13 +672,18 @@ void patternDrawingCallback(void *info, CGContextRef context)
 - (void)handleLongPress:(UILongPressGestureRecognizer *)gesture
 {
 }
-					
+
 - (void)drawRect:(CGRect)rect
 {
+	
+}
+
+-(void)drawLayer:(CALayer*)layer inContext:(CGContextRef)currentContext
+{
 	gTransparent = YES;
-	[self drawGraphPaper:rect];
-	CGContextRef currentContext = UIGraphicsGetCurrentContext();
+	[self drawGraphPaper:currentContext];
 	CGContextSetShouldAntialias(currentContext, YES);
+	CGRect clippingRect = CGContextGetClipBoundingBox(currentContext);
 	// setup patterns
 	struct CGPatternCallbacks patternCallbacks = {
 		0, &patternDrawingCallback, 0
@@ -696,50 +710,60 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			CGSize newSize = CGSizeMake(iconLocation.x-stratum.frame.origin.x, iconLocation.y-stratum.frame.origin.y);
 			[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];	// here's where the work is done
 		}
-		if (stratum.outline == nil || stratum.outline.count == 0) {
-			CGRect myRect = CGRectMake(VX(stratum.frame.origin.x),							// stratum rectangle
-									   VY(stratum.frame.origin.y),
-									   VDX(stratum.frame.size.width),
-									   VDY(stratum.frame.size.height));
-			// setup fill pattern, must do for each stratum
-			if (!self.dragActive) {
-				CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
-				CGContextSetFillPattern(currentContext, pattern, &alpha);
-				gScale = self.scale;
-				CGContextFillRect(currentContext, myRect);									// draw fill pattern
-			}
-			CGContextStrokeRect(currentContext, myRect);									// draw boundary
-		} else
-			[self drawStratumOutline:stratum];
-		if (stratum.hasPageCutter) [self.scissorsIcon drawAtPoint:CGPointMake(-0.25, stratum.frame.origin.y) scale:self.scale];
-		if (stratum.hasAnchor) [self.anchorIcon drawAtPoint:CGPointMake(-0.5, stratum.frame.origin.y) scale:self.scale];
+		CGRect myRect = CGRectMake(VX(stratum.frame.origin.x),							// stratum rectangle
+								   VY(stratum.frame.origin.y),
+								   VDX(stratum.frame.size.width),
+								   VDY(stratum.frame.size.height));
+		if (CGRectIntersectsRect(myRect, clippingRect)) {								// only if it's inside clipping area
+			if (stratum.outline == nil || stratum.outline.count == 0) {					// no outline, just a rectangle
+				// setup fill pattern, must do for each stratum
+				if (!self.dragActive) {
+					CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
+					CGContextSetFillPattern(currentContext, pattern, &alpha);
+					CGPatternRelease(pattern);
+					gScale = self.scale;
+					CGContextFillRect(currentContext, myRect);							// draw fill pattern
+				}
+				CGContextStrokeRect(currentContext, myRect);							// draw boundary
+			} else
+				[self drawStratumOutline:stratum inContext:currentContext];
+		}
+		if (stratum.hasPageCutter) [self.scissorsIcon drawAtPoint:CGPointMake(-0.25, stratum.frame.origin.y) scale:self.scale inContext:currentContext];
+		// causes error
+		if (stratum.hasAnchor) [self.anchorIcon drawAtPoint:CGPointMake(-0.5, stratum.frame.origin.y) scale:self.scale inContext:currentContext];
 		for (PaleoCurrent *paleo in stratum.paleoCurrents)
-			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1 rotation:paleo.rotation];
+			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1 rotation:paleo.rotation inContext:currentContext];
 		if (!self.dragActive && stratum != self.activeDocument.strata.lastObject)			// draw info icon, unless this is the last (empty) stratum
-			[self.infoIcon drawAtPoint:CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1) scale:self.scale];
+			[self.infoIcon drawAtPoint:CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1) scale:self.scale inContext:currentContext];
 		if (!self.dragActive && stratum != self.activeDocument.strata.lastObject)			// draw pencil icon, unless this is the last (empty) stratum
-			[self.pencilIcon drawAtPoint:CGPointMake(stratum.frame.origin.x+(stratum.frame.size.width/2.0), stratum.frame.origin.y+(stratum.frame.size.height/2.0)) scale:self.scale];
+			[self.pencilIcon drawAtPoint:CGPointMake(stratum.frame.origin.x+(stratum.frame.size.width/2.0), stratum.frame.origin.y+(stratum.frame.size.height/2.0)) scale:self.scale inContext:currentContext];
 	}
 	for (NSDictionary *dict in self.iconLocations) {										// draw move icons
 		CGPoint iconLocation;
 		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &iconLocation);
-		if (self.dragActive) {
-			if (self.activeDragIndex == [self.iconLocations indexOfObject:dict])
-				[self.moveIconSelected drawAtPoint:iconLocation scale:self.scale];			// draw icon in selected state if it's selected and dragging is active
-		} else
-			[self.moveIcon drawAtPoint:iconLocation scale:self.scale];
+		CGPoint viewPoint = CGPointMake(VX(iconLocation.x), VY(iconLocation.y));
+		CGRect iconRect = CGRectMake(viewPoint.x-self.moveIcon.width, viewPoint.y-self.moveIcon.width, self.moveIcon.width*2, self.moveIcon.width*2);
+		if (CGRectIntersectsRect(clippingRect, iconRect)) {
+			if (self.dragActive) {
+				if (self.activeDragIndex == [self.iconLocations indexOfObject:dict])
+					[self.moveIconSelected drawAtPoint:iconLocation scale:self.scale inContext:currentContext];		// draw icon in selected state if it's selected and dragging is active
+			} else
+				[self.moveIcon drawAtPoint:iconLocation scale:self.scale inContext:currentContext];
+		}
 	}
 	if (self.selectedScissorsStratum)
-		[self.scissorsIcon drawAtPoint:self.iconOrigin scale:self.scale];
+		[self.scissorsIcon drawAtPoint:self.iconOrigin scale:self.scale inContext:currentContext];
 	if (self.selectedAnchorStratum)
-		[self.anchorIcon drawAtPoint:self.iconOrigin scale:self.scale];
+		[self.anchorIcon drawAtPoint:self.iconOrigin scale:self.scale inContext:currentContext];
 }
 
-- (void)drawGraphPaper:(CGRect)rect
+- (void)drawGraphPaper:(CGContextRef)context
 {
 	// paper background
-	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGContextSetShouldAntialias(context, NO);
+	
+    CGContextSetRGBFillColor(context, 1.0,1.0,1.0,1.0);
+    CGContextFillRect(context,self.bounds);
 	// horizontal rules
 	CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0 green:1 blue:1 alpha:1.0].CGColor);
 	for (float i=-YORIGIN; i<self.bounds.size.height/PPI; i+=GRID_WIDTH) {

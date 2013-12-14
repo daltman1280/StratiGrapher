@@ -62,7 +62,7 @@ void patternDrawingCallback(void *info, CGContextRef context);
 - (void)handleStrataHeightChanged:(id)sender;
 - (void)handlePencilTap:(Stratum *)stratum;
 - (void)handlePaleoTap:(PaleoCurrent *)paleo inStratum:(Stratum *)stratum;
-- (void)drawStratumOutline:(Stratum *)stratum;
+- (void)drawStratumOutline:(Stratum *)stratum inContext:(CGContextRef)currentContext;
 + (NSMutableArray *)populateControlPoints:(Stratum *)stratum;
 - (void)populateMoveIconLocations;
 

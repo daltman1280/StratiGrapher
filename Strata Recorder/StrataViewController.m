@@ -362,7 +362,6 @@ typedef enum {
 	self.legendView.legendLineLabel = self.legendLineLabel;
 	self.legendView.legendLineMaterial = self.legendLineMaterial;
 	[self.legendView populateLegend];
-	[self.legendView populateLegend];
 	// initialize page view properties
 	self.strataPageView.strataPageView = self.strataPageView;
 	self.strataPageView.columnNumber = self.columnNumber;
