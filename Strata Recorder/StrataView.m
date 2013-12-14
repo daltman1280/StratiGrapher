@@ -584,22 +584,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &iconLocation);
 		if ((dragPoint.x-iconLocation.x)*(dragPoint.x-iconLocation.x)+
 			(dragPoint.y-iconLocation.y)*(dragPoint.y-iconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {	// hit detected
-#if 0		// from http://i-software-developers.com/2013/06/18/ios7-style-blurred-overlay-in-xcode/
-			// this takes a couple of seconds on simulator, completely fails on original iPad
-			UIGraphicsBeginImageContext(self.bounds.size);
-			[self.layer renderInContext:UIGraphicsGetCurrentContext()];
-			UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
-			UIGraphicsEndImageContext();
-			CIImage *imageToBlur = [CIImage imageWithCGImage:viewImage.CGImage];
-			CIFilter *gaussianBlurFilter = [CIFilter filterWithName:@"CIGaussianBlur"];
-			[gaussianBlurFilter setValue:imageToBlur forKey:@"inputImage"];
-			[gaussianBlurFilter setValue:[NSNumber numberWithFloat:10] forKey:@"inputRadius"];
-			CIImage *resultImage = [gaussianBlurFilter valueForKey:@"outputImage"];
-			UIImage *blurredImage = [[UIImage alloc] initWithCIImage:resultImage];
-			UIImageView *blurredImageView = [[UIImageView alloc] initWithFrame:self.bounds];
-			blurredImageView.image = blurredImage;
-			[self insertSubview:blurredImageView atIndex:0];
-#endif
 			self.dragActive = YES;
 			self.dragOffsetFromCenter = CGSizeMake(dragPoint.x-iconLocation.x, dragPoint.y-iconLocation.y);
 			self.activeDragIndex = [self.iconLocations indexOfObject:dict];								// index of selected object
@@ -693,9 +677,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 				[self.activeDocument removeStratumAtIndex:self.activeDragIndex];
 			}
 		}
-#if 0		// from http://i-software-developers.com/2013/06/18/ios7-style-blurred-overlay-in-xcode/
-		[[self subviews][0] removeFromSuperview];
-#endif
 		[self setNeedsDisplay];
 	} else if (self.selectedAnchorStratum || self.selectedScissorsStratum) {
 		if (dragPoint.x < 0.5) {																		// otherwise, throw it away
