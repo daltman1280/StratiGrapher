@@ -248,6 +248,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
 	CGFloat alpha = 1;
 	CGContextSetFillPattern(currentContext, pattern, &alpha);
+	CGPatternRelease(pattern);
 	gScale = self.scale;
 	CGContextDrawPath(currentContext, kCGPathFillStroke);								// does fill and stroke
 	// draw points in red for debugging purposes
