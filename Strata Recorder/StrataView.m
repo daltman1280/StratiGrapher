@@ -452,9 +452,13 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	[self populateMoveIconLocations];														// we're overriding the setter, because this is a good time to do this
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+/*
+ initWithCoder and initWithFrame are not reliably called, so we call this from the view controller in its UIApplicationDidBecomeActiveNotification
+ This is to be called once.
+ */
+
+- (void)initialize
 {
-	self = [super initWithCoder:aDecoder];
 	CATiledLayer *tiledLayer = (CATiledLayer *)self.layer;
 	tiledLayer.levelsOfDetail = 5;
 	tiledLayer.levelsOfDetailBias = 2;
@@ -490,7 +494,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	[self.traceContainer addSublayer:self.traceContainer.trace];
 	self.traceContainer.trace.delegate = self.traceContainer;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
-	return self;
 }
 
 - (void)handleActiveDocumentSelectionChanged:(NSNotification *)notification
@@ -581,6 +584,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &iconLocation);
 		if ((dragPoint.x-iconLocation.x)*(dragPoint.x-iconLocation.x)+
 			(dragPoint.y-iconLocation.y)*(dragPoint.y-iconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {	// hit detected
+			[[NSNotificationCenter defaultCenter] postNotificationName:SREditingOperationStarted object:self];	// disable scrolling
 			self.dragActive = YES;
 			self.dragOffsetFromCenter = CGSizeMake(dragPoint.x-iconLocation.x, dragPoint.y-iconLocation.y);
 			self.activeDragIndex = [self.iconLocations indexOfObject:dict];								// index of selected object
@@ -597,10 +601,12 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		if (stratum != self.activeDocument.strata.lastObject) {
 			if (stratum.hasAnchor && (dragPoint.x-ANCHOR_X)*(dragPoint.x-ANCHOR_X)+
 				(dragPoint.y-stratum.frame.origin.y)*(dragPoint.y-stratum.frame.origin.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on anchor icon
+				[[NSNotificationCenter defaultCenter] postNotificationName:SREditingOperationStarted object:self];	// disable scrolling
 				self.selectedAnchorStratum = stratum;
 				stratum.hasAnchor = NO;																	// user is removing it (might return it at touchesEnded
 			} else if (stratum.hasPageCutter && (dragPoint.x-SCISSORS_X)*(dragPoint.x-SCISSORS_X)+
 					   (dragPoint.y-stratum.frame.origin.y)*(dragPoint.y-stratum.frame.origin.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on scissors icon
+				[[NSNotificationCenter defaultCenter] postNotificationName:SREditingOperationStarted object:self];	// disable scrolling
 				self.selectedScissorsStratum = stratum;
 				stratum.hasPageCutter = NO;																// user is removing it (might return it at touchesEnded
 			}
@@ -699,6 +705,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	self.dragActive = NO;
 	self.selectedPaleoCurrent = nil;
 	[self populateMoveIconLocations];																	// re-populate move icon coordinates
+	[[NSNotificationCenter defaultCenter] postNotificationName:SREditingOperationEnded object:self];	// re-enable scrolling
 	if (!self.pencilActive)
 		[self setNeedsDisplay];																			// still causes extra redraw when exiting pencil highlighting mode
 }

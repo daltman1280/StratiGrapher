@@ -84,6 +84,8 @@ typedef enum {
 
 #define HIT_DISTANCE 1./6.
 
+//	Action method for TapGestureRecognizer attached to StrataView.
+
 - (IBAction)handleTapGesture:(UITapGestureRecognizer *)gestureRecognizer
 {
 	CGPoint hitPoint = CGPointMake(UX([gestureRecognizer locationInView:gestureRecognizer.view].x), UY([gestureRecognizer locationInView:gestureRecognizer.view].y));
@@ -161,6 +163,7 @@ typedef enum {
 }
 
 /*
+ Action method for UiRotationGestureRecognizer attached to StrataView.
  Look for a paleocurrent icon that's located at the rotation center, and change its rotation based on the gesture.
  */
 
@@ -173,6 +176,13 @@ typedef enum {
 		self.paleoCurrentInitialRotation = self.selectedPaleoCurrent.rotation+gestureRecognizer.rotation;
 	}
 }
+
+/*
+ Action method for UIPanGestureRecognizers that are attached to the following:
+ 
+ Anchor, Arrow, and Scissors tools;
+ Selected Arrow, in drawing area.
+ */
 
 - (IBAction)handlePanGesture:(UIPanGestureRecognizer *)gestureRecognizer
 {
@@ -355,7 +365,10 @@ typedef enum {
 	self.strataPageView.patternsPageArray = self.strataView.patternsPageArray;
 	self.rotationGestureRecognizer.enabled = NO;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationEnteredBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationBecameActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleStrataHeightChanged:) name:SRStrataHeightChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleEditingOperationStarted:) name:SREditingOperationStarted object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleEditingOperationEnded:) name:SREditingOperationEnded object:nil];
 	// initialize legend
 	self.legendView.legendLineContainer = self.legendLineContainer;
 	self.legendView.legendLineLabel = self.legendLineLabel;
@@ -398,6 +411,11 @@ typedef enum {
 	[self.strataView setNeedsDisplay];
 }
 
+- (void)handleApplicationBecameActive:(id)sender
+{
+	[self.strataView initialize];
+}
+
 - (void)handleStrataHeightChanged:(id)sender
 {
 	// update strata view frame
@@ -413,6 +431,16 @@ typedef enum {
 	if (contentOffset.y < 0) contentOffset.y = 0;										// should be pinned to top of view
 	self.strataGraphScrollView.contentOffset = contentOffset;							// set content offset of scroll view
 	[self.strataView setNeedsDisplay];
+}
+
+- (void)handleEditingOperationStarted:(id)sender
+{
+	self.strataGraphScrollView.scrollEnabled = NO;
+}
+
+- (void)handleEditingOperationEnded:(id)sender
+{
+	self.strataGraphScrollView.scrollEnabled = YES;
 }
 
 - (void)handleApplicationEnteredBackground:(id)sender

@@ -58,6 +58,7 @@ void patternDrawingCallback(void *info, CGContextRef context);
 
 @interface StrataView : UIView
 
+- (void)initialize;
 - (void)handleStrataHeightChanged:(id)sender;
 - (void)handlePencilTap:(Stratum *)stratum;
 - (void)handlePaleoTap:(PaleoCurrent *)paleo inStratum:(Stratum *)stratum;
