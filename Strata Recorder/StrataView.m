@@ -578,7 +578,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	if (self.pencilActive) [self pencilTouchesBegan:touches withEvent:event];
+	if (self.pencilActive) {
+		[self pencilTouchesBegan:touches withEvent:event];
+		return;
+	}
 	if (!self.touchesEnabled) return;
 	CGPoint dragPoint = [self getDragPoint:event];
 	for (NSMutableDictionary *dict in self.iconLocations) {												// first check move icons
@@ -618,7 +621,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 {
-	if (self.pencilActive) [self pencilTouchesMoved:touches withEvent:event];
+	if (self.pencilActive) {
+		[self pencilTouchesMoved:touches withEvent:event];
+		return;
+	}
 	if (!self.touchesEnabled) return;
 	CGPoint dragPoint = [self getDragPoint:event];
 	if (self.dragActive) {																				// if dragging is active, modify the selected stratum
@@ -649,7 +655,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
 {
-	if (self.pencilActive) [self pencilTouchesEnded:touches withEvent:event];
+	if (self.pencilActive) {
+		[self pencilTouchesEnded:touches withEvent:event];
+		return;
+	}
 	if (!self.touchesEnabled) return;
 	CGPoint dragPoint = [self getDragPoint:event];
 	[self.locationLabel setHidden:YES];
