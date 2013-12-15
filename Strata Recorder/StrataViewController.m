@@ -89,7 +89,7 @@ typedef enum {
 - (IBAction)handleTapGesture:(UITapGestureRecognizer *)gestureRecognizer
 {
 	CGPoint hitPoint = CGPointMake(UX([gestureRecognizer locationInView:gestureRecognizer.view].x), UY([gestureRecognizer locationInView:gestureRecognizer.view].y));
-	if (self.currentTapState == tapStateNoneSelected) {
+	if (self.currentTapState == tapStateNoneSelected) {																			// we're not currently in a mode state
 		for (Stratum *stratum in self.activeDocument.strata) {
 			CGPoint infoIconLocation = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1);
 			CGPoint pencilIconLocation = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width/2.0, stratum.frame.origin.y+stratum.frame.size.height/2.0);
@@ -103,9 +103,6 @@ typedef enum {
 				self.currentTapState = tapStatePencilSelected;
 				self.selectedStratum = stratum;
 				[self.strataView handlePencilTap:stratum];
-				self.strataView.touchesEnabled = NO;
-				self.strataGraphScrollView.pinchGestureRecognizer.enabled = NO;													// temporary: should depend on location of touchesBegan
-				self.strataGraphScrollView.scrollEnabled = NO;																	// ditto
 				self.strataView.overlayContainer.overlayVisible = YES;
 			} else {																											// look for paleocurrents in each stratum
 				for (PaleoCurrent *paleo in stratum.paleoCurrents) {

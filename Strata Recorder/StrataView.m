@@ -388,7 +388,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 {
 	CGPoint dragPoint = [self getDragPoint:event];
 	self.pencilTouchBeganInEditRegion = [self inPencilEditRegion:dragPoint];
-	//	if (!self.pencilTouchBeganInEditRegion) return;
+	if (!self.pencilTouchBeganInEditRegion) return;
+	[[NSNotificationCenter defaultCenter] postNotificationName:SREditingOperationStarted object:self];	// disable scrolling
 	CGPoint viewPoint = CGPointMake(VX(dragPoint.x), VY(dragPoint.y));
 	[self.traceContainer.tracePoints removeAllObjects];
 	[self.traceContainer addPoint:viewPoint];
@@ -413,6 +414,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	[self.traceContainer.tracePoints removeAllObjects];
 	[self.traceContainer.trace setNeedsDisplay];
 	[self updateOutlineFromTrace];
+	[[NSNotificationCenter defaultCenter] postNotificationName:SREditingOperationEnded object:self];	// re-enable scrolling
 	[self.overlayContainer.overlay setNeedsDisplay];
 }
 
