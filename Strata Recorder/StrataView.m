@@ -635,6 +635,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		[self.iconLocations replaceObjectAtIndex:self.activeDragIndex withObject:(__bridge id)(dict)];
 		CFRelease(dict);
 #endif
+		CGPoint iconLocation;
+		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.iconLocations[self.activeDragIndex]), &iconLocation);
+		CGSize newSize = CGSizeMake(iconLocation.x-stratum.frame.origin.x, iconLocation.y-stratum.frame.origin.y);
+		[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];	// here's where the work is done
 		[self updateCoordinateText:offsetDragPoint stratum:stratum];
 		[self setNeedsDisplay];
 	} else if (self.selectedAnchorStratum || self.selectedScissorsStratum) {
@@ -749,12 +753,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	CFRelease(colorSpace);
 	for (int index = self.activeDocument.strata.count-1; index>=0; --index) {
 		Stratum *stratum = self.activeDocument.strata[index];
-		if (self.dragActive && [self.activeDocument.strata indexOfObject:stratum] == self.activeDragIndex) {	// adjust strata dimensions, based on selected move icon's coordinates
-			CGPoint iconLocation;
-			CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.iconLocations[self.activeDragIndex]), &iconLocation);
-			CGSize newSize = CGSizeMake(iconLocation.x-stratum.frame.origin.x, iconLocation.y-stratum.frame.origin.y);
-			[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];	// here's where the work is done
-		}
 		CGRect myRect = CGRectMake(VX(stratum.frame.origin.x),							// stratum rectangle
 								   VY(stratum.frame.origin.y),
 								   VDX(stratum.frame.size.width),
