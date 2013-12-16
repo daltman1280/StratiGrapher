@@ -27,6 +27,4 @@
 @property int				lineThickness;
 @property int				grainSizesMask;
 
-- (void)willShowViewController;
-
 @end
