@@ -381,7 +381,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 }
 
 /*
- Handle touch events in pencil mode
+ Handle touch events in pencil mode. Called from touch events handlers when we're in pencil editing mode.
  */
 
 - (void)pencilTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -399,7 +399,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)pencilTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 {
-	//	if (!self.pencilTouchBeganInEditRegion) return;
+	if (!self.pencilTouchBeganInEditRegion) return;
 	CGPoint dragPoint = [self getDragPoint:event];
 	CGPoint viewPoint = CGPointMake(VX(dragPoint.x), VY(dragPoint.y));
 	[self.traceContainer addPoint:viewPoint];
@@ -410,7 +410,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)pencilTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
 {
-	//	if (!self.pencilTouchBeganInEditRegion) return;
+	if (!self.pencilTouchBeganInEditRegion) return;
 	[self.traceContainer.tracePoints removeAllObjects];
 	[self.traceContainer.trace setNeedsDisplay];
 	[self updateOutlineFromTrace];
