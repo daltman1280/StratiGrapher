@@ -247,6 +247,7 @@
 	self.outline = convertedOutline;
 #endif
 	self.grainSizeIndex = [aDecoder decodeIntForKey:@"grainSizeIndex"];
+	self.notes = [aDecoder decodeObjectForKey:@"notes"];
 	return self;
 }
 
@@ -259,6 +260,7 @@
 	[aCoder encodeObject:self.paleoCurrents forKey:@"paleocurrents"];
 	[aCoder encodeObject:self.outline forKey:@"outline"];
 	[aCoder encodeInt:self.grainSizeIndex forKey:@"grainSizeIndex"];
+	[aCoder encodeObject:self.notes forKey:@"notes"];
 }
 
 @end
