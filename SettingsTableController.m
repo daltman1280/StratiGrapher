@@ -9,7 +9,6 @@
 #import "SettingsTableController.h"
 #import "StrataNotifications.h"
 #import "SectionLabelsTableViewController.h"
-#import "GrainSizeTableViewController.h"
 
 @interface SettingsTableController ()
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveItem;
@@ -25,9 +24,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *pageScaleText;
 @property (weak, nonatomic) IBOutlet UITextField *lineThicknessText;
 @property (weak, nonatomic) IBOutlet UITextField *patternPitchText;
-
-@property GrainSizeTableViewController* grainSizeTableViewController;
-@property BOOL							didShowGrainSizeTableView;
 @end
 
 @implementation SettingsTableController
@@ -49,30 +45,8 @@
 	id destinationViewController = segue.destinationViewController;
 	if ([destinationViewController isKindOfClass:[SectionLabelsTableViewController class]])
 		((SectionLabelsTableViewController *)destinationViewController).activeDocument = self.activeDocument;
-	else if ([destinationViewController isKindOfClass:[GrainSizeTableViewController class]]) {
-		self.grainSizeTableViewController = destinationViewController;
-		self.grainSizeTableViewController.activeDocument = self.activeDocument;
-		self.grainSizeTableViewController.grainSizesMask = self.grainSizesMask;
-		self.didShowGrainSizeTableView = YES;														// so we'll know what table was active when we return (in willShowViewController)
-	} else
+	else
 		NSAssert1(FALSE, @"Unexpected controller for segue: %@", destinationViewController);
-}
-
-/*
- UINavigationControllerDelegate function (called from SettingsNavigationController's – navigationController:willShowViewController:animated:
- 
- After we pop back from the Grain Sizes table, we need to save the settings from the table, in
- case the user has made changes to the Grain Sizes.
- 
- Delegate property initialized in StrataViewController prepareForSegue
- */
-
-- (void)willShowViewController
-{
-	if (self.didShowGrainSizeTableView) {
-		self.grainSizesMask = self.grainSizeTableViewController.grainSizesMask;						// in case user changed settings
-		self.didShowGrainSizeTableView = NO;														// reset it
-	}
 }
 
 - (IBAction)handleSave:(id)sender {
@@ -146,7 +120,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.didShowGrainSizeTableView = NO;
 	self.toolbarItems = [NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], self.cancelItem, self.saveItem, nil];
 	self.strataHeight = self.activeDocument.strataHeight;
 	self.units = self.activeDocument.units;
