@@ -9,13 +9,15 @@
 #import "StrataModel.h"
 #import "StratumInfoTableViewController.h"
 #import "StratumMaterialsPaletteTableViewController.h"
+#import "StrataView.h"
+#import "StratumInfoNotesViewController.h"
 
 @interface StratumInfoTableViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *materialTitleText;
 @property (strong, nonatomic) IBOutlet MaterialPatternView *pattern;
 @property (weak, nonatomic) IBOutlet UILabel *subtitle;
-@property (weak, nonatomic) IBOutlet UITextField *stratumWidthText;
 @property (weak, nonatomic) IBOutlet UITextField *stratumHeightText;
+@property (weak, nonatomic) IBOutlet UILabel *grainSizeText;
 
 @end
 
@@ -32,8 +34,8 @@
 
 - (IBAction)handleSave:(id)sender {
 	self.stratum.materialNumber = self.materialNumber;
-	if (self.stratumHeightText.text.floatValue != self.stratum.frame.size.height || self.stratumWidthText.text.floatValue != self.stratum.frame.size.width)
-		[self.activeDocument adjustStratumSize:CGSizeMake(self.stratumWidthText.text.floatValue, self.stratumHeightText.text.floatValue) atIndex:[self.activeDocument.strata indexOfObject:self.stratum]];
+	if (self.stratumHeightText.text.floatValue != self.stratum.frame.size.height)
+		[self.activeDocument adjustStratumSize:CGSizeMake(self.stratum.frame.size.width, self.stratumHeightText.text.floatValue) atIndex:[self.activeDocument.strata indexOfObject:self.stratum]];
 	[self.delegate performSelector:@selector(handleStratumInfoComplete:) withObject:self];
 }
 
@@ -86,8 +88,9 @@
 			}
 		}
 	}
-	self.stratumWidthText.text = [NSString stringWithFormat:@"%.2f", self.stratum.frame.size.width];
 	self.stratumHeightText.text = [NSString stringWithFormat:@"%.2f", self.stratum.frame.size.height];
+	self.grainSizeText.text = (NSString *)gGrainSizeNames[self.stratum.grainSizeIndex-1];
+	self.contentSizeForViewInPopover = CGSizeMake(400, 342);		// TODO: get the appropriate size
 }
 
 - (void)didReceiveMemoryWarning
@@ -181,8 +184,8 @@
 	[self setTitle:nil];
 	[self setPattern:nil];
 	[self setSubtitle:nil];
-	[self setStratumWidthText:nil];
 	[self setStratumHeightText:nil];
+	[self setGrainSizeText:nil];
 	[super viewDidUnload];
 }
 @end
