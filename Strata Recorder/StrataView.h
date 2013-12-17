@@ -13,13 +13,6 @@
 
 static const float kPencilMargin = 0.1;
 
-//	grain size constants
-
-static const int gGrainSizeOffsetInTickmarks = 4;				// x offset (in graph tickmarks), from origin to first grainsize location (fine silt and clay)
-static const NSString *gGrainSizeNames[] = { @"Fine Silt & Clay", @"Fine Sand", @"Medium Sand", @"Coarse Sand", @"Fine Gravel", @"Coarse Gravel", @"Cobbles", @"Boulders" };
-static const NSString *gAbbreviatedGrainSizeNames[] = { @"Silt", @"F. Sand", @"M. Sand", @"C. Sand", @"F. Grav.", @"C. Grav.", @"Cobb.", @"Bould." };
-static const int gGrainSizeNamesCount = 8;
-
 //	globals for use with callback function
 
 NSMutableArray *gPageArray;										// array of NSValue containing CGPDFPageRef's, one per page

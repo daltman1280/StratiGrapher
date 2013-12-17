@@ -512,29 +512,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	return dragPoint;
 }
 
-- (int)snapToGrainSizePoint:(float *)iconLocation
-{
-	float snapLocation;
-	int snapIndex;
-	float firstGrainSizeSnapX = gGrainSizeOffsetInTickmarks / 4.0;							// in user units (4 tick marks per user unit)
-	if (*iconLocation <= firstGrainSizeSnapX) {
-		snapLocation = firstGrainSizeSnapX;													// snap at first grain size
-		snapIndex = 0;
-	} else if (*iconLocation > firstGrainSizeSnapX+(gGrainSizeNamesCount-1)/4.0) {
-		snapLocation = firstGrainSizeSnapX+(gGrainSizeNamesCount-1)/4.0;					// snap at last grain size
-		snapIndex = gGrainSizeNamesCount-1;
-	} else {
-		snapLocation = trunc(4*(*iconLocation + 1./8.))/4.0;
-		snapIndex = (snapLocation - firstGrainSizeSnapX) * 4;
-	}
-	*iconLocation = snapLocation;
-	return snapIndex;
-}
-
 - (void)updateCoordinateText:(CGPoint)iconLocation stratum:(Stratum *)stratum
 {
 	float snapLocation = iconLocation.x;
-	int snapIndex = [self snapToGrainSizePoint:&snapLocation];
+	int snapIndex = [StrataDocument snapToGrainSizePoint:&snapLocation];
 	[self.locationLabel setText:[NSString stringWithFormat:@"%4.2f, %@", iconLocation.y, gGrainSizeNames[snapIndex]]];
     self.locationLabel.frame = CGRectMake(VX(iconLocation.x+.1), VY(iconLocation.y+.25), self.locationLabel.frame.size.width, self.locationLabel.frame.size.height);
     [self.dimensionLabel setText:[NSString stringWithFormat:@"W %4.2fm x H %4.2fm", stratum.frame.size.width, stratum.frame.size.height]];
@@ -667,7 +648,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		CGPoint offsetDragPoint = CGPointMake(dragPoint.x-self.dragOffsetFromCenter.width, dragPoint.y-self.dragOffsetFromCenter.height);	// coordinates of icon center
 		if (offsetDragPoint.x < self.dragConstraint.x) offsetDragPoint.x = self.dragConstraint.x;		// constrain the dragged icon
 		if (offsetDragPoint.y < self.dragConstraint.y) offsetDragPoint.y = self.dragConstraint.y;
-		int grainSizeIndex = [self snapToGrainSizePoint:&offsetDragPoint.x];
+		int grainSizeIndex = [StrataDocument snapToGrainSizePoint:&offsetDragPoint.x];
 		Stratum *stratum = self.activeDocument.strata[self.activeDragIndex];							// selected stratum
 		stratum.grainSizeIndex = grainSizeIndex + 1;
 #ifdef MUTABLE
