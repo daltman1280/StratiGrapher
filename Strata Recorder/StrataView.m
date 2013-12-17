@@ -516,9 +516,9 @@ void patternDrawingCallback(void *info, CGContextRef context)
 {
 	float snapLocation = iconLocation.x;
 	int snapIndex = [StrataDocument snapToGrainSizePoint:&snapLocation];
-	[self.locationLabel setText:[NSString stringWithFormat:@"%4.2f, %@", iconLocation.y, gGrainSizeNames[snapIndex]]];
+	[self.locationLabel setText:[NSString stringWithFormat:@"⌖%4.2f, %@", iconLocation.y, gGrainSizeNames[snapIndex]]];
     self.locationLabel.frame = CGRectMake(VX(iconLocation.x+.1), VY(iconLocation.y+.25), self.locationLabel.frame.size.width, self.locationLabel.frame.size.height);
-    [self.dimensionLabel setText:[NSString stringWithFormat:@"W %4.2fm x H %4.2fm", stratum.frame.size.width, stratum.frame.size.height]];
+    [self.dimensionLabel setText:[NSString stringWithFormat:@"Thickness: %4.2fm", stratum.frame.size.height]];
     self.dimensionLabel.frame = CGRectMake(VX(stratum.frame.origin.x+stratum.frame.size.width/2.)-self.dimensionLabel.bounds.size.width/2., VY(stratum.frame.origin.y+stratum.frame.size.height/2.)-self.dimensionLabel.bounds.size.height/2., self.dimensionLabel.frame.size.width, self.dimensionLabel.frame.size.height);
 }
 

@@ -53,12 +53,8 @@
 	} else if ([destinationViewController isKindOfClass:[StratumInfoNotesViewController class]]) {
 		StratumInfoNotesViewController *controller = (StratumInfoNotesViewController *)destinationViewController;
 		controller.stratum = self.stratum;
-		NSLog(@"controller = %@", controller);
-		NSLog(@"controller.notes = %@", controller.notesTextView);
-		NSLog(@"self.stratum.notes = %@", self.stratum.notes);
 		controller.notesTextView.text = @"xxx";//self.stratum.notes;
 		controller.notes = self.stratum.notes;
-		NSLog(@"controller.notes.text = %@", controller.notesTextView.text);
 		controller.stratumInfoTableViewController = self;
 	} else if ([destinationViewController isKindOfClass:[StratumGranularityViewController class]]) {
 		StratumGranularityViewController *controller = (StratumGranularityViewController *)destinationViewController;
