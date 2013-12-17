@@ -344,6 +344,7 @@ typedef enum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.background.hidden = YES;
 	// settings from user preferences
 	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"])
 		self.activeDocument = [StrataDocument loadFromFile:[[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"]];
@@ -465,6 +466,7 @@ typedef enum {
 		[self.legendView populateLegend];
 		[self.strataView resignFirstResponder];
 		self.strataPageScrollView.hidden = NO;
+		self.background.hidden = NO;
 		[UIView beginAnimations:@"GraphToPageTransition" context:nil];
 		[UIView setAnimationDuration:0.5];
 		self.strataGraphScrollView.alpha = 0.0;
@@ -473,6 +475,7 @@ typedef enum {
 		[self.strataPageView setNeedsDisplay];
 	} else {																									// switching to graph mode
 		self.strataPageScrollView.hidden = YES;
+		self.background.hidden = YES;
 		[UIView beginAnimations:@"PageToGraphTransition" context:nil];
 		[UIView setAnimationDuration:0.5];
 		self.strataGraphScrollView.alpha = 1.0;
@@ -615,6 +618,7 @@ typedef enum {
 	[self setGrainSizeLegend:nil];
 	[self setStrataColumn:nil];
 	[self setGrainSizeLines:nil];
+	[self setBackground:nil];
 	[super viewDidUnload];
 }
 @end
