@@ -445,6 +445,11 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	self.anchorIcon.bounds = self.bounds;
 	self.arrowIcon.bounds = self.bounds;
 	self.pencilIcon.bounds = self.bounds;
+
+	self.overlayContainer.frame = self.bounds;
+	self.overlayContainer.overlay.frame = self.bounds;
+	self.traceContainer.frame = self.bounds;
+	self.traceContainer.trace.frame = self.bounds;
 }
 
 - (void)setActiveDocument:(StrataDocument *)activeDocument

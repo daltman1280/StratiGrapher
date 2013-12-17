@@ -428,6 +428,9 @@ typedef enum {
 	contentOffset.y += newScrollviewContentHeight-oldScrollviewContentHeight;
 	if (contentOffset.y < 0) contentOffset.y = 0;										// should be pinned to top of view
 	self.strataGraphScrollView.contentOffset = contentOffset;							// set content offset of scroll view
+	// for graphics.h
+	self.bounds = self.strataView.bounds;
+	self.origin = CGPointMake(XORIGIN, YORIGIN);
 	[self.strataView setNeedsDisplay];
 }
 
