@@ -72,6 +72,7 @@ void patternDrawingCallback(void *info, CGContextRef context);
 @property BOOL touchesEnabled;
 @property OverlayLayerContainer *overlayContainer;				// to display pencil mode highlighting in overlay sublayer
 @property TraceLayerContainer *traceContainer;
+@property StrataViewController* controller;
 
 // for graphics.h
 

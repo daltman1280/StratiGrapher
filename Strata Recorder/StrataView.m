@@ -512,12 +512,13 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	return dragPoint;
 }
 
-- (void)updateCoordinateText:(CGPoint)iconLocation stratum:(Stratum *)stratum
+- (void)updateCoordinateText:(CGPoint)iconLocation touchLocation:(CGPoint)touchLocation stratum:(Stratum *)stratum
 {
 	float snapLocation = iconLocation.x;
 	int snapIndex = [StrataDocument snapToGrainSizePoint:&snapLocation];
 	[self.locationLabel setText:[NSString stringWithFormat:@"⌖%4.2f, %@", iconLocation.y, gGrainSizeNames[snapIndex]]];
-    self.locationLabel.frame = CGRectMake(VX(iconLocation.x+.1), VY(iconLocation.y+.25), self.locationLabel.frame.size.width, self.locationLabel.frame.size.height);
+	CGPoint converted = [self convertPoint:touchLocation toView:self.controller.view];						// in coordinates of controller's main view
+    self.locationLabel.frame = CGRectMake(converted.x+10, converted.y-40, self.locationLabel.frame.size.width, self.locationLabel.frame.size.height);
     [self.dimensionLabel setText:[NSString stringWithFormat:@"Thickness: %4.2fm", stratum.frame.size.height]];
     self.dimensionLabel.frame = CGRectMake(VX(stratum.frame.origin.x+stratum.frame.size.width/2.)-self.dimensionLabel.bounds.size.width/2., VY(stratum.frame.origin.y+stratum.frame.size.height/2.)-self.dimensionLabel.bounds.size.height/2., self.dimensionLabel.frame.size.width, self.dimensionLabel.frame.size.height);
 }
@@ -578,7 +579,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			self.dragConstraint = CGPointMake(stratum.frame.origin.x, stratum.frame.origin.y);
 			[self.locationLabel setHidden:NO];															// display location and dimension coordinate text
 			[self.dimensionLabel setHidden:NO];
-			[self updateCoordinateText:iconLocation stratum:stratum];
+			NSSet *touches = [event touchesForView:self];
+			UITouch *touch = touches.anyObject;
+			CGPoint locationInView = [touch locationInView:self];
+			[self updateCoordinateText:iconLocation touchLocation:locationInView stratum:stratum];
 			[self setNeedsDisplay];
 			break;
 		}
@@ -626,7 +630,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.iconLocations[self.activeDragIndex]), &iconLocation);
 		CGSize newSize = CGSizeMake(iconLocation.x-stratum.frame.origin.x, iconLocation.y-stratum.frame.origin.y);
 		[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];	// here's where the work is done
-		[self updateCoordinateText:offsetDragPoint stratum:stratum];
+		NSSet *touches = [event touchesForView:self];
+		UITouch *touch = touches.anyObject;
+		CGPoint locationInView = [touch locationInView:self];
+		[self updateCoordinateText:offsetDragPoint touchLocation:locationInView stratum:stratum];
 		[self setNeedsDisplay];
 	} else if (self.selectedAnchorStratum || self.selectedScissorsStratum) {
 		self.iconOrigin = dragPoint;																	// so we can display it as it's dragged

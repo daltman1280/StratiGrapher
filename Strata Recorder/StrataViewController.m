@@ -360,6 +360,7 @@ typedef enum {
 	}
 	CGPDFDocumentRelease(document);
 	self.strataPageView.patternsPageArray = self.strataView.patternsPageArray;
+	self.strataView.controller = self;
 	self.rotationGestureRecognizer.enabled = NO;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationEnteredBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationBecameActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
