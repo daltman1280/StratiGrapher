@@ -11,6 +11,7 @@
 #import "StratumMaterialsPaletteTableViewController.h"
 #import "StrataView.h"
 #import "StratumInfoNotesViewController.h"
+#import "StratumGranularityViewController.h"
 
 @interface StratumInfoTableViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *materialTitleText;
@@ -41,20 +42,45 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-	StratumMaterialsPaletteTableViewController *controller = (StratumMaterialsPaletteTableViewController *) segue.destinationViewController;
-	controller.materialNumber = self.materialNumber;
-	controller.activeDocument = self.activeDocument;
-	controller.stratumInfoTableViewController = self;
-	self.stratumInfoNavigationController.delegate = self.stratumInfoNavigationController;				// this is where we setup the UINavigationControllerDelegate (can't do this from IB)
+	id destinationViewController = segue.destinationViewController;
+	if ([destinationViewController isKindOfClass:[StratumMaterialsPaletteTableViewController class]]) {
+		StratumMaterialsPaletteTableViewController *controller = (StratumMaterialsPaletteTableViewController *) destinationViewController;
+		controller.materialNumber = self.materialNumber;
+		controller.activeDocument = self.activeDocument;
+		controller.stratumInfoTableViewController = self;
+		self.stratumInfoNavigationController.delegate = self.stratumInfoNavigationController;				// this is where we setup the UINavigationControllerDelegate (can't do this from IB)
+	} else if ([destinationViewController isKindOfClass:[StratumInfoNotesViewController class]]) {
+		StratumInfoNotesViewController *controller = (StratumInfoNotesViewController *)destinationViewController;
+		controller.stratum = self.stratum;
+		NSLog(@"controller = %@", controller);
+		NSLog(@"controller.notes = %@", controller.notesTextView);
+		NSLog(@"self.stratum.notes = %@", self.stratum.notes);
+		controller.notesTextView.text = @"xxx";//self.stratum.notes;
+		controller.notes = self.stratum.notes;
+		NSLog(@"controller.notes.text = %@", controller.notesTextView.text);
+		controller.stratumInfoTableViewController = self;
+	} else if ([destinationViewController isKindOfClass:[StratumGranularityViewController class]]) {
+		StratumGranularityViewController *controller = (StratumGranularityViewController *)destinationViewController;
+		controller.stratum = self.stratum;
+	}
 }
 
 - (IBAction)handleEraseOutline:(id)sender {
 	[self.stratum initializeOutline];
 }
 
+/*
+ Called from UITableView:didSelectRowAtIndexPath in response to selecting a material from the palette table.
+ */
+
 - (void)handleMaterialSelectionChanged:(int)materialNumber
 {
 	self.materialNumber = materialNumber;
+}
+
+- (void)handleGranularityChanged
+{
+	self.grainSizeText.text = (NSString *)gGrainSizeNames[self.stratum.grainSizeIndex-1];
 }
 
 - (void)viewDidLoad

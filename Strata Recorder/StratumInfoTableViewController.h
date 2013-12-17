@@ -20,5 +20,6 @@
 @property int								materialNumber;
 
 - (void)handleMaterialSelectionChanged:(int)materialNumber;
+- (void)handleGranularityChanged;
 
 @end
