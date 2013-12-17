@@ -8,16 +8,24 @@
 
 #import <Foundation/Foundation.h>
 
+//	grain size constants
+
+static const int gGrainSizeOffsetInTickmarks = 4;				// x offset (in graph tickmarks), from origin to first grainsize location (fine silt and clay)
+static const NSString *gGrainSizeNames[] = { @"Fine Silt & Clay", @"Fine Sand", @"Medium Sand", @"Coarse Sand", @"Fine Gravel", @"Coarse Gravel", @"Cobbles", @"Boulders" };
+static const NSString *gAbbreviatedGrainSizeNames[] = { @"Silt", @"F. Sand", @"M. Sand", @"C. Sand", @"F. Grav.", @"C. Grav.", @"Cobb.", @"Bould." };
+static const int gGrainSizeNamesCount = 8;
+
 typedef enum {
-	grainSizeBoulders			= 1,
-	grainSizeCobbles			= 2,
-	grainSizeCoarseGravel		= 4,
-	grainSizeFineGravel			= 8,
-	grainSizeCoarseSand			= 16,
-	grainSizeMediumSand			= 32,
-	grainSizeFineSand			= 64,
-	grainSizeFineSiltAndClay	= 128
-} grainSizeEnum;
+	grainSizeUndefined			= -1,
+	grainSizeFineSiltAndClay	= 0,
+	grainSizeFineSand			= 1,
+	grainSizeMediumSand			= 2,
+	grainSizeCoarseSand			= 3,
+	grainSizeFineGravel			= 4,
+	grainSizeCoarseGravel		= 5,
+	grainSizeCobbles			= 6,
+	grainSizeBoulders			= 7
+} grainSizeEnum;									// can be used as index in array of names
 
 @interface StrataDocument : NSObject <NSCoding>
 
@@ -29,6 +37,8 @@ typedef enum {
 - (void)rename:(NSString *)name;
 + (id)loadFromFile:(NSString *)name;
 + (NSString *)documentsFolderPath;
++ (int)snapToGrainSizePoint:(float *)stratumWidth;
++ (float)stratumWidthFromGrainSize:(grainSizeEnum)grainSize;
 
 // not a part of persistent document, just for housekeeping purposes
 @property NSString*			name;					// document name (not including extension)

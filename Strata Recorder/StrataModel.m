@@ -113,6 +113,41 @@
 	return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 }
 
+/*
+ Round to nearest width (in user units) that represents grain size.
+ Returns granularity (can also be used as index for granularity names table).
+ */
+
++ (int)snapToGrainSizePoint:(float *)stratumWidth
+{
+	NSLog(@"iconLocation = %f", *stratumWidth);
+	float snapLocation;
+	int snapIndex;
+	float firstGrainSizeSnapX = gGrainSizeOffsetInTickmarks / 4.0;							// in user units (4 tick marks per user unit)
+	if (*stratumWidth <= firstGrainSizeSnapX) {
+		snapLocation = firstGrainSizeSnapX;													// snap at first grain size
+		snapIndex = 0;
+	} else if (*stratumWidth > firstGrainSizeSnapX+(gGrainSizeNamesCount-1)/4.0) {
+		snapLocation = firstGrainSizeSnapX+(gGrainSizeNamesCount-1)/4.0;					// snap at last grain size
+		snapIndex = gGrainSizeNamesCount-1;
+	} else {
+		snapLocation = trunc(4*(*stratumWidth + 1./8.))/4.0;
+		snapIndex = (snapLocation - firstGrainSizeSnapX) * 4;
+	}
+	*stratumWidth = snapLocation;
+	return snapIndex;
+}
+
+/*
+ Returns width of stratum, based on grainSize.
+ */
+
++ (float)stratumWidthFromGrainSize:(grainSizeEnum)grainSize
+{
+	float firstGrainSizeSnapX = gGrainSizeOffsetInTickmarks / 4.0;							// in user units (4 tick marks per user unit)
+	return firstGrainSizeSnapX + (grainSize / 4.0);
+}
+
 - (void)save
 {
 //	self.name = @"test";
