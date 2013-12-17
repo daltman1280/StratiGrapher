@@ -365,6 +365,7 @@ typedef enum {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationEnteredBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationBecameActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleStrataHeightChanged:) name:SRStrataHeightChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleStrataViewScrollerScrollToTop:) name:SRStrataViewScrollerScrollToTop object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleEditingOperationStarted:) name:SREditingOperationStarted object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleEditingOperationEnded:) name:SREditingOperationEnded object:nil];
 	// initialize legend
@@ -432,6 +433,13 @@ typedef enum {
 	self.bounds = self.strataView.bounds;
 	self.origin = CGPointMake(XORIGIN, YORIGIN);
 	[self.strataView setNeedsDisplay];
+}
+
+- (void)handleStrataViewScrollerScrollToTop:(id)sender
+{
+	CGPoint contentOffset = self.strataGraphScrollView.contentOffset;
+	contentOffset.y = 0;
+	self.strataGraphScrollView.contentOffset = contentOffset;							// set content offset of scroll view
 }
 
 - (void)handleEditingOperationStarted:(id)sender

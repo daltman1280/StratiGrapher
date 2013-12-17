@@ -656,7 +656,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	CGPoint dragPoint = [self getDragPoint:event];
 	[self.locationLabel setHidden:YES];
 	[self.dimensionLabel setHidden:YES];
-	if (self.dragActive) {																		// modified an existing stratum, snap to grain size point
+	if (self.dragActive) {																				// modified an existing stratum, snap to grain size point
 		CGPoint offsetDragPoint = CGPointMake(dragPoint.x-self.dragOffsetFromCenter.width, dragPoint.y-self.dragOffsetFromCenter.height);	// coordinates of icon center
 		if (offsetDragPoint.x < self.dragConstraint.x) offsetDragPoint.x = self.dragConstraint.x;		// constrain the dragged icon
 		if (offsetDragPoint.y < self.dragConstraint.y) offsetDragPoint.y = self.dragConstraint.y;
@@ -675,20 +675,33 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		CGPoint iconLocation;
 		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.iconLocations[self.activeDragIndex]), &iconLocation);
 		CGSize newSize = CGSizeMake(iconLocation.x-stratum.frame.origin.x, iconLocation.y-stratum.frame.origin.y);
-		[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];	// here's where the work is done
+		[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];					// here's where the work is done
 		if (self.activeDragIndex == self.activeDocument.strata.count-1 &&
 			((Stratum *)self.activeDocument.strata.lastObject).frame.size.width &&
-			((Stratum *)self.activeDocument.strata.lastObject).frame.size.height) {							// user has modified last (empty) stratum, create a new empty stratum
+			((Stratum *)self.activeDocument.strata.lastObject).frame.size.height) {						// user has modified last (empty) stratum, create a new empty stratum
 			Stratum *lastStratum = self.activeDocument.strata.lastObject;
 			Stratum *newStratum = [[Stratum alloc] initWithFrame:CGRectMake(0, lastStratum.frame.origin.y+lastStratum.frame.size.height, 0, 0)];
-			newStratum.materialNumber = 0;																	// unassigned material
+			newStratum.materialNumber = 0;																// unassigned material
 			[self.activeDocument.strata addObject:newStratum];
 		} else if (stratum.grainSizeIndex == 1 && stratum.frame.size.height == 0) {						// user has dragged UR corner to LL corner, remove the stratum
 			if (self.activeDragIndex != self.activeDocument.strata.count-1) {							// last stratum is already empty, do nothing in this case
 				[self.activeDocument removeStratumAtIndex:self.activeDragIndex];
 			}
 		}
-		[self setNeedsDisplay];
+		// possible resizing of StrataView
+		float topStratumLocation = ((Stratum *)self.activeDocument.strata.lastObject).frame.origin.y+((Stratum *)self.activeDocument.strata.lastObject).frame.size.height;
+			if (topStratumLocation > self.activeDocument.strataHeight-2.0) {							// increase StrataView height
+			self.activeDocument.strataHeight = fmaxf((int) (topStratumLocation + 3), 8);
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataHeightChangedNotification object:self];
+			if (self.activeDragIndex == self.activeDocument.strata.count-2)								// pin scroller to the top if we're editing the top stratum
+				[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataViewScrollerScrollToTop object:self];
+		} else if (topStratumLocation < self.activeDocument.strataHeight-4) {							// decrease StrataView height
+			self.activeDocument.strataHeight = fmaxf((int) (topStratumLocation + 3), 8);
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataHeightChangedNotification object:self];
+			if (self.activeDragIndex == self.activeDocument.strata.count-2)								// pin scroller to the top if we're editing the top stratum
+				[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataViewScrollerScrollToTop object:self];
+		} else
+			[self setNeedsDisplay];
 	} else if (self.selectedAnchorStratum || self.selectedScissorsStratum) {
 		if (dragPoint.x < 0.5) {																		// otherwise, throw it away
 			float distance = HUGE;

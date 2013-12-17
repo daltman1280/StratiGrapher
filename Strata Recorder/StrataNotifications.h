@@ -10,6 +10,7 @@
 #define Strata_Recorder_StrataNotifications_h
 
 static NSString* SRStrataHeightChangedNotification = @"SRStrataHeightChangedNotification";
+static NSString* SRStrataViewScrollerScrollToTop = @"SRStrataViewScrollerScrollToTop";
 static NSString* SRUnitsChangedNotification = @"SRUnitsChangedNotification";
 static NSString* SRPaperWidthChangedNotification = @"SRPaperWidthChangedNotification";
 static NSString* SRPaperHeightChangedNotification = @"SRPaperHeightChangedNotification";
