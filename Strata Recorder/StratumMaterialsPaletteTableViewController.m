@@ -22,7 +22,9 @@
 /*
  UINavigationControllerDelegate function (called from StratumInfoNavigationController's – navigationController:willShowViewController:animated:
  
- After we pop back from the Materials list, we need to rebuild the Materials Palette, in
+ When we push in here, we need to build the Materials Palette and set the table selection.
+ 
+ Also, after we pop back from the Materials list, we need to rebuild the Materials Palette, in
  case we've added materials to the palette.
  
  Delegate property initialized in StratumInfoTableViewController prepareForSegue
