@@ -450,6 +450,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="eraseButton" destination="Dks-o1-xzi" id="HcJ-RB-kLd"/>
                         <outlet property="grainSizeText" destination="5Mf-Mb-fui" id="4mN-zy-AKH"/>
                         <outlet property="materialTitleText" destination="5bw-fl-6SR" id="v4E-X1-JMI"/>
                         <outlet property="pattern" destination="Y2s-mR-gBe" id="iDl-Kh-fH2"/>

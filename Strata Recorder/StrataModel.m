@@ -120,7 +120,6 @@
 
 + (int)snapToGrainSizePoint:(float *)stratumWidth
 {
-	NSLog(@"iconLocation = %f", *stratumWidth);
 	float snapLocation;
 	int snapIndex;
 	float firstGrainSizeSnapX = gGrainSizeOffsetInTickmarks / 4.0;							// in user units (4 tick marks per user unit)

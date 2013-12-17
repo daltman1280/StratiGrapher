@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *subtitle;
 @property (weak, nonatomic) IBOutlet UITextField *stratumHeightText;
 @property (weak, nonatomic) IBOutlet UILabel *grainSizeText;
+@property (weak, nonatomic) IBOutlet UIButton *eraseButton;
 
 @end
 
@@ -67,6 +68,7 @@
 
 - (IBAction)handleEraseOutline:(id)sender {
 	[self.stratum initializeOutline];
+	self.eraseButton.enabled = NO;
 }
 
 /*
@@ -116,6 +118,8 @@
 	}
 	self.stratumHeightText.text = [NSString stringWithFormat:@"%.2f", self.stratum.frame.size.height];
 	self.grainSizeText.text = (NSString *)gGrainSizeNames[self.stratum.grainSizeIndex-1];
+	// following gives false positive if outline has been previously erased
+	self.eraseButton.enabled = self.stratum.outline != nil && self.stratum.outline.count > 0;
 	self.contentSizeForViewInPopover = CGSizeMake(400, 342);		// TODO: get the appropriate size
 }
 
@@ -212,6 +216,7 @@
 	[self setSubtitle:nil];
 	[self setStratumHeightText:nil];
 	[self setGrainSizeText:nil];
+	[self setEraseButton:nil];
 	[super viewDidUnload];
 }
 @end
