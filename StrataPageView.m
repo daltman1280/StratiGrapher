@@ -143,8 +143,6 @@
 		CGContextScaleCTM(UIGraphicsGetCurrentContext(), 72./132., 72./132.);
 		UIGraphicsBeginPDFContextToFile(pdfFile, self.bounds, nil);
 		UIGraphicsBeginPDFPage();
-		[self.layer renderInContext:UIGraphicsGetCurrentContext()];									// render the legend on a separate page
-		UIGraphicsBeginPDFPage();
 	}
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
 	CGFloat colorComponentsBlack[4] = {0, 0, 0, 1.};
@@ -368,6 +366,8 @@
 	}
 	
 	if (self.mode == PDFMode) {
+		UIGraphicsBeginPDFPage();
+		[self.layer renderInContext:UIGraphicsGetCurrentContext()];									// render the legend on a separate page
 		UIGraphicsEndPDFContext();
 		self.mode = graphMode;
 	}
