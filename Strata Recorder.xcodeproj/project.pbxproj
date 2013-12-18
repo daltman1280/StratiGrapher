@@ -11,9 +11,6 @@
 		25066EE1166A67CB0095C3CC /* cut.png in Resources */ = {isa = PBXBuildFile; fileRef = 25066EE0166A67CB0095C3CC /* cut.png */; };
 		25066EE3166A79040095C3CC /* anchor.png in Resources */ = {isa = PBXBuildFile; fileRef = 25066EE2166A79040095C3CC /* anchor.png */; };
 		2536509F1800AEE600114127 /* ApplicationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2536509D1800AEE600114127 /* ApplicationIcon.png */; };
-		253650A01800AEE600114127 /* ApplicationIcon.ai in Resources */ = {isa = PBXBuildFile; fileRef = 2536509E1800AEE600114127 /* ApplicationIcon.ai */; };
-		253650A31800AF0C00114127 /* paleocurrent selected.ai in Resources */ = {isa = PBXBuildFile; fileRef = 253650A21800AF0C00114127 /* paleocurrent selected.ai */; };
-		253650A51800AF2D00114127 /* post-it-pencil.ai in Resources */ = {isa = PBXBuildFile; fileRef = 253650A41800AF2D00114127 /* post-it-pencil.ai */; };
 		253650AE1803B55C00114127 /* SettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253650AD1803B55B00114127 /* SettingsNavigationController.m */; };
 		25890D851655B2670007BC72 /* StratumMaterialsTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D841655B2670007BC72 /* StratumMaterialsTableController.m */; };
 		25890D881655D8990007BC72 /* MaterialPatternView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D871655D8990007BC72 /* MaterialPatternView.m */; };
@@ -510,9 +507,6 @@
 				258E5F8317152E6C006706B3 /* Default-Landscape~ipad.png in Resources */,
 				258F8BBA171E611B0027EA4D /* paleocurrent selected.png in Resources */,
 				2536509F1800AEE600114127 /* ApplicationIcon.png in Resources */,
-				253650A01800AEE600114127 /* ApplicationIcon.ai in Resources */,
-				253650A31800AF0C00114127 /* paleocurrent selected.ai in Resources */,
-				253650A51800AF2D00114127 /* post-it-pencil.ai in Resources */,
 				25AA3CE91860C82300B01E64 /* Format background.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
