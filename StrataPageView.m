@@ -27,7 +27,6 @@
 - (void)setActiveDocument:(StrataDocument *)activeDocument
 {
 	_activeDocument = activeDocument;
-//	self.bounds = CGRectMake(0, 0, self.activeDocument.pageDimension.width*PPI*(72./PPI), self.activeDocument.pageDimension.height*PPI*(72./PPI));
 	self.bounds = CGRectMake(0, 0, self.activeDocument.pageDimension.width*PPI, self.activeDocument.pageDimension.height*PPI);
 	self.arrowIcon.bounds = self.bounds;						// bounds for icons must also be updated
 }
@@ -141,13 +140,10 @@
 	if (self.mode == PDFMode) {
 		NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 		NSString *pdfFile = [documentsFolder stringByAppendingFormat:@"/%@.pdf", self.activeDocument.name];
-//		CGContextScaleCTM(UIGraphicsGetCurrentContext(), 72./132., 72./132.);
-		self.bounds = CGRectMake(0, 0, self.activeDocument.pageDimension.width*72., self.activeDocument.pageDimension.height*72.);
-		UIGraphicsBeginPDFContextToFile(pdfFile, self.bounds, nil);
+		CGRect bounds = CGRectMake(0, 0, self.activeDocument.pageDimension.width*72., self.activeDocument.pageDimension.height*72.);
+		UIGraphicsBeginPDFContextToFile(pdfFile, bounds, [NSDictionary dictionaryWithObject:(id)kCGPDFContextMediaBox forKey:[NSData dataWithBytes:&bounds length:sizeof(bounds)]]);
 		UIGraphicsBeginPDFPage();
 	}
-	NSLog(@"dimension, w = %f, h = %f", self.activeDocument.pageDimension.width, self.activeDocument.pageDimension.height);
-	NSLog(@"bounds, w = %f, h = %f", self.bounds.size.width, self.bounds.size.height);
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
 	if (self.mode == PDFMode)
 		CGContextScaleCTM(currentContext, 72./132., 72./132.);
@@ -376,7 +372,6 @@
 		CGContextScaleCTM(UIGraphicsGetCurrentContext(), 72./132., 72./132.);
 		[self.layer renderInContext:UIGraphicsGetCurrentContext()];									// render the legend on a separate page
 		UIGraphicsEndPDFContext();
-		self.bounds = CGRectMake(0, 0, self.activeDocument.pageDimension.width*PPI, self.activeDocument.pageDimension.height*PPI);
 		self.mode = graphMode;
 	}
 	CFRelease(colorWhite);
