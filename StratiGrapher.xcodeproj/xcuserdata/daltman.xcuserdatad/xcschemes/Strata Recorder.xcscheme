@@ -17,7 +17,7 @@
                BlueprintIdentifier = "2589CF01163F897C00E43147"
                BuildableName = "StratiGrapher.app"
                BlueprintName = "StratiGrapher"
-               ReferencedContainer = "container:Strata Recorder.xcodeproj">
+               ReferencedContainer = "container:StratiGrapher.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
             BlueprintIdentifier = "2589CF01163F897C00E43147"
             BuildableName = "StratiGrapher.app"
             BlueprintName = "StratiGrapher"
-            ReferencedContainer = "container:Strata Recorder.xcodeproj">
+            ReferencedContainer = "container:StratiGrapher.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -54,7 +54,7 @@
             BlueprintIdentifier = "2589CF01163F897C00E43147"
             BuildableName = "StratiGrapher.app"
             BlueprintName = "StratiGrapher"
-            ReferencedContainer = "container:Strata Recorder.xcodeproj">
+            ReferencedContainer = "container:StratiGrapher.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -72,7 +72,7 @@
             BlueprintIdentifier = "2589CF01163F897C00E43147"
             BuildableName = "StratiGrapher.app"
             BlueprintName = "StratiGrapher"
-            ReferencedContainer = "container:Strata Recorder.xcodeproj">
+            ReferencedContainer = "container:StratiGrapher.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -89,10 +89,10 @@
 		2589CF06163F897C00E43147 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2589CF08163F897C00E43147 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2589CF0A163F897C00E43147 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		2589CF0E163F897C00E43147 /* Strata Recorder-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Strata Recorder-Info.plist"; sourceTree = "<group>"; };
+		2589CF0E163F897C00E43147 /* StratiGrapher-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StratiGrapher-Info.plist"; sourceTree = "<group>"; };
 		2589CF10163F897C00E43147 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2589CF12163F897C00E43147 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		2589CF14163F897C00E43147 /* Strata Recorder-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Strata Recorder-Prefix.pch"; sourceTree = "<group>"; };
+		2589CF14163F897C00E43147 /* StratiGrapher-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StratiGrapher-Prefix.pch"; sourceTree = "<group>"; };
 		2589CF15163F897C00E43147 /* StrataAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrataAppDelegate.h; sourceTree = "<group>"; };
 		2589CF16163F897C00E43147 /* StrataAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StrataAppDelegate.m; sourceTree = "<group>"; };
 		2589CF18163F897D00E43147 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -268,12 +268,12 @@
 				258E73881642F9EA00C12D43 /* Notes.rtf */,
 				259339B9173C4560009B60E6 /* Paper with illustrator strat columns.pdf */,
 				258E738A1642FAB400C12D43 /* To do.rtf */,
-				2589CF0E163F897C00E43147 /* Strata Recorder-Info.plist */,
+				2589CF0E163F897C00E43147 /* StratiGrapher-Info.plist */,
 				2589CF0F163F897C00E43147 /* InfoPlist.strings */,
 				2589CF12163F897C00E43147 /* main.m */,
 				253650A61800C8F100114127 /* grain size.jpg */,
 				253650A71800C91300114127 /* soil classification.jpg */,
-				2589CF14163F897C00E43147 /* Strata Recorder-Prefix.pch */,
+				2589CF14163F897C00E43147 /* StratiGrapher-Prefix.pch */,
 				2589CF18163F897D00E43147 /* Default.png */,
 				2589CF1A163F897D00E43147 /* Default@2x.png */,
 				2589CF1C163F897D00E43147 /* Default-568h@2x.png */,
@@ -460,7 +460,7 @@
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Don Altman";
 			};
-			buildConfigurationList = 2589CEFC163F897C00E43147 /* Build configuration list for PBXProject "Strata Recorder" */;
+			buildConfigurationList = 2589CEFC163F897C00E43147 /* Build configuration list for PBXProject "StratiGrapher" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -630,8 +630,8 @@
 				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = "Strata Recorder/Strata Recorder.entitlements";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Strata Recorder/Strata Recorder-Prefix.pch";
-				INFOPLIST_FILE = "Strata Recorder/Strata Recorder-Info.plist";
+				GCC_PREFIX_HEADER = "Strata Recorder/StratiGrapher-Prefix.pch";
+				INFOPLIST_FILE = "Strata Recorder/StratiGrapher-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -647,8 +647,8 @@
 				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = "Strata Recorder/Strata Recorder.entitlements";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Strata Recorder/Strata Recorder-Prefix.pch";
-				INFOPLIST_FILE = "Strata Recorder/Strata Recorder-Info.plist";
+				GCC_PREFIX_HEADER = "Strata Recorder/StratiGrapher-Prefix.pch";
+				INFOPLIST_FILE = "Strata Recorder/StratiGrapher-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -659,7 +659,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2589CEFC163F897C00E43147 /* Build configuration list for PBXProject "Strata Recorder" */ = {
+		2589CEFC163F897C00E43147 /* Build configuration list for PBXProject "StratiGrapher" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2589CF24163F897D00E43147 /* Debug */,
