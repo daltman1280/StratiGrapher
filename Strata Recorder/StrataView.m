@@ -545,7 +545,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	self.overlayContainer.origin = self.origin;
 	self.overlayContainer.activeDocument = self.activeDocument;
 	self.overlayContainer.strataView = self;
-	if (stratum.outline == nil)
+	if (stratum.outline == nil || stratum.outline.count == 0)
 		[stratum initializeOutline];
 	[self.overlayContainer.overlay setNeedsDisplay];
 }
