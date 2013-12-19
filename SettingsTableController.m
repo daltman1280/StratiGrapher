@@ -45,6 +45,8 @@
 
 - (IBAction)handlePatternScaleText:(id)sender {
 	self.patternScaleSlider.value = self.patternScaleText.text.floatValue;
+	self.patternSampleView.patternScale = self.patternScaleSlider.value;
+	[self.patternSampleView setNeedsDisplay];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -124,6 +126,8 @@
 
 - (IBAction)handlePatternScaleSlider:(id)sender {
 	self.patternScaleText.text = [NSString stringWithFormat:@"%.1f", self.patternScaleSlider.value];
+	self.patternSampleView.patternScale = self.patternScaleSlider.value;
+	[self.patternSampleView setNeedsDisplay];
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -174,6 +178,7 @@
 	self.patternScaleSlider.value = self.patternScale;
 	self.patternScaleText.text = [NSString stringWithFormat:@"%.1f", self.patternScale];
 	self.patternSampleView.patternNumber = 643;															// arbitrary
+	self.patternSampleView.patternScale = self.patternScale;
 	[self.patternSampleView setNeedsDisplay];
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;

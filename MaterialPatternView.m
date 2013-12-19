@@ -23,6 +23,7 @@
 - (void)drawRect:(CGRect)rect
 {
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
+	float scale = (self.patternScale != 0) ? self.patternScale : 1;
 	// setup patterns
 	struct CGPatternCallbacks patternCallbacks = {
 		0, &patternDrawingCallback, 0
@@ -40,7 +41,7 @@
 	CGContextSetStrokeColorWithColor(currentContext, color);
 	CFRelease(colorSpace);
 	CFRelease(color);
-	CGPatternRef pattern = CGPatternCreate((void *)self.patternNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
+	CGPatternRef pattern = CGPatternCreate((void *)self.patternNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(scale, -scale), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
 	CGContextSetFillPattern(currentContext, pattern, &alpha);
 	gScale = 1;
 	CGContextFillRect(currentContext, self.bounds);										// draw fill pattern

@@ -11,5 +11,6 @@
 @interface MaterialPatternView : UIView
 
 @property int patternNumber;
+@property float patternScale;
 
 @end
