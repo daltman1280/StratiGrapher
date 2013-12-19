@@ -249,7 +249,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	struct CGPatternCallbacks patternCallbacks = {
 		0, &patternDrawingCallback, 0
 	};
-	CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
+	CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(self.activeDocument.patternScale, -self.activeDocument.patternScale), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
 	CGFloat alpha = 1;
 	CGContextSetFillPattern(currentContext, pattern, &alpha);
 	CGPatternRelease(pattern);
@@ -776,7 +776,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			if (stratum.outline == nil || stratum.outline.count == 0) {					// no outline, just a rectangle
 				// setup fill pattern, must do for each stratum
 				if (!self.dragActive) {
-					CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
+					CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(self.activeDocument.patternScale, -self.activeDocument.patternScale), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
 					CGContextSetFillPattern(currentContext, pattern, &alpha);
 					CGPatternRelease(pattern);
 					gScale = self.scale;
