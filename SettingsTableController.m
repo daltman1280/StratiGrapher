@@ -23,7 +23,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *marginHeightText;
 @property (weak, nonatomic) IBOutlet UITextField *pageScaleText;
 @property (weak, nonatomic) IBOutlet UITextField *lineThicknessText;
-@property (weak, nonatomic) IBOutlet UITextField *patternPitchText;
+@property (weak, nonatomic) IBOutlet UITextField *patternScaleText;
+@property (weak, nonatomic) IBOutlet UISlider *patternScaleSlider;
 @end
 
 @implementation SettingsTableController
@@ -129,7 +130,6 @@
 	self.marginHeight = self.activeDocument.pageMargins.height;
 	self.pageScale = self.activeDocument.scale;
 	self.lineThickness = self.activeDocument.lineThickness;
-	self.grainSizesMask = self.activeDocument.grainSizesMask;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
 }
 
@@ -253,11 +253,12 @@
 	[self setSaveItem:nil];
 	[self setPageScaleSlider:nil];
 	[self setLineThicknessText:nil];
-	[self setPatternPitchText:nil];
+	[self setPatternScaleText:nil];
 	[self setStrataHeightStepper:nil];
 	[self setCancelItem:nil];
 	[self setMarginWidthText:nil];
 	[self setMarginHeightText:nil];
+	[self setPatternScaleSlider:nil];
 	[super viewDidUnload];
 }
 @end

@@ -44,7 +44,6 @@
 		self.pageMargins = CGSizeMake(.5, .5);
 		self.scale = 2.;
 		self.lineThickness = 2;
-		self.grainSizesMask = grainSizeBoulders | grainSizeCoarseSand | grainSizeCobbles | grainSizeCoarseGravel | grainSizeFineGravel | grainSizeFineSand | grainSizeFineSand | grainSizeFineSiltAndClay | grainSizeMediumSand;
 		self.materialNumbersPalette = [[NSMutableSet alloc] init];
 	}
 	return self;
@@ -205,7 +204,6 @@
 	self.units = [aDecoder decodeObjectForKey:@"units"];
 	self.strataHeight = [aDecoder decodeFloatForKey:@"strataHeight"];
 	self.sectionLabels = [aDecoder decodeObjectForKey:@"sectionLabels"];
-	self.grainSizesMask = [aDecoder decodeIntForKey:@"grainSizesMask"];
 	return self;
 }
 
@@ -219,7 +217,6 @@
 	[aCoder encodeObject:self.units forKey:@"units"];
 	[aCoder encodeFloat:self.strataHeight forKey:@"strataHeight"];
 	[aCoder encodeObject:self.sectionLabels forKey:@"sectionLabels"];
-	[aCoder encodeInt:self.grainSizesMask forKey:@"grainSizesMask"];
 }
 
 @end

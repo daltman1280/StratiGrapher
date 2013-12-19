@@ -909,8 +909,8 @@
                                             <rect key="frame" x="45" y="0.0" width="678" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Pattern pitch" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="A8C-HZ-prS">
-                                                    <rect key="frame" x="20" y="11" width="96" height="21"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Pattern scale" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="A8C-HZ-prS">
+                                                    <rect key="frame" x="20" y="11" width="100" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -922,6 +922,13 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
                                                 </textField>
+                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="3" id="bgw-3G-J09">
+                                                    <rect key="frame" x="505" y="11" width="85" height="23"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                                    <connections>
+                                                        <action selector="handlePageScaleSlider:" destination="0ij-0L-Qfo" eventType="valueChanged" id="UtY-97-5sU"/>
+                                                    </connections>
+                                                </slider>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -947,7 +954,8 @@
                         <outlet property="pageScaleText" destination="wQo-q2-zya" id="gSC-qS-PLz"/>
                         <outlet property="paperHeightText" destination="tqA-py-ira" id="ywo-l7-IiZ"/>
                         <outlet property="paperWidthText" destination="lQI-fH-FBX" id="pBK-uS-ZV4"/>
-                        <outlet property="patternPitchText" destination="Efj-Su-5Jl" id="it9-rF-xBa"/>
+                        <outlet property="patternScaleSlider" destination="bgw-3G-J09" id="Aia-gE-wtH"/>
+                        <outlet property="patternScaleText" destination="Efj-Su-5Jl" id="Uuc-0e-LWb"/>
                         <outlet property="saveItem" destination="c3N-pM-65F" id="Edj-fp-jXc"/>
                         <outlet property="strataHeightStepper" destination="7UI-4b-rFo" id="9WP-hp-xeN"/>
                         <outlet property="strataHeightText" destination="Pr0-Hn-ETb" id="8rG-S8-lC1"/>

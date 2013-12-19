@@ -524,7 +524,6 @@ typedef enum {
 		self.activeDocument.lineThickness = self.settingsTableController.lineThickness;
 		self.activeDocument.units = self.settingsTableController.units;
 		self.activeDocument.strataHeight = self.settingsTableController.strataHeight;
-		self.activeDocument.grainSizesMask = self.settingsTableController.grainSizesMask;
 		[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataHeightChangedNotification object:self];
 	}
 }
