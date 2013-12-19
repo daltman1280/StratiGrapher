@@ -32,7 +32,7 @@
 {
 	self.addedLines = [[NSMutableArray alloc] init];
 	self.initialHeight = self.bounds.size.height;
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:(NSString *)SRActiveDocumentSelectionChanged object:nil];
 }
 
 - (void)handleActiveDocumentSelectionChanged:(NSNotification *)notification

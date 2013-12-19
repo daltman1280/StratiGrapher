@@ -14,7 +14,7 @@
  If the user scale is in meters/inch, then divide by user scale to obtain units in inches.
  */
 
-static CGFloat PPI = 132.0;												// pixels per inch (this might be different on iPad Mini)
+static const CGFloat PPI = 132.0;										// pixels per inch (this might be different on iPad Mini)
 #pragma unused(PPI)
 #define VX(x1) (x1)*PPI+PPI*self.origin.x								// convert user (in meters) to view units (pixels)
 #define VY(y1) -(y1)*PPI+self.bounds.size.height-PPI*self.origin.y		// convert user (in meters) to view units (pixels)

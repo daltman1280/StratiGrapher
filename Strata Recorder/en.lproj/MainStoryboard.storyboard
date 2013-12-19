@@ -902,11 +902,11 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="pageDimensions" id="iUJ-yb-YDp">
-                                        <rect key="frame" x="0.0" y="421" width="768" height="45"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="pageDimensions" rowHeight="57" id="iUJ-yb-YDp">
+                                        <rect key="frame" x="0.0" y="421" width="768" height="58"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="45" y="0.0" width="678" height="43"/>
+                                            <rect key="frame" x="45" y="0.0" width="678" height="56"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Pattern scale" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="A8C-HZ-prS">
@@ -921,14 +921,23 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
+                                                    <connections>
+                                                        <action selector="handlePatternScaleText:" destination="0ij-0L-Qfo" eventType="editingDidEnd" id="iKk-HV-B7P"/>
+                                                    </connections>
                                                 </textField>
-                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="3" id="bgw-3G-J09">
+                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.5" maxValue="2" id="bgw-3G-J09">
                                                     <rect key="frame" x="505" y="11" width="85" height="23"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                     <connections>
                                                         <action selector="handlePageScaleSlider:" destination="0ij-0L-Qfo" eventType="valueChanged" id="UtY-97-5sU"/>
+                                                        <action selector="handlePatternScaleSlider:" destination="0ij-0L-Qfo" eventType="valueChanged" id="rxa-39-vqX"/>
                                                     </connections>
                                                 </slider>
+                                                <view contentMode="scaleToFill" id="rOm-Uh-F2t" customClass="MaterialPatternView">
+                                                    <rect key="frame" x="418" y="1" width="70" height="55"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -954,6 +963,7 @@
                         <outlet property="pageScaleText" destination="wQo-q2-zya" id="gSC-qS-PLz"/>
                         <outlet property="paperHeightText" destination="tqA-py-ira" id="ywo-l7-IiZ"/>
                         <outlet property="paperWidthText" destination="lQI-fH-FBX" id="pBK-uS-ZV4"/>
+                        <outlet property="patternSampleView" destination="rOm-Uh-F2t" id="VdW-eI-u1b"/>
                         <outlet property="patternScaleSlider" destination="bgw-3G-J09" id="Aia-gE-wtH"/>
                         <outlet property="patternScaleText" destination="Efj-Su-5Jl" id="Uuc-0e-LWb"/>
                         <outlet property="saveItem" destination="c3N-pM-65F" id="Edj-fp-jXc"/>

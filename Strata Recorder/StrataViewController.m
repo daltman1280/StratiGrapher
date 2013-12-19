@@ -365,10 +365,10 @@ typedef enum {
 	self.rotationGestureRecognizer.enabled = NO;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationEnteredBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationBecameActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleStrataHeightChanged:) name:SRStrataHeightChangedNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleStrataViewScrollerScrollToTop:) name:SRStrataViewScrollerScrollToTop object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleEditingOperationStarted:) name:SREditingOperationStarted object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleEditingOperationEnded:) name:SREditingOperationEnded object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleStrataHeightChanged:) name:(NSString *)SRStrataHeightChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleStrataViewScrollerScrollToTop:) name:(NSString *)SRStrataViewScrollerScrollToTop object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleEditingOperationStarted:) name:(NSString *)SREditingOperationStarted object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleEditingOperationEnded:) name:(NSString *)SREditingOperationEnded object:nil];
 	// initialize legend
 	self.legendView.legendLineContainer = self.legendLineContainer;
 	self.legendView.legendLineLabel = self.legendLineLabel;
@@ -407,7 +407,7 @@ typedef enum {
 	self.strataPageScrollView.contentOffset = CGPointMake(0, self.strataPageView.bounds.size.height-self.strataPageScrollView.bounds.size.height);
 	self.strataPageScrollView.hidden = YES;
 	
-	[[NSNotificationCenter defaultCenter] postNotificationName:SRActiveDocumentSelectionChanged object:self userInfo:[NSDictionary dictionaryWithObject:self.activeDocument forKey:@"activeDocument"]];
+	[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRActiveDocumentSelectionChanged object:self userInfo:[NSDictionary dictionaryWithObject:self.activeDocument forKey:@"activeDocument"]];
 	[self.strataView setNeedsDisplay];
 }
 
@@ -524,7 +524,8 @@ typedef enum {
 		self.activeDocument.lineThickness = self.settingsTableController.lineThickness;
 		self.activeDocument.units = self.settingsTableController.units;
 		self.activeDocument.strataHeight = self.settingsTableController.strataHeight;
-		[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataHeightChangedNotification object:self];
+		self.activeDocument.patternScale = self.settingsTableController.patternScale;
+		[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRStrataHeightChangedNotification object:self];
 	}
 }
 

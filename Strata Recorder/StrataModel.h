@@ -53,6 +53,7 @@ typedef enum {
 @property NSString*			units;					// English or Metric
 @property float				strataHeight;			// height of model view (in physical units)
 @property NSMutableArray*	sectionLabels;			// array of NSString's
+@property CGFloat			patternScale;
 
 @end
 

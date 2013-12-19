@@ -88,7 +88,7 @@
 						 nil];
 	[self populateDocumentsList];
     self.clearsSelectionOnViewWillAppear = YES;
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:(NSString *)SRActiveDocumentSelectionChanged object:nil];
 }
 
 - (void)populateDocumentsList

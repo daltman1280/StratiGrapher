@@ -9,6 +9,7 @@
 #import "SettingsTableController.h"
 #import "StrataNotifications.h"
 #import "SectionLabelsTableViewController.h"
+#import "MaterialPatternView.h"
 
 @interface SettingsTableController ()
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveItem;
@@ -25,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *lineThicknessText;
 @property (weak, nonatomic) IBOutlet UITextField *patternScaleText;
 @property (weak, nonatomic) IBOutlet UISlider *patternScaleSlider;
+@property (strong, nonatomic) IBOutlet MaterialPatternView *patternSampleView;
 @end
 
 @implementation SettingsTableController
@@ -39,6 +41,10 @@
 
 - (IBAction)handlePageScaleText:(id)sender {
 	self.pageScaleSlider.value = self.pageScaleText.text.floatValue;
+}
+
+- (IBAction)handlePatternScaleText:(id)sender {
+	self.patternScaleSlider.value = self.patternScaleText.text.floatValue;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -60,42 +66,49 @@
 	}
 	if (![self.units isEqualToString:(self.unitsSelector.selectedSegmentIndex) ? @"English" : @"Metric"]) {
 		self.units = (self.unitsSelector.selectedSegmentIndex) ? @"English" : @"Metric";
-		[[NSNotificationCenter defaultCenter] postNotificationName:SRUnitsChangedNotification object:self];
+		[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRUnitsChangedNotification object:self];
 	}
 	if (self.paperWidthText.text.floatValue) {
 		if (self.paperWidthText.text.floatValue != self.paperWidth) {
 			self.paperWidth = self.paperWidthText.text.floatValue;
-			[[NSNotificationCenter defaultCenter] postNotificationName:SRPaperWidthChangedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRPaperWidthChangedNotification object:self];
 		}
 	}
 	if (self.paperHeightText.text.floatValue) {
 		if (self.paperHeightText.text.floatValue != self.paperHeight) {
 			self.paperHeight = self.paperHeightText.text.floatValue;
-			[[NSNotificationCenter defaultCenter] postNotificationName:SRPaperHeightChangedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRPaperHeightChangedNotification object:self];
 		}
 	}
 	if (self.marginWidthText.text.floatValue) {
 		if (self.marginWidthText.text.floatValue != self.marginWidth) {
 			self.marginWidth = self.marginWidthText.text.floatValue;
-			[[NSNotificationCenter defaultCenter] postNotificationName:SRMarginWidthChangedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRMarginWidthChangedNotification object:self];
 		}
 	}
 	if (self.marginHeightText.text.floatValue) {
 		if (self.marginHeightText.text.floatValue != self.marginHeight) {
 			self.marginHeight = self.marginHeightText.text.floatValue;
-			[[NSNotificationCenter defaultCenter] postNotificationName:SRMarginHeightChangedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRMarginHeightChangedNotification object:self];
 		}
 	}
 	if (self.pageScaleText.text.floatValue) {
 		if (self.pageScaleText.text.floatValue != self.pageScale) {
 			self.pageScale = self.pageScaleText.text.floatValue;
-			[[NSNotificationCenter defaultCenter] postNotificationName:SRPageScaleChangedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRPageScaleChangedNotification object:self];
 		}
 	}
 	if (self.lineThicknessText.text.intValue) {
 		if (self.lineThicknessText.text.floatValue != self.lineThickness) {
 			self.lineThickness = self.lineThicknessText.text.intValue;
-			[[NSNotificationCenter defaultCenter] postNotificationName:SRLineThicknessChangedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRLineThicknessChangedNotification object:self];
+		}
+	}
+	if (self.patternScaleText.text.floatValue) {
+		if (self.patternScaleText.text.floatValue != self.patternScale) {
+			self.patternScale = self.patternScaleText.text.floatValue;
+			NSLog(@"handleSave, patternScale = %f", self.patternScale);
+			[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRPatternScaleChangedNotification object:self];
 		}
 	}
 	[self.delegate performSelector:@selector(handleSettingsTableComplete:) withObject:sender];					// let the delegate deal with the changed properties
@@ -107,6 +120,10 @@
 
 - (IBAction)handlePageScaleSlider:(id)sender {
 	self.pageScaleText.text = [NSString stringWithFormat:@"%.1f", self.pageScaleSlider.value];
+}
+
+- (IBAction)handlePatternScaleSlider:(id)sender {
+	self.patternScaleText.text = [NSString stringWithFormat:@"%.1f", self.patternScaleSlider.value];
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -130,7 +147,8 @@
 	self.marginHeight = self.activeDocument.pageMargins.height;
 	self.pageScale = self.activeDocument.scale;
 	self.lineThickness = self.activeDocument.lineThickness;
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
+	self.patternScale = self.activeDocument.patternScale;
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:(NSString *)SRActiveDocumentSelectionChanged object:nil];
 }
 
 - (void)handleActiveDocumentSelectionChanged:(NSNotification *)notification
@@ -153,6 +171,10 @@
 	self.pageScaleText.text = [NSString stringWithFormat:@"%.1f", self.pageScale];
 	self.pageScaleSlider.value = self.pageScale;
 	self.lineThicknessText.text = [NSString stringWithFormat:@"%d", self.lineThickness];
+	self.patternScaleSlider.value = self.patternScale;
+	self.patternScaleText.text = [NSString stringWithFormat:@"%.1f", self.patternScale];
+	self.patternSampleView.patternNumber = 643;															// arbitrary
+	[self.patternSampleView setNeedsDisplay];
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.modalInPopover = YES;									// make this view modal (if it's in a popover, ignore outside clicks)
@@ -259,6 +281,7 @@
 	[self setMarginWidthText:nil];
 	[self setMarginHeightText:nil];
 	[self setPatternScaleSlider:nil];
+	[self setPatternSampleView:nil];
 	[super viewDidUnload];
 }
 @end

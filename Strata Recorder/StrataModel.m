@@ -45,6 +45,7 @@
 		self.scale = 2.;
 		self.lineThickness = 2;
 		self.materialNumbersPalette = [[NSMutableSet alloc] init];
+		self.patternScale = 1;
 	}
 	return self;
 }
@@ -204,6 +205,8 @@
 	self.units = [aDecoder decodeObjectForKey:@"units"];
 	self.strataHeight = [aDecoder decodeFloatForKey:@"strataHeight"];
 	self.sectionLabels = [aDecoder decodeObjectForKey:@"sectionLabels"];
+	self.patternScale = [aDecoder decodeFloatForKey:@"patternScale"];
+	if (self.patternScale == 0) self.patternScale = 1;
 	return self;
 }
 
@@ -217,6 +220,7 @@
 	[aCoder encodeObject:self.units forKey:@"units"];
 	[aCoder encodeFloat:self.strataHeight forKey:@"strataHeight"];
 	[aCoder encodeObject:self.sectionLabels forKey:@"sectionLabels"];
+	[aCoder encodeFloat:self.patternScale forKey:@"patternScale"];
 }
 
 @end

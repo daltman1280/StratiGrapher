@@ -38,7 +38,7 @@
 	self = [super initWithCoder:decoder];
 	self.origin = CGPointMake(XORIGIN, YORIGIN);
 	self.arrowIcon = [[IconImage alloc] initWithImageName:@"paleocurrent greyscale.png" offset:CGPointMake(.5, .5) width:25 viewBounds:self.bounds viewOrigin:self.origin];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:(NSString *)SRActiveDocumentSelectionChanged object:nil];
 	return self;
 }
 
@@ -146,7 +146,7 @@
 	}
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
 	if (self.mode == PDFMode)
-		CGContextScaleCTM(currentContext, 72./132., 72./132.);
+		CGContextScaleCTM(currentContext, 72./PPI, 72./PPI);
 	CGFloat colorComponentsBlack[4] = {0, 0, 0, 1.};
 	CGFloat colorComponentsWhite[4] = {1, 1, 1, 1.};
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
