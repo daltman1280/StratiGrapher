@@ -26,6 +26,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *patternScaleText;
 @property (weak, nonatomic) IBOutlet UISlider *patternScaleSlider;
 @property (strong, nonatomic) IBOutlet MaterialPatternView *patternSampleView;
+@property (weak, nonatomic) IBOutlet UISlider *legendScaleSlider;
+@property (weak, nonatomic) IBOutlet UITextField *legendScaleText;
 @end
 
 @implementation SettingsTableController
@@ -42,6 +44,10 @@
 	self.patternScaleSlider.value = self.patternScaleText.text.floatValue;
 	self.patternSampleView.patternScale = self.patternScaleSlider.value;
 	[self.patternSampleView setNeedsDisplay];
+}
+
+- (IBAction)handleLegendScaleText:(id)sender {
+	self.legendScaleSlider.value = self.legendScaleText.text.floatValue;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -104,8 +110,13 @@
 	if (self.patternScaleText.text.floatValue) {
 		if (self.patternScaleText.text.floatValue != self.patternScale) {
 			self.patternScale = self.patternScaleText.text.floatValue;
-			NSLog(@"handleSave, patternScale = %f", self.patternScale);
 			[[NSNotificationCenter defaultCenter] postNotificationName:SRPatternScaleChangedNotification object:self];
+		}
+	}
+	if (self.legendScaleText.text.floatValue) {
+		if (self.legendScaleText.text.floatValue != self.legendScale) {
+			self.legendScale = self.legendScaleText.text.floatValue;
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRLegendScaleChangedNotification object:self];
 		}
 	}
 	[self.delegate performSelector:@selector(handleSettingsTableComplete:) withObject:sender];					// let the delegate deal with the changed properties
@@ -123,6 +134,10 @@
 	self.patternScaleText.text = [NSString stringWithFormat:@"%.1f", self.patternScaleSlider.value];
 	self.patternSampleView.patternScale = self.patternScaleSlider.value;
 	[self.patternSampleView setNeedsDisplay];
+}
+
+- (IBAction)handleLegendScaleSlider:(id)sender {
+	self.legendScaleText.text = [NSString stringWithFormat:@"%.1f", self.legendScaleSlider.value];
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -158,6 +173,7 @@
 	self.pageScale = self.activeDocument.scale;
 	self.lineThickness = self.activeDocument.lineThickness;
 	self.patternScale = self.activeDocument.patternScale;
+	self.legendScale = self.activeDocument.legendScale;
 	self.title = [NSString stringWithFormat:@"%@ Settings", self.activeDocument.name];
 	// populate the table's controls from property values
 	self.strataHeightText.text = [NSString stringWithFormat:@"%d", self.strataHeight];
@@ -171,13 +187,15 @@
 	self.lineThicknessText.text = [NSString stringWithFormat:@"%d", self.lineThickness];
 	self.patternScaleSlider.value = self.patternScale;
 	self.patternScaleText.text = [NSString stringWithFormat:@"%.1f", self.patternScale];
-	self.patternSampleView.patternNumber = 643;															// arbitrary
+	self.patternSampleView.patternNumber = 643;															// arbitrary pattern
 	self.patternSampleView.patternScale = self.patternScale;
 	[self.patternSampleView setNeedsDisplay];
+	self.legendScaleSlider.value = self.legendScale;
+	self.legendScaleText.text = [NSString stringWithFormat:@"%.1f", self.legendScale];
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.modalInPopover = YES;									// make this view modal (if it's in a popover, ignore outside clicks)
-	self.contentSizeForViewInPopover = CGSizeMake(460, 533);		// TODO: get the appropriate size
+	self.contentSizeForViewInPopover = CGSizeMake(460, 577);		// TODO: get the appropriate size
 }
 
 - (void)didReceiveMemoryWarning
@@ -280,6 +298,8 @@
 	[self setMarginHeightText:nil];
 	[self setPatternScaleSlider:nil];
 	[self setPatternSampleView:nil];
+	[self setLegendScaleSlider:nil];
+	[self setLegendScaleText:nil];
 	[super viewDidUnload];
 }
 @end

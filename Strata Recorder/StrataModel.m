@@ -199,6 +199,8 @@
 	self.sectionLabels = [aDecoder decodeObjectForKey:@"sectionLabels"];
 	self.patternScale = [aDecoder decodeFloatForKey:@"patternScale"];
 	if (self.patternScale == 0) self.patternScale = 1;
+	self.legendScale = [aDecoder decodeFloatForKey:@"legendScale"];
+	if (self.legendScale == 0) self.legendScale = 1;
 	return self;
 }
 
@@ -213,6 +215,7 @@
 	[aCoder encodeFloat:self.strataHeight forKey:@"strataHeight"];
 	[aCoder encodeObject:self.sectionLabels forKey:@"sectionLabels"];
 	[aCoder encodeFloat:self.patternScale forKey:@"patternScale"];
+	[aCoder encodeFloat:self.legendScale forKey:@"legendScale"];
 }
 
 @end

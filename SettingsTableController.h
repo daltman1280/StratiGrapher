@@ -26,5 +26,6 @@
 @property float				pageScale;
 @property int				lineThickness;
 @property float				patternScale;
+@property float				legendScale;
 
 @end

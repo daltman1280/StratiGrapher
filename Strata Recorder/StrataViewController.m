@@ -525,6 +525,7 @@ typedef enum {
 		self.activeDocument.units = self.settingsTableController.units;
 		self.activeDocument.strataHeight = self.settingsTableController.strataHeight;
 		self.activeDocument.patternScale = self.settingsTableController.patternScale;
+		self.activeDocument.legendScale = self.settingsTableController.legendScale;
 		[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataHeightChangedNotification object:self];
 	}
 }

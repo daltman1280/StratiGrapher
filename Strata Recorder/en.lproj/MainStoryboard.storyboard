@@ -749,11 +749,35 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Page" id="icA-1Y-9T8">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="pageDimensions" id="gvi-3N-dCQ">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="pageDimensions" id="CZR-5I-gv4">
                                         <rect key="frame" x="0.0" y="244" width="768" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="45" y="1" width="678" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Line thickness (points)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="w6l-j4-YsE">
+                                                    <rect key="frame" x="20" y="11" width="170" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="8.5" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="lf9-vR-EeD">
+                                                    <rect key="frame" x="596" y="7" width="44" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
+                                                </textField>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="pageDimensions" id="gvi-3N-dCQ">
+                                        <rect key="frame" x="0.0" y="289" width="768" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="45" y="0.0" width="678" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Page dimensions in inches" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="q21-K1-x1g">
@@ -794,7 +818,7 @@
                                         </view>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="pageDimensions" id="SC4-qd-UgF">
-                                        <rect key="frame" x="0.0" y="289" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="333" width="768" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="45" y="0.0" width="678" height="43"/>
@@ -838,7 +862,7 @@
                                         </view>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="pageDimensions" id="OdU-HZ-xj7">
-                                        <rect key="frame" x="0.0" y="333" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="377" width="768" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="45" y="0.0" width="678" height="43"/>
@@ -872,7 +896,7 @@
                                         </view>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="pageDimensions" id="FtV-XR-iXX">
-                                        <rect key="frame" x="0.0" y="377" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="421" width="768" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="45" y="0.0" width="678" height="43"/>
@@ -895,8 +919,44 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="pageDimensions" id="HvN-kZ-vLJ">
+                                        <rect key="frame" x="0.0" y="465" width="768" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="45" y="0.0" width="678" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Legend scale" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="R4o-nB-nSA">
+                                                    <rect key="frame" x="20" y="11" width="102" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="8.5" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="TD1-9V-lri">
+                                                    <rect key="frame" x="596" y="7" width="44" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
+                                                    <connections>
+                                                        <action selector="handleLegendScaleText:" destination="0ij-0L-Qfo" eventType="editingDidEnd" id="K2z-4c-abb"/>
+                                                        <action selector="handlePageScaleText:" destination="0ij-0L-Qfo" eventType="editingDidEnd" id="qn9-K0-R1U"/>
+                                                    </connections>
+                                                </textField>
+                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.5" maxValue="2" id="Hh0-Ui-7l9">
+                                                    <rect key="frame" x="505" y="11" width="85" height="23"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                                    <connections>
+                                                        <action selector="handleLegendScaleSlider:" destination="0ij-0L-Qfo" eventType="valueChanged" id="Aqk-la-aAu"/>
+                                                        <action selector="handlePageScaleSlider:" destination="0ij-0L-Qfo" eventType="valueChanged" id="uWe-3c-uGD"/>
+                                                    </connections>
+                                                </slider>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="pageDimensions" rowHeight="57" id="iUJ-yb-YDp">
-                                        <rect key="frame" x="0.0" y="421" width="768" height="58"/>
+                                        <rect key="frame" x="0.0" y="509" width="768" height="58"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="45" y="0.0" width="678" height="56"/>
@@ -949,6 +1009,8 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="cancelItem" destination="tmI-VE-nMa" id="f7K-uZ-Vzs"/>
+                        <outlet property="legendScaleSlider" destination="Hh0-Ui-7l9" id="hgg-CY-Zr7"/>
+                        <outlet property="legendScaleText" destination="TD1-9V-lri" id="6pI-eB-xdT"/>
                         <outlet property="lineThicknessText" destination="8Dd-9b-A77" id="H3Y-dh-zE4"/>
                         <outlet property="marginHeightText" destination="3o3-7K-WGm" id="j2R-IM-0Hg"/>
                         <outlet property="marginWidthText" destination="c1v-bJ-12X" id="W18-E8-pQK"/>
@@ -1448,6 +1510,8 @@
         <class className="AddSectionLabelViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/AddSectionLabelViewController.h"/>
             <relationships>
+                <relationship kind="action" name="handleCancel:"/>
+                <relationship kind="action" name="handleSave:"/>
                 <relationship kind="outlet" name="cancelButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="saveButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="sectionLabelText" candidateClass="UITextField"/>
@@ -1481,6 +1545,8 @@
         <class className="RenameViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/RenameViewController.h"/>
             <relationships>
+                <relationship kind="action" name="handleRenameConfirm:"/>
+                <relationship kind="action" name="renameTextDidChange:"/>
                 <relationship kind="outlet" name="renameCancelButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="renameOKButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="renameText" candidateClass="UITextField"/>
@@ -1516,7 +1582,16 @@
         <class className="SettingsTableController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsTableController.h"/>
             <relationships>
+                <relationship kind="action" name="handleLegendScaleSlider:"/>
+                <relationship kind="action" name="handleLegendScaleText:"/>
+                <relationship kind="action" name="handlePageScaleSlider:"/>
+                <relationship kind="action" name="handlePageScaleText:"/>
+                <relationship kind="action" name="handlePatternScaleSlider:"/>
+                <relationship kind="action" name="handleSave:"/>
+                <relationship kind="action" name="handleStrataHeightText:"/>
                 <relationship kind="outlet" name="cancelItem" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="legendScaleSlider" candidateClass="UISlider"/>
+                <relationship kind="outlet" name="legendScaleText" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="lineThicknessText" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="marginHeightText" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="marginWidthText" candidateClass="UITextField"/>
@@ -1544,6 +1619,9 @@
         <class className="StrataViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/StrataViewController.h"/>
             <relationships>
+                <relationship kind="action" name="handleModeSwitch:"/>
+                <relationship kind="action" name="handleRotationGesture:" candidateClass="UIRotationGestureRecognizer"/>
+                <relationship kind="action" name="handleTapGesture:" candidateClass="UITapGestureRecognizer"/>
                 <relationship kind="outlet" name="anchorDragView" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="anchorView" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="background" candidateClass="UIView"/>
@@ -1591,6 +1669,8 @@
         <class className="StratumInfoTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumInfoTableViewController.h"/>
             <relationships>
+                <relationship kind="action" name="handleEraseOutline:"/>
+                <relationship kind="action" name="handleSave:"/>
                 <relationship kind="outlet" name="eraseButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="grainSizeText" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="materialTitleText" candidateClass="UILabel"/>
@@ -1602,12 +1682,16 @@
         <class className="StratumMaterialsPaletteTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumMaterialsPaletteTableViewController.h"/>
             <relationships>
+                <relationship kind="action" name="handleRemoveMaterial:"/>
                 <relationship kind="outlet" name="addButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="removeButton" candidateClass="UIBarButtonItem"/>
             </relationships>
         </class>
         <class className="StratumMaterialsTableController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumMaterialsTableController.h"/>
+            <relationships>
+                <relationship kind="action" name="handleAdd:"/>
+            </relationships>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
