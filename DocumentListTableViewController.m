@@ -88,7 +88,7 @@
 						 nil];
 	[self populateDocumentsList];
     self.clearsSelectionOnViewWillAppear = YES;
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChangedNotification object:nil];
 }
 
 - (void)populateDocumentsList
@@ -116,6 +116,7 @@
 	[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
 	self.contentSizeForViewInPopover = CGSizeMake(300, 342);		// TODO: get the appropriate size
 	[self setDeleteButtonEnabled];
+	[[NSNotificationCenter defaultCenter] postNotificationName:SRPopupVisibleNotification object:self];
 }
 
 - (void)setDeleteButtonEnabled

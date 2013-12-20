@@ -153,7 +153,7 @@
 {
     [super viewDidLoad];
 	self.toolbarItems = [NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], self.cancelItem, self.saveItem, nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChangedNotification object:nil];
 }
 
 - (void)handleActiveDocumentSelectionChanged:(NSNotification *)notification
@@ -196,6 +196,7 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.modalInPopover = YES;									// make this view modal (if it's in a popover, ignore outside clicks)
 	self.contentSizeForViewInPopover = CGSizeMake(460, 577);		// TODO: get the appropriate size
+	[[NSNotificationCenter defaultCenter] postNotificationName:SRPopupVisibleNotification object:self];
 }
 
 - (void)didReceiveMemoryWarning

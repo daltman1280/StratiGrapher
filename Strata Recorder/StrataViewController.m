@@ -328,6 +328,7 @@ typedef enum {
 	if ([segue.identifier isEqualToString:@"documents"]) {
 		((DocumentListTableViewController *)((UINavigationController *)segue.destinationViewController).topViewController).activeDocument = self.activeDocument;
 		((DocumentListTableViewController *)((UINavigationController *)segue.destinationViewController).topViewController).delegate = self;			// set up ourselves as delegate
+		((UIStoryboardPopoverSegue *)segue).popoverController.delegate = (id) self;																	// popover controller delegate
 		[self.activeDocument save];
 	} else if ([segue.identifier isEqualToString:@"settings"]) {
 		UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
@@ -366,9 +367,11 @@ typedef enum {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationEnteredBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationBecameActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleStrataHeightChanged:) name:SRStrataHeightChangedNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleStrataViewScrollerScrollToTop:) name:SRStrataViewScrollerScrollToTop object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleEditingOperationStarted:) name:SREditingOperationStarted object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleEditingOperationEnded:) name:SREditingOperationEnded object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleStrataViewScrollerScrollToTop:) name:SRStrataViewScrollerScrollToTopNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleEditingOperationStarted:) name:SREditingOperationStartedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleEditingOperationEnded:) name:SREditingOperationEndedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePopupVisible:) name:SRPopupVisibleNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePopupNotVisible:) name:SRPopupNotVisibleNotification object:nil];
 	// initialize legend
 	self.legendView.legendLineContainer = self.legendLineContainer;
 	self.legendView.legendLineLabel = self.legendLineLabel;
@@ -407,7 +410,7 @@ typedef enum {
 	self.strataPageScrollView.contentOffset = CGPointMake(0, self.strataPageView.bounds.size.height-self.strataPageScrollView.bounds.size.height);
 	self.strataPageScrollView.hidden = YES;
 	
-	[[NSNotificationCenter defaultCenter] postNotificationName:SRActiveDocumentSelectionChanged object:self userInfo:[NSDictionary dictionaryWithObject:self.activeDocument forKey:@"activeDocument"]];
+	[[NSNotificationCenter defaultCenter] postNotificationName:SRActiveDocumentSelectionChangedNotification object:self userInfo:[NSDictionary dictionaryWithObject:self.activeDocument forKey:@"activeDocument"]];
 	[self.strataView setNeedsDisplay];
 }
 
@@ -434,6 +437,20 @@ typedef enum {
 	self.bounds = self.strataView.bounds;
 	self.origin = CGPointMake(XORIGIN, YORIGIN);
 	[self.strataView setNeedsDisplay];
+}
+
+- (void)handlePopupVisible:(id)sender
+{
+	self.documentsButton.enabled = NO;
+	self.settingsButton.enabled = NO;
+	self.modeButton.enabled = NO;
+}
+
+- (void)handlePopupNotVisible:(id)sender
+{
+	self.documentsButton.enabled = YES;
+	self.settingsButton.enabled = YES;
+	self.modeButton.enabled = YES;
 }
 
 - (void)handleStrataViewScrollerScrollToTop:(id)sender
@@ -517,6 +534,7 @@ typedef enum {
 - (void)handleSettingsTableComplete:(id)sender;
 {
 	[self.popover dismissPopoverAnimated:YES];
+	[[NSNotificationCenter defaultCenter] postNotificationName:SRPopupNotVisibleNotification object:self];
 	if ([((UIBarButtonItem *)sender).title isEqualToString:@"Save"]) {
 		self.activeDocument.pageDimension = CGSizeMake(self.settingsTableController.paperWidth, self.settingsTableController.paperHeight);
 		self.activeDocument.pageMargins = CGSizeMake(self.settingsTableController.marginWidth, self.settingsTableController.marginHeight);
@@ -541,6 +559,13 @@ typedef enum {
 - (void)setActiveStrataDocument:(NSString *)name
 {
 	self.activeDocument = [StrataDocument loadFromFile:name];
+}
+
+#pragma mark Document List Popover Controller Delegate
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:SRPopupNotVisibleNotification object:self];
 }
 
 #pragma mark UIScrollViewDelegate
@@ -620,6 +645,9 @@ typedef enum {
 	[self setStrataColumn:nil];
 	[self setGrainSizeLines:nil];
 	[self setBackground:nil];
+	[self setSettingsButton:nil];
+	[self setDocumentsButton:nil];
+	[self setModeButton:nil];
 	[super viewDidUnload];
 }
 @end

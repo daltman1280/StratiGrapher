@@ -10,7 +10,7 @@
 #define Strata_Recorder_StrataNotifications_h
 
 static NSString* SRStrataHeightChangedNotification = @"SRStrataHeightChangedNotification";
-static NSString* SRStrataViewScrollerScrollToTop = @"SRStrataViewScrollerScrollToTop";
+static NSString* SRStrataViewScrollerScrollToTopNotification = @"SRStrataViewScrollerScrollToTopNotification";
 static NSString* SRUnitsChangedNotification = @"SRUnitsChangedNotification";
 static NSString* SRPaperWidthChangedNotification = @"SRPaperWidthChangedNotification";
 static NSString* SRPaperHeightChangedNotification = @"SRPaperHeightChangedNotification";
@@ -20,8 +20,10 @@ static NSString* SRPageScaleChangedNotification = @"SRPageScaleChangedNotificati
 static NSString* SRLineThicknessChangedNotification = @"SRLineThicknessChangedNotification";
 static NSString* SRPatternScaleChangedNotification = @"SRPatternScaleChangedNotification";
 static NSString* SRLegendScaleChangedNotification = @"SRLegendScaleChangedNotification";
-static NSString* SRActiveDocumentSelectionChanged = @"SRActiveDocumentSelectionChanged";
-static NSString* SREditingOperationStarted = @"SREditingOperationStarted";
-static NSString* SREditingOperationEnded = @"SREditingOperationEnded";
+static NSString* SRActiveDocumentSelectionChangedNotification = @"SRActiveDocumentSelectionChangedNotification";
+static NSString* SREditingOperationStartedNotification = @"SREditingOperationStartedNotification";
+static NSString* SREditingOperationEndedNotification = @"SREditingOperationEndedNotification";
+static NSString* SRPopupVisibleNotification = @"SRPopupVisibleNotification";
+static NSString* SRPopupNotVisibleNotification = @"SRPopupNotVisibleNotification";
 
 #endif

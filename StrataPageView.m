@@ -38,7 +38,7 @@
 	self = [super initWithCoder:decoder];
 	self.origin = CGPointMake(XORIGIN, YORIGIN);
 	self.arrowIcon = [[IconImage alloc] initWithImageName:@"paleocurrent greyscale.png" offset:CGPointMake(.5, .5) width:25 viewBounds:self.bounds viewOrigin:self.origin];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChangedNotification object:nil];
 	return self;
 }
 
@@ -369,7 +369,7 @@
 	
 	if (self.mode == PDFMode) {
 		UIGraphicsBeginPDFPage();
-		CGContextScaleCTM(UIGraphicsGetCurrentContext(), 72./132., 72./132.);
+		CGContextScaleCTM(UIGraphicsGetCurrentContext(), 72./132.*self.activeDocument.legendScale, 72./132.*self.activeDocument.legendScale);
 		[self.layer renderInContext:UIGraphicsGetCurrentContext()];									// render the legend on a separate page
 		UIGraphicsEndPDFContext();
 		self.mode = graphMode;
