@@ -695,7 +695,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRStrataHeightChangedNotification object:self];
 			if (self.activeDragIndex == self.activeDocument.strata.count-2)								// pin scroller to the top if we're editing the top stratum
 				[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRStrataViewScrollerScrollToTop object:self];
-		} else if (topStratumLocation < self.activeDocument.strataHeight-4) {							// decrease StrataView height
+		} else if (topStratumLocation < self.activeDocument.strataHeight-4 && self.activeDocument.strataHeight > 8) {// decrease StrataView height
 			self.activeDocument.strataHeight = fmaxf((int) (topStratumLocation + 3), 8);
 			[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRStrataHeightChangedNotification object:self];
 			if (self.activeDragIndex == self.activeDocument.strata.count-2)								// pin scroller to the top if we're editing the top stratum
