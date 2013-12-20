@@ -11,7 +11,7 @@
 #import "StrataViewController.h"
 #import "StrataModel.h"
 
-static const float kPencilMargin = 0.1;
+static const float kPencilMargin = 0.2;
 
 //	globals for use with callback function
 
