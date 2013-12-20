@@ -16,7 +16,6 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelItem;
 @property (weak, nonatomic) IBOutlet UISlider *pageScaleSlider;
 @property (weak, nonatomic) IBOutlet UITextField *strataHeightText;
-@property (weak, nonatomic) IBOutlet UIStepper *strataHeightStepper;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *unitsSelector;
 @property (weak, nonatomic) IBOutlet UITextField *paperWidthText;
 @property (weak, nonatomic) IBOutlet UITextField *paperHeightText;
@@ -31,12 +30,8 @@
 
 @implementation SettingsTableController
 
-- (IBAction)handleStrataHeightStepper:(id)sender {
-	self.strataHeightText.text = [NSString stringWithFormat:@"%d", (int) self.strataHeightStepper.value];
-}
 - (IBAction)handleStrataHeightText:(id)sender {
 	self.strataHeightText.text = [NSString stringWithFormat:@"%d", (int) self.strataHeightText.text.floatValue];
-	self.strataHeightStepper.value = (int) self.strataHeightText.text.floatValue;
 }
 
 - (IBAction)handlePageScaleText:(id)sender {
@@ -166,7 +161,6 @@
 	self.title = [NSString stringWithFormat:@"%@ Settings", self.activeDocument.name];
 	// populate the table's controls from property values
 	self.strataHeightText.text = [NSString stringWithFormat:@"%d", self.strataHeight];
-	self.strataHeightStepper.value = self.strataHeight;
 	self.unitsSelector.selectedSegmentIndex = [self.units isEqualToString:@"Metric"] ? 0 : 1;
 	self.paperWidthText.text = [NSString stringWithFormat:@"%.1f", self.paperWidth];
 	self.paperHeightText.text = [NSString stringWithFormat:@"%.1f", self.paperHeight];
@@ -281,7 +275,6 @@
 	[self setPageScaleSlider:nil];
 	[self setLineThicknessText:nil];
 	[self setPatternScaleText:nil];
-	[self setStrataHeightStepper:nil];
 	[self setCancelItem:nil];
 	[self setMarginWidthText:nil];
 	[self setMarginHeightText:nil];

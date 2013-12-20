@@ -671,7 +671,7 @@
                         <sections>
                             <tableViewSection headerTitle="Draft" id="OOw-5I-f4f">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="strataHeight" id="dnc-mf-kqS">
+                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="strataHeight" id="dnc-mf-kqS">
                                         <rect key="frame" x="0.0" y="54" width="768" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -685,15 +685,8 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
-                                                <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minimumValue="8" maximumValue="100" id="7UI-4b-rFo">
-                                                    <rect key="frame" x="570" y="8" width="94" height="27"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                                    <connections>
-                                                        <action selector="handleStrataHeightStepper:" destination="0ij-0L-Qfo" eventType="valueChanged" id="x4c-Pp-Eab"/>
-                                                    </connections>
-                                                </stepper>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="Pr0-Hn-ETb">
-                                                    <rect key="frame" x="511" y="7" width="51" height="30"/>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" id="Pr0-Hn-ETb">
+                                                    <rect key="frame" x="611" y="7" width="51" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
@@ -967,7 +960,6 @@
                         <outlet property="patternScaleSlider" destination="bgw-3G-J09" id="Aia-gE-wtH"/>
                         <outlet property="patternScaleText" destination="Efj-Su-5Jl" id="Uuc-0e-LWb"/>
                         <outlet property="saveItem" destination="c3N-pM-65F" id="Edj-fp-jXc"/>
-                        <outlet property="strataHeightStepper" destination="7UI-4b-rFo" id="9WP-hp-xeN"/>
                         <outlet property="strataHeightText" destination="Pr0-Hn-ETb" id="8rG-S8-lC1"/>
                         <outlet property="unitsSelector" destination="8PJ-1E-n76" id="ykY-wU-MQw"/>
                     </connections>
