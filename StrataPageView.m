@@ -38,7 +38,7 @@
 	self = [super initWithCoder:decoder];
 	self.origin = CGPointMake(XORIGIN, YORIGIN);
 	self.arrowIcon = [[IconImage alloc] initWithImageName:@"paleocurrent greyscale.png" offset:CGPointMake(.5, .5) width:25 viewBounds:self.bounds viewOrigin:self.origin];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:(NSString *)SRActiveDocumentSelectionChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
 	return self;
 }
 

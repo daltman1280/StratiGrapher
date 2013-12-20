@@ -9,18 +9,18 @@
 #ifndef Strata_Recorder_StrataNotifications_h
 #define Strata_Recorder_StrataNotifications_h
 
-static const NSString* SRStrataHeightChangedNotification = @"SRStrataHeightChangedNotification";
-static const NSString* SRStrataViewScrollerScrollToTop = @"SRStrataViewScrollerScrollToTop";
-static const NSString* SRUnitsChangedNotification = @"SRUnitsChangedNotification";
-static const NSString* SRPaperWidthChangedNotification = @"SRPaperWidthChangedNotification";
-static const NSString* SRPaperHeightChangedNotification = @"SRPaperHeightChangedNotification";
-static const NSString* SRMarginWidthChangedNotification = @"SRMarginWidthChangedNotification";
-static const NSString* SRMarginHeightChangedNotification = @"SRMarginHeightChangedNotification";
-static const NSString* SRPageScaleChangedNotification = @"SRPageScaleChangedNotification";
-static const NSString* SRLineThicknessChangedNotification = @"SRLineThicknessChangedNotification";
-static const NSString* SRPatternScaleChangedNotification = @"SRPatternScaleChangedNotification";
-static const NSString* SRActiveDocumentSelectionChanged = @"SRActiveDocumentSelectionChanged";
-static const NSString* SREditingOperationStarted = @"SREditingOperationStarted";
-static const NSString* SREditingOperationEnded = @"SREditingOperationEnded";
+static NSString* SRStrataHeightChangedNotification = @"SRStrataHeightChangedNotification";
+static NSString* SRStrataViewScrollerScrollToTop = @"SRStrataViewScrollerScrollToTop";
+static NSString* SRUnitsChangedNotification = @"SRUnitsChangedNotification";
+static NSString* SRPaperWidthChangedNotification = @"SRPaperWidthChangedNotification";
+static NSString* SRPaperHeightChangedNotification = @"SRPaperHeightChangedNotification";
+static NSString* SRMarginWidthChangedNotification = @"SRMarginWidthChangedNotification";
+static NSString* SRMarginHeightChangedNotification = @"SRMarginHeightChangedNotification";
+static NSString* SRPageScaleChangedNotification = @"SRPageScaleChangedNotification";
+static NSString* SRLineThicknessChangedNotification = @"SRLineThicknessChangedNotification";
+static NSString* SRPatternScaleChangedNotification = @"SRPatternScaleChangedNotification";
+static NSString* SRActiveDocumentSelectionChanged = @"SRActiveDocumentSelectionChanged";
+static NSString* SREditingOperationStarted = @"SREditingOperationStarted";
+static NSString* SREditingOperationEnded = @"SREditingOperationEnded";
 
 #endif

@@ -63,49 +63,49 @@
 	}
 	if (![self.units isEqualToString:(self.unitsSelector.selectedSegmentIndex) ? @"English" : @"Metric"]) {
 		self.units = (self.unitsSelector.selectedSegmentIndex) ? @"English" : @"Metric";
-		[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRUnitsChangedNotification object:self];
+		[[NSNotificationCenter defaultCenter] postNotificationName:SRUnitsChangedNotification object:self];
 	}
 	if (self.paperWidthText.text.floatValue) {
 		if (self.paperWidthText.text.floatValue != self.paperWidth) {
 			self.paperWidth = self.paperWidthText.text.floatValue;
-			[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRPaperWidthChangedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRPaperWidthChangedNotification object:self];
 		}
 	}
 	if (self.paperHeightText.text.floatValue) {
 		if (self.paperHeightText.text.floatValue != self.paperHeight) {
 			self.paperHeight = self.paperHeightText.text.floatValue;
-			[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRPaperHeightChangedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRPaperHeightChangedNotification object:self];
 		}
 	}
 	if (self.marginWidthText.text.floatValue) {
 		if (self.marginWidthText.text.floatValue != self.marginWidth) {
 			self.marginWidth = self.marginWidthText.text.floatValue;
-			[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRMarginWidthChangedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRMarginWidthChangedNotification object:self];
 		}
 	}
 	if (self.marginHeightText.text.floatValue) {
 		if (self.marginHeightText.text.floatValue != self.marginHeight) {
 			self.marginHeight = self.marginHeightText.text.floatValue;
-			[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRMarginHeightChangedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRMarginHeightChangedNotification object:self];
 		}
 	}
 	if (self.pageScaleText.text.floatValue) {
 		if (self.pageScaleText.text.floatValue != self.pageScale) {
 			self.pageScale = self.pageScaleText.text.floatValue;
-			[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRPageScaleChangedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRPageScaleChangedNotification object:self];
 		}
 	}
 	if (self.lineThicknessText.text.intValue) {
 		if (self.lineThicknessText.text.floatValue != self.lineThickness) {
 			self.lineThickness = self.lineThicknessText.text.intValue;
-			[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRLineThicknessChangedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRLineThicknessChangedNotification object:self];
 		}
 	}
 	if (self.patternScaleText.text.floatValue) {
 		if (self.patternScaleText.text.floatValue != self.patternScale) {
 			self.patternScale = self.patternScaleText.text.floatValue;
 			NSLog(@"handleSave, patternScale = %f", self.patternScale);
-			[[NSNotificationCenter defaultCenter] postNotificationName:(NSString *)SRPatternScaleChangedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:SRPatternScaleChangedNotification object:self];
 		}
 	}
 	[self.delegate performSelector:@selector(handleSettingsTableComplete:) withObject:sender];					// let the delegate deal with the changed properties
@@ -138,7 +138,7 @@
 {
     [super viewDidLoad];
 	self.toolbarItems = [NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], self.cancelItem, self.saveItem, nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:(NSString *)SRActiveDocumentSelectionChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChanged object:nil];
 }
 
 - (void)handleActiveDocumentSelectionChanged:(NSNotification *)notification
