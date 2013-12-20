@@ -30,7 +30,6 @@
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated
 {
 	UIViewController *viewController = self.viewControllers.lastObject;
-	NSLog(@"class = %@", self.viewControllers.lastObject);
 	if ([viewController respondsToSelector:@selector(willPopViewController)])
 		[viewController performSelector:@selector(willPopViewController)];
 	return [super popViewControllerAnimated:animated];

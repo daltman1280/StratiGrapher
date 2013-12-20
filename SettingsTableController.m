@@ -138,15 +138,6 @@
 {
     [super viewDidLoad];
 	self.toolbarItems = [NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], self.cancelItem, self.saveItem, nil];
-	self.strataHeight = self.activeDocument.strataHeight;
-	self.units = self.activeDocument.units;
-	self.paperWidth = self.activeDocument.pageDimension.width;
-	self.paperHeight = self.activeDocument.pageDimension.height;
-	self.marginWidth = self.activeDocument.pageMargins.width;
-	self.marginHeight = self.activeDocument.pageMargins.height;
-	self.pageScale = self.activeDocument.scale;
-	self.lineThickness = self.activeDocument.lineThickness;
-	self.patternScale = self.activeDocument.patternScale;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:(NSString *)SRActiveDocumentSelectionChanged object:nil];
 }
 
@@ -158,6 +149,15 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 	// populate the properties from active document
+	self.strataHeight = self.activeDocument.strataHeight;
+	self.units = self.activeDocument.units;
+	self.paperWidth = self.activeDocument.pageDimension.width;
+	self.paperHeight = self.activeDocument.pageDimension.height;
+	self.marginWidth = self.activeDocument.pageMargins.width;
+	self.marginHeight = self.activeDocument.pageMargins.height;
+	self.pageScale = self.activeDocument.scale;
+	self.lineThickness = self.activeDocument.lineThickness;
+	self.patternScale = self.activeDocument.patternScale;
 	self.title = [NSString stringWithFormat:@"%@ Settings", self.activeDocument.name];
 	// populate the table's controls from property values
 	self.strataHeightText.text = [NSString stringWithFormat:@"%d", self.strataHeight];
