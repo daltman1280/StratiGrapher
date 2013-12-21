@@ -59,6 +59,7 @@
 	} else if ([destinationViewController isKindOfClass:[StratumGranularityViewController class]]) {
 		StratumGranularityViewController *controller = (StratumGranularityViewController *)destinationViewController;
 		controller.stratum = self.stratum;
+		controller.activeDocument = self.activeDocument;
 	}
 }
 

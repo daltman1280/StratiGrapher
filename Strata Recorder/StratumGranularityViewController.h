@@ -14,7 +14,7 @@
 
 @property (strong, nonatomic) IBOutlet UIPickerView *granularityPicker;
 
-@property StrataDocument*					currentDocument;
+@property StrataDocument*					activeDocument;
 @property Stratum*							stratum;
 @property StratumInfoTableViewController*	parent;
 

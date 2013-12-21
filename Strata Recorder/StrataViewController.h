@@ -12,7 +12,6 @@
 #import "StratumMaterialsControllerDelegate.h"
 
 @interface StrataViewController : UIViewController <StratumMaterialsControllerDelegate, DocumentListControllerDelegate, SettingsControllerDelegate> {
-	UISegmentedControl*						modeControl;
 }
 
 - (void)handleStratumInfo:(id)sender;

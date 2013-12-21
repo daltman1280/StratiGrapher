@@ -42,7 +42,7 @@
 {
 	self.stratum.grainSizeIndex = [self.granularityPicker selectedRowInComponent:0]+1;
 	float width = [StrataDocument stratumWidthFromGrainSize:self.stratum.grainSizeIndex-1];
-	self.stratum.frame = CGRectMake(self.stratum.frame.origin.x, self.stratum.frame.origin.y, width, self.stratum.frame.size.height);
+	[self.activeDocument adjustStratumSize:CGSizeMake(width, self.stratum.frame.size.height) atIndex:[self.activeDocument.strata indexOfObject:self.stratum]];
 	[self.parent handleGranularityChanged];
 }
 
