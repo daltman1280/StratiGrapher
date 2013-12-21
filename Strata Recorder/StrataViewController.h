@@ -24,5 +24,6 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *documentsButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *modeButton;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *modeControl;
 
 @end

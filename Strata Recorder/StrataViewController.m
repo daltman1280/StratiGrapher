@@ -391,6 +391,7 @@ typedef enum {
 	if (!_activeDocument)
 		_activeDocument = [[StrataDocument alloc] init];
 	// do necessary initialization when the current document is changed
+	[self.strataGraphScrollView setZoomScale:self.strataGraphScrollView.minimumZoomScale];
 	CGRect frame = CGRectMake(0, 0, self.strataView.frame.size.width, self.activeDocument.strataHeight*PPI);
 	self.strataView.frame = frame;														// modifying bounds would affect frame origin
 	self.toolbarTitle.title = self.activeDocument.name;
@@ -410,6 +411,8 @@ typedef enum {
 	self.strataPageScrollView.contentOffset = CGPointMake(0, self.strataPageView.bounds.size.height-self.strataPageScrollView.bounds.size.height);
 	self.strataPageScrollView.hidden = YES;
 	
+	((UISegmentedControl *)self.modeControl).selectedSegmentIndex = 0;					// switch to draft mode
+	[self handleModeSwitch:self.modeControl];
 	[[NSNotificationCenter defaultCenter] postNotificationName:SRActiveDocumentSelectionChangedNotification object:self userInfo:[NSDictionary dictionaryWithObject:self.activeDocument forKey:@"activeDocument"]];
 	[self.strataView setNeedsDisplay];
 }
@@ -648,6 +651,7 @@ typedef enum {
 	[self setSettingsButton:nil];
 	[self setDocumentsButton:nil];
 	[self setModeButton:nil];
+	[self setModeControl:nil];
 	[super viewDidUnload];
 }
 @end

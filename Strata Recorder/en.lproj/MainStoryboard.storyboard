@@ -245,6 +245,7 @@
                         <outlet property="legendView" destination="QEO-iq-LHP" id="iNa-MX-0AB"/>
                         <outlet property="locationLabel" destination="lno-m9-rOY" id="qAi-eG-sau"/>
                         <outlet property="modeButton" destination="YKq-aO-tSa" id="SFG-uV-EC7"/>
+                        <outlet property="modeControl" destination="Gh6-iH-hxn" id="hDT-df-DcI"/>
                         <outlet property="paleoCurrentDragView" destination="rbt-p4-yVS" id="QO0-vj-zwC"/>
                         <outlet property="paleoCurrentSelectedView" destination="Bd0-LL-QRe" id="JcA-ET-YgZ"/>
                         <outlet property="paleoCurrentView" destination="FLT-gJ-BHO" id="Kih-Z7-qf6"/>
