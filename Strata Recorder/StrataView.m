@@ -778,7 +778,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 								   VY(stratum.frame.origin.y),
 								   VDX(stratum.frame.size.width),
 								   VDY(stratum.frame.size.height));
-		if (CGRectIntersectsRect(myRect, clippingRect)) {								// only if it's inside clipping area
+		CGRect expandedRect = CGRectInset(myRect, -kPencilMargin, -kPencilMargin);		// make it large enough to include outline
+		if (CGRectIntersectsRect(expandedRect, clippingRect)) {							// only if it's inside clipping area
 			if (stratum.outline == nil || stratum.outline.count == 0) {					// no outline, just a rectangle
 				// setup fill pattern, must do for each stratum
 				if (!self.dragActive) {
