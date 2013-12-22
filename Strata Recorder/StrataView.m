@@ -425,7 +425,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
         CGRect myRect = stratum.frame;
         CGPoint iconLocation = CGPointMake(myRect.origin.x+myRect.size.width, myRect.origin.y+myRect.size.height);
 #ifdef MUTABLE
-		NSMutableDictionary *dict = ([NSMutableDictionary dictionaryWithDictionary:(__bridge NSDictionary *)(CGPointCreateDictionaryRepresentation(iconLocation))]);
+		NSMutableDictionary *dict = ([NSMutableDictionary dictionaryWithDictionary:(__bridge_transfer NSDictionary *)(CGPointCreateDictionaryRepresentation(iconLocation))]);
         [self.iconLocations addObject:(dict)];
 #else
 		CFDictionaryRef dict = CGPointCreateDictionaryRepresentation(iconLocation);

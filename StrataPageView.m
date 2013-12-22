@@ -97,6 +97,7 @@
 		CGContextSetStrokeColorWithColor(tempContext, colorBlack);
 		CFRelease(colorSpace);
 		CGContextSetFillColorWithColor(tempContext, colorBlack);										// to counteract CGContextSetFillColorSpace and CGContextSetFillPattern
+		CGColorRelease(colorBlack);
 		[columnText drawAtPoint:CGPointZero withFont:font];
 		CGContextRestoreGState(tempContext);
 	}
@@ -119,6 +120,7 @@
 		CGContextSetStrokeColorWithColor(tempContext, colorBlack);
 		CFRelease(colorSpace);
 		CGContextSetFillColorWithColor(tempContext, colorBlack);										// to counteract CGContextSetFillColorSpace and CGContextSetFillPattern
+		CGColorRelease(colorBlack);
 		for (int i=minGrainSizeIndex; i<=maxGrainSizeIndex; ++i) {
 			const NSString *grainText = gAbbreviatedGrainSizeNames[i-1];
 			[grainText drawAtPoint:CGPointZero withFont:font];											// text rotated by 90 degrees (rotated context)
