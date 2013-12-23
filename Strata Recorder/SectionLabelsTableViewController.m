@@ -41,8 +41,8 @@
 	SectionLabel *sectionLabel = [[SectionLabel alloc] init];
 	sectionLabel.numberOfStrataSpanned = 1;
 	sectionLabel.labelText = ((AddSectionLabelViewController *) sender).sectionLabelText.text;
-	if (!self.activeDocument.sectionLabels) self.activeDocument.sectionLabels = [[NSMutableArray alloc] init];
-	[self.activeDocument.sectionLabels addObject:sectionLabel];
+	NSAssert(self.sectionLabels, @"nil sectionLabels property");
+	[self.sectionLabels addObject:sectionLabel];
 	[self.tableView reloadData];
 }
 
@@ -55,7 +55,7 @@
 		
 	} else if ([controller isMemberOfClass:[SectionLabelDetailTableViewController class]]) {
 		SectionLabelDetailTableViewController *controller = (SectionLabelDetailTableViewController *) segue.destinationViewController;
-		controller.sectionLabel = self.activeDocument.sectionLabels[self.tableView.indexPathForSelectedRow.row];
+		controller.sectionLabel = self.sectionLabels[self.tableView.indexPathForSelectedRow.row];
 		controller.delegate = self;
 	}
 }
@@ -64,7 +64,6 @@
 
 - (IBAction)handleUpdateButton:(id)sender {
 	[self.tableView reloadData];
-//	[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)viewDidLoad
@@ -98,7 +97,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return self.activeDocument.sectionLabels.count;
+    return self.sectionLabels.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -107,7 +106,7 @@
 	if (cell == nil)
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"sectionLabel"];
 	cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-	cell.textLabel.text = ((SectionLabel *)self.activeDocument.sectionLabels[indexPath.row]).labelText;
+	cell.textLabel.text = ((SectionLabel *)self.sectionLabels[indexPath.row]).labelText;
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.showsReorderControl = YES;
 	return cell;
@@ -125,7 +124,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-		[self.activeDocument.sectionLabels removeObjectAtIndex:indexPath.row];
+		[self.sectionLabels removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   
 }
@@ -133,9 +132,10 @@
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-	SectionLabel *label = self.activeDocument.sectionLabels[fromIndexPath.row];
-	[self.activeDocument.sectionLabels removeObjectAtIndex:fromIndexPath.row];
-	[self.activeDocument.sectionLabels insertObject:label atIndex:toIndexPath.row];
+	SectionLabel *label = self.sectionLabels[fromIndexPath.row];
+	NSLog(@"sectionlabels = %@", [self.sectionLabels class]);
+	[self.sectionLabels removeObjectAtIndex:fromIndexPath.row];
+	[self.sectionLabels insertObject:label atIndex:toIndexPath.row];
 }
 
 /*

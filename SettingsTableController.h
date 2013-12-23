@@ -27,5 +27,6 @@
 @property int				lineThickness;
 @property float				patternScale;
 @property float				legendScale;
+@property NSMutableArray*	sectionLabels;
 
 @end

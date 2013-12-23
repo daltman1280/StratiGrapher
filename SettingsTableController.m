@@ -53,9 +53,10 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
 	id destinationViewController = segue.destinationViewController;
-	if ([destinationViewController isKindOfClass:[SectionLabelsTableViewController class]])
+	if ([destinationViewController isKindOfClass:[SectionLabelsTableViewController class]]) {
 		((SectionLabelsTableViewController *)destinationViewController).activeDocument = self.activeDocument;
-	else
+		((SectionLabelsTableViewController *)destinationViewController).sectionLabels = self.sectionLabels;
+	} else
 		NSAssert1(FALSE, @"Unexpected controller for segue: %@", destinationViewController);
 }
 
@@ -119,6 +120,7 @@
 			[[NSNotificationCenter defaultCenter] postNotificationName:SRLegendScaleChangedNotification object:self];
 		}
 	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:SRLegendScaleChangedNotification object:self];	// TODO: temporary blanket notification
 	[self.delegate performSelector:@selector(handleSettingsTableComplete:) withObject:sender];					// let the delegate deal with the changed properties
 }
 
@@ -166,6 +168,7 @@
 	self.patternScale = self.activeDocument.patternScale;
 	self.legendScale = self.activeDocument.legendScale;
 	self.title = [NSString stringWithFormat:@"%@ Settings", self.activeDocument.name];
+	self.sectionLabels = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:self.activeDocument.sectionLabels]];	// deep copy
 	// populate the table's controls from property values
 	self.strataHeightText.text = [NSString stringWithFormat:@"%d", self.strataHeight];
 	self.unitsSelector.selectedSegmentIndex = [self.units isEqualToString:@"Metric"] ? 0 : 1;

@@ -24,6 +24,19 @@
 @implementation SettingsNavigationController
 
 /*
+ We implement this method in order to intercept view controller pops, before they occur. We call the popped view controller's
+ ad hoc willPopViewController method, if it wants notification.
+ */
+
+- (UIViewController *)popViewControllerAnimated:(BOOL)animated
+{
+	UIViewController *viewController = self.viewControllers.lastObject;
+	if ([viewController respondsToSelector:@selector(willPopViewController)])
+		[viewController performSelector:@selector(willPopViewController)];
+	return [super popViewControllerAnimated:animated];
+}
+
+/*
  Any view controllers who wish to be notified need to implement our ad hoc willShowViewController method
  */
 

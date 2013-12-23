@@ -12,6 +12,7 @@
 @interface SectionLabelsTableViewController : UITableViewController
 
 @property StrataDocument*			activeDocument;
+@property NSMutableArray*			sectionLabels;
 
 - (IBAction)handleAddSectionLabel:(id)sender;
 - (IBAction)handleUpdateButton:(id)sender;
