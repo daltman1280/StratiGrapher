@@ -81,7 +81,7 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view hidden="YES" contentMode="scaleToFill" id="3Pm-Es-MNZ">
+                            <view hidden="YES" contentMode="scaleToFill" id="3Pm-Es-MNZ" userLabel="Page Background View">
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="1100"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
@@ -639,11 +639,16 @@
         <!--Stratum Granularity View Controller - Granularity-->
         <scene sceneID="Stn-7I-RCd">
             <objects>
-                <viewController id="lT5-LN-hek" customClass="StratumGranularityViewController" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="formSheet" id="lT5-LN-hek" customClass="StratumGranularityViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ixt-S2-13w">
                         <rect key="frame" x="0.0" y="64" width="768" height="916"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" id="c4g-26-Zmp">
+                                <rect key="frame" x="0.0" y="214" width="768" height="311"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <pickerView contentMode="scaleToFill" id="TGy-OK-G7k">
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="216"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -656,6 +661,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Granularity" id="2Zt-mc-N9W"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="400" height="216"/>
                     <connections>
                         <outlet property="granularityPicker" destination="TGy-OK-G7k" id="Y9c-aA-xSl"/>
                     </connections>

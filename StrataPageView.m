@@ -39,12 +39,28 @@
 	self.origin = CGPointMake(XORIGIN, YORIGIN);
 	self.arrowIcon = [[IconImage alloc] initWithImageName:@"paleocurrent greyscale.png" offset:CGPointMake(.5, .5) width:25 viewBounds:self.bounds viewOrigin:self.origin];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePageSettingsChanged:) name:SRUnitsChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePageSettingsChanged:) name:SRPaperWidthChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePageSettingsChanged:) name:SRPaperHeightChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePageSettingsChanged:) name:SRMarginWidthChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePageSettingsChanged:) name:SRMarginHeightChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePageSettingsChanged:) name:SRPageScaleChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePageSettingsChanged:) name:SRLineThicknessChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePageSettingsChanged:) name:SRPatternScaleChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePageSettingsChanged:) name:SRLegendScaleChangedNotification object:nil];
 	return self;
 }
 
 - (void)handleActiveDocumentSelectionChanged:(NSNotification *)notification
 {
 	self.activeDocument = [notification.userInfo objectForKey:@"activeDocument"];
+}
+
+- (void)handlePageSettingsChanged:(id)sender
+{
+	self.bounds = CGRectMake(0, 0, self.activeDocument.pageDimension.width*PPI, self.activeDocument.pageDimension.height*PPI);
+	self.arrowIcon.bounds = self.bounds;						// bounds for icons must also be updated
+	[self setNeedsDisplay];
 }
 
 // convert from unit to view coordinates

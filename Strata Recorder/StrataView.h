@@ -70,6 +70,7 @@ void patternDrawingCallback(void *info, CGContextRef context);
 @property CGPoint infoSelectionPoint;							// for stratum info popover
 @property (nonatomic) StrataDocument* activeDocument;			// current StrataDocument being edited/displayed
 @property BOOL touchesEnabled;
+@property BOOL pencilActive;
 @property OverlayLayerContainer *overlayContainer;				// to display pencil mode highlighting in overlay sublayer
 @property TraceLayerContainer *traceContainer;
 @property StrataViewController* controller;

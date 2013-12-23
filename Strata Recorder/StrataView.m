@@ -153,7 +153,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 @property CGPoint dragConstraint;						// lower left limit of dragging allowed, don't allow negative height/width
 @property BOOL dragActive;								// tracks dragging state
 @property int activeDragIndex;							// index in strata of dragged item
-@property BOOL pencilActive;
 @property BOOL pencilTouchBeganInEditRegion;
 @property Stratum* selectedScissorsStratum;
 @property Stratum* selectedAnchorStratum;
@@ -551,7 +550,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	self.overlayContainer.origin = self.origin;
 	self.overlayContainer.activeDocument = self.activeDocument;
 	self.overlayContainer.strataView = self;
-	if (stratum.outline == nil || stratum.outline.count == 0)
+	if (!self.pencilActive && (stratum.outline == nil || stratum.outline.count == 0))
 		[stratum initializeOutline];
 	[self.overlayContainer.overlay setNeedsDisplay];
 }
