@@ -38,7 +38,14 @@
 	self.contentSizeForViewInPopover = CGSizeMake(460, 533);		// TODO: get the appropriate size
 }
 
-- (IBAction)handleSaveButton:(id)sender {
+/*
+ Ad hoc method to be called (by SettingsNavigationController) before we are popped out.
+ 
+ We need to notify our parent (SettingsTableViewController).
+ */
+
+- (void)willPopViewController
+{
 	self.sectionLabel.labelText = self.sectionLabelText.text;
 	self.sectionLabel.numberOfStrataSpanned = self.stratumSpannedStepper.value;
 	[self.delegate handleUpdateButton:self];
