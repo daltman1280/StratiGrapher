@@ -28,7 +28,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-	[self.granularityPicker selectRow:self.stratum.grainSizeIndex-1 inComponent:0 animated:NO];
+	[self.granularityPicker selectRow:self.grainSizeIndex-1 inComponent:0 animated:NO];
 	self.contentSizeForViewInPopover = CGSizeMake(400, 216);		// TODO: get the appropriate size
 }
 
@@ -40,10 +40,8 @@
 
 - (void)willPopViewController
 {
-	self.stratum.grainSizeIndex = [self.granularityPicker selectedRowInComponent:0]+1;
-	float width = [StrataDocument stratumWidthFromGrainSize:self.stratum.grainSizeIndex-1];
-	[self.activeDocument adjustStratumSize:CGSizeMake(width, self.stratum.frame.size.height) atIndex:[self.activeDocument.strata indexOfObject:self.stratum]];
-	[self.parent handleGranularityChanged];
+	self.grainSizeIndex = [self.granularityPicker selectedRowInComponent:0]+1;
+	[self.parent handleGranularityChanged:self.grainSizeIndex];
 }
 
 #pragma mark UIPickerViewDataSource

@@ -518,6 +518,7 @@ typedef enum {
 	self.stratumInfoTableViewController.stratum = ((StrataView *)sender).selectedStratum;
 	self.stratumInfoTableViewController.materialNumber = self.stratumInfoTableViewController.stratum.materialNumber;
 	self.stratumInfoTableViewController.activeDocument = self.activeDocument;
+	self.stratumInfoTableViewController.grainSizeIndex = self.stratumInfoTableViewController.stratum.grainSizeIndex;
 	self.stratumInfoTableViewController.stratumInfoNavigationController = self.stratumInfoNavigationController;
 	self.stratumInfoTableViewController.delegate = self;
 	self.popover = [[UIPopoverController alloc] initWithContentViewController:self.stratumInfoNavigationController];
@@ -547,6 +548,7 @@ typedef enum {
 		self.activeDocument.strataHeight = self.settingsTableController.strataHeight;
 		self.activeDocument.patternScale = self.settingsTableController.patternScale;
 		self.activeDocument.legendScale = self.settingsTableController.legendScale;
+		self.activeDocument.sectionLabels = self.settingsTableController.sectionLabels;
 		[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataHeightChangedNotification object:self];
 	}
 }

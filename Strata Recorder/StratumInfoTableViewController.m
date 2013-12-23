@@ -38,6 +38,11 @@
 	self.stratum.materialNumber = self.materialNumber;
 	if (self.stratumHeightText.text.floatValue != self.stratum.frame.size.height)
 		[self.activeDocument adjustStratumSize:CGSizeMake(self.stratum.frame.size.width, self.stratumHeightText.text.floatValue) atIndex:[self.activeDocument.strata indexOfObject:self.stratum]];
+	if (self.grainSizeIndex != self.stratum.grainSizeIndex) {
+		self.stratum.grainSizeIndex = self.grainSizeIndex;
+		float width = [StrataDocument stratumWidthFromGrainSize:self.stratum.grainSizeIndex-1];
+		[self.activeDocument adjustStratumSize:CGSizeMake(width, self.stratum.frame.size.height) atIndex:[self.activeDocument.strata indexOfObject:self.stratum]];
+	}
 	[self.delegate performSelector:@selector(handleStratumInfoComplete:) withObject:self];
 }
 
@@ -58,8 +63,8 @@
 		controller.stratumInfoTableViewController = self;
 	} else if ([destinationViewController isKindOfClass:[StratumGranularityViewController class]]) {
 		StratumGranularityViewController *controller = (StratumGranularityViewController *)destinationViewController;
-		controller.stratum = self.stratum;
-		controller.activeDocument = self.activeDocument;
+		controller.grainSizeIndex = self.stratum.grainSizeIndex;
+		controller.parent = self;
 	}
 }
 
@@ -77,9 +82,10 @@
 	self.materialNumber = materialNumber;
 }
 
-- (void)handleGranularityChanged
+- (void)handleGranularityChanged:(grainSizeEnum)grainSizeIndex
 {
-	self.grainSizeText.text = (NSString *)gGrainSizeNames[self.stratum.grainSizeIndex-1];
+	self.grainSizeIndex = grainSizeIndex;
+	self.grainSizeText.text = (NSString *)gGrainSizeNames[self.grainSizeIndex-1];
 }
 
 - (void)viewDidLoad

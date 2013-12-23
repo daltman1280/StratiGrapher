@@ -18,8 +18,9 @@
 @property UIViewController*					delegate;
 @property StratumInfoNavigationController*	stratumInfoNavigationController;
 @property int								materialNumber;
+@property grainSizeEnum						grainSizeIndex;
 
 - (void)handleMaterialSelectionChanged:(int)materialNumber;
-- (void)handleGranularityChanged;
+- (void)handleGranularityChanged:(grainSizeEnum)grainSizeIndex;
 
 @end
