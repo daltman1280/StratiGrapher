@@ -64,12 +64,7 @@
 
 - (IBAction)handleUpdateButton:(id)sender {
 	[self.tableView reloadData];
-	[self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	self.title = [NSString stringWithFormat:@"%@ Labels", self.activeDocument.name];
-	self.contentSizeForViewInPopover = CGSizeMake(460, 533);		// TODO: get the appropriate size
+//	[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)viewDidLoad
@@ -81,6 +76,8 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	self.title = [NSString stringWithFormat:@"%@ Labels", self.activeDocument.name];
+	self.contentSizeForViewInPopover = CGSizeMake(460, 533);		// TODO: get the appropriate size
 }
 
 - (void)didReceiveMemoryWarning

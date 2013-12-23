@@ -23,14 +23,6 @@
     return self;
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-	self.sectionLabelText.text = self.sectionLabel.labelText;
-	self.numberStrataSpanned.text = [NSString stringWithFormat:@"%d", self.sectionLabel.numberOfStrataSpanned];
-	self.stratumSpannedStepper.value = self.sectionLabel.numberOfStrataSpanned;
-	self.contentSizeForViewInPopover = CGSizeMake(460, 533);		// TODO: get the appropriate size
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -40,6 +32,10 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	self.sectionLabelText.text = self.sectionLabel.labelText;
+	self.numberStrataSpanned.text = [NSString stringWithFormat:@"%d", self.sectionLabel.numberOfStrataSpanned];
+	self.stratumSpannedStepper.value = self.sectionLabel.numberOfStrataSpanned;
+	self.contentSizeForViewInPopover = CGSizeMake(460, 533);		// TODO: get the appropriate size
 }
 
 - (IBAction)handleSaveButton:(id)sender {

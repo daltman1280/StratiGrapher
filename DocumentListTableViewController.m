@@ -87,8 +87,17 @@
 						 self.actionDocument,
 						 nil];
 	[self populateDocumentsList];
-    self.clearsSelectionOnViewWillAppear = YES;
+    self.clearsSelectionOnViewWillAppear = NO;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleActiveDocumentSelectionChanged:) name:SRActiveDocumentSelectionChangedNotification object:nil];
+	[self.tableView reloadData];
+	NSUInteger indexes[2];
+	indexes[0] = 0;
+	indexes[1] = [self.strataFiles indexOfObject:self.activeDocument.name];
+	NSIndexPath *indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+	[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
+	self.contentSizeForViewInPopover = CGSizeMake(300, 342);		// TODO: get the appropriate size
+	[self setDeleteButtonEnabled];
+	[[NSNotificationCenter defaultCenter] postNotificationName:SRPopupVisibleNotification object:self];
 }
 
 - (void)populateDocumentsList
@@ -104,19 +113,6 @@
 - (void)handleActiveDocumentSelectionChanged:(NSNotification *)notification
 {
 	self.activeDocument = [notification.userInfo objectForKey:@"activeDocument"];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-	[self.tableView reloadData];
-	NSUInteger indexes[2];
-	indexes[0] = 0;
-	indexes[1] = [self.strataFiles indexOfObject:self.activeDocument.name];
-	NSIndexPath *indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
-	[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
-	self.contentSizeForViewInPopover = CGSizeMake(300, 342);		// TODO: get the appropriate size
-	[self setDeleteButtonEnabled];
-	[[NSNotificationCenter defaultCenter] postNotificationName:SRPopupVisibleNotification object:self];
 }
 
 - (void)setDeleteButtonEnabled
