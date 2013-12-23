@@ -378,7 +378,6 @@ typedef enum {
 	self.legendView.legendLineMaterial = self.legendLineMaterial;
 	[self.legendView populateLegend];
 	// initialize page view properties
-	self.strataPageView.strataPageView = self.strataPageView;
 	self.strataPageView.columnNumber = self.columnNumber;
 	self.strataPageView.grainSizeLegend = self.grainSizeLegend;
 	self.strataPageView.grainSizeLines = self.grainSizeLines;
@@ -406,9 +405,12 @@ typedef enum {
 	self.bounds = self.strataView.bounds;
 	self.origin = CGPointMake(XORIGIN, YORIGIN);
 	
-	self.strataPageView.activeDocument = self.activeDocument;
+	self.strataPageView.activeDocument = self.activeDocument;							// this will initialize the view's bounds
 	self.strataPageScrollView.contentSize = self.strataPageView.bounds.size;
-	self.strataPageScrollView.contentOffset = CGPointMake(0, self.strataPageView.bounds.size.height-self.strataPageScrollView.bounds.size.height);
+	self.strataPageScrollView.contentOffset = CGPointZero;
+	float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width)/2.0, 0);
+	float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height)/2.0, 0);
+	self.strataPageScrollView.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
 	self.strataPageScrollView.hidden = YES;
 	
 	((UISegmentedControl *)self.modeControl).selectedSegmentIndex = 0;					// switch to draft mode
@@ -585,9 +587,12 @@ typedef enum {
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale
 {
-//	view.contentScaleFactor = scale * [UIScreen mainScreen].scale;				// seems to conflict with CATiledLayer usage
-//	self.strataView.scale = self.scrollView.zoomScale;
-//	[self.strataView setNeedsDisplay];
+	// if content size is larger than scrollview, allow to scroll to edge, otherwise maintain a margin
+	if (scrollView == self.strataPageScrollView) {
+		float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width*scale)/2.0, 0);
+		float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height*scale)/2.0, 0);
+		self.strataPageScrollView.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
+	}
 }
 
 //	Maintain the current screen position of selected paleocurrent

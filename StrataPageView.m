@@ -28,6 +28,7 @@
 {
 	_activeDocument = activeDocument;
 	self.bounds = CGRectMake(0, 0, self.activeDocument.pageDimension.width*PPI, self.activeDocument.pageDimension.height*PPI);
+	self.frame = self.bounds;
 	self.arrowIcon.bounds = self.bounds;						// bounds for icons must also be updated
 }
 
