@@ -551,11 +551,12 @@ typedef enum {
 		self.activeDocument.patternScale = self.settingsTableController.patternScale;
 		self.activeDocument.legendScale = self.settingsTableController.legendScale;
 		self.activeDocument.sectionLabels = self.settingsTableController.sectionLabels;
+		[self.strataPageScrollView setZoomScale:1 animated:NO];
 		self.strataPageView.activeDocument = self.activeDocument;											// update the bounds
-		[self.strataPageScrollView setZoomScale:1 animated:YES];
-		float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width)/2.0, 0);
-		float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height)/2.0, 0);
+		float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width*self.strataPageScrollView.zoomScale)/2.0, 0);
+		float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height*self.strataPageScrollView.zoomScale)/2.0, 0);
 		self.strataPageScrollView.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
+		[self.strataPageScrollView setNeedsDisplay];
 		[self.strataPageView setNeedsDisplay];
 		[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataHeightChangedNotification object:self];
 	}
