@@ -40,7 +40,7 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *dimensionLabel;
 @property (strong, nonatomic) IBOutlet UIScrollView *strataGraphScrollView;
 @property UIPopoverController *popover;
-@property (weak, nonatomic) IBOutlet UIScrollView *strataPageScrollView;
+@property (strong, nonatomic) IBOutlet UIScrollView *strataPageScrollView;
 @property (nonatomic) IBOutlet StrataPageView *strataPageView;
 @property (nonatomic) StrataDocument *activeDocument;
 @property StratumInfoNavigationController* stratumInfoNavigationController;
@@ -551,6 +551,12 @@ typedef enum {
 		self.activeDocument.patternScale = self.settingsTableController.patternScale;
 		self.activeDocument.legendScale = self.settingsTableController.legendScale;
 		self.activeDocument.sectionLabels = self.settingsTableController.sectionLabels;
+		self.strataPageView.activeDocument = self.activeDocument;											// update the bounds
+		[self.strataPageScrollView setZoomScale:1 animated:YES];
+		float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width)/2.0, 0);
+		float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height)/2.0, 0);
+		self.strataPageScrollView.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
+		[self.strataPageView setNeedsDisplay];
 		[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataHeightChangedNotification object:self];
 	}
 }
