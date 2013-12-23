@@ -75,10 +75,9 @@
 		253650A41800AF2D00114127 /* post-it-pencil.ai */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "post-it-pencil.ai"; path = "images/post-it-pencil.ai"; sourceTree = "<group>"; };
 		253650A61800C8F100114127 /* grain size.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "grain size.jpg"; sourceTree = "<group>"; };
 		253650A71800C91300114127 /* soil classification.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "soil classification.jpg"; sourceTree = "<group>"; };
-		253650A818037E6000114127 /* GrainSizeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrainSizeTableViewController.h; sourceTree = "<group>"; };
-		253650A918037E6000114127 /* GrainSizeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrainSizeTableViewController.m; sourceTree = "<group>"; };
 		253650AC1803B55B00114127 /* SettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsNavigationController.h; path = ../SettingsNavigationController.h; sourceTree = "<group>"; };
 		253650AD1803B55B00114127 /* SettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsNavigationController.m; path = ../SettingsNavigationController.m; sourceTree = "<group>"; };
+		2557E68C1867C36000D36B92 /* Application Notes.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Application Notes.rtf"; sourceTree = "<group>"; };
 		25890D831655B2670007BC72 /* StratumMaterialsTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StratumMaterialsTableController.h; path = ../StratumMaterialsTableController.h; sourceTree = "<group>"; };
 		25890D841655B2670007BC72 /* StratumMaterialsTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StratumMaterialsTableController.m; path = ../StratumMaterialsTableController.m; sourceTree = "<group>"; };
 		25890D861655D8990007BC72 /* MaterialPatternView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MaterialPatternView.h; path = ../MaterialPatternView.h; sourceTree = "<group>"; };
@@ -147,8 +146,6 @@
 		25911D15174F218100839ED5 /* StratumInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StratumInfoTableViewController.h; sourceTree = "<group>"; };
 		25911D16174F218100839ED5 /* StratumInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StratumInfoTableViewController.m; sourceTree = "<group>"; };
 		259129E71648491200C08897 /* move icon selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move icon selected.png"; sourceTree = "<group>"; };
-		2591C0A8165890C100A622A8 /* PaperListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaperListTableViewController.h; sourceTree = "<group>"; };
-		2591C0A9165890C100A622A8 /* PaperListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaperListTableViewController.m; sourceTree = "<group>"; };
 		25921D2B168C04D30038E9D9 /* post-it-pencil.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "post-it-pencil.png"; path = "images/post-it-pencil.png"; sourceTree = "<group>"; };
 		2592B9EF166487E6006A4497 /* StratumMaterialsControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = StratumMaterialsControllerDelegate.h; path = ../StratumMaterialsControllerDelegate.h; sourceTree = "<group>"; };
 		259318F6176E602600A6341A /* LegendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LegendView.h; path = ../LegendView.h; sourceTree = "<group>"; };
@@ -189,15 +186,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		253650AB18037E9A00114127 /* Grain Sizes */ = {
-			isa = PBXGroup;
-			children = (
-				253650A818037E6000114127 /* GrainSizeTableViewController.h */,
-				253650A918037E6000114127 /* GrainSizeTableViewController.m */,
-			);
-			name = "Grain Sizes";
-			sourceTree = "<group>";
-		};
 		25890D8C16562B190007BC72 /* Materials */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,6 +206,7 @@
 		2589CEF7163F897C00E43147 = {
 			isa = PBXGroup;
 			children = (
+				2557E68C1867C36000D36B92 /* Application Notes.rtf */,
 				258E5F8217152E6C006706B3 /* Default-Landscape~ipad.png */,
 				258E5F7D17152CEB006706B3 /* Default~ipad.png */,
 				25C20BB017111F40003ED123 /* ApplicationIcon.png */,
@@ -344,7 +333,6 @@
 				25E91B251663FBBF00AFFC0E /* SettingsControllerDelegate.h */,
 				253650AC1803B55B00114127 /* SettingsNavigationController.h */,
 				253650AD1803B55B00114127 /* SettingsNavigationController.m */,
-				253650AB18037E9A00114127 /* Grain Sizes */,
 				2591FC8F176657F30008E40E /* Section Labels */,
 			);
 			name = Settings;
@@ -423,8 +411,6 @@
 			children = (
 				259006C7175803FD004DFDC8 /* Settings */,
 				259006C21757C865004DFDC8 /* Stratum Info */,
-				2591C0A8165890C100A622A8 /* PaperListTableViewController.h */,
-				2591C0A9165890C100A622A8 /* PaperListTableViewController.m */,
 				2591FC901766581B0008E40E /* Document List */,
 			);
 			name = "Popover Menus";
