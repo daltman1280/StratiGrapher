@@ -489,6 +489,7 @@ typedef enum {
 		[self.strataView resignFirstResponder];
 		self.strataPageScrollView.hidden = NO;
 		self.background.hidden = NO;
+		self.pageControl.hidden = NO;
 		[UIView beginAnimations:@"GraphToPageTransition" context:nil];
 		[UIView setAnimationDuration:0.5];
 		self.strataGraphScrollView.alpha = 0.0;
@@ -498,6 +499,7 @@ typedef enum {
 	} else {																									// switching to graph mode
 		self.strataPageScrollView.hidden = YES;
 		self.background.hidden = YES;
+		self.pageControl.hidden = YES;
 		[UIView beginAnimations:@"PageToGraphTransition" context:nil];
 		[UIView setAnimationDuration:0.5];
 		self.strataGraphScrollView.alpha = 1.0;
@@ -551,7 +553,8 @@ typedef enum {
 		self.activeDocument.patternScale = self.settingsTableController.patternScale;
 		self.activeDocument.legendScale = self.settingsTableController.legendScale;
 		self.activeDocument.sectionLabels = self.settingsTableController.sectionLabels;
-		[self.strataPageScrollView setZoomScale:1 animated:NO];
+		// we redraw the page view and scroller
+		[self.strataPageScrollView setZoomScale:1 animated:NO];												// to avoid side effects
 		self.strataPageView.activeDocument = self.activeDocument;											// update the bounds
 		float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width*self.strataPageScrollView.zoomScale)/2.0, 0);
 		float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height*self.strataPageScrollView.zoomScale)/2.0, 0);
@@ -666,6 +669,7 @@ typedef enum {
 	[self setDocumentsButton:nil];
 	[self setModeButton:nil];
 	[self setModeControl:nil];
+	[self setPageControl:nil];
 	[super viewDidUnload];
 }
 @end
