@@ -137,6 +137,64 @@
 	}
 }
 
+- (void)setupPages
+{
+	// distance, in user units, from bottom page margin to bottom of strata column (to allow for column adornments)
+	self.columnVerticalMargin = -UDY(self.columnNumber.frame.origin.y+self.columnNumber.frame.size.height-self.strataColumn.frame.origin.y-self.strataColumn.frame.size.height);
+	self.columnNumberHorizontalUnderhang = self.columnNumber.frame.origin.x-self.strataColumn.frame.origin.x;			// in view units, column number is horizontally inset
+	self.columnNumberVerticalLocation = VY(self.activeDocument.pageMargins.height)-self.columnNumber.frame.size.height;	// at bottom page margin
+	// horizontal and vertical stratum adjustments, in inches, which take into account column membership of a stratum
+	CGPoint offset = CGPointMake(0, self.activeDocument.pageMargins.height+self.columnVerticalMargin);					// don't need x offset at this point, just calculating column widths
+	float scale = self.activeDocument.scale;
+	float pageTop = self.activeDocument.pageDimension.height-self.activeDocument.pageMargins.height;
+	float sectionLabelsMargin = self.activeDocument.sectionLabels.count > 0 ? .1 : 0;				// horizontal distance between widest stratum and label, in inches
+	
+	// calculate maximum width of each strata column
+	self.maxWidths = [[NSMutableArray alloc] init];											// for each column, its width, in inches
+	float maxWidthTemp = 0;
+	for (Stratum *stratum in self.activeDocument.strata) {
+		CGRect stratumRect = CGRectMake(stratum.frame.origin.x/scale, stratum.frame.origin.y/scale, stratum.frame.size.width/scale, stratum.frame.size.height/scale);
+		stratumRect = CGRectStandardize(stratumRect);
+		stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);
+		float stratumTop = stratumRect.origin.y+stratumRect.size.height;
+		if (stratumTop > pageTop || stratum.hasPageCutter) {								// reached top of column, need to start a new column
+			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);					// undo the offset from current column
+			offset.y = -stratumRect.origin.y+self.activeDocument.pageMargins.height+self.columnVerticalMargin;		// vertical adjustment to make stratum sit on base page margin
+			[self.maxWidths addObject:[NSNumber numberWithFloat:maxWidthTemp/scale+sectionLabelsMargin]];	// in inches
+			maxWidthTemp = stratum.frame.size.width;										// reinitialize it with width of current stratum
+		} else
+			if (stratum.frame.size.width > maxWidthTemp) maxWidthTemp = stratum.frame.size.width;
+	}
+	[self.maxWidths addObject:[NSNumber numberWithFloat:maxWidthTemp/scale+sectionLabelsMargin]];// last column
+	
+	offset = CGPointMake(0, self.activeDocument.pageMargins.height+self.columnVerticalMargin);					// don't need x offset at this point, just calculating column widths
+	// calculate minimum and maximum grain size indices of each strata column
+	self.minGrainSizeIndices = [[NSMutableArray alloc] init];								// for each column, the minimum grain size index
+	self.maxGrainSizeIndices = [[NSMutableArray alloc] init];								// for each column, the maximum grain size index
+	int minGrainSizeIndexTemp = 100;
+	int maxGrainSizeIndexTemp = -1;
+	for (Stratum *stratum in self.activeDocument.strata) {
+		CGRect stratumRect = CGRectMake(stratum.frame.origin.x/scale, stratum.frame.origin.y/scale, stratum.frame.size.width/scale, stratum.frame.size.height/scale);
+		stratumRect = CGRectStandardize(stratumRect);
+		if (stratumRect.size.width == 0) break;												// last stratum is empty, ignore it
+		stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);
+		float stratumTop = stratumRect.origin.y+stratumRect.size.height;
+		if (stratumTop > pageTop || stratum.hasPageCutter) {								// reached top of column, need to start a new column
+			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);					// undo the offset from current column
+			offset.y = -stratumRect.origin.y+self.activeDocument.pageMargins.height+self.columnVerticalMargin;		// vertical adjustment to make stratum sit on base page margin
+			[self.minGrainSizeIndices addObject:[NSNumber numberWithInt:minGrainSizeIndexTemp]];
+			[self.maxGrainSizeIndices addObject:[NSNumber numberWithInt:maxGrainSizeIndexTemp]];
+			minGrainSizeIndexTemp = maxGrainSizeIndexTemp = (int) stratum.grainSizeIndex;
+		} else {
+			int grainSizeIndex = stratum.grainSizeIndex;
+			if (grainSizeIndex > maxGrainSizeIndexTemp) maxGrainSizeIndexTemp = grainSizeIndex;
+			if (grainSizeIndex < minGrainSizeIndexTemp) minGrainSizeIndexTemp = grainSizeIndex;
+		}
+	}
+	[self.minGrainSizeIndices addObject:[NSNumber numberWithInt:minGrainSizeIndexTemp]];	// last column
+	[self.maxGrainSizeIndices addObject:[NSNumber numberWithInt:maxGrainSizeIndexTemp]];
+}
+
 - (void)drawRect:(CGRect)rect
 {
 	gTransparent = NO;
@@ -148,8 +206,9 @@
 		UIGraphicsBeginPDFPage();
 	}
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
-	if (self.mode == PDFMode)
+	if (self.mode == PDFMode)																		// PDF context has different resolution (72 DPI) so it has to be scaled down
 		CGContextScaleCTM(currentContext, 72./PPI, 72./PPI);
+	// setup colors
 	CGFloat colorComponentsBlack[4] = {0, 0, 0, 1.};
 	CGFloat colorComponentsWhite[4] = {1, 1, 1, 1.};
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -157,22 +216,10 @@
 	CGColorRef colorWhite = CGColorCreate(colorSpace, colorComponentsWhite);
 	CGContextSetStrokeColorWithColor(currentContext, colorBlack);
 	CFRelease(colorSpace);
-	// draw bleeds
-	{
-		CGContextSetLineWidth(currentContext, 1);
-		float marginWidth = self.activeDocument.pageMargins.width;
-		float marginHeight = self.activeDocument.pageMargins.height;
-		float pageWidth = self.activeDocument.pageDimension.width;
-		float pageHeight = self.activeDocument.pageDimension.height;
-		[self drawCrossmark:marginWidth y:marginHeight];
-		[self drawCrossmark:marginWidth y:pageHeight-marginHeight];
-		[self drawCrossmark:pageWidth-marginWidth y:marginHeight];
-		[self drawCrossmark:pageWidth-marginWidth y:pageHeight-marginHeight];
-	}
 	// draw page boundaries
 	CGContextSetLineWidth(currentContext, 3);
 	CGContextStrokeRect(currentContext, self.bounds);
-	// draw scale indicator
+	// draw scale indicator at lower left of page
 	CGContextBeginPath(currentContext);
 	CGContextMoveToPoint(currentContext, VX(self.activeDocument.pageMargins.width), VY(self.activeDocument.pageMargins.height));
 	CGContextAddLineToPoint(currentContext, VX(self.activeDocument.pageMargins.width), VY(self.activeDocument.pageMargins.height+1/self.activeDocument.scale));
@@ -203,53 +250,6 @@
 	CGPoint offset = CGPointMake(0, self.activeDocument.pageMargins.height+self.columnVerticalMargin);					// don't need x offset at this point, just calculating column widths
 	float scale = self.activeDocument.scale;
 	float pageTop = self.activeDocument.pageDimension.height-self.activeDocument.pageMargins.height;
-	float sectionLabelsMargin = self.activeDocument.sectionLabels.count > 0 ? .1 : 0;				// horizontal distance between widest stratum and label, in inches
-	
-	// calculate maximum width of each strata column
-	NSMutableArray *maxWidths = [[NSMutableArray alloc] init];
-	float maxWidthTemp = 0;
-	for (Stratum *stratum in self.activeDocument.strata) {
-		CGRect stratumRect = CGRectMake(stratum.frame.origin.x/scale, stratum.frame.origin.y/scale, stratum.frame.size.width/scale, stratum.frame.size.height/scale);
-		stratumRect = CGRectStandardize(stratumRect);
-		stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);
-		float stratumTop = stratumRect.origin.y+stratumRect.size.height;
-		if (stratumTop > pageTop || stratum.hasPageCutter) {								// reached top of column, need to start a new column
-			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);					// undo the offset from current column
-			offset.y = -stratumRect.origin.y+self.activeDocument.pageMargins.height+self.columnVerticalMargin;		// vertical adjustment to make stratum sit on base page margin
-			[maxWidths addObject:[NSNumber numberWithFloat:maxWidthTemp/scale+sectionLabelsMargin]];	// in inches
-			maxWidthTemp = stratum.frame.size.width;										// reinitialize it with width of current stratum
-		} else
-			if (stratum.frame.size.width > maxWidthTemp) maxWidthTemp = stratum.frame.size.width;
-	}
-	[maxWidths addObject:[NSNumber numberWithFloat:maxWidthTemp/scale+sectionLabelsMargin]];// last column
-
-	offset = CGPointMake(0, self.activeDocument.pageMargins.height+self.columnVerticalMargin);					// don't need x offset at this point, just calculating column widths
-	// calculate minimum and maximum grain size indices of each strata column
-	NSMutableArray *minGrainSizeIndices = [[NSMutableArray alloc] init];
-	NSMutableArray *maxGrainSizeIndices = [[NSMutableArray alloc] init];
-	int minGrainSizeIndexTemp = 100;
-	int maxGrainSizeIndexTemp = -1;
-	for (Stratum *stratum in self.activeDocument.strata) {
-		CGRect stratumRect = CGRectMake(stratum.frame.origin.x/scale, stratum.frame.origin.y/scale, stratum.frame.size.width/scale, stratum.frame.size.height/scale);
-		stratumRect = CGRectStandardize(stratumRect);
-		if (stratumRect.size.width == 0) break;												// last stratum is empty, ignore it
-		stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);
-		float stratumTop = stratumRect.origin.y+stratumRect.size.height;
-		if (stratumTop > pageTop || stratum.hasPageCutter) {								// reached top of column, need to start a new column
-			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);					// undo the offset from current column
-			offset.y = -stratumRect.origin.y+self.activeDocument.pageMargins.height+self.columnVerticalMargin;		// vertical adjustment to make stratum sit on base page margin
-			[minGrainSizeIndices addObject:[NSNumber numberWithInt:minGrainSizeIndexTemp]];
-			[maxGrainSizeIndices addObject:[NSNumber numberWithInt:maxGrainSizeIndexTemp]];
-			minGrainSizeIndexTemp = maxGrainSizeIndexTemp = (int) stratum.grainSizeIndex;
-		} else {
-			int grainSizeIndex = stratum.grainSizeIndex;
-			if (grainSizeIndex > maxGrainSizeIndexTemp) maxGrainSizeIndexTemp = grainSizeIndex;
-			if (grainSizeIndex < minGrainSizeIndexTemp) minGrainSizeIndexTemp = grainSizeIndex;
-		}
-	}
-	[minGrainSizeIndices addObject:[NSNumber numberWithInt:minGrainSizeIndexTemp]];			// last column
-	[maxGrainSizeIndices addObject:[NSNumber numberWithInt:maxGrainSizeIndexTemp]];
-	
 	gScale = 1;
 	int sectionIndex = 0;																	// index of current section
 	int stratumSectionLower = -1;															// index of first stratum for current section label
@@ -268,7 +268,7 @@
 		Stratum *nextStratum = indexOfStratum < self.activeDocument.strata.count-1 ? self.activeDocument.strata[indexOfStratum+1] : nil;
 		CGRect stratumRect = CGRectMake(stratum.frame.origin.x/scale, stratum.frame.origin.y/scale, stratum.frame.size.width/scale, stratum.frame.size.height/scale);
 		stratumRect = CGRectStandardize(stratumRect);
-		stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);
+		stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);										// stratumRect is now offset (for column) and scaled, in user units
 		float stratumTop = stratumRect.origin.y+stratumRect.size.height;
 		if (indexOfStratum == 0)																			// draw adornments for first column
 			[self drawColumnAdornments:1 columnOrigin:stratumRect.origin minGrainSizeIndex:[minGrainSizeIndices[0] intValue] maxGrainSizeIndex:[maxGrainSizeIndices[0] intValue]];

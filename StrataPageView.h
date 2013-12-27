@@ -23,7 +23,10 @@ typedef enum {
 @property drawMode								mode;
 
 // for graphics.h
+
 @property CGPoint								origin;
+
+//	view content to help drawing column adornments
 
 @property (weak, nonatomic) UILabel*			columnNumber;
 @property (weak, nonatomic) UILabel*			grainSizeLegend;
