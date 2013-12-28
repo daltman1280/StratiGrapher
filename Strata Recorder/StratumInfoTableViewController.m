@@ -80,23 +80,17 @@
 - (void)handleMaterialSelectionChanged:(int)materialNumber
 {
 	self.materialNumber = materialNumber;
+	[self initializeTable];
 }
 
 - (void)handleGranularityChanged:(grainSizeEnum)grainSizeIndex
 {
 	self.grainSizeIndex = grainSizeIndex;
-	self.grainSizeText.text = (NSString *)gGrainSizeNames[self.grainSizeIndex-1];
+	[self initializeTable];
 }
 
-- (void)viewDidLoad
+- (void)initializeTable
 {
-    [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	if (self.materialNumber == 0) {
 		self.materialTitleText.text = @"";
 		self.subtitle.text = @"Unassigned";
@@ -116,7 +110,19 @@
 	}
 	self.stratumHeightText.text = [NSString stringWithFormat:@"%.2f", self.stratum.frame.size.height];
 	self.grainSizeText.text = (NSString *)gGrainSizeNames[self.stratum.grainSizeIndex-1];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+ 
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	// following gives false positive if outline has been previously erased
+	[self initializeTable];
 	self.eraseButton.enabled = self.stratum.outline != nil && self.stratum.outline.count > 0;
 	self.contentSizeForViewInPopover = CGSizeMake(400, 342);		// TODO: get the appropriate size
 }
