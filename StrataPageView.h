@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "StrataModel.h"
 #import "IconImage.h"
+#import "LegendView.h"
 
 typedef enum {
 	graphMode,
@@ -16,6 +17,8 @@ typedef enum {
 } drawMode;
 
 @interface StrataPageView : UIView
+
+// initialized externally
 
 @property IconImage*							arrowIcon;
 @property (nonatomic) StrataDocument*			activeDocument;
@@ -32,5 +35,15 @@ typedef enum {
 @property (weak, nonatomic) UILabel*			grainSizeLegend;
 @property (weak, nonatomic) UIView*				strataColumn;
 @property (weak, nonatomic) UILabel*			grainSizeLines;
+
+//	for legend
+
+@property (weak, nonatomic) LegendView*			legendView;
+
+@property int									pageIndex;					// index of page to be drawn
+@property int									maxPageIndex;				// number of pages-1 (including legend): initialized by setupPages
+
+- (void)setupPages;
+- (void)exportPDF;
 
 @end

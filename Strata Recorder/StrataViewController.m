@@ -377,6 +377,7 @@ typedef enum {
 	self.legendView.legendLineLabel = self.legendLineLabel;
 	self.legendView.legendLineMaterial = self.legendLineMaterial;
 	[self.legendView populateLegend];
+	self.strataPageView.legendView = self.legendView;
 	// initialize page view properties
 	self.strataPageView.columnNumber = self.columnNumber;
 	self.strataPageView.grainSizeLegend = self.grainSizeLegend;
@@ -569,8 +570,7 @@ typedef enum {
 
 - (void)handleExportPDFButton:(id)sender
 {
-	[self.strataPageView setNeedsDisplayInRect:self.strataPageView.bounds];
-	self.strataPageView.mode = PDFMode;
+	[self.strataPageView exportPDF];
 }
 
 - (void)setActiveStrataDocument:(NSString *)name
