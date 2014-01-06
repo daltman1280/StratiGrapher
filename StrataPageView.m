@@ -229,10 +229,8 @@
 		[self drawRect:CGRectZero];
 	}
 	UIGraphicsBeginPDFPage();
-	NSLog(@"height = %f", _activeDocument.pageMargins.height);
 	_pageIndex = _maxPageIndex;																					// legend on last page
 	_legendView.hidden = NO;
-//	[self.legendView.layer renderInContext:UIGraphicsGetCurrentContext()];													// render the legend on a separate page
 	[self drawRect:CGRectZero];
 	UIGraphicsEndPDFContext();
 	_mode = graphMode;
@@ -248,7 +246,7 @@
 			CGContextTranslateCTM(UIGraphicsGetCurrentContext(), _activeDocument.pageMargins.width*PPI, _activeDocument.pageMargins.height*PPI);
 			CGContextScaleCTM(UIGraphicsGetCurrentContext(), _activeDocument.legendScale, _activeDocument.legendScale);
 		}
-		[self.legendView.layer renderInContext:UIGraphicsGetCurrentContext()];													// render the legend on a separate page
+		[self.legendView.layer renderInContext:UIGraphicsGetCurrentContext()];									// render the legend on a separate page
 		return;
 	}
 	_legendView.hidden = YES;
