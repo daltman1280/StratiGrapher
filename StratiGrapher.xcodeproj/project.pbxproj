@@ -12,6 +12,7 @@
 		25066EE3166A79040095C3CC /* anchor.png in Resources */ = {isa = PBXBuildFile; fileRef = 25066EE2166A79040095C3CC /* anchor.png */; };
 		2536509F1800AEE600114127 /* ApplicationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2536509D1800AEE600114127 /* ApplicationIcon.png */; };
 		253650AE1803B55C00114127 /* SettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253650AD1803B55B00114127 /* SettingsNavigationController.m */; };
+		255394C718786865001A6B39 /* StrataPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 255394C618786865001A6B39 /* StrataPageViewController.m */; };
 		25890D851655B2670007BC72 /* StratumMaterialsTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D841655B2670007BC72 /* StratumMaterialsTableController.m */; };
 		25890D881655D8990007BC72 /* MaterialPatternView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D871655D8990007BC72 /* MaterialPatternView.m */; };
 		25890D8B1655DAD20007BC72 /* MaterialTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25890D8A1655DAD20007BC72 /* MaterialTableViewCell.m */; };
@@ -77,6 +78,8 @@
 		253650A71800C91300114127 /* soil classification.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "soil classification.jpg"; sourceTree = "<group>"; };
 		253650AC1803B55B00114127 /* SettingsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsNavigationController.h; path = ../SettingsNavigationController.h; sourceTree = "<group>"; };
 		253650AD1803B55B00114127 /* SettingsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsNavigationController.m; path = ../SettingsNavigationController.m; sourceTree = "<group>"; };
+		255394C518786865001A6B39 /* StrataPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrataPageViewController.h; sourceTree = "<group>"; };
+		255394C618786865001A6B39 /* StrataPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StrataPageViewController.m; sourceTree = "<group>"; };
 		2557E68C1867C36000D36B92 /* Application Notes.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Application Notes.rtf"; sourceTree = "<group>"; };
 		25890D831655B2670007BC72 /* StratumMaterialsTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StratumMaterialsTableController.h; path = ../StratumMaterialsTableController.h; sourceTree = "<group>"; };
 		25890D841655B2670007BC72 /* StratumMaterialsTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StratumMaterialsTableController.m; path = ../StratumMaterialsTableController.m; sourceTree = "<group>"; };
@@ -292,6 +295,8 @@
 				2589CF22163F897D00E43147 /* StrataViewController.m */,
 				259318F6176E602600A6341A /* LegendView.h */,
 				259318F7176E602600A6341A /* LegendView.m */,
+				255394C518786865001A6B39 /* StrataPageViewController.h */,
+				255394C618786865001A6B39 /* StrataPageViewController.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -529,6 +534,7 @@
 				253650AE1803B55C00114127 /* SettingsNavigationController.m in Sources */,
 				25C47823185EC6BA0020D30A /* StratumInfoNotesViewController.m in Sources */,
 				25C4782F185F5B1C0020D30A /* StratumGranularityViewController.m in Sources */,
+				255394C718786865001A6B39 /* StrataPageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

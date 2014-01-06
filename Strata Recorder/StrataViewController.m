@@ -15,6 +15,7 @@
 #import "StratumMaterialsPaletteTableViewController.h"
 #import "StratumMaterialsTableController.h"
 #import "StrataPageView.h"
+#import "StrataPageViewController.h"
 #import "StrataModel.h"
 #import "DocumentListTableViewController.h"
 #import "SettingsNavigationController.h"
@@ -41,7 +42,9 @@ typedef enum {
 @property (strong, nonatomic) IBOutlet UIScrollView *strataGraphScrollView;
 @property UIPopoverController *popover;
 @property (strong, nonatomic) IBOutlet UIScrollView *strataPageScrollView;
+@property (weak, nonatomic) IBOutlet UIScrollView *strataMultiPageScrollView;
 @property (nonatomic) IBOutlet StrataPageView *strataPageView;
+@property NSMutableArray* strataPageViewArray;
 @property (nonatomic) StrataDocument *activeDocument;
 @property StratumInfoNavigationController* stratumInfoNavigationController;
 @property StratumMaterialsTableController* stratumMaterialsTableController;
@@ -383,6 +386,11 @@ typedef enum {
 	self.strataPageView.grainSizeLegend = self.grainSizeLegend;
 	self.strataPageView.grainSizeLines = self.grainSizeLines;
 	self.strataPageView.strataColumn = self.strataColumn;
+#define MULTI
+#ifdef MULTI
+	[self.strataPageScrollView removeFromSuperview];									// we'll just use as a template, populating its parent programmatically
+//	self.strataPageViewArray = [[NSMutableArray alloc] init];
+#endif
 }
 
 - (void)setActiveDocument:(StrataDocument *)document
@@ -488,17 +496,36 @@ typedef enum {
 	if (selection == 1) {																						// switching to page mode
 		[self.legendView populateLegend];
 		[self.strataView resignFirstResponder];
+		self.strataMultiPageScrollView.hidden = NO;
 		self.strataPageScrollView.hidden = NO;
 		self.background.hidden = NO;
 		self.pageControl.hidden = NO;
+#ifdef MULTI
+		StrataPageViewController *controller = [[StrataPageViewController alloc] initWithEnclosingScrollView:self.strataMultiPageScrollView];
+		controller.strataPageView.patternsPageArray = self.strataView.patternsPageArray;
+		controller.strataPageView.legendView = self.legendView;
+		controller.strataPageView.columnNumber = self.columnNumber;
+		controller.strataPageView.grainSizeLegend = self.grainSizeLegend;
+		controller.strataPageView.grainSizeLines = self.grainSizeLines;
+		controller.strataPageView.strataColumn = self.strataColumn;
+		controller.strataPageView.activeDocument = self.activeDocument;											// this will update the view's bounds
+		self.pageControl.currentPage = 0;
+		controller.pageIndex = 2;																				// this will call setupPages
+		self.pageControl.numberOfPages = controller.strataPageView.maxPageIndex+1;
+#endif
 		[UIView beginAnimations:@"GraphToPageTransition" context:nil];
 		[UIView setAnimationDuration:0.5];
 		self.strataGraphScrollView.alpha = 0.0;
 		self.strataPageScrollView.alpha = 1.0;
 		[UIView commitAnimations];
+#ifndef MULTI
+		[self.strataPageView setupPages];
+		self.strataPageView.pageIndex = 1;
 		[self.strataPageView setNeedsDisplay];
+#endif
 	} else {																									// switching to graph mode
 		self.strataPageScrollView.hidden = YES;
+		self.strataMultiPageScrollView.hidden = YES;
 		self.background.hidden = YES;
 		self.pageControl.hidden = YES;
 		[UIView beginAnimations:@"PageToGraphTransition" context:nil];
@@ -539,6 +566,8 @@ typedef enum {
 }
 
 #pragma mark SettingsControllerDelegate
+
+#pragma mark TODO: update for StrataPageViewControllers
 
 - (void)handleSettingsTableComplete:(id)sender;
 {
@@ -589,6 +618,7 @@ typedef enum {
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)sender
 {
+	NSLog(@"StrataViewController, viewForZoomingInScrollView, sender = %@", sender);
 	if (sender == self.strataGraphScrollView)
 		return self.strataView;
 	else
@@ -609,7 +639,7 @@ typedef enum {
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-	if (self.selectedPaleoCurrent) {
+	if (scrollView == self.strataGraphScrollView && self.selectedPaleoCurrent) {
 		Stratum *stratum = self.selectedStratum;
 		PaleoCurrent *paleo = self.selectedPaleoCurrent;
 		CGPoint paleoLocation = CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y);
@@ -670,6 +700,9 @@ typedef enum {
 	[self setModeButton:nil];
 	[self setModeControl:nil];
 	[self setPageControl:nil];
+#ifdef MULTI
+	[self setStrataMultiPageScrollView:nil];
+#endif
 	[super viewDidUnload];
 }
 @end

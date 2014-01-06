@@ -130,47 +130,56 @@
                                 </items>
                                 <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </toolbar>
-                            <scrollView hidden="YES" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="TopLeft" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" maximumZoomScale="2" id="po3-cT-cer" userLabel="Page Scroll View">
-                                <rect key="frame" x="0.0" y="44" width="768" height="960"/>
+                            <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="J4X-R7-4xI" userLabel="Paging Scroll View">
+                                <rect key="frame" x="-20" y="24" width="808" height="1000"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <view multipleTouchEnabled="YES" contentMode="TopLeft" id="a0A-EG-Gec" customClass="StrataPageView">
-                                        <rect key="frame" x="103" y="126" width="523" height="518"/>
+                                    <scrollView hidden="YES" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="TopLeft" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" maximumZoomScale="2" id="po3-cT-cer" userLabel="Page Scroll View">
+                                        <rect key="frame" x="20" y="20" width="768" height="960"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <view hidden="YES" tag="1" contentMode="scaleToFill" id="ZK1-6d-tKb" userLabel="column view">
-                                                <rect key="frame" x="299" y="127" width="148" height="286"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                            <view multipleTouchEnabled="YES" contentMode="TopLeft" id="a0A-EG-Gec" customClass="StrataPageView">
+                                                <rect key="frame" x="103" y="126" width="523" height="518"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <subviews>
+                                                    <view hidden="YES" tag="1" contentMode="scaleToFill" id="ZK1-6d-tKb" userLabel="column view">
+                                                        <rect key="frame" x="299" y="127" width="148" height="286"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                    </view>
+                                                    <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="left" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OaU-Nb-sJM" userLabel="column number">
+                                                        <rect key="frame" x="330" y="488" width="30" height="30"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rbx-pc-hSS" userLabel="granularity lines">
+                                                        <rect key="frame" x="350" y="418" width="97" height="19"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jEG-Bc-btg" userLabel="granularity legend">
+                                                        <rect key="frame" x="350" y="443" width="97" height="37"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                             </view>
-                                            <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="left" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OaU-Nb-sJM" userLabel="column number">
-                                                <rect key="frame" x="330" y="488" width="30" height="30"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rbx-pc-hSS" userLabel="granularity lines">
-                                                <rect key="frame" x="350" y="418" width="97" height="19"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jEG-Bc-btg" userLabel="granularity legend">
-                                                <rect key="frame" x="350" y="443" width="97" height="37"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                    </view>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="laN-41-imc" id="vrm-iP-Jru"/>
+                                        </connections>
+                                    </scrollView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <outlet property="delegate" destination="laN-41-imc" id="vrm-iP-Jru"/>
+                                    <outlet property="delegate" destination="laN-41-imc" id="ozG-hj-Gcv"/>
                                 </connections>
                             </scrollView>
                             <pageControl hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="9" currentPage="1" id="HmK-jK-DGa">
@@ -229,6 +238,7 @@
                         <outlet property="settingsButton" destination="0B6-3n-ZvN" id="ZiB-bh-BjO"/>
                         <outlet property="strataColumn" destination="ZK1-6d-tKb" id="TM3-x8-6iZ"/>
                         <outlet property="strataGraphScrollView" destination="y2N-2I-zTn" id="j5e-aX-0Hy"/>
+                        <outlet property="strataMultiPageScrollView" destination="J4X-R7-4xI" id="L4h-ON-sd9"/>
                         <outlet property="strataPageScrollView" destination="po3-cT-cer" id="nAZ-vW-iFS"/>
                         <outlet property="strataPageView" destination="a0A-EG-Gec" id="tFg-eG-cqm"/>
                         <outlet property="strataView" destination="UxV-eu-7Gi" id="sd3-eW-q2Y"/>
@@ -302,6 +312,19 @@
                 </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-1190" y="-48"/>
+        </scene>
+        <!--Strata Page View Controller-->
+        <scene sceneID="tSN-of-H2t">
+            <objects>
+                <viewController storyboardIdentifier="strataPageViewController" id="4qF-XB-ZQF" customClass="StrataPageViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ruu-Wp-2H8" customClass="StrataPageView">
+                        <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LSj-CB-77A" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
         <!--Stratum Info Table View Controller - StratumInfo-->
         <scene sceneID="T8L-eq-kre">
@@ -1494,6 +1517,180 @@
         <image name="paleocurrent.png" width="533" height="533"/>
         <image name="rename.tif" width="20" height="20"/>
     </resources>
+    <classes>
+        <class className="AddSectionLabelViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/AddSectionLabelViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="cancelButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="saveButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="sectionLabelText" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="DocumentListTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DocumentListTableViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="actionDocument" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="addDocument" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="deleteDocument" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="duplicateDocument" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="renameDocument" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+            </relationships>
+        </class>
+        <class className="LegendView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LegendView.h"/>
+        </class>
+        <class className="MaterialPatternView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MaterialPatternView.h"/>
+        </class>
+        <class className="MaterialTableViewCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MaterialTableViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="pattern" candidateClass="MaterialPatternView"/>
+                <relationship kind="outlet" name="subtitle" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="title" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="RenameViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RenameViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="renameCancelButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="renameOKButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="renameText" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="SectionLabelCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SectionLabelCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="sectionLabelText" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="SectionLabelDetailTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SectionLabelDetailTableViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="numberStrataSpanned" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="sectionLabelText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="stratumSpannedStepper" candidateClass="UIStepper"/>
+            </relationships>
+        </class>
+        <class className="SectionLabelsTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SectionLabelsTableViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="handleAddSectionLabel:"/>
+                <relationship kind="action" name="handleUpdateButton:"/>
+            </relationships>
+        </class>
+        <class className="SettingsNavigationController" superclassName="UINavigationController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsNavigationController.h"/>
+        </class>
+        <class className="SettingsTableController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsTableController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="cancelItem" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="legendScaleSlider" candidateClass="UISlider"/>
+                <relationship kind="outlet" name="legendScaleText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="lineThicknessText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="marginHeightText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="marginWidthText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="pageScaleSlider" candidateClass="UISlider"/>
+                <relationship kind="outlet" name="pageScaleText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="paperHeightText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="paperWidthText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="patternSampleView" candidateClass="MaterialPatternView"/>
+                <relationship kind="outlet" name="patternScaleSlider" candidateClass="UISlider"/>
+                <relationship kind="outlet" name="patternScaleText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="saveItem" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="strataHeightText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="unitsSelector" candidateClass="UISegmentedControl"/>
+            </relationships>
+        </class>
+        <class className="StrataPageView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StrataPageView.h"/>
+        </class>
+        <class className="StrataPageViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StrataPageViewController.h"/>
+        </class>
+        <class className="StrataToolsView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StrataToolsView.h"/>
+        </class>
+        <class className="StrataView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StrataView.h"/>
+        </class>
+        <class className="StrataViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StrataViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="anchorDragView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="anchorView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="background" candidateClass="UIView"/>
+                <relationship kind="outlet" name="columnNumber" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="dimensionLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="documentsButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="grainSizeLegend" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="grainSizeLines" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="graphPageToggle" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="legendLineContainer" candidateClass="UIView"/>
+                <relationship kind="outlet" name="legendLineLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="legendLineMaterial" candidateClass="MaterialPatternView"/>
+                <relationship kind="outlet" name="legendView" candidateClass="LegendView"/>
+                <relationship kind="outlet" name="locationLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="modeButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="modeControl" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="pageControl" candidateClass="UIPageControl"/>
+                <relationship kind="outlet" name="paleoCurrentDragView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="paleoCurrentSelectedView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="paleoCurrentView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="panGestureRecognizer" candidateClass="UIPanGestureRecognizer"/>
+                <relationship kind="outlet" name="rotationGestureRecognizer" candidateClass="UIRotationGestureRecognizer"/>
+                <relationship kind="outlet" name="scissorsDragView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="scissorsView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="settingsButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="strataColumn" candidateClass="UIView"/>
+                <relationship kind="outlet" name="strataGraphScrollView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="strataMultiPageScrollView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="strataPageScrollView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="strataPageView" candidateClass="StrataPageView"/>
+                <relationship kind="outlet" name="strataView" candidateClass="StrataView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+                <relationship kind="outlet" name="toolbarTitle" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="StratumGranularityViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumGranularityViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="granularityPicker" candidateClass="UIPickerView"/>
+            </relationships>
+        </class>
+        <class className="StratumInfoNavigationController" superclassName="UINavigationController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumInfoNavigationController.h"/>
+        </class>
+        <class className="StratumInfoNotesViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumInfoNotesViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="notesTextView" candidateClass="UITextView"/>
+            </relationships>
+        </class>
+        <class className="StratumInfoTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumInfoTableViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="eraseButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="grainSizeText" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="materialTitleText" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="pattern" candidateClass="MaterialPatternView"/>
+                <relationship kind="outlet" name="stratumHeightText" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="subtitle" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="StratumMaterialsPaletteTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumMaterialsPaletteTableViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="addButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="removeButton" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="StratumMaterialsTableController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumMaterialsTableController.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>
