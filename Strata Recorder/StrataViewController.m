@@ -24,6 +24,7 @@
 #import "Graphics.h"
 #import "LegendView.h"
 #import "MaterialPatternView.h"
+#import "BlueViewController.h"
 
 typedef enum {
 	tapStateNoneSelected,
@@ -44,7 +45,7 @@ typedef enum {
 @property (strong, nonatomic) IBOutlet UIScrollView *strataPageScrollView;
 @property (weak, nonatomic) IBOutlet UIScrollView *strataMultiPageScrollView;
 @property (nonatomic) IBOutlet StrataPageView *strataPageView;
-@property NSMutableArray* strataPageViewArray;
+@property NSMutableArray* strataPageViewControllerArray;
 @property (nonatomic) StrataDocument *activeDocument;
 @property StratumInfoNavigationController* stratumInfoNavigationController;
 @property StratumMaterialsTableController* stratumMaterialsTableController;
@@ -81,6 +82,9 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *grainSizeLegend;
 @property (weak, nonatomic) IBOutlet UIView *strataColumn;
 @property (weak, nonatomic) IBOutlet UILabel *grainSizeLines;
+
+@property UIPageViewController *pageViewController;
+@property BlueViewController *blueViewController;
 @end
 
 @implementation StrataViewController
@@ -341,6 +345,8 @@ typedef enum {
 		self.settingsTableController.delegate = self;																								// set up ourselves as delegate
 		self.settingsTableController.activeDocument = self.activeDocument;
 		self.popover = popoverSegue.popoverController;																								// so we can dismiss the popover
+	} else if ([segue.identifier isEqualToString:@"blueViewSegue"]) {
+		
 	} else
 		NSAssert1(NO, @"Unexpected segue, ID = %@", segue.identifier);
 }
@@ -389,7 +395,22 @@ typedef enum {
 #define MULTI
 #ifdef MULTI
 	[self.strataPageScrollView removeFromSuperview];									// we'll just use as a template, populating its parent programmatically
-//	self.strataPageViewArray = [[NSMutableArray alloc] init];
+	self.strataPageViewControllerArray = [[NSMutableArray alloc] init];
+	self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:[NSDictionary dictionaryWithObjectsAndKeys:UIPageViewControllerOptionInterPageSpacingKey, [NSNumber numberWithFloat:10], nil]];
+	self.blueViewController = [[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"blueViewController"];
+	self.blueViewController.pageNumber = 1;
+	self.pageViewController.delegate = self.blueViewController;				// temporary
+	NSArray *viewControllers = @[self.blueViewController];
+	[self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:NULL];
+	self.pageViewController.dataSource = self.blueViewController;			// temporary
+	[self addChildViewController:self.pageViewController];
+	[self.view addSubview:self.pageViewController.view];
+	// Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
+	CGRect pageViewRect = self.view.bounds;
+	pageViewRect = CGRectInset(pageViewRect, 100.0, 100.0);
+	self.pageViewController.view.frame = pageViewRect;
+	[self.pageViewController didMoveToParentViewController:self];
+	self.pageViewController.view.hidden = YES;
 #endif
 }
 
@@ -494,6 +515,13 @@ typedef enum {
 - (IBAction)handleModeSwitch:(id)sender {
 	int selection = [(UISegmentedControl *)sender selectedSegmentIndex];
 	if (selection == 1) {																						// switching to page mode
+#if 1
+		self.background.hidden = NO;
+		self.pageViewController.view.hidden = NO;
+		self.pageViewController.view.alpha = 1.0;
+		self.strataGraphScrollView.alpha = 0;
+//		[self performSegueWithIdentifier:@"blueViewSegue" sender:self];
+#else
 		[self.legendView populateLegend];
 		[self.strataView resignFirstResponder];
 		self.strataMultiPageScrollView.hidden = NO;
@@ -502,6 +530,7 @@ typedef enum {
 		self.pageControl.hidden = NO;
 #ifdef MULTI
 		StrataPageViewController *controller = [[StrataPageViewController alloc] initWithEnclosingScrollView:self.strataMultiPageScrollView];
+		[self.strataPageViewControllerArray addObject:controller];
 		controller.strataPageView.patternsPageArray = self.strataView.patternsPageArray;
 		controller.strataPageView.legendView = self.legendView;
 		controller.strataPageView.columnNumber = self.columnNumber;
@@ -523,9 +552,14 @@ typedef enum {
 		self.strataPageView.pageIndex = 1;
 		[self.strataPageView setNeedsDisplay];
 #endif
+#endif
 	} else {																									// switching to graph mode
 		self.strataPageScrollView.hidden = YES;
 		self.strataMultiPageScrollView.hidden = YES;
+#if 1
+		self.pageViewController.view.hidden = YES;
+		self.pageViewController.view.alpha = 0;
+#endif
 		self.background.hidden = YES;
 		self.pageControl.hidden = YES;
 		[UIView beginAnimations:@"PageToGraphTransition" context:nil];
@@ -627,6 +661,7 @@ typedef enum {
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale
 {
+	NSLog(@"StrataViewController, scrollViewDidEndZooming");
 	// if content size is larger than scrollview, allow to scroll to edge, otherwise maintain a margin
 	if (scrollView == self.strataPageScrollView) {
 		float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width*scale)/2.0, 0);
@@ -639,6 +674,7 @@ typedef enum {
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+	NSLog(@"StrataViewController, scrollViewDidScroll");
 	if (scrollView == self.strataGraphScrollView && self.selectedPaleoCurrent) {
 		Stratum *stratum = self.selectedStratum;
 		PaleoCurrent *paleo = self.selectedPaleoCurrent;
