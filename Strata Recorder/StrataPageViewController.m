@@ -25,14 +25,10 @@
 	self = [super init];
 	if (self) {
 		self.strataPageView = [[StrataPageView alloc] initWithFrame:self.view.bounds];
-		NSLog(@"self.view = %@, %s, class = %@", self.view, object_getClassName(self.view), [self.view class]);
-//		self.strataPageView = (StrataPageView *)self.view;
-//		self.view = self.strataPageView;
+		NSLog(@"initWithEnclosingScrollView view = %@", [self.view class]);
 		self.strataPageView.backgroundColor = [UIColor whiteColor];
 		self.strataMultiPageScrollView = enclosingScrollView;
 		self.strataPageScrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-		NSLog(@"StrataPageViewController, initWithEnclosingScrollView, self.stratapagescrollview = %s, class = %@, item = %@", object_getClassName(self.strataPageScrollView), [self.strataPageScrollView class], self.strataPageScrollView);
-//		self.view = self.strataPageView;
 		self.strataPageScrollView.delegate = self;
 		self.strataPageScrollView.contentSize = self.view.bounds.size;
 		self.strataPageScrollView.contentOffset = CGPointZero;
@@ -52,9 +48,10 @@
 	_pageIndex = pageIndex;
 	[self.strataPageView setupPages];
 	self.strataPageView.pageIndex = pageIndex;
-	float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width)/2.0, 0);
-	float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height)/2.0, 0);
-	NSLog(@"verticalInset = %f, horizontalInset = %f", verticalInset, horizontalInset);
+//	float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width)/2.0, 0);
+//	float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height)/2.0, 0);
+	float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width*self.strataPageScrollView.zoomScale)/2.0, 0);
+	float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height*self.strataPageScrollView.zoomScale)/2.0, 0);
 	self.strataPageScrollView.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
 }
 
@@ -67,18 +64,23 @@
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)sender
 {
-	NSLog(@"StrataPageViewController viewForZoomingInScrollView, sender = %@", sender);
+	NSLog(@"StrataPageViewController, viewForZoomingInScrollView");
 	return self.strataPageView;
 }
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale
 {
-	NSLog(@"scrollViewDidEndZooming");
+//	float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width)/2.0, 0);
+//	float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height)/2.0, 0);
+	float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width*self.strataPageScrollView.zoomScale)/2.0, 0);
+	float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height*self.strataPageScrollView.zoomScale)/2.0, 0);
+	NSLog(@"StrataPageViewController, scrollViewDidEndZooming, height = %f", self.strataPageView.bounds.size.height);
+	self.strataPageScrollView.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-	NSLog(@"scrollViewDidScroll");
+	NSLog(@"StrataPageViewController, scrollViewDidScroll");
 }
 
 - (void)didReceiveMemoryWarning
