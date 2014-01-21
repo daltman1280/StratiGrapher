@@ -20,6 +20,38 @@
 {
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	[(StrataPageView *)self.view setupPages];
+}
+
+#pragma mark - UIPageViewController delegate methods
+
+- (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController *)pageViewController spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation
+{
+	return UIPageViewControllerSpineLocationMin;
+}
+
+#pragma mark - Page View Controller Data Source
+
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
+{
+	if (((StrataPageViewController *)viewController).pageIndex == 0)
+		return nil;
+	BlueViewController *controller = [viewController.storyboard instantiateViewControllerWithIdentifier:@"blueViewController"];
+	controller.pageNumber = ((BlueViewController *)viewController).pageNumber-1;
+	return controller;
+}
+
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
+{
+	BlueViewController *controller = [viewController.storyboard instantiateViewControllerWithIdentifier:@"blueViewController"];
+	controller.pageNumber = ((BlueViewController *)viewController).pageNumber+1;
+	return controller;
+}
+
+#if 0
 - (id)initWithEnclosingScrollView:(UIScrollView *)enclosingScrollView
 {
 	self = [super init];
@@ -82,6 +114,7 @@
 {
 	NSLog(@"StrataPageViewController, scrollViewDidScroll");
 }
+#endif
 
 - (void)didReceiveMemoryWarning
 {

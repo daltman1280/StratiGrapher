@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "StrataPageView.h"
 
-@interface StrataPageViewController : UIViewController <UIScrollViewDelegate> {
+@interface StrataPageViewController : UIViewController <UIPageViewControllerDelegate, UIPageViewControllerDataSource> {
 	int _pageIndex;
 }
 
@@ -17,6 +17,8 @@
 @property StrataPageView*	strataPageView;
 @property UIScrollView*		strataMultiPageScrollView;
 
+#if 0
 - (id)initWithEnclosingScrollView:(UIScrollView *)enclosingScrollView;
+#endif
 
 @end

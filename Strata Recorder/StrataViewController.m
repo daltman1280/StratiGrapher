@@ -24,6 +24,7 @@
 #import "Graphics.h"
 #import "LegendView.h"
 #import "MaterialPatternView.h"
+#import "ContainerPageViewController.h"
 #import "BlueViewController.h"
 
 typedef enum {
@@ -83,7 +84,7 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIView *strataColumn;
 @property (weak, nonatomic) IBOutlet UILabel *grainSizeLines;
 
-@property UIPageViewController *pageViewController;
+@property ContainerPageViewController *containerPageViewController;
 @property BlueViewController *blueViewController;
 @end
 
@@ -396,21 +397,31 @@ typedef enum {
 #ifdef MULTI
 	[self.strataPageScrollView removeFromSuperview];									// we'll just use as a template, populating its parent programmatically
 	self.strataPageViewControllerArray = [[NSMutableArray alloc] init];
-	self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:[NSDictionary dictionaryWithObjectsAndKeys:UIPageViewControllerOptionInterPageSpacingKey, [NSNumber numberWithFloat:10], nil]];
+	self.containerPageViewController = [[ContainerPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:[NSDictionary dictionaryWithObjectsAndKeys:UIPageViewControllerOptionInterPageSpacingKey, [NSNumber numberWithFloat:10], nil]];
+#if 0			// try not to add a page vc yet
+	StrataPageViewController *controller = [[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"strataPageViewController"];
+	[self.strataPageViewControllerArray addObject:controller];
+	controller.pageIndex = 0;
+	self.containerPageViewController.delegate = controller;
+	[self.containerPageViewController setViewControllers:self.strataPageViewControllerArray direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:NULL];
+	self.containerPageViewController.dataSource = controller;
+#endif
+#if 0
 	self.blueViewController = [[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"blueViewController"];
 	self.blueViewController.pageNumber = 1;
 	self.pageViewController.delegate = self.blueViewController;				// temporary
 	NSArray *viewControllers = @[self.blueViewController];
 	[self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:NULL];
 	self.pageViewController.dataSource = self.blueViewController;			// temporary
-	[self addChildViewController:self.pageViewController];
-	[self.view addSubview:self.pageViewController.view];
+#endif
+	[self addChildViewController:self.containerPageViewController];
+	[self.view addSubview:self.containerPageViewController.view];
 	// Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
 	CGRect pageViewRect = self.view.bounds;
 	pageViewRect = CGRectInset(pageViewRect, 100.0, 100.0);
-	self.pageViewController.view.frame = pageViewRect;
-	[self.pageViewController didMoveToParentViewController:self];
-	self.pageViewController.view.hidden = YES;
+	self.containerPageViewController.view.frame = pageViewRect;
+	[self.containerPageViewController didMoveToParentViewController:self];
+	self.containerPageViewController.view.hidden = YES;
 #endif
 }
 
@@ -517,9 +528,24 @@ typedef enum {
 	if (selection == 1) {																						// switching to page mode
 #if 1
 		self.background.hidden = NO;
-		self.pageViewController.view.hidden = NO;
-		self.pageViewController.view.alpha = 1.0;
+		self.containerPageViewController.view.hidden = NO;
+		self.containerPageViewController.view.alpha = 1.0;
 		self.strataGraphScrollView.alpha = 0;
+		self.containerPageViewController.patternsPageArray = self.strataView.patternsPageArray;
+		self.containerPageViewController.legendView = self.legendView;
+		self.containerPageViewController.columnNumber = self.columnNumber;
+		self.containerPageViewController.grainSizeLegend = self.grainSizeLegend;
+		self.containerPageViewController.grainSizeLines = self.grainSizeLines;
+		self.containerPageViewController.strataColumn = self.strataColumn;
+		self.containerPageViewController.activeDocument = self.activeDocument;									// this will update the view's bounds
+		StrataPageViewController *controller = [[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"strataPageViewController"];
+		[self.strataPageViewControllerArray addObject:controller];
+		controller.pageIndex = 0;
+		self.containerPageViewController.delegate = controller;
+		[self.containerPageViewController setViewControllers:self.strataPageViewControllerArray direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:NULL];
+		self.containerPageViewController.dataSource = controller;
+//		StrataPageViewController *controller = self.strataPageViewControllerArray[0];
+//		controller.pat
 //		[self performSegueWithIdentifier:@"blueViewSegue" sender:self];
 #else
 		[self.legendView populateLegend];
@@ -557,8 +583,8 @@ typedef enum {
 		self.strataPageScrollView.hidden = YES;
 		self.strataMultiPageScrollView.hidden = YES;
 #if 1
-		self.pageViewController.view.hidden = YES;
-		self.pageViewController.view.alpha = 0;
+		self.containerPageViewController.view.hidden = YES;
+		self.containerPageViewController.view.alpha = 0;
 #endif
 		self.background.hidden = YES;
 		self.pageControl.hidden = YES;
@@ -652,7 +678,7 @@ typedef enum {
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)sender
 {
-	NSLog(@"StrataViewController, viewForZoomingInScrollView, sender = %@", sender);
+//	NSLog(@"StrataViewController, viewForZoomingInScrollView, sender = %@", sender);
 	if (sender == self.strataGraphScrollView)
 		return self.strataView;
 	else
@@ -661,7 +687,7 @@ typedef enum {
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale
 {
-	NSLog(@"StrataViewController, scrollViewDidEndZooming");
+//	NSLog(@"StrataViewController, scrollViewDidEndZooming");
 	// if content size is larger than scrollview, allow to scroll to edge, otherwise maintain a margin
 	if (scrollView == self.strataPageScrollView) {
 		float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width*scale)/2.0, 0);
@@ -674,7 +700,7 @@ typedef enum {
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-	NSLog(@"StrataViewController, scrollViewDidScroll");
+//	NSLog(@"StrataViewController, scrollViewDidScroll");
 	if (scrollView == self.strataGraphScrollView && self.selectedPaleoCurrent) {
 		Stratum *stratum = self.selectedStratum;
 		PaleoCurrent *paleo = self.selectedPaleoCurrent;
