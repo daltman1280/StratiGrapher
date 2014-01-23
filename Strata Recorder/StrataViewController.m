@@ -343,8 +343,6 @@ typedef enum {
 		self.settingsTableController.delegate = self;																								// set up ourselves as delegate
 		self.settingsTableController.activeDocument = self.activeDocument;
 		self.popover = popoverSegue.popoverController;																								// so we can dismiss the popover
-	} else if ([segue.identifier isEqualToString:@"blueViewSegue"]) {
-		
 	} else
 		NSAssert1(NO, @"Unexpected segue, ID = %@", segue.identifier);
 }
