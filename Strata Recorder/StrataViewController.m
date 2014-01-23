@@ -42,8 +42,7 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *dimensionLabel;
 @property (strong, nonatomic) IBOutlet UIScrollView *strataGraphScrollView;
 @property UIPopoverController *popover;
-@property (strong, nonatomic) IBOutlet UIScrollView *strataPageScrollView;									// used for PDF rendering
-@property (nonatomic) IBOutlet StrataPageView *strataPageView;
+@property (nonatomic) IBOutlet StrataPageView *strataPageView;																	// hosts the page view, used to render PDF pages
 @property NSMutableArray* strataPageViewControllerArray;
 @property (nonatomic) StrataDocument *activeDocument;
 @property StratumInfoNavigationController* stratumInfoNavigationController;
@@ -389,7 +388,7 @@ typedef enum {
 	self.strataPageView.strataColumn = self.strataColumn;
 	// set up the page view complex
 	
-	[self.strataPageScrollView removeFromSuperview];									// we'll just use as a template, populating its parent programmatically
+	[self.strataPageView removeFromSuperview];											// we'll just use as a template, populating its parent programmatically
 	self.strataPageViewControllerArray = [[NSMutableArray alloc] init];					// used to retain references to page view view controllers
 	self.containerPageViewController = [[ContainerPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:[NSDictionary dictionaryWithObjectsAndKeys:UIPageViewControllerOptionInterPageSpacingKey, [NSNumber numberWithFloat:50], nil]];
 	self.containerPageViewController.pageControl = self.pageControl;
@@ -427,12 +426,6 @@ typedef enum {
 	self.origin = CGPointMake(XORIGIN, YORIGIN);
 	
 	self.strataPageView.activeDocument = self.activeDocument;							// this will initialize the view's bounds
-	self.strataPageScrollView.contentSize = self.strataPageView.bounds.size;
-	self.strataPageScrollView.contentOffset = CGPointZero;
-	float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width)/2.0, 0);
-	float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height)/2.0, 0);
-	self.strataPageScrollView.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
-	self.strataPageScrollView.hidden = YES;
 	
 	((UISegmentedControl *)self.modeControl).selectedSegmentIndex = 0;					// switch to draft mode
 	[self handleModeSwitch:self.modeControl];
@@ -531,18 +524,15 @@ typedef enum {
 		[UIView beginAnimations:@"GraphToPageTransition" context:nil];
 		[UIView setAnimationDuration:0.5];
 		self.strataGraphScrollView.alpha = 0.0;
-		self.strataPageScrollView.alpha = 1.0;
 		self.containerPageViewController.view.alpha = 1;
 		[UIView commitAnimations];
 	} else {																									// switching to graph mode
-		self.strataPageScrollView.hidden = YES;
 		self.pageControl.hidden = YES;
 		self.containerPageViewController.view.hidden = YES;
 		self.pageControl.hidden = YES;
 		[UIView beginAnimations:@"PageToGraphTransition" context:nil];
 		[UIView setAnimationDuration:0.5];
 		self.strataGraphScrollView.alpha = 1.0;
-		self.strataPageScrollView.alpha = 0.0;
 		self.containerPageViewController.view.alpha = 0;
 		[UIView commitAnimations];
 	}
@@ -595,14 +585,7 @@ typedef enum {
 		self.activeDocument.patternScale = self.settingsTableController.patternScale;
 		self.activeDocument.legendScale = self.settingsTableController.legendScale;
 		self.activeDocument.sectionLabels = self.settingsTableController.sectionLabels;
-		// we redraw the page view and scroller
-		[self.strataPageScrollView setZoomScale:1 animated:NO];												// to avoid side effects
-		self.strataPageView.activeDocument = self.activeDocument;											// update the bounds
-		float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width*self.strataPageScrollView.zoomScale)/2.0, 0);
-		float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height*self.strataPageScrollView.zoomScale)/2.0, 0);
-		self.strataPageScrollView.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
-		[self.strataPageScrollView setNeedsDisplay];
-		[self.strataPageView setNeedsDisplay];
+		// update the page views
 		[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataHeightChangedNotification object:self];
 	}
 }
@@ -630,20 +613,7 @@ typedef enum {
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)sender
 {
-	if (sender == self.strataGraphScrollView)
-		return self.strataView;
-	else
-		return self.strataPageView;
-}
-
-- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale
-{
-	// if content size is larger than scrollview, allow to scroll to edge, otherwise maintain a margin
-	if (scrollView == self.strataPageScrollView) {
-		float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width*scale)/2.0, 0);
-		float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height*scale)/2.0, 0);
-		self.strataPageScrollView.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
-	}
+	return self.strataView;
 }
 
 //	Maintain the current screen position of selected paleocurrent
@@ -682,7 +652,6 @@ typedef enum {
 	[self setDimensionLabel:nil];
     [self setGraphPageToggle:nil];
 	[self setToolbar:nil];
-	[self setStrataPageScrollView:nil];
 	[self setStrataPageView:nil];
 	[self setStrataGraphScrollView:nil];
 	[self setTitle:nil];
