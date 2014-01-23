@@ -130,56 +130,47 @@
                                 </items>
                                 <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </toolbar>
-                            <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="J4X-R7-4xI" userLabel="Paging Scroll View">
-                                <rect key="frame" x="0.0" y="44" width="808" height="960"/>
+                            <scrollView hidden="YES" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="TopLeft" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" maximumZoomScale="2" id="po3-cT-cer" userLabel="Page Scroll View">
+                                <rect key="frame" x="0.0" y="22" width="768" height="960"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <scrollView hidden="YES" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="TopLeft" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" maximumZoomScale="2" id="po3-cT-cer" userLabel="Page Scroll View">
-                                        <rect key="frame" x="20" y="20" width="768" height="960"/>
+                                    <view multipleTouchEnabled="YES" contentMode="TopLeft" id="a0A-EG-Gec" customClass="StrataPageView">
+                                        <rect key="frame" x="103" y="126" width="523" height="518"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <view multipleTouchEnabled="YES" contentMode="TopLeft" id="a0A-EG-Gec" customClass="StrataPageView">
-                                                <rect key="frame" x="103" y="126" width="523" height="518"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <subviews>
-                                                    <view hidden="YES" tag="1" contentMode="scaleToFill" id="ZK1-6d-tKb" userLabel="column view">
-                                                        <rect key="frame" x="299" y="127" width="148" height="286"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                                    </view>
-                                                    <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="left" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OaU-Nb-sJM" userLabel="column number">
-                                                        <rect key="frame" x="330" y="488" width="30" height="30"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="26"/>
-                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rbx-pc-hSS" userLabel="granularity lines">
-                                                        <rect key="frame" x="350" y="418" width="97" height="19"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jEG-Bc-btg" userLabel="granularity legend">
-                                                        <rect key="frame" x="350" y="443" width="97" height="37"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
+                                            <view hidden="YES" tag="1" contentMode="scaleToFill" id="ZK1-6d-tKb" userLabel="column view">
+                                                <rect key="frame" x="299" y="127" width="148" height="286"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                             </view>
+                                            <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="left" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OaU-Nb-sJM" userLabel="column number">
+                                                <rect key="frame" x="330" y="488" width="30" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rbx-pc-hSS" userLabel="granularity lines">
+                                                <rect key="frame" x="350" y="418" width="97" height="19"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jEG-Bc-btg" userLabel="granularity legend">
+                                                <rect key="frame" x="350" y="443" width="97" height="37"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="laN-41-imc" id="vrm-iP-Jru"/>
-                                        </connections>
-                                    </scrollView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <outlet property="delegate" destination="laN-41-imc" id="ozG-hj-Gcv"/>
+                                    <outlet property="delegate" destination="laN-41-imc" id="vrm-iP-Jru"/>
                                 </connections>
                             </scrollView>
                             <pageControl hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="9" currentPage="1" id="HmK-jK-DGa">
@@ -238,7 +229,6 @@
                         <outlet property="settingsButton" destination="0B6-3n-ZvN" id="ZiB-bh-BjO"/>
                         <outlet property="strataColumn" destination="ZK1-6d-tKb" id="TM3-x8-6iZ"/>
                         <outlet property="strataGraphScrollView" destination="y2N-2I-zTn" id="j5e-aX-0Hy"/>
-                        <outlet property="strataMultiPageScrollView" destination="J4X-R7-4xI" id="L4h-ON-sd9"/>
                         <outlet property="strataPageScrollView" destination="po3-cT-cer" id="nAZ-vW-iFS"/>
                         <outlet property="strataPageView" destination="a0A-EG-Gec" id="tFg-eG-cqm"/>
                         <outlet property="strataView" destination="UxV-eu-7Gi" id="sd3-eW-q2Y"/>
@@ -1542,8 +1532,6 @@
         <class className="AddSectionLabelViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/AddSectionLabelViewController.h"/>
             <relationships>
-                <relationship kind="action" name="handleCancel:"/>
-                <relationship kind="action" name="handleSave:"/>
                 <relationship kind="outlet" name="cancelButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="saveButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="sectionLabelText" candidateClass="UITextField"/>
@@ -1552,12 +1540,6 @@
         <class className="DocumentListTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DocumentListTableViewController.h"/>
             <relationships>
-                <relationship kind="action" name="handleActionDocument:"/>
-                <relationship kind="action" name="handleAddDocument:"/>
-                <relationship kind="action" name="handleDeleteDocument:"/>
-                <relationship kind="action" name="handleDuplicateDocument:"/>
-                <relationship kind="action" name="handleExportPDFButton:"/>
-                <relationship kind="action" name="handleRenameDocument:"/>
                 <relationship kind="outlet" name="actionDocument" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="addDocument" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="deleteDocument" candidateClass="UIBarButtonItem"/>
@@ -1583,8 +1565,6 @@
         <class className="RenameViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/RenameViewController.h"/>
             <relationships>
-                <relationship kind="action" name="handleRenameConfirm:"/>
-                <relationship kind="action" name="renameTextDidChange:"/>
                 <relationship kind="outlet" name="renameCancelButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="renameOKButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="renameText" candidateClass="UITextField"/>
@@ -1730,9 +1710,6 @@
         </class>
         <class className="StratumMaterialsTableController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/StratumMaterialsTableController.h"/>
-            <relationships>
-                <relationship kind="action" name="handleAdd:"/>
-            </relationships>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

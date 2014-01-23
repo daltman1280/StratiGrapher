@@ -43,7 +43,6 @@ typedef enum {
 @property (strong, nonatomic) IBOutlet UIScrollView *strataGraphScrollView;
 @property UIPopoverController *popover;
 @property (strong, nonatomic) IBOutlet UIScrollView *strataPageScrollView;									// used for PDF rendering
-@property (weak, nonatomic) IBOutlet UIScrollView *strataMultiPageScrollView;
 @property (nonatomic) IBOutlet StrataPageView *strataPageView;
 @property NSMutableArray* strataPageViewControllerArray;
 @property (nonatomic) StrataDocument *activeDocument;
@@ -540,7 +539,6 @@ typedef enum {
 	} else {																									// switching to graph mode
 		self.strataPageScrollView.hidden = YES;
 		self.pageControl.hidden = YES;
-		self.strataMultiPageScrollView.hidden = YES;
 		self.containerPageViewController.view.hidden = YES;
 		self.background.hidden = YES;
 		self.pageControl.hidden = YES;
@@ -716,9 +714,6 @@ typedef enum {
 	[self setModeButton:nil];
 	[self setModeControl:nil];
 	[self setPageControl:nil];
-#ifdef MULTI
-	[self setStrataMultiPageScrollView:nil];
-#endif
 	[super viewDidUnload];
 }
 @end
