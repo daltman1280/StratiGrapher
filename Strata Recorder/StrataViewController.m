@@ -350,7 +350,6 @@ typedef enum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.background.hidden = YES;
 	// settings from user preferences
 	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"])
 		self.activeDocument = [StrataDocument loadFromFile:[[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"]];
@@ -507,7 +506,6 @@ typedef enum {
 - (IBAction)handleModeSwitch:(id)sender {
 	int selection = [(UISegmentedControl *)sender selectedSegmentIndex];
 	if (selection == 1) {																						// switching to page mode
-		self.background.hidden = NO;
 		self.pageControl.hidden = NO;
 		self.containerPageViewController.view.hidden = NO;
 		self.containerPageViewController.view.alpha = 1.0;
@@ -540,7 +538,6 @@ typedef enum {
 		self.strataPageScrollView.hidden = YES;
 		self.pageControl.hidden = YES;
 		self.containerPageViewController.view.hidden = YES;
-		self.background.hidden = YES;
 		self.pageControl.hidden = YES;
 		[UIView beginAnimations:@"PageToGraphTransition" context:nil];
 		[UIView setAnimationDuration:0.5];
@@ -708,7 +705,6 @@ typedef enum {
 	[self setGrainSizeLegend:nil];
 	[self setStrataColumn:nil];
 	[self setGrainSizeLines:nil];
-	[self setBackground:nil];
 	[self setSettingsButton:nil];
 	[self setDocumentsButton:nil];
 	[self setModeButton:nil];
