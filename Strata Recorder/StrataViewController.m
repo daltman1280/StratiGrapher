@@ -42,7 +42,7 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *dimensionLabel;
 @property (strong, nonatomic) IBOutlet UIScrollView *strataGraphScrollView;
 @property UIPopoverController *popover;
-@property (strong, nonatomic) IBOutlet UIScrollView *strataPageScrollView;
+@property (strong, nonatomic) IBOutlet UIScrollView *strataPageScrollView;									// used for PDF rendering
 @property (weak, nonatomic) IBOutlet UIScrollView *strataMultiPageScrollView;
 @property (nonatomic) IBOutlet StrataPageView *strataPageView;
 @property NSMutableArray* strataPageViewControllerArray;
@@ -397,13 +397,13 @@ typedef enum {
 	self.strataPageViewControllerArray = [[NSMutableArray alloc] init];					// used to retain references to page view view controllers
 	self.containerPageViewController = [[ContainerPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:[NSDictionary dictionaryWithObjectsAndKeys:UIPageViewControllerOptionInterPageSpacingKey, [NSNumber numberWithFloat:10], nil]];
 	self.containerPageViewController.pageControl = self.pageControl;
-	[self addChildViewController:self.containerPageViewController];
-	[self.view addSubview:self.containerPageViewController.view];
-	// Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
+	[self addChildViewController:self.containerPageViewController];						// required when embedding container VCs
+	[self.view addSubview:self.containerPageViewController.view];						// required when embedding container VCs
+	[self.containerPageViewController didMoveToParentViewController:self];				// required when embedding container VCs
+	// Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages. (temporary)
 	CGRect pageViewRect = self.view.bounds;
 	pageViewRect = CGRectInset(pageViewRect, 100.0, 100.0);
 	self.containerPageViewController.view.frame = pageViewRect;
-	[self.containerPageViewController didMoveToParentViewController:self];
 	self.containerPageViewController.view.hidden = YES;
 }
 
@@ -513,6 +513,7 @@ typedef enum {
 		self.containerPageViewController.view.hidden = NO;
 		self.containerPageViewController.view.alpha = 1.0;
 		self.strataGraphScrollView.alpha = 0;
+		// initialize properties that are needed in StrataPageView
 		self.containerPageViewController.patternsPageArray = self.strataView.patternsPageArray;
 		self.containerPageViewController.legendView = self.legendView;
 		self.containerPageViewController.columnNumber = self.columnNumber;
@@ -522,26 +523,32 @@ typedef enum {
 		self.containerPageViewController.activeDocument = self.activeDocument;									// this will update the view's bounds
 		[self.legendView populateLegend];
 		StrataPageViewController *controller = [[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"strataPageViewController"];
-		[self.strataPageViewControllerArray removeAllObjects];
+		[self.strataPageViewControllerArray removeAllObjects];													// from previous mode switch
 		[self.strataPageViewControllerArray addObject:controller];
 		[self.containerPageViewController setViewControllers:self.strataPageViewControllerArray direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:NULL];
 		controller.parent = self.containerPageViewController;
-		controller.pageIndex = 0;
+		controller.pageIndex = 0;																				// make it the first page (might want to change later to restore current page)
 		self.pageControl.currentPage = 0;
 		self.pageControl.numberOfPages = controller.maxPages;
 		self.containerPageViewController.maxPages = controller.maxPages;
+		[UIView beginAnimations:@"GraphToPageTransition" context:nil];
+		[UIView setAnimationDuration:0.5];
+		self.strataGraphScrollView.alpha = 0.0;
+		self.strataPageScrollView.alpha = 1.0;
+		self.containerPageViewController.view.alpha = 1;
+		[UIView commitAnimations];
 	} else {																									// switching to graph mode
 		self.strataPageScrollView.hidden = YES;
 		self.pageControl.hidden = YES;
 		self.strataMultiPageScrollView.hidden = YES;
 		self.containerPageViewController.view.hidden = YES;
-		self.containerPageViewController.view.alpha = 0;
 		self.background.hidden = YES;
 		self.pageControl.hidden = YES;
 		[UIView beginAnimations:@"PageToGraphTransition" context:nil];
 		[UIView setAnimationDuration:0.5];
 		self.strataGraphScrollView.alpha = 1.0;
 		self.strataPageScrollView.alpha = 0.0;
+		self.containerPageViewController.view.alpha = 0;
 		[UIView commitAnimations];
 	}
 }
