@@ -394,14 +394,16 @@ typedef enum {
 	
 	[self.strataPageScrollView removeFromSuperview];									// we'll just use as a template, populating its parent programmatically
 	self.strataPageViewControllerArray = [[NSMutableArray alloc] init];					// used to retain references to page view view controllers
-	self.containerPageViewController = [[ContainerPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:[NSDictionary dictionaryWithObjectsAndKeys:UIPageViewControllerOptionInterPageSpacingKey, [NSNumber numberWithFloat:10], nil]];
+	self.containerPageViewController = [[ContainerPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:[NSDictionary dictionaryWithObjectsAndKeys:UIPageViewControllerOptionInterPageSpacingKey, [NSNumber numberWithFloat:50], nil]];
 	self.containerPageViewController.pageControl = self.pageControl;
 	[self addChildViewController:self.containerPageViewController];						// required when embedding container VCs
 	[self.view addSubview:self.containerPageViewController.view];						// required when embedding container VCs
 	[self.containerPageViewController didMoveToParentViewController:self];				// required when embedding container VCs
+	[self.view bringSubviewToFront:self.pageControl];									// so it's not obscured by ContainerPageViewController
 	// Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages. (temporary)
 	CGRect pageViewRect = self.view.bounds;
-	pageViewRect = CGRectInset(pageViewRect, 100.0, 100.0);
+	pageViewRect.origin.y += 44;
+	pageViewRect.size.height -= 44;
 	self.containerPageViewController.view.frame = pageViewRect;
 	self.containerPageViewController.view.hidden = YES;
 }

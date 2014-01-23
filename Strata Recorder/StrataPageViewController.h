@@ -10,7 +10,7 @@
 #import "StrataPageView.h"
 #import "ContainerPageViewController.h"
 
-@interface StrataPageViewController : UIViewController {
+@interface StrataPageViewController : UIViewController <UIScrollViewDelegate> {
 	int _pageIndex;
 	ContainerPageViewController* _parent;
 }
@@ -19,7 +19,6 @@
 @property int												maxPages;
 @property (strong, nonatomic) IBOutlet StrataPageView*		strataPageView;
 @property (weak, nonatomic) IBOutlet UIScrollView*			strataPageScrollView;
-@property UIScrollView*										strataMultiPageScrollView;
 @property (nonatomic) ContainerPageViewController*			parent;
 
 @end

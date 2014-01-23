@@ -243,6 +243,11 @@
 			CGContextTranslateCTM(UIGraphicsGetCurrentContext(), _activeDocument.pageMargins.width*72., _activeDocument.pageMargins.height*72.);
 			CGContextScaleCTM(UIGraphicsGetCurrentContext(), 72./PPI*_activeDocument.legendScale, 72./PPI*_activeDocument.legendScale);
 		} else {
+			// draw page boundaries
+			CGContextRef currentContext = UIGraphicsGetCurrentContext();
+			CGContextSetLineWidth(currentContext, 3);
+			CGContextStrokeRect(currentContext, self.bounds);
+
 			CGContextTranslateCTM(UIGraphicsGetCurrentContext(), _activeDocument.pageMargins.width*PPI, _activeDocument.pageMargins.height*PPI);
 			CGContextScaleCTM(UIGraphicsGetCurrentContext(), _activeDocument.legendScale, _activeDocument.legendScale);
 		}

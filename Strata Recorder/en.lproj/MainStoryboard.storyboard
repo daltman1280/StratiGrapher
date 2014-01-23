@@ -175,7 +175,7 @@
                             </scrollView>
                             <pageControl hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="9" currentPage="1" id="HmK-jK-DGa">
                                 <rect key="frame" x="274" y="950" width="220" height="36"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <color key="pageIndicatorTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="currentPageIndicatorTintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </pageControl>
@@ -257,7 +257,7 @@
                         <action selector="handleRotationGesture:" destination="laN-41-imc" id="tHE-l5-KBD"/>
                     </connections>
                 </rotationGestureRecognizer>
-                <view contentMode="scaleToFill" id="QEO-iq-LHP" customClass="LegendView">
+                <view contentMode="scaleToFill" id="QEO-iq-LHP" userLabel="Legend View template" customClass="LegendView">
                     <rect key="frame" x="0.0" y="0.0" width="333" height="72"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -312,10 +312,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="Format background.png" id="QXc-wW-IGF">
-                                <rect key="frame" x="0.0" y="-48" width="768" height="1100"/>
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1100"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Iza-PI-GDv">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" maximumZoomScale="2" id="Iza-PI-GDv">
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="1004"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
@@ -325,6 +325,9 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
+                                <connections>
+                                    <outlet property="delegate" destination="dfi-BM-rYy" id="qhu-Y7-0up"/>
+                                </connections>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -1667,7 +1670,6 @@
                 <relationship kind="outlet" name="settingsButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="strataColumn" candidateClass="UIView"/>
                 <relationship kind="outlet" name="strataGraphScrollView" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="strataMultiPageScrollView" candidateClass="UIScrollView"/>
                 <relationship kind="outlet" name="strataPageScrollView" candidateClass="UIScrollView"/>
                 <relationship kind="outlet" name="strataPageView" candidateClass="StrataPageView"/>
                 <relationship kind="outlet" name="strataView" candidateClass="StrataView"/>
