@@ -10,8 +10,6 @@
 
 @interface StrataPageViewController ()
 
-@property UIScrollView*			strataPageScrollView;
-
 @end
 
 @implementation StrataPageViewController
@@ -23,35 +21,45 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	[(StrataPageView *)self.view setupPages];
+//	self.strataPageView = (StrataPageView *) self.view;
+	if (self.parent) {
+		self.strataPageView.patternsPageArray = self.parent.patternsPageArray;
+		self.strataPageView.legendView = self.parent.legendView;
+		self.strataPageView.columnNumber = self.parent.columnNumber;
+		self.strataPageView.grainSizeLegend = self.parent.grainSizeLegend;
+		self.strataPageView.grainSizeLines = self.parent.grainSizeLines;
+		self.strataPageView.strataColumn = self.parent.strataColumn;
+		self.strataPageView.activeDocument = self.parent.activeDocument;
+		[self.strataPageView setupPages];
+		self.maxPages = self.strataPageView.maxPageIndex+1;
+		self.strataPageView.pageIndex = _pageIndex;
+	}
 }
 
-#pragma mark - UIPageViewController delegate methods
-
-- (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController *)pageViewController spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation
+- (void)setParent:(ContainerPageViewController *)parent
 {
-	return UIPageViewControllerSpineLocationMin;
+	_parent = parent;
+	if (self.strataPageView) {
+		self.strataPageView.patternsPageArray = self.parent.patternsPageArray;
+		self.strataPageView.legendView = self.parent.legendView;
+		self.strataPageView.columnNumber = self.parent.columnNumber;
+		self.strataPageView.grainSizeLegend = self.parent.grainSizeLegend;
+		self.strataPageView.grainSizeLines = self.parent.grainSizeLines;
+		self.strataPageView.strataColumn = self.parent.strataColumn;
+		self.strataPageView.activeDocument = self.parent.activeDocument;
+		[self.strataPageView setupPages];
+		self.maxPages = self.strataPageView.maxPageIndex+1;
+		self.strataPageView.pageIndex = _pageIndex;
+	}
 }
 
-#pragma mark - Page View Controller Data Source
-
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
+- (void)setPageIndex:(int)pageIndex
 {
-	if (((StrataPageViewController *)viewController).pageIndex == 0)
-		return nil;
-	BlueViewController *controller = [viewController.storyboard instantiateViewControllerWithIdentifier:@"blueViewController"];
-	controller.pageNumber = ((BlueViewController *)viewController).pageNumber-1;
-	return controller;
+	_pageIndex = pageIndex;
+	self.strataPageView.pageIndex = pageIndex;
 }
 
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
-{
-	BlueViewController *controller = [viewController.storyboard instantiateViewControllerWithIdentifier:@"blueViewController"];
-	controller.pageNumber = ((BlueViewController *)viewController).pageNumber+1;
-	return controller;
-}
-
-#if 0
+#if 0			// make this part of initialization
 - (id)initWithEnclosingScrollView:(UIScrollView *)enclosingScrollView
 {
 	self = [super init];
@@ -75,6 +83,7 @@
 	return self;
 }
 
+#if 0
 - (void)setPageIndex:(int)pageIndex
 {
 	_pageIndex = pageIndex;
@@ -91,12 +100,12 @@
 {
 	return self.pageIndex;
 }
+#endif
 
 #pragma mark UIScrollViewDelegate
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)sender
 {
-	NSLog(@"StrataPageViewController, viewForZoomingInScrollView");
 	return self.strataPageView;
 }
 
@@ -106,13 +115,11 @@
 //	float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height)/2.0, 0);
 	float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width*self.strataPageScrollView.zoomScale)/2.0, 0);
 	float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height*self.strataPageScrollView.zoomScale)/2.0, 0);
-	NSLog(@"StrataPageViewController, scrollViewDidEndZooming, height = %f", self.strataPageView.bounds.size.height);
 	self.strataPageScrollView.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-	NSLog(@"StrataPageViewController, scrollViewDidScroll");
 }
 #endif
 
@@ -122,4 +129,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewDidUnload {
+	[self setStrataPageScrollView:nil];
+	[self setStrataPageScrollView:nil];
+	[self setStrataPageView:nil];
+	[super viewDidUnload];
+}
 @end

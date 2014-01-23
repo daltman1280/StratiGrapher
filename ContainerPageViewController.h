@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LegendView.h"
 
-@interface ContainerPageViewController : UIPageViewController
+@interface ContainerPageViewController : UIPageViewController <UIPageViewControllerDelegate, UIPageViewControllerDataSource>
 
 @property NSMutableArray*			patternsPageArray;
 @property (weak, nonatomic) LegendView*			legendView;
@@ -19,6 +19,8 @@
 @property (weak, nonatomic) UILabel*			grainSizeLegend;
 @property (weak, nonatomic) UIView*				strataColumn;
 @property (weak, nonatomic) UILabel*			grainSizeLines;
-@property StrataDocument*								activeDocument;
+@property StrataDocument*						activeDocument;
 
+@property (weak) UIPageControl*					pageControl;
+@property int									maxPages;
 @end

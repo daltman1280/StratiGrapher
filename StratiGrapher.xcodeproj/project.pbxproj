@@ -56,7 +56,6 @@
 		25921D2C168C04D30038E9D9 /* post-it-pencil.png in Resources */ = {isa = PBXBuildFile; fileRef = 25921D2B168C04D30038E9D9 /* post-it-pencil.png */; };
 		259318F8176E602600A6341A /* LegendView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259318F7176E602600A6341A /* LegendView.m */; };
 		259339BD173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 259339BC173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m */; };
-		25A50626187C84D700842903 /* BlueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A50625187C84D700842903 /* BlueViewController.m */; };
 		25A5086018888E9900842903 /* ContainerPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A5085F18888E9900842903 /* ContainerPageViewController.m */; };
 		25AA3CE91860C82300B01E64 /* Format background.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AA3CE81860C82300B01E64 /* Format background.png */; };
 		25C47823185EC6BA0020D30A /* StratumInfoNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C47822185EC6BA0020D30A /* StratumInfoNotesViewController.m */; };
@@ -160,10 +159,8 @@
 		259339BC173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StratumMaterialsPaletteTableViewController.m; sourceTree = "<group>"; };
 		2594F0991677158600F1958D /* Strata Recorder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Strata Recorder.entitlements"; sourceTree = "<group>"; };
 		259FDA57165DE9300010867E /* DocumentListControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentListControllerDelegate.h; sourceTree = "<group>"; };
-		25A50624187C84D700842903 /* BlueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlueViewController.h; sourceTree = "<group>"; };
-		25A50625187C84D700842903 /* BlueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlueViewController.m; sourceTree = "<group>"; };
-		25A5085E18888E9900842903 /* ContainerPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContainerPageViewController.h; sourceTree = "<group>"; };
-		25A5085F18888E9900842903 /* ContainerPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContainerPageViewController.m; sourceTree = "<group>"; };
+		25A5085E18888E9900842903 /* ContainerPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContainerPageViewController.h; path = ../ContainerPageViewController.h; sourceTree = "<group>"; };
+		25A5085F18888E9900842903 /* ContainerPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContainerPageViewController.m; path = ../ContainerPageViewController.m; sourceTree = "<group>"; };
 		25AA3CE81860C82300B01E64 /* Format background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Format background.png"; path = "images/Format background.png"; sourceTree = "<group>"; };
 		25C20BB017111F40003ED123 /* ApplicationIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ApplicationIcon.png; sourceTree = "<group>"; };
 		25C47821185EC6BA0020D30A /* StratumInfoNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StratumInfoNotesViewController.h; sourceTree = "<group>"; };
@@ -215,8 +212,6 @@
 		2589CEF7163F897C00E43147 = {
 			isa = PBXGroup;
 			children = (
-				25A5085E18888E9900842903 /* ContainerPageViewController.h */,
-				25A5085F18888E9900842903 /* ContainerPageViewController.m */,
 				2557E68C1867C36000D36B92 /* Application Notes.rtf */,
 				258E5F8217152E6C006706B3 /* Default-Landscape~ipad.png */,
 				258E5F7D17152CEB006706B3 /* Default~ipad.png */,
@@ -293,20 +288,13 @@
 		258E34C21657159B00E09A3A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				2589CF2C163F8AE200E43147 /* StrataView.h */,
-				2589CF2D163F8AE200E43147 /* StrataView.m */,
-				258E34BC1656E6C200E09A3A /* StrataPageView.h */,
-				258E34BD1656E6C200E09A3A /* StrataPageView.m */,
-				25066ED8166A5EF70095C3CC /* StrataToolsView.h */,
-				25066ED9166A5EF70095C3CC /* StrataToolsView.m */,
 				2589CF21163F897D00E43147 /* StrataViewController.h */,
 				2589CF22163F897D00E43147 /* StrataViewController.m */,
-				259318F6176E602600A6341A /* LegendView.h */,
-				259318F7176E602600A6341A /* LegendView.m */,
-				255394C518786865001A6B39 /* StrataPageViewController.h */,
-				255394C618786865001A6B39 /* StrataPageViewController.m */,
-				25A50624187C84D700842903 /* BlueViewController.h */,
-				25A50625187C84D700842903 /* BlueViewController.m */,
+				259397601890D21F00498783 /* Pages */,
+				2589CF2C163F8AE200E43147 /* StrataView.h */,
+				2589CF2D163F8AE200E43147 /* StrataView.m */,
+				25066ED8166A5EF70095C3CC /* StrataToolsView.h */,
+				25066ED9166A5EF70095C3CC /* StrataToolsView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -419,6 +407,21 @@
 				25F3F2F1165B568F001A2F53 /* RenameViewController.m */,
 			);
 			name = "Document List";
+			sourceTree = "<group>";
+		};
+		259397601890D21F00498783 /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				25A5085E18888E9900842903 /* ContainerPageViewController.h */,
+				25A5085F18888E9900842903 /* ContainerPageViewController.m */,
+				255394C518786865001A6B39 /* StrataPageViewController.h */,
+				255394C618786865001A6B39 /* StrataPageViewController.m */,
+				258E34BC1656E6C200E09A3A /* StrataPageView.h */,
+				258E34BD1656E6C200E09A3A /* StrataPageView.m */,
+				259318F6176E602600A6341A /* LegendView.h */,
+				259318F7176E602600A6341A /* LegendView.m */,
+			);
+			name = Pages;
 			sourceTree = "<group>";
 		};
 		25F3F2EA165AB54C001A2F53 /* Popover Menus */ = {
@@ -545,7 +548,6 @@
 				25C47823185EC6BA0020D30A /* StratumInfoNotesViewController.m in Sources */,
 				25C4782F185F5B1C0020D30A /* StratumGranularityViewController.m in Sources */,
 				255394C718786865001A6B39 /* StrataPageViewController.m in Sources */,
-				25A50626187C84D700842903 /* BlueViewController.m in Sources */,
 				25A5086018888E9900842903 /* ContainerPageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

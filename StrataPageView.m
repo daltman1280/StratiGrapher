@@ -246,7 +246,8 @@
 			CGContextTranslateCTM(UIGraphicsGetCurrentContext(), _activeDocument.pageMargins.width*PPI, _activeDocument.pageMargins.height*PPI);
 			CGContextScaleCTM(UIGraphicsGetCurrentContext(), _activeDocument.legendScale, _activeDocument.legendScale);
 		}
-		[self.legendView.layer renderInContext:UIGraphicsGetCurrentContext()];									// render the legend on a separate page
+		_legendView.hidden = NO;
+		[_legendView.layer renderInContext:UIGraphicsGetCurrentContext()];										// render the legend on a separate page
 		return;
 	}
 	_legendView.hidden = YES;

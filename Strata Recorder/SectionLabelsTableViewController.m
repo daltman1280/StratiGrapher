@@ -133,7 +133,6 @@
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
 	SectionLabel *label = self.sectionLabels[fromIndexPath.row];
-	NSLog(@"sectionlabels = %@", [self.sectionLabels class]);
 	[self.sectionLabels removeObjectAtIndex:fromIndexPath.row];
 	[self.sectionLabels insertObject:label atIndex:toIndexPath.row];
 }
