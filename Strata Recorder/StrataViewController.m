@@ -569,8 +569,6 @@ typedef enum {
 
 #pragma mark SettingsControllerDelegate
 
-#pragma mark TODO: update for StrataPageViewControllers
-
 - (void)handleSettingsTableComplete:(id)sender;
 {
 	[self.popover dismissPopoverAnimated:YES];
@@ -586,6 +584,9 @@ typedef enum {
 		self.activeDocument.legendScale = self.settingsTableController.legendScale;
 		self.activeDocument.sectionLabels = self.settingsTableController.sectionLabels;
 		// update the page views
+		int selection = [(UISegmentedControl *)self.modeControl selectedSegmentIndex];
+		if (selection == 1)																					// if we're in page mode, refresh, with page 1
+			[self handleModeSwitch:self.modeControl];
 		[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataHeightChangedNotification object:self];
 	}
 }
