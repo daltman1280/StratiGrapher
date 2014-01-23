@@ -43,28 +43,28 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Strata Recorder/StrataPageViewController.m"
-         timestampString = "412143159.861639"
+         timestampString = "412151635.692698"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "42"
-         endingLineNumber = "42"
+         startingLineNumber = "53"
+         endingLineNumber = "53"
          landmarkName = "-setParent:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Strata Recorder/StrataPageViewController.m"
-         timestampString = "412062390.997197"
+         timestampString = "412151026.766464"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "24"
-         endingLineNumber = "24"
+         startingLineNumber = "28"
+         endingLineNumber = "28"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -85,26 +85,39 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "StrataPageView.m"
-         timestampString = "412143159.861639"
+         filePath = "Strata Recorder/StrataPageViewController.m"
+         timestampString = "412151635.692698"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "242"
-         endingLineNumber = "242"
-         landmarkName = "-drawRect:"
+         startingLineNumber = "84"
+         endingLineNumber = "84"
+         landmarkName = "-viewForZoomingInScrollView:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "LegendView.m"
-         timestampString = "412116031.530259"
+         filePath = "Strata Recorder/StrataPageViewController.m"
+         timestampString = "412151635.692698"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "92"
-         endingLineNumber = "92"
-         landmarkName = "-populateLegend"
+         startingLineNumber = "89"
+         endingLineNumber = "89"
+         landmarkName = "-scrollViewDidEndZooming:withView:atScale:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Strata Recorder/StrataPageViewController.m"
+         timestampString = "412151691.793284"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "98"
+         endingLineNumber = "98"
+         landmarkName = "-scrollViewDidScroll:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
