@@ -7,7 +7,7 @@
 //
 
 /*
- View Controller for StrataPageView
+ View Controller for StrataPageView, a member of VC list for ContainerPageViewController.
  */
 
 #import "StrataPageViewController.h"
@@ -27,6 +27,7 @@
     [super viewDidLoad];
 	if (self.parent) {
 		[self initializePageView];
+		[self adjustMinimumZoom];
 		[self maintainScrollView];
 	}
 }
@@ -36,6 +37,7 @@
 	_parent = parent;
 	if (self.strataPageView) {
 		[self initializePageView];
+		[self adjustMinimumZoom];
 		[self maintainScrollView];
 	}
 }
@@ -46,6 +48,17 @@
 	self.strataPageView.pageIndex = pageIndex;
 	if (self.strataPageView)
 		[self maintainScrollView];
+}
+
+- (void)adjustMinimumZoom
+{
+	float widthRatio = self.strataPageView.bounds.size.width/self.strataPageScrollView.bounds.size.width;
+	float heightRatio = self.strataPageView.bounds.size.height/self.strataPageScrollView.bounds.size.height;
+	if (widthRatio > 1 || heightRatio > 1) {
+		float maxRatio = fmaxf(widthRatio, heightRatio);
+		self.strataPageScrollView.minimumZoomScale = 1.0/maxRatio;
+		self.strataPageScrollView.zoomScale = self.strataPageScrollView.minimumZoomScale;
+	}
 }
 
 - (void)initializePageView
