@@ -230,7 +230,6 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-//	exportPaperActionSheetVisible = NO;
 	if (buttonIndex == actionSheet.cancelButtonIndex) return;									// user canceled
 	if (actionSheet == deleteDocumentActionSheet) {
 		int previousSelectionIndex = [self.strataFiles indexOfObject:self.activeDocument.name];

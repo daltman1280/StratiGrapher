@@ -330,10 +330,12 @@ typedef enum {
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
 	if ([segue.identifier isEqualToString:@"documents"]) {
+		UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
 		((DocumentListTableViewController *)((UINavigationController *)segue.destinationViewController).topViewController).activeDocument = self.activeDocument;
 		((DocumentListTableViewController *)((UINavigationController *)segue.destinationViewController).topViewController).delegate = self;			// set up ourselves as delegate
 		((UIStoryboardPopoverSegue *)segue).popoverController.delegate = (id) self;																	// popover controller delegate
 		[self.activeDocument save];
+		self.popover = popoverSegue.popoverController;																								// so we can dismiss the popover
 	} else if ([segue.identifier isEqualToString:@"settings"]) {
 		UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
 		self.settingsNavigationController = segue.destinationViewController;
@@ -431,9 +433,9 @@ typedef enum {
 		((UISegmentedControl *)self.modeControl).selectedSegmentIndex = 0;				// switch to draft mode
 		[self handleModeSwitch:self.modeControl];
 	}
-	NSLog(@"setActiveDocument, self = %@, self.activeDocument = %@", self, self.activeDocument);
 	[[NSNotificationCenter defaultCenter] postNotificationName:SRActiveDocumentSelectionChangedNotification object:self userInfo:[NSDictionary dictionaryWithObject:self.activeDocument forKey:@"activeDocument"]];
 	[self.strataView setNeedsDisplay];
+	[self.strataGraphScrollView setNeedsDisplay];
 }
 
 - (void)handleApplicationBecameActive:(id)sender
@@ -603,7 +605,12 @@ typedef enum {
 
 - (void)setActiveStrataDocument:(NSString *)name
 {
+	float previousDocumentHeight = self.activeDocument.strataHeight;
 	self.activeDocument = [StrataDocument loadFromFile:name];
+	if (self.activeDocument.strataHeight > previousDocumentHeight + 7) {									// need to dismiss popover to get it to redraw
+		[self.popover dismissPopoverAnimated:YES];
+		[[NSNotificationCenter defaultCenter] postNotificationName:SRPopupNotVisibleNotification object:self];
+	}
 }
 
 #pragma mark Document List Popover Controller Delegate
