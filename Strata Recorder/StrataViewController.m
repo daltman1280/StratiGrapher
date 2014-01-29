@@ -427,8 +427,11 @@ typedef enum {
 	
 	self.strataPageView.activeDocument = self.activeDocument;							// this will initialize the view's bounds
 	
-	((UISegmentedControl *)self.modeControl).selectedSegmentIndex = 0;					// switch to draft mode
-	[self handleModeSwitch:self.modeControl];
+	if (((UISegmentedControl *)self.modeControl).selectedSegmentIndex != 0) {
+		((UISegmentedControl *)self.modeControl).selectedSegmentIndex = 0;				// switch to draft mode
+		[self handleModeSwitch:self.modeControl];
+	}
+	NSLog(@"setActiveDocument, self = %@, self.activeDocument = %@", self, self.activeDocument);
 	[[NSNotificationCenter defaultCenter] postNotificationName:SRActiveDocumentSelectionChangedNotification object:self userInfo:[NSDictionary dictionaryWithObject:self.activeDocument forKey:@"activeDocument"]];
 	[self.strataView setNeedsDisplay];
 }
@@ -526,7 +529,7 @@ typedef enum {
 		self.strataGraphScrollView.alpha = 0.0;
 		self.containerPageViewController.view.alpha = 1;
 		[UIView commitAnimations];
-	} else {																									// switching to graph mode
+	} else {																									// switching to draft mode
 		self.pageControl.hidden = YES;
 		self.containerPageViewController.view.hidden = YES;
 		self.pageControl.hidden = YES;

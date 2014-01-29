@@ -337,7 +337,7 @@
 			NSString *labelText = ((SectionLabel *)_activeDocument.sectionLabels[sectionIndex]).labelText;
 			UIFont *font = [UIFont systemFontOfSize:18.0];
 			CGSize sizeOfLabelText = [labelText sizeWithFont:font];
-			if (stratumTop > pageTop || nextStratum.hasPageCutter) {											// we're at the end of a column, need to draw section label, even if more strata remain
+			if ((stratumTop > pageTop || nextStratum.hasPageCutter) && indexOfStratum < stratumSectionUpper) {	// we're at the end of a column, need to draw section label, even if more strata remain
 				xSectionBottom = ((Stratum *)_activeDocument.strata[stratumSectionLower]).frame.origin.x/scale + offset.x + [_maxWidths[columnIndex] floatValue];
 				ySectionBottom = ((Stratum *)_activeDocument.strata[stratumSectionLower]).frame.origin.y/scale + offset.y;
 				xSectionTop = stratum.frame.origin.x/scale + offset.x + [_maxWidths[columnIndex] floatValue];

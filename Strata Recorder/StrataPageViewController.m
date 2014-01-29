@@ -84,7 +84,6 @@
 	self.strataPageScrollView.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
 	if (verticalInset > 0 || horizontalInset > 0) self.strataPageScrollView.contentOffset = CGPointMake(-horizontalInset, -verticalInset);
 	self.strataPageScrollView.scrollEnabled = (horizontalInset == 0 && verticalInset == 0) ? YES : NO;
-	NSLog(@"setPageIndex, horizontalInset = %f, verticalInset = %f, contentOffset = %f, y = %f", horizontalInset, verticalInset, self.strataPageScrollView.contentOffset.x, self.strataPageScrollView.contentOffset.y);
 }
 
 #pragma mark UIScrollViewDelegate
@@ -100,7 +99,6 @@
 	float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height*self.strataPageScrollView.zoomScale)/2.0, 0);
 	self.strataPageScrollView.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
 	self.strataPageScrollView.scrollEnabled = (horizontalInset == 0 && verticalInset == 0) ? YES : NO;
-	NSLog(@"scrollViewDidEndZooming, horizontalInset = %f, verticalInset = %f, contentOffset = %f, y = %f", horizontalInset, verticalInset, self.strataPageScrollView.contentOffset.x, self.strataPageScrollView.contentOffset.y);
 }
 
 - (void)didReceiveMemoryWarning
