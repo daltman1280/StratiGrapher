@@ -48,6 +48,11 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)handleActiveDocumentSelectionChanged:(NSNotification *)notification
 {
 	self.activeDocument = [notification.userInfo objectForKey:@"activeDocument"];

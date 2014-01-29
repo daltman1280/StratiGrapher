@@ -214,6 +214,7 @@
 	[self setDuplicateDocument:nil];
 	[self setActionDocument:nil];
 	[self setToolbar:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super viewDidUnload];
 }
 
