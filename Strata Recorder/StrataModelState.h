@@ -10,7 +10,7 @@
 
 @interface StrataModelState : NSObject
 
-@property BOOL					dirty;
+@property BOOL					dirty;					// whether the model has been changed, to require Page views to be redrawn
 
 + (StrataModelState *)currentState;
 
