@@ -14,6 +14,7 @@
 #import "Graphics.h"
 #import "StrataViewController.h"
 #import "StrataNotifications.h"
+#import "StrataModelState.h"
 
 /*
  A static callback function for drawing stratigraphic patterns. Uses a matrix of pattern swatches contained in a manually prepared
@@ -415,6 +416,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	[self updateOutlineFromTrace];
 	[[NSNotificationCenter defaultCenter] postNotificationName:SREditingOperationEndedNotification object:self];	// re-enable scrolling
 	[self.overlayContainer.overlay setNeedsDisplay];
+	[StrataModelState currentState].dirty = YES;
 }
 
 - (void)populateMoveIconLocations
@@ -734,6 +736,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	[[NSNotificationCenter defaultCenter] postNotificationName:SREditingOperationEndedNotification object:self];	// re-enable scrolling
 	if (!self.pencilActive)
 		[self setNeedsDisplay];																			// still causes extra redraw when exiting pencil highlighting mode
+	[StrataModelState currentState].dirty = YES;
 }
 
 //	when is this called?

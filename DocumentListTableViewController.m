@@ -7,6 +7,7 @@
 //
 
 #import "StrataModel.h"
+#import "StrataModelState.h"
 #import "RenameViewController.h"
 #import "DocumentListTableViewController.h"
 #import "StrataNotifications.h"
@@ -205,6 +206,7 @@
 	int index = [indexPath indexAtPosition:1];
 	if ([(NSString *)(self.strataFiles[index]) isEqualToString:self.activeDocument.name]) return;			// user picked current document
 	[self.delegate setActiveStrataDocument:self.strataFiles[index]];
+	[StrataModelState currentState].dirty = YES;
 }
 
 - (void)viewDidUnload {

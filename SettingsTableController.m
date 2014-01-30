@@ -10,6 +10,7 @@
 #import "StrataNotifications.h"
 #import "SectionLabelsTableViewController.h"
 #import "MaterialPatternView.h"
+#import "StrataModelState.h"
 
 @interface SettingsTableController ()
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveItem;
@@ -122,6 +123,7 @@
 	}
 	[[NSNotificationCenter defaultCenter] postNotificationName:SRLegendScaleChangedNotification object:self];	// TODO: temporary blanket notification
 	[self.delegate performSelector:@selector(handleSettingsTableComplete:) withObject:sender];					// let the delegate deal with the changed properties
+	[StrataModelState currentState].dirty = YES;
 }
 
 - (IBAction)handleCancel:(id)sender {

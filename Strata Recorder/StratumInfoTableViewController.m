@@ -7,6 +7,7 @@
 //
 
 #import "StrataModel.h"
+#import "StrataModelState.h"
 #import "StratumInfoTableViewController.h"
 #import "StratumMaterialsPaletteTableViewController.h"
 #import "StrataView.h"
@@ -43,6 +44,7 @@
 		float width = [StrataDocument stratumWidthFromGrainSize:self.stratum.grainSizeIndex-1];
 		[self.activeDocument adjustStratumSize:CGSizeMake(width, self.stratum.frame.size.height) atIndex:[self.activeDocument.strata indexOfObject:self.stratum]];
 	}
+	[StrataModelState currentState].dirty = YES;
 	[self.delegate performSelector:@selector(handleStratumInfoComplete:) withObject:self];
 }
 

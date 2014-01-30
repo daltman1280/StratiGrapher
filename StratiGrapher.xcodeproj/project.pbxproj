@@ -63,6 +63,7 @@
 		25C5AA171755650600A66C08 /* AddSectionLabelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C5AA161755650600A66C08 /* AddSectionLabelViewController.m */; };
 		25E7D2701652C56800109376 /* info icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E7D26F1652C56800109376 /* info icon.png */; };
 		25E91B2016633CC600AFFC0E /* SettingsTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E91B1F16633CC600AFFC0E /* SettingsTableController.m */; };
+		25F061EC1899C898002BB2DC /* StrataModelState.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F061EB1899C898002BB2DC /* StrataModelState.m */; };
 		25F3F2F2165B568F001A2F53 /* RenameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F3F2F1165B568F001A2F53 /* RenameViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -173,6 +174,8 @@
 		25E91B1E16633CC600AFFC0E /* SettingsTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsTableController.h; path = ../SettingsTableController.h; sourceTree = "<group>"; };
 		25E91B1F16633CC600AFFC0E /* SettingsTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsTableController.m; path = ../SettingsTableController.m; sourceTree = "<group>"; };
 		25E91B251663FBBF00AFFC0E /* SettingsControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingsControllerDelegate.h; sourceTree = "<group>"; };
+		25F061EA1899C898002BB2DC /* StrataModelState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrataModelState.h; sourceTree = "<group>"; };
+		25F061EB1899C898002BB2DC /* StrataModelState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StrataModelState.m; sourceTree = "<group>"; };
 		25F3F2F0165B568F001A2F53 /* RenameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenameViewController.h; sourceTree = "<group>"; };
 		25F3F2F1165B568F001A2F53 /* RenameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenameViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -281,6 +284,8 @@
 			children = (
 				258FABA71643782D005A00A8 /* StrataModel.h */,
 				258FABA81643782D005A00A8 /* StrataModel.m */,
+				25F061EA1899C898002BB2DC /* StrataModelState.h */,
+				25F061EB1899C898002BB2DC /* StrataModelState.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -549,6 +554,7 @@
 				25C4782F185F5B1C0020D30A /* StratumGranularityViewController.m in Sources */,
 				255394C718786865001A6B39 /* StrataPageViewController.m in Sources */,
 				25A5086018888E9900842903 /* ContainerPageViewController.m in Sources */,
+				25F061EC1899C898002BB2DC /* StrataModelState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

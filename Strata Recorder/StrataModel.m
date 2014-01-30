@@ -7,6 +7,7 @@
 //
 
 #import "StrataModel.h"
+#import "StrataModelState.h"
 #import "Graphics.h"
 
 @interface StrataDocument()
@@ -38,6 +39,7 @@
 		self.lineThickness = 2;
 		self.materialNumbersPalette = [[NSMutableSet alloc] init];
 		self.patternScale = 1;
+		[StrataModelState currentState].dirty = YES;
 	}
 	return self;
 }
@@ -62,6 +64,7 @@
 			[[NSFileManager defaultManager] copyItemAtPath:[[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:self.name] stringByAppendingPathExtension:@"strata"]
 													toPath:[[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:newName] stringByAppendingPathExtension:@"strata"]
 													 error:nil];
+			[StrataModelState currentState].dirty = YES;
 			return [StrataDocument loadFromFile:newName];
 			break;
 		}
@@ -97,6 +100,7 @@
 		if (stratum.materialNumber)
 			[doc.materialNumbersPalette addObject:[NSNumber numberWithInt:stratum.materialNumber]];
 	}
+	[StrataModelState currentState].dirty = YES;
 	return doc;
 }
 
@@ -141,7 +145,6 @@
 
 - (void)save
 {
-//	self.name = @"test";
 	NSAssert(self.name, @"nil name for StrataDocument:save");
 	[NSKeyedArchiver archiveRootObject:self toFile:[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:[self.name stringByAppendingPathExtension:@"strata"]]];
 }

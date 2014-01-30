@@ -8,12 +8,14 @@
 
 #import "StrataAppDelegate.h"
 #import "StrataNotifications.h"
+#import "StrataModelState.h"
 
 @implementation StrataAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+	[StrataModelState currentState].dirty = YES;
     return YES;
 }
 							

@@ -25,6 +25,7 @@
 #import "LegendView.h"
 #import "MaterialPatternView.h"
 #import "ContainerPageViewController.h"
+#import "StrataModelState.h"
 
 typedef enum {
 	tapStateNoneSelected,
@@ -127,6 +128,7 @@ typedef enum {
 						self.rotationGestureRecognizer.enabled = YES;
 						self.paleoCurrentDragStarted = NO;
 						self.strataView.touchesEnabled = NO;
+						[StrataModelState currentState].dirty = YES;
 						break;
 					}
 				}
@@ -142,6 +144,7 @@ typedef enum {
 		CGPoint point = [self.view convertPoint:self.paleoCurrentSelectedView.center toView:self.strataView];
 		self.selectedPaleoCurrent.origin = CGPointMake(UX(point.x)-self.selectedStratum.frame.size.width, UY(point.y)-self.selectedStratum.frame.origin.y);
 		self.selectedPaleoCurrent = nil;
+		[StrataModelState currentState].dirty = YES;
 		self.currentTapState = tapStateNoneSelected;
 		self.strataView.touchesEnabled = YES;
 		self.strataGraphScrollView.scrollEnabled = YES;
@@ -176,6 +179,7 @@ typedef enum {
 		self.paleoCurrentSelectedView.transform = CGAffineTransformMakeRotation(self.selectedPaleoCurrent.rotation+gestureRecognizer.rotation);
 		self.paleoCurrentInitialRotation = self.selectedPaleoCurrent.rotation+gestureRecognizer.rotation;
 	}
+	[StrataModelState currentState].dirty = YES;
 }
 
 /*
@@ -220,10 +224,12 @@ typedef enum {
         } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
 			if (gestureRecognizer.view == self.scissorsView) {
 				[self handlePlaceToolAtStratumOrigin:ToolScissors usingView:self.scissorsDragView originalView:self.scissorsView];
+				[StrataModelState currentState].dirty = YES;
 			} else if (gestureRecognizer.view == self.anchorView) {
 				[self handlePlaceToolAtStratumOrigin:ToolAnchor usingView:self.anchorDragView originalView:self.anchorView];
 			} else if (gestureRecognizer.view == self.paleoCurrentView) {
 				[self handlePlaceToolAtStratumOrigin:ToolArrow usingView:self.paleoCurrentDragView originalView:self.paleoCurrentView];
+				[StrataModelState currentState].dirty = YES;
 			} else
 				NSAssert1(NO, @"Unexpected view attached to gesture recognizer, view = %@", gestureRecognizer.view);
 		}
@@ -252,6 +258,7 @@ typedef enum {
 				[self.strataView setNeedsDisplay];
 			}
 			self.paleoCurrentDragStarted = NO;
+			[StrataModelState currentState].dirty = YES;
 		}
 	}
 }
@@ -325,6 +332,7 @@ typedef enum {
 						 view.alpha = 0;
 					 }
 					 completion:^(BOOL fin){ view.alpha = 1; view.hidden = YES; }];
+	[StrataModelState currentState].dirty = YES;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -508,24 +516,27 @@ typedef enum {
 		self.containerPageViewController.view.hidden = NO;
 		self.containerPageViewController.view.alpha = 1.0;
 		self.strataGraphScrollView.alpha = 0;
-		// initialize properties that are needed in StrataPageView
-		self.containerPageViewController.patternsPageArray = self.strataView.patternsPageArray;
-		self.containerPageViewController.legendView = self.legendView;
-		self.containerPageViewController.columnNumber = self.columnNumber;
-		self.containerPageViewController.grainSizeLegend = self.grainSizeLegend;
-		self.containerPageViewController.grainSizeLines = self.grainSizeLines;
-		self.containerPageViewController.strataColumn = self.strataColumn;
-		self.containerPageViewController.activeDocument = self.activeDocument;									// this will update the view's bounds
-		[self.legendView populateLegend];
-		StrataPageViewController *controller = [[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"strataPageViewController"];
-		[self.strataPageViewControllerArray removeAllObjects];													// from previous mode switch
-		[self.strataPageViewControllerArray addObject:controller];
-		[self.containerPageViewController setViewControllers:self.strataPageViewControllerArray direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:NULL];
-		controller.parent = self.containerPageViewController;
-		controller.pageIndex = 0;																				// make it the first page (might want to change later to restore current page)
-		self.pageControl.currentPage = 0;
-		self.pageControl.numberOfPages = controller.maxPages;
-		self.containerPageViewController.maxPages = controller.maxPages;
+		if ([StrataModelState currentState].dirty) {
+			[StrataModelState currentState].dirty = NO;
+			// initialize properties that are needed in StrataPageView
+			self.containerPageViewController.patternsPageArray = self.strataView.patternsPageArray;
+			self.containerPageViewController.legendView = self.legendView;
+			self.containerPageViewController.columnNumber = self.columnNumber;
+			self.containerPageViewController.grainSizeLegend = self.grainSizeLegend;
+			self.containerPageViewController.grainSizeLines = self.grainSizeLines;
+			self.containerPageViewController.strataColumn = self.strataColumn;
+			self.containerPageViewController.activeDocument = self.activeDocument;								// this will update the view's bounds
+			[self.legendView populateLegend];
+			StrataPageViewController *controller = [[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"strataPageViewController"];
+			[self.strataPageViewControllerArray removeAllObjects];												// from previous mode switch
+			[self.strataPageViewControllerArray addObject:controller];
+			[self.containerPageViewController setViewControllers:self.strataPageViewControllerArray direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:NULL];
+			controller.parent = self.containerPageViewController;
+			controller.pageIndex = 0;																			// make it the first page (might want to change later to restore current page)
+			self.pageControl.currentPage = 0;
+			self.pageControl.numberOfPages = controller.maxPages;
+			self.containerPageViewController.maxPages = controller.maxPages;
+		}
 		[UIView beginAnimations:@"GraphToPageTransition" context:nil];
 		[UIView setAnimationDuration:0.5];
 		self.strataGraphScrollView.alpha = 0.0;
