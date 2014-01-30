@@ -302,31 +302,37 @@
 	float scale = _activeDocument.scale;
 	float pageTop = _activeDocument.pageDimension.height-_activeDocument.pageMargins.height;
 	gScale = 1;
-	int sectionIndex = 0;																						// index of current section
+	int indexOfInitialStratum = _pageIndex > 0 ? [_maxStratumIndexForPage[_pageIndex-1] intValue]+1 : 0;
+	int sectionIndex = 0;																						// index of current section for current page
 	int stratumSectionLower = -1;																				// index of first stratum for current section label
 	int stratumSectionUpper = -1;																				// index of last stratum for current section label
-	if (_activeDocument.sectionLabels.count > 0) {																// initialize bounds indices for first section label
+	for (int i=0, accum=0; i<_activeDocument.sectionLabels.count; ++i) {										// iterate section labels to find index of first label that applies to this stratum
+		accum += ((SectionLabel *)_activeDocument.sectionLabels[i]).numberOfStrataSpanned;
+		sectionIndex = i;
 		stratumSectionLower = stratumSectionUpper + 1;
 		stratumSectionUpper = stratumSectionLower + ((SectionLabel *)_activeDocument.sectionLabels[sectionIndex]).numberOfStrataSpanned-1;
+		if (accum >= indexOfInitialStratum) {
+			stratumSectionLower = indexOfInitialStratum;														// first stratum of page
+			break;
+		}
 	}
 	int columnIndex = [_minColumnIndexForPage[_pageIndex] intValue];
-	int initialIndexOfStratum = _pageIndex > 0 ? [_maxStratumIndexForPage[_pageIndex-1] intValue]+1 : 0;
-	Stratum *initialStratum = _activeDocument.strata[initialIndexOfStratum];
+	Stratum *initialStratum = _activeDocument.strata[indexOfInitialStratum];
 	// initial offset in user units
 	CGPoint offset = CGPointMake(_activeDocument.pageDimension.width-_activeDocument.pageMargins.width-[_maxWidths[columnIndex] floatValue], _activeDocument.pageMargins.height+_columnVerticalMargin- initialStratum.frame.origin.y/scale);
 	
 	// draw strata
-	for (int indexOfStratum = initialIndexOfStratum; indexOfStratum <= [_maxStratumIndexForPage[_pageIndex] intValue]; ++indexOfStratum) {
+	for (int indexOfStratum = indexOfInitialStratum; indexOfStratum <= [_maxStratumIndexForPage[_pageIndex] intValue]; ++indexOfStratum) {
 		Stratum *stratum = _activeDocument.strata[indexOfStratum];
 		Stratum *nextStratum = indexOfStratum < _activeDocument.strata.count-1 ? _activeDocument.strata[indexOfStratum+1] : nil;
 		CGRect stratumRect = CGRectMake(stratum.frame.origin.x/scale, stratum.frame.origin.y/scale, stratum.frame.size.width/scale, stratum.frame.size.height/scale);
 		stratumRect = CGRectStandardize(stratumRect);
 		stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);											// stratumRect is now offset (for column) and scaled, in user units
 		float stratumTop = stratumRect.origin.y+stratumRect.size.height;
-		if (indexOfStratum == initialIndexOfStratum)															// draw adornments for first column
+		if (indexOfStratum == indexOfInitialStratum)															// draw adornments for first column
 			[self drawColumnAdornments:columnIndex+1 columnOrigin:stratumRect.origin minGrainSizeIndex:[_minGrainSizeIndices[columnIndex] intValue] maxGrainSizeIndex:[_maxGrainSizeIndices[columnIndex] intValue]];
 		// offset stratum rectangle for new column
-		if (stratumTop > pageTop || (stratum.hasPageCutter && indexOfStratum != initialIndexOfStratum)) {		// reached top of column, need to start a new column
+		if (stratumTop > pageTop || (stratum.hasPageCutter && indexOfStratum != indexOfInitialStratum)) {		// reached top of column, need to start a new column
 			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);										// undo the offset from current column
 			offset.x -= [_maxWidths[++columnIndex] floatValue]+_activeDocument.pageMargins.width/2.0;			// horizontal adjustment using maxwidth, and adding half of horizontal page margin
 			offset.y = -stratumRect.origin.y+_activeDocument.pageMargins.height+_columnVerticalMargin;			// vertical adjustment to make stratum sit on base page margin
@@ -342,18 +348,14 @@
 			NSString *labelText = ((SectionLabel *)_activeDocument.sectionLabels[sectionIndex]).labelText;
 			UIFont *font = [UIFont systemFontOfSize:18.0];
 			CGSize sizeOfLabelText = [labelText sizeWithFont:font];
-			if ((stratumTop > pageTop || nextStratum.hasPageCutter) && indexOfStratum < stratumSectionUpper) {	// we're at the end of a column, need to draw section label, even if more strata remain
-				xSectionBottom = ((Stratum *)_activeDocument.strata[stratumSectionLower]).frame.origin.x/scale + offset.x + [_maxWidths[columnIndex] floatValue];
-				ySectionBottom = ((Stratum *)_activeDocument.strata[stratumSectionLower]).frame.origin.y/scale + offset.y;
-				xSectionTop = stratum.frame.origin.x/scale + offset.x + [_maxWidths[columnIndex] floatValue];
-				ySectionTop = stratum.frame.origin.y/scale + stratum.frame.size.height/scale + offset.y;
-			} else {																							// normal case
-				xSectionBottom = ((Stratum *)_activeDocument.strata[stratumSectionLower]).frame.origin.x/scale + offset.x + [_maxWidths[columnIndex] floatValue];
-				ySectionBottom = ((Stratum *)_activeDocument.strata[stratumSectionLower]).frame.origin.y/scale + offset.y;
-				xSectionTop = stratum.frame.origin.x/scale + offset.x + [_maxWidths[columnIndex] floatValue];
-				ySectionTop = stratum.frame.origin.y/scale + stratum.frame.size.height/scale + offset.y;
+			xSectionBottom = ((Stratum *)_activeDocument.strata[stratumSectionLower]).frame.origin.x/scale + offset.x + [_maxWidths[columnIndex] floatValue];
+			ySectionBottom = ((Stratum *)_activeDocument.strata[stratumSectionLower]).frame.origin.y/scale + offset.y;
+			xSectionTop = stratum.frame.origin.x/scale + offset.x + [_maxWidths[columnIndex] floatValue];
+			ySectionTop = stratum.frame.origin.y/scale + stratum.frame.size.height/scale + offset.y;
+			if ((stratumTop > pageTop || nextStratum.hasPageCutter) && indexOfStratum < stratumSectionUpper)	// we're at the end of a column, need to draw section label, even if more strata remain
+				;
+			else																								// normal case
 				++sectionIndex;
-			}
 			// draw section lines
 			UIBezierPath *sectionLabelLine = [UIBezierPath bezierPath];
 			[sectionLabelLine moveToPoint:CGPointMake(VX(xSectionBottom), VY(ySectionBottom))];
