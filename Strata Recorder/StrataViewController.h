@@ -16,7 +16,6 @@
 
 - (void)handleStratumInfo:(id)sender;
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *graphPageToggle;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *toolbarTitle;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
@@ -24,5 +23,6 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *modeButton;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeControl;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
+@property (weak, nonatomic) IBOutlet UIImageView *pageViewBackground;
 
 @end

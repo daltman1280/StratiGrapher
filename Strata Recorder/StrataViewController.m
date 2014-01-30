@@ -406,9 +406,9 @@ typedef enum {
 	[self.view addSubview:self.containerPageViewController.view];						// required when embedding container VCs
 	[self.containerPageViewController didMoveToParentViewController:self];				// required when embedding container VCs
 	[self.view bringSubviewToFront:self.pageControl];									// so it's not obscured by ContainerPageViewController
-	// Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages. (temporary)
+	// set the UIPageController's frame
 	CGRect pageViewRect = self.view.bounds;
-	pageViewRect.origin.y += 44;
+	pageViewRect.origin.y += 44;														// height of toolbar
 	pageViewRect.size.height -= 44;
 	self.containerPageViewController.view.frame = pageViewRect;
 	self.containerPageViewController.view.hidden = YES;
@@ -514,7 +514,7 @@ typedef enum {
 	if (selection == 1) {																						// switching to page mode
 		self.pageControl.hidden = NO;
 		self.containerPageViewController.view.hidden = NO;
-		self.containerPageViewController.view.alpha = 1.0;
+		self.pageViewBackground.hidden = NO;
 		self.strataGraphScrollView.alpha = 0;
 		if ([StrataModelState currentState].dirty) {
 			[StrataModelState currentState].dirty = NO;
@@ -541,10 +541,12 @@ typedef enum {
 		[UIView setAnimationDuration:0.5];
 		self.strataGraphScrollView.alpha = 0.0;
 		self.containerPageViewController.view.alpha = 1;
+		self.pageViewBackground.alpha = 1.0;
 		[UIView commitAnimations];
 	} else {																									// switching to draft mode
 		self.pageControl.hidden = YES;
 		self.containerPageViewController.view.hidden = YES;
+		self.pageViewBackground.hidden = YES;
 		self.pageControl.hidden = YES;
 		[UIView beginAnimations:@"PageToGraphTransition" context:nil];
 		[UIView setAnimationDuration:0.5];
@@ -672,7 +674,6 @@ typedef enum {
 - (void)viewDidUnload {
 	[self setLocationLabel:nil];
 	[self setDimensionLabel:nil];
-    [self setGraphPageToggle:nil];
 	[self setToolbar:nil];
 	[self setStrataPageView:nil];
 	[self setStrataGraphScrollView:nil];
@@ -701,6 +702,7 @@ typedef enum {
 	[self setModeButton:nil];
 	[self setModeControl:nil];
 	[self setPageControl:nil];
+	[self setPageViewBackground:nil];
 	[super viewDidUnload];
 }
 @end
