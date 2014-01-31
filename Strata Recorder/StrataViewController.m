@@ -83,6 +83,7 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *grainSizeLines;
 
 @property ContainerPageViewController *containerPageViewController;
+@property BOOL							doOnce;
 @end
 
 @implementation StrataViewController
@@ -375,6 +376,7 @@ typedef enum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.doOnce = NO;
 	// settings from user preferences
 	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"])
 		self.activeDocument = [StrataDocument loadFromFile:[[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"]];
@@ -676,14 +678,34 @@ typedef enum {
     // Dispose of any resources that can be recreated.
 }
 
-- (BOOL)shouldAutorotate
+/*
+ In iOS 6 and above, if the initial orientation isn't portrait, didRotateFromInterfaceOrientation does not get called
+ for initial rotation, so we use this callback (only want to do this once, when view controller first gets initialized.
+ */
+
+- (void)viewWillLayoutSubviews
 {
-	return YES;
+	if (!self.doOnce) {
+		self.doOnce = YES;
+		[self didRotateFromInterfaceOrientation:(UIInterfaceOrientation) nil];
+	}
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+/*
+ Adjust views to account for rotation
+ */
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-	return YES;
+	CGRect frame = CGRectMake(0, 0, self.strataView.frame.size.width, self.activeDocument.strataHeight*PPI);
+	self.strataView.frame = frame;															// modifying bounds would affect frame origin
+	self.strataGraphScrollView.contentSize = self.strataView.bounds.size;
+	self.strataGraphScrollView.contentOffset = CGPointMake(0, self.strataView.bounds.size.height-self.strataGraphScrollView.bounds.size.height);
+	// for graphics.h
+	self.bounds = self.strataView.bounds;
+	self.origin = CGPointMake(XORIGIN, YORIGIN);
+	self.strataPageView.activeDocument = self.activeDocument;							// this will initialize the view's bounds
+	[self.strataView setNeedsDisplay];
 }
 
 - (void)viewDidUnload {
