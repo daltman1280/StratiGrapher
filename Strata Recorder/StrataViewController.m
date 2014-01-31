@@ -706,6 +706,11 @@ typedef enum {
 	self.origin = CGPointMake(XORIGIN, YORIGIN);
 	self.strataPageView.activeDocument = self.activeDocument;							// this will initialize the view's bounds
 	[self.strataView setNeedsDisplay];
+	// update the page views
+	[StrataModelState currentState].dirty = YES;
+	int selection = [(UISegmentedControl *)self.modeControl selectedSegmentIndex];
+	if (selection == 1)																					// if we're in page mode, refresh, with page 1
+		[self handleModeSwitch:self.modeControl];
 }
 
 - (void)viewDidUnload {
