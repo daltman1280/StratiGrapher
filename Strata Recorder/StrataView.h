@@ -58,6 +58,8 @@ void patternDrawingCallback(void *info, CGContextRef context);
 - (void)drawStratumOutline:(Stratum *)stratum inContext:(CGContextRef)currentContext;
 + (NSMutableArray *)populateControlPoints:(Stratum *)stratum;
 - (void)populateMoveIconLocations;
+- (void)handleEnterBackground;
+- (void)handleEnterForeground;
 
 
 @property CGFloat scale;

@@ -87,6 +87,22 @@ typedef enum {
 
 @implementation StrataViewController
 
++ (void)handleEnterBackground
+{
+	StrataViewController *controller = (StrataViewController *) [[[UIApplication sharedApplication] keyWindow] rootViewController];
+//	controller.strataView.overlayContainer.hidden = YES;
+//	controller.strataView.traceContainer.hidden = YES;
+	[controller.strataView handleEnterBackground];
+}
+
++ (void)handleEnterForeground
+{
+	StrataViewController *controller = (StrataViewController *) [[[UIApplication sharedApplication] keyWindow] rootViewController];
+//	controller.strataView.overlayContainer.hidden = NO;
+//	controller.strataView.traceContainer.hidden = NO;
+	[controller.strataView handleEnterForeground];
+}
+
 #define HIT_DISTANCE 1./6.
 
 //	Action method for TapGestureRecognizer attached to StrataView.
@@ -397,7 +413,6 @@ typedef enum {
 	self.strataPageView.grainSizeLines = self.grainSizeLines;
 	self.strataPageView.strataColumn = self.strataColumn;
 	// set up the page view complex
-	
 	[self.strataPageView removeFromSuperview];											// we'll just use as a template, populating its parent programmatically
 	self.strataPageViewControllerArray = [[NSMutableArray alloc] init];					// used to retain references to page view view controllers
 	self.containerPageViewController = [[ContainerPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:[NSDictionary dictionaryWithObjectsAndKeys:UIPageViewControllerOptionInterPageSpacingKey, [NSNumber numberWithFloat:50], nil]];

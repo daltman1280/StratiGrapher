@@ -10,6 +10,8 @@
 #import "StrataModelState.h"
 #import "Graphics.h"
 
+static StrataDocument *gCurrentDocument = nil;
+
 @interface StrataDocument()
 
 @end
@@ -41,6 +43,7 @@
 		self.patternScale = 1;
 		[StrataModelState currentState].dirty = YES;
 	}
+	gCurrentDocument = self;
 	return self;
 }
 
@@ -65,7 +68,8 @@
 													toPath:[[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:newName] stringByAppendingPathExtension:@"strata"]
 													 error:nil];
 			[StrataModelState currentState].dirty = YES;
-			return [StrataDocument loadFromFile:newName];
+			gCurrentDocument = [StrataDocument loadFromFile:newName];
+			return gCurrentDocument;
 			break;
 		}
 	}
@@ -101,6 +105,7 @@
 			[doc.materialNumbersPalette addObject:[NSNumber numberWithInt:stratum.materialNumber]];
 	}
 	[StrataModelState currentState].dirty = YES;
+	gCurrentDocument = doc;
 	return doc;
 }
 
@@ -131,6 +136,12 @@
 	}
 	*stratumWidth = snapLocation;
 	return snapIndex;
+}
+
++ (void)saveState
+{
+	if (gCurrentDocument)
+		[gCurrentDocument save];
 }
 
 /*

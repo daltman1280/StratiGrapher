@@ -32,6 +32,7 @@ typedef enum {
 - (void)adjustStratumSize:(CGSize)size atIndex:(int)index;
 - (void)removeStratumAtIndex:(int)index;
 - (void)save;
++ (void)saveState;
 - (StrataDocument *)duplicate;
 - (void)remove;
 - (void)rename:(NSString *)name;

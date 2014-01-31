@@ -438,6 +438,16 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	[self populateMoveIconLocations];														// we're overriding the setter, because this is a good time to do this
 }
 
+- (void)handleEnterBackground
+{
+	[self.overlayContainer removeFromSuperlayer];
+}
+
+- (void)handleEnterForeground
+{
+	[self.layer addSublayer:self.overlayContainer];
+}
+
 /*
  initWithCoder and initWithFrame are not reliably called, so we call this from the view controller in its UIApplicationDidBecomeActiveNotification
  This is to be called once.

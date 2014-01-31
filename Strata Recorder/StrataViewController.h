@@ -15,6 +15,8 @@
 }
 
 - (void)handleStratumInfo:(id)sender;
++ (void)handleEnterBackground;
++ (void)handleEnterForeground;
 
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *toolbarTitle;
