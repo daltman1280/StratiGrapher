@@ -29,7 +29,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 	[self.granularityPicker selectRow:self.grainSizeIndex-1 inComponent:0 animated:NO];
-	self.contentSizeForViewInPopover = CGSizeMake(400, 216);		// TODO: get the appropriate size
 }
 
 /*

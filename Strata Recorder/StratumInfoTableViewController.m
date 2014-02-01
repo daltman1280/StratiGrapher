@@ -126,7 +126,6 @@
 	// following gives false positive if outline has been previously erased
 	[self initializeTable];
 	self.eraseButton.enabled = self.stratum.outline != nil && self.stratum.outline.count > 0;
-	self.contentSizeForViewInPopover = CGSizeMake(400, 342);		// TODO: get the appropriate size
 }
 
 - (void)didReceiveMemoryWarning

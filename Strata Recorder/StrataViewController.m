@@ -591,7 +591,6 @@ typedef enum {
 	self.stratumInfoTableViewController.stratumInfoNavigationController = self.stratumInfoNavigationController;
 	self.stratumInfoTableViewController.delegate = self;
 	self.popover = [[UIPopoverController alloc] initWithContentViewController:self.stratumInfoNavigationController];
-	[self.popover setPopoverContentSize:CGSizeMake(400, 370)];
 	[self.popover presentPopoverFromRect:CGRectMake(self.strataView.infoSelectionPoint.x, self.strataView.infoSelectionPoint.y, 1, 1) inView:self.strataView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 

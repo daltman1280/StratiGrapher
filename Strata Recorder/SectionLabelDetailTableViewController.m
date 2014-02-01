@@ -35,7 +35,6 @@
 	self.sectionLabelText.text = self.sectionLabel.labelText;
 	self.numberStrataSpanned.text = [NSString stringWithFormat:@"%d", self.sectionLabel.numberOfStrataSpanned];
 	self.stratumSpannedStepper.value = self.sectionLabel.numberOfStrataSpanned;
-	self.contentSizeForViewInPopover = CGSizeMake(460, 533);		// TODO: get the appropriate size
 }
 
 /*

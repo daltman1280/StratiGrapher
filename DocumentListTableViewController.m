@@ -96,7 +96,6 @@
 	indexes[1] = [self.strataFiles indexOfObject:self.activeDocument.name];
 	NSIndexPath *indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
 	[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
-	self.contentSizeForViewInPopover = CGSizeMake(300, 342);		// TODO: get the appropriate size
 	[self setDeleteButtonEnabled];
 	[[NSNotificationCenter defaultCenter] postNotificationName:SRPopupVisibleNotification object:self];
 }
