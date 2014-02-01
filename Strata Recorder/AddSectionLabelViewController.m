@@ -24,11 +24,11 @@
 }
 - (IBAction)handleSave:(id)sender {
 	[self.delegate handleAddSectionLabel:self];
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)handleCancel:(id)sender {
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)viewDidLoad

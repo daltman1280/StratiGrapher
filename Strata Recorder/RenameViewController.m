@@ -18,7 +18,7 @@
 @implementation RenameViewController
 
 - (IBAction)handleRenameConfirm:(id)sender {
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 	if (sender != self.renameOKButton) return;
 	self.currentName = self.renameText.text;
 	[self.delegate performSelector:@selector(handleRenameDocument:) withObject:self];
