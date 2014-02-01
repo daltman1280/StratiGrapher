@@ -12,7 +12,7 @@
 
 @interface StratumInfoNotesViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UITextView*			notesTextView;
+@property (strong, nonatomic) IBOutlet UITextView*			notesTextView;
 @property NSString*											notes;
 @property StratumInfoTableViewController*					stratumInfoTableViewController;
 @property Stratum*											stratum;

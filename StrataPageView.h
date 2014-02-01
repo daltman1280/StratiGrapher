@@ -31,14 +31,14 @@ typedef enum {
 
 //	view content to help drawing column adornments
 
-@property (weak, nonatomic) UILabel*			columnNumber;
-@property (weak, nonatomic) UILabel*			grainSizeLegend;
-@property (weak, nonatomic) UIView*				strataColumn;
-@property (weak, nonatomic) UILabel*			grainSizeLines;
+@property (strong, nonatomic) UILabel*			columnNumber;
+@property (strong, nonatomic) UILabel*			grainSizeLegend;
+@property (strong, nonatomic) UIView*				strataColumn;
+@property (strong, nonatomic) UILabel*			grainSizeLines;
 
 //	for legend
 
-@property (weak, nonatomic) LegendView*			legendView;
+@property (strong, nonatomic) LegendView*			legendView;
 
 @property int									pageIndex;					// index of page to be drawn
 @property int									maxPageIndex;				// number of pages-1 (including legend): initialized by setupPages

@@ -18,13 +18,13 @@
 + (void)handleEnterBackground;
 + (void)handleEnterForeground;
 
-@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *toolbarTitle;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *documentsButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *modeButton;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *modeControl;
-@property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
-@property (weak, nonatomic) IBOutlet UIImageView *pageViewBackground;
+@property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *toolbarTitle;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *documentsButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *modeButton;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *modeControl;
+@property (strong, nonatomic) IBOutlet UIPageControl *pageControl;
+@property (strong, nonatomic) IBOutlet UIImageView *pageViewBackground;
 
 @end

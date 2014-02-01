@@ -13,22 +13,22 @@
 #import "StrataModelState.h"
 
 @interface SettingsTableController ()
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *saveItem;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelItem;
-@property (weak, nonatomic) IBOutlet UISlider *pageScaleSlider;
-@property (weak, nonatomic) IBOutlet UITextField *strataHeightText;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *unitsSelector;
-@property (weak, nonatomic) IBOutlet UITextField *paperWidthText;
-@property (weak, nonatomic) IBOutlet UITextField *paperHeightText;
-@property (weak, nonatomic) IBOutlet UITextField *marginWidthText;
-@property (weak, nonatomic) IBOutlet UITextField *marginHeightText;
-@property (weak, nonatomic) IBOutlet UITextField *pageScaleText;
-@property (weak, nonatomic) IBOutlet UITextField *lineThicknessText;
-@property (weak, nonatomic) IBOutlet UITextField *patternScaleText;
-@property (weak, nonatomic) IBOutlet UISlider *patternScaleSlider;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *saveItem;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelItem;
+@property (strong, nonatomic) IBOutlet UISlider *pageScaleSlider;
+@property (strong, nonatomic) IBOutlet UITextField *strataHeightText;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *unitsSelector;
+@property (strong, nonatomic) IBOutlet UITextField *paperWidthText;
+@property (strong, nonatomic) IBOutlet UITextField *paperHeightText;
+@property (strong, nonatomic) IBOutlet UITextField *marginWidthText;
+@property (strong, nonatomic) IBOutlet UITextField *marginHeightText;
+@property (strong, nonatomic) IBOutlet UITextField *pageScaleText;
+@property (strong, nonatomic) IBOutlet UITextField *lineThicknessText;
+@property (strong, nonatomic) IBOutlet UITextField *patternScaleText;
+@property (strong, nonatomic) IBOutlet UISlider *patternScaleSlider;
 @property (strong, nonatomic) IBOutlet MaterialPatternView *patternSampleView;
-@property (weak, nonatomic) IBOutlet UISlider *legendScaleSlider;
-@property (weak, nonatomic) IBOutlet UITextField *legendScaleText;
+@property (strong, nonatomic) IBOutlet UISlider *legendScaleSlider;
+@property (strong, nonatomic) IBOutlet UITextField *legendScaleText;
 @end
 
 @implementation SettingsTableController
@@ -191,7 +191,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.modalInPopover = YES;									// make this view modal (if it's in a popover, ignore outside clicks)
-	self.contentSizeForViewInPopover = CGSizeMake(460, 577);		// TODO: get the appropriate size
+//	self.preferredContentSize = CGSizeMake(460, 577);		// TODO: get the appropriate size
 	[[NSNotificationCenter defaultCenter] postNotificationName:SRPopupVisibleNotification object:self];
 }
 

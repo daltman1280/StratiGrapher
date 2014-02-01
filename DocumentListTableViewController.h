@@ -17,11 +17,11 @@
 	UIActionSheet*								deleteDocumentActionSheet;
 }
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem*	addDocument;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem*	deleteDocument;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem*	renameDocument;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem*	duplicateDocument;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem*	actionDocument;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem*	addDocument;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem*	deleteDocument;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem*	renameDocument;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem*	duplicateDocument;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem*	actionDocument;
 @property id											delegate;
 @property StrataDocument*								activeDocument;
 

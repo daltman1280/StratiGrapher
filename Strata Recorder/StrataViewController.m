@@ -39,8 +39,8 @@ typedef enum {
 @interface StrataViewController () <UIScrollViewDelegate>
 
 @property (nonatomic) IBOutlet StrataView *strataView;
-@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dimensionLabel;
+@property (strong, nonatomic) IBOutlet UILabel *locationLabel;
+@property (strong, nonatomic) IBOutlet UILabel *dimensionLabel;
 @property (strong, nonatomic) IBOutlet UIScrollView *strataGraphScrollView;
 @property UIPopoverController *popover;
 @property (nonatomic) IBOutlet StrataPageView *strataPageView;																	// hosts the page view, used to render PDF pages
@@ -52,10 +52,10 @@ typedef enum {
 @property SettingsNavigationController* settingsNavigationController;
 @property SettingsTableController* settingsTableController;
 // tools
-@property (weak, nonatomic) IBOutlet UIImageView *scissorsView;
-@property (weak, nonatomic) IBOutlet UIImageView *anchorView;
-@property (weak, nonatomic) IBOutlet UIImageView *paleoCurrentView;
-@property (weak, nonatomic) IBOutlet UIImageView *paleoCurrentSelectedView;
+@property (strong, nonatomic) IBOutlet UIImageView *scissorsView;
+@property (strong, nonatomic) IBOutlet UIImageView *anchorView;
+@property (strong, nonatomic) IBOutlet UIImageView *paleoCurrentView;
+@property (strong, nonatomic) IBOutlet UIImageView *paleoCurrentSelectedView;
 // equivalent icons in main view, for dragging
 @property (nonatomic) IBOutlet UIImageView *scissorsDragView;
 @property (nonatomic) IBOutlet UIImageView *anchorDragView;
@@ -74,13 +74,13 @@ typedef enum {
 // legend properties
 @property (strong, nonatomic) IBOutlet LegendView *legendView;
 @property (strong, nonatomic) IBOutlet UIView *legendLineContainer;
-@property (weak, nonatomic) IBOutlet UILabel *legendLineLabel;
-@property (weak, nonatomic) IBOutlet MaterialPatternView *legendLineMaterial;
+@property (strong, nonatomic) IBOutlet UILabel *legendLineLabel;
+@property (strong, nonatomic) IBOutlet MaterialPatternView *legendLineMaterial;
 // page view strata column adornments
-@property (weak, nonatomic) IBOutlet UILabel *columnNumber;
-@property (weak, nonatomic) IBOutlet UILabel *grainSizeLegend;
-@property (weak, nonatomic) IBOutlet UIView *strataColumn;
-@property (weak, nonatomic) IBOutlet UILabel *grainSizeLines;
+@property (strong, nonatomic) IBOutlet UILabel *columnNumber;
+@property (strong, nonatomic) IBOutlet UILabel *grainSizeLegend;
+@property (strong, nonatomic) IBOutlet UIView *strataColumn;
+@property (strong, nonatomic) IBOutlet UILabel *grainSizeLines;
 
 @property ContainerPageViewController *containerPageViewController;
 @property BOOL							doOnce;

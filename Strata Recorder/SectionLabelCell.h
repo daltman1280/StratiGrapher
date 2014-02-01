@@ -10,6 +10,6 @@
 
 @interface SectionLabelCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *sectionLabelText;
+@property (strong, nonatomic) IBOutlet UILabel *sectionLabelText;
 
 @end

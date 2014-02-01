@@ -15,12 +15,12 @@
 #import "StratumGranularityViewController.h"
 
 @interface StratumInfoTableViewController ()
-@property (weak, nonatomic) IBOutlet UILabel *materialTitleText;
+@property (strong, nonatomic) IBOutlet UILabel *materialTitleText;
 @property (strong, nonatomic) IBOutlet MaterialPatternView *pattern;
-@property (weak, nonatomic) IBOutlet UILabel *subtitle;
-@property (weak, nonatomic) IBOutlet UITextField *stratumHeightText;
-@property (weak, nonatomic) IBOutlet UILabel *grainSizeText;
-@property (weak, nonatomic) IBOutlet UIButton *eraseButton;
+@property (strong, nonatomic) IBOutlet UILabel *subtitle;
+@property (strong, nonatomic) IBOutlet UITextField *stratumHeightText;
+@property (strong, nonatomic) IBOutlet UILabel *grainSizeText;
+@property (strong, nonatomic) IBOutlet UIButton *eraseButton;
 
 @end
 

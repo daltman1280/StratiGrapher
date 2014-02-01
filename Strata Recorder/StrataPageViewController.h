@@ -18,7 +18,7 @@
 @property (nonatomic) int									pageIndex;
 @property int												maxPages;
 @property (strong, nonatomic) IBOutlet StrataPageView*		strataPageView;
-@property (weak, nonatomic) IBOutlet UIScrollView*			strataPageScrollView;
+@property (strong, nonatomic) IBOutlet UIScrollView*		strataPageScrollView;
 @property (nonatomic) ContainerPageViewController*			parent;
 
 @end

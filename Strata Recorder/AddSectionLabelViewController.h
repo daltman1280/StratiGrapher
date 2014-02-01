@@ -11,7 +11,7 @@
 
 @interface AddSectionLabelViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UITextField *sectionLabelText;
+@property (strong, nonatomic) IBOutlet UITextField *sectionLabelText;
 @property (strong, nonatomic) IBOutlet UIButton *saveButton;
 @property (strong, nonatomic) IBOutlet UIButton *cancelButton;
 

@@ -11,9 +11,9 @@
 #import "SectionLabelsTableViewController.h"
 
 @interface SectionLabelDetailTableViewController : UITableViewController
-@property (weak, nonatomic) IBOutlet UITextField *sectionLabelText;
-@property (weak, nonatomic) IBOutlet UILabel *numberStrataSpanned;
-@property (weak, nonatomic) IBOutlet UIStepper *stratumSpannedStepper;
+@property (strong, nonatomic) IBOutlet UITextField *sectionLabelText;
+@property (strong, nonatomic) IBOutlet UILabel *numberStrataSpanned;
+@property (strong, nonatomic) IBOutlet UIStepper *stratumSpannedStepper;
 
 @property SectionLabel*							sectionLabel;
 @property SectionLabelsTableViewController*		delegate;

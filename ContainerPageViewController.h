@@ -12,15 +12,15 @@
 @interface ContainerPageViewController : UIPageViewController <UIPageViewControllerDelegate, UIPageViewControllerDataSource>
 
 @property NSMutableArray*			patternsPageArray;
-@property (weak, nonatomic) LegendView*			legendView;
+@property (strong, nonatomic) LegendView*		legendView;
 //	view content to help drawing column adornments
 
-@property (weak, nonatomic) UILabel*			columnNumber;
-@property (weak, nonatomic) UILabel*			grainSizeLegend;
-@property (weak, nonatomic) UIView*				strataColumn;
-@property (weak, nonatomic) UILabel*			grainSizeLines;
+@property (strong, nonatomic) UILabel*			columnNumber;
+@property (strong, nonatomic) UILabel*			grainSizeLegend;
+@property (strong, nonatomic) UIView*			strataColumn;
+@property (strong, nonatomic) UILabel*			grainSizeLines;
 @property StrataDocument*						activeDocument;
 
-@property (weak) UIPageControl*					pageControl;
+@property (strong) UIPageControl*				pageControl;
 @property int									maxPages;
 @end

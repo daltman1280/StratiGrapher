@@ -11,8 +11,8 @@
 #import "MaterialTableViewCell.h"
 
 @interface StratumMaterialsPaletteTableViewController ()
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *addButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *removeButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *addButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *removeButton;
 
 @property NSMutableArray* materialIndexes;										// cached, sorted, material numbers from StrataDocument materialNumbersPalette
 @end
