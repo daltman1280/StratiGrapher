@@ -109,7 +109,8 @@
 		CFRelease(colorSpace);
 		CGContextSetFillColorWithColor(tempContext, colorBlack);										// to counteract CGContextSetFillColorSpace and CGContextSetFillPattern
 		CGColorRelease(colorBlack);
-		[columnText drawAtPoint:CGPointZero withFont:font];
+//		[columnText drawAtPoint:CGPointZero withFont:font];
+        [columnText drawAtPoint:CGPointZero withAttributes:[NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName]];
 		CGContextRestoreGState(tempContext);
 	}
 	{	// grain sizes
@@ -117,7 +118,7 @@
 		CGContextSaveGState(tempContext);
 		CGPoint columnGrainPoint;
 		UIFont *font = [UIFont systemFontOfSize:10.0];
-		CGSize sizeOfGrainText = [@"dummy" sizeWithFont:font];
+		CGSize sizeOfGrainText = [@"dummy" sizeWithAttributes:[NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName]];
 		// origin of first grain size legend text
 		columnGrainPoint.x = VX(columnOrigin.x+(1.0+(float)(minGrainSizeIndex-1)/4.0)/self.activeDocument.scale)-sizeOfGrainText.height/2.0;	// split height of text in half to straddle line
 		// the VY transform will account for page size, and the rest consists of offsets between labels, in view coordinates
@@ -134,7 +135,8 @@
 		CGColorRelease(colorBlack);
 		for (int i=minGrainSizeIndex; i<=maxGrainSizeIndex; ++i) {
 			const NSString *grainText = gAbbreviatedGrainSizeNames[i-1];
-			[grainText drawAtPoint:CGPointZero withFont:font];											// text rotated by 90 degrees (rotated context)
+//			[grainText drawAtPoint:CGPointZero withFont:font];											// text rotated by 90 degrees (rotated context)
+            [grainText drawAtPoint:CGPointZero withAttributes:[NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName]]; // text rotated by 90 degrees (rotated context)
 			// vertical lines for each legend entry
 			UIBezierPath *path = [UIBezierPath bezierPath];
 			// use grainSizeLegend label to establish lower & upper limits of X coordinates (in our rotated context)
@@ -285,7 +287,8 @@
 	CGContextSaveGState(currentContext);
 	CGContextTranslateCTM(currentContext, VDX(_activeDocument.pageMargins.width), -VDY(_activeDocument.pageDimension.height-_activeDocument.pageMargins.height));
 	CGContextRotateCTM(currentContext, -M_PI_2);
-	[[_activeDocument.units isEqualToString:@"Metric"] ? @"1 Meter" : @"1 Foot" drawAtPoint:CGPointZero withFont:[UIFont systemFontOfSize:10]];
+//	[[_activeDocument.units isEqualToString:@"Metric"] ? @"1 Meter" : @"1 Foot" drawAtPoint:CGPointZero withFont:[UIFont systemFontOfSize:10]];
+	[[_activeDocument.units isEqualToString:@"Metric"] ? @"1 Meter" : @"1 Foot" drawAtPoint:CGPointZero withAttributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:10] forKey:NSFontAttributeName]];
 	CGContextRestoreGState(currentContext);
 	// setup patterns
 	struct CGPatternCallbacks patternCallbacks = {
@@ -347,7 +350,7 @@
 			float xSectionBottom, ySectionBottom, xSectionTop, ySectionTop;
 			NSString *labelText = ((SectionLabel *)_activeDocument.sectionLabels[sectionIndex]).labelText;
 			UIFont *font = [UIFont systemFontOfSize:18.0];
-			CGSize sizeOfLabelText = [labelText sizeWithFont:font];
+			CGSize sizeOfLabelText = [labelText sizeWithAttributes:[NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName]];
 			xSectionBottom = ((Stratum *)_activeDocument.strata[stratumSectionLower]).frame.origin.x/scale + offset.x + [_maxWidths[columnIndex] floatValue];
 			ySectionBottom = ((Stratum *)_activeDocument.strata[stratumSectionLower]).frame.origin.y/scale + offset.y;
 			xSectionTop = stratum.frame.origin.x/scale + offset.x + [_maxWidths[columnIndex] floatValue];
@@ -376,7 +379,7 @@
 			CGContextSetFillColorWithColor(tempContext, colorWhite);											// to counteract CGContextSetFillColorSpace and CGContextSetFillPattern
 			CGContextFillRect(tempContext, CGRectMake(0, 0, sizeOfLabelText.width, sizeOfLabelText.height));
 			CGContextSetFillColorWithColor(tempContext, colorBlack);											// to counteract CGContextSetFillColorSpace and CGContextSetFillPattern
-			[labelText drawAtPoint:CGPointZero withFont:font];
+			[labelText drawAtPoint:CGPointZero withAttributes:[NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName]];
 			CGContextRestoreGState(tempContext);
 			// end temporary graphics context
 			
