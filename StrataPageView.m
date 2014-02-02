@@ -109,7 +109,6 @@
 		CFRelease(colorSpace);
 		CGContextSetFillColorWithColor(tempContext, colorBlack);										// to counteract CGContextSetFillColorSpace and CGContextSetFillPattern
 		CGColorRelease(colorBlack);
-//		[columnText drawAtPoint:CGPointZero withFont:font];
         [columnText drawAtPoint:CGPointZero withAttributes:[NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName]];
 		CGContextRestoreGState(tempContext);
 	}
@@ -135,7 +134,6 @@
 		CGColorRelease(colorBlack);
 		for (int i=minGrainSizeIndex; i<=maxGrainSizeIndex; ++i) {
 			const NSString *grainText = gAbbreviatedGrainSizeNames[i-1];
-//			[grainText drawAtPoint:CGPointZero withFont:font];											// text rotated by 90 degrees (rotated context)
             [grainText drawAtPoint:CGPointZero withAttributes:[NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName]]; // text rotated by 90 degrees (rotated context)
 			// vertical lines for each legend entry
 			UIBezierPath *path = [UIBezierPath bezierPath];
@@ -287,7 +285,6 @@
 	CGContextSaveGState(currentContext);
 	CGContextTranslateCTM(currentContext, VDX(_activeDocument.pageMargins.width), -VDY(_activeDocument.pageDimension.height-_activeDocument.pageMargins.height));
 	CGContextRotateCTM(currentContext, -M_PI_2);
-//	[[_activeDocument.units isEqualToString:@"Metric"] ? @"1 Meter" : @"1 Foot" drawAtPoint:CGPointZero withFont:[UIFont systemFontOfSize:10]];
 	[[_activeDocument.units isEqualToString:@"Metric"] ? @"1 Meter" : @"1 Foot" drawAtPoint:CGPointZero withAttributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:10] forKey:NSFontAttributeName]];
 	CGContextRestoreGState(currentContext);
 	// setup patterns

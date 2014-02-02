@@ -420,9 +420,8 @@ typedef enum {
 	self.containerPageViewController = [[ContainerPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:[NSDictionary dictionaryWithObjectsAndKeys:UIPageViewControllerOptionInterPageSpacingKey, [NSNumber numberWithFloat:50], nil]];
 	self.containerPageViewController.pageControl = self.pageControl;
 	[self addChildViewController:self.containerPageViewController];						// required when embedding container VCs
-	[self.view addSubview:self.containerPageViewController.view];						// required when embedding container VCs
+	[self.view insertSubview:self.containerPageViewController.view belowSubview:self.toolbar];	// required when embedding container VCs, we want it behind the toolbar
 	[self.containerPageViewController didMoveToParentViewController:self];				// required when embedding container VCs
-	[self.view bringSubviewToFront:self.pageControl];									// so it's not obscured by ContainerPageViewController
 	// set the UIPageController's frame
 	CGRect pageViewRect = self.view.bounds;
 	pageViewRect.origin.y += 44;														// height of toolbar
