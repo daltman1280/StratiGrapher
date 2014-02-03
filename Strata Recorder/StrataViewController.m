@@ -127,27 +127,43 @@ typedef enum {
 				[self.strataView handlePencilTap:stratum];
 				self.strataView.overlayContainer.overlayVisible = YES;
 			} else {																											// look for paleocurrents in each stratum
+				NSMutableArray *paleoCurrentCandidates = [[NSMutableArray alloc] init];
 				for (PaleoCurrent *paleo in stratum.paleoCurrents) {
 					CGPoint paleoLocation = CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y);
 					if ((hitPoint.x-paleoLocation.x)*(hitPoint.x-paleoLocation.x)+
 						(hitPoint.y-paleoLocation.y)*(hitPoint.y-paleoLocation.y) < HIT_DISTANCE*HIT_DISTANCE &&
-						self.selectedPaleoCurrent == nil) {																		// hit detected on paleocurrent, select it
-						self.currentTapState = tapStatePaleoSelected;
-						self.paleoCurrentSelectedView.hidden = NO;
-						self.paleoCurrentSelectedView.center = [self.strataView convertPoint:CGPointMake(VX(paleoLocation.x), VY(paleoLocation.y)) toView:self.view];
-						self.paleoCurrentSelectedView.transform = CGAffineTransformMakeRotation(paleo.rotation);
-						self.paleoCurrentInitialRotation = paleo.rotation;
-						[self.strataView handlePaleoTap:paleo inStratum:stratum];
-						self.selectedPaleoCurrent = paleo;
-						self.selectedStratum = stratum;
-						self.strataView.selectedStratum = stratum;																// clone it
-						self.panGestureRecognizer.enabled = YES;
-						self.rotationGestureRecognizer.enabled = YES;
-						self.paleoCurrentDragStarted = NO;
-						self.strataView.touchesEnabled = NO;
-						[StrataModelState currentState].dirty = YES;
-						break;
+						self.selectedPaleoCurrent == nil) {																		// hit detected on paleocurrent, add it to list of selection candidates
+						[paleoCurrentCandidates addObject:paleo];
 					}
+				}
+				if (paleoCurrentCandidates.count > 0) {
+					float hitDistance = MAXFLOAT;
+					PaleoCurrent *bestHit;
+					for (PaleoCurrent *paleo in paleoCurrentCandidates) {
+						CGPoint paleoLocation = CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y);
+						if ((hitPoint.x-paleoLocation.x)*(hitPoint.x-paleoLocation.x)+(hitPoint.y-paleoLocation.y)*(hitPoint.y-paleoLocation.y) < hitDistance) {
+							hitDistance = (hitPoint.x-paleoLocation.x)*(hitPoint.x-paleoLocation.x)+(hitPoint.y-paleoLocation.y)*(hitPoint.y-paleoLocation.y);
+							bestHit = paleo;
+						}
+					}
+					PaleoCurrent *paleo = bestHit;
+					CGPoint paleoLocation = CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y);
+					self.currentTapState = tapStatePaleoSelected;
+					self.paleoCurrentSelectedView.hidden = NO;
+					self.paleoCurrentSelectedView.center = [self.strataView convertPoint:CGPointMake(VX(paleoLocation.x), VY(paleoLocation.y)) toView:self.view];
+					self.paleoCurrentSelectedView.transform = CGAffineTransformMakeRotation(paleo.rotation);
+					self.paleoCurrentSelectedView.transform = CGAffineTransformScale(self.paleoCurrentSelectedView.transform, self.strataGraphScrollView.zoomScale*.5, self.strataGraphScrollView.zoomScale*.5);
+					self.paleoCurrentInitialRotation = paleo.rotation;
+					[self.strataView handlePaleoTap:paleo inStratum:stratum];
+					self.selectedPaleoCurrent = paleo;
+					self.selectedStratum = stratum;
+					self.strataView.selectedStratum = stratum;																// clone it
+					self.panGestureRecognizer.enabled = YES;
+					self.rotationGestureRecognizer.enabled = YES;
+					self.paleoCurrentDragStarted = NO;
+					self.strataView.touchesEnabled = NO;
+					[StrataModelState currentState].dirty = YES;
+					break;
 				}
 			}
 			if (self.currentTapState != tapStateNoneSelected) break;
@@ -194,6 +210,7 @@ typedef enum {
 		self.paleoCurrentInitialRotation = self.selectedPaleoCurrent.rotation;
 	} else if (gestureRecognizer.state == UIGestureRecognizerStateChanged || gestureRecognizer.state == UIGestureRecognizerStateEnded) {
 		self.paleoCurrentSelectedView.transform = CGAffineTransformMakeRotation(self.selectedPaleoCurrent.rotation+gestureRecognizer.rotation);
+		self.paleoCurrentSelectedView.transform = CGAffineTransformScale(self.paleoCurrentSelectedView.transform, self.strataGraphScrollView.zoomScale*.5, self.strataGraphScrollView.zoomScale*.5);
 		self.paleoCurrentInitialRotation = self.selectedPaleoCurrent.rotation+gestureRecognizer.rotation;
 	}
 	[StrataModelState currentState].dirty = YES;
@@ -664,6 +681,7 @@ typedef enum {
 		PaleoCurrent *paleo = self.selectedPaleoCurrent;
 		CGPoint paleoLocation = CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y);
 		self.paleoCurrentSelectedView.center = [self.strataView convertPoint:CGPointMake(VX(paleoLocation.x), VY(paleoLocation.y)) toView:self.view];
+		self.strataView.scale = self.strataGraphScrollView.zoomScale;
 	}
 }
 
