@@ -28,20 +28,7 @@
 {
     [super viewDidLoad];
 	// setup Rename buttons
-	UIImage *buttonImageNormal = [UIImage imageNamed:@"redButton.png"];
-	UIImage *stretchableButtonImageNormal = [buttonImageNormal stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-	UIImage *buttonImagePressed = [UIImage imageNamed:@"darkRedButton.png"];
-	UIImage *stretchableButtonImagePressed = [buttonImagePressed stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-	UIImage *buttonImageCancelNormal = [UIImage imageNamed:@"blueButton.png"];
-	UIImage *stretchableButtonImageCancelNormal = [buttonImageCancelNormal stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-	UIImage *buttonImageCancelPressed = [UIImage imageNamed:@"darkBlueButton.png"];
-	UIImage *stretchableButtonImageCancelPressed = [buttonImageCancelPressed stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-	
-	[self.renameOKButton setBackgroundImage:stretchableButtonImageNormal forState:UIControlStateNormal];
-	[self.renameOKButton setBackgroundImage:stretchableButtonImagePressed forState:UIControlStateHighlighted];
 	self.renameOKButton.enabled = NO;
-	[self.renameCancelButton setBackgroundImage:stretchableButtonImageCancelNormal forState:UIControlStateNormal];
-	[self.renameCancelButton setBackgroundImage:stretchableButtonImageCancelPressed forState:UIControlStateHighlighted];
 	
 	self.renameText.text = self.currentName;												// should have been initialized in prepareForSegue
 	

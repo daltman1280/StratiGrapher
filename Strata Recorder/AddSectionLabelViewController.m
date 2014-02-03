@@ -36,6 +36,13 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 	[self.sectionLabelText becomeFirstResponder];
+	self.saveButton.enabled = NO;
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(labelTextDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+}
+
+- (IBAction)labelTextDidChange:(id)sender
+{
+	self.saveButton.enabled = self.sectionLabelText.text.length > 0 ? YES : NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -49,6 +56,7 @@
     [self setSectionLabelText:nil];
 	[self setSaveButton:nil];
 	[self setCancelButton:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [super viewDidUnload];
 }
 @end
