@@ -33,10 +33,6 @@
 		258CF6C21658CE48001E8D20 /* DocumentListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258CF6C11658CE48001E8D20 /* DocumentListTableViewController.m */; };
 		258CF6C41658D18C001E8D20 /* rename.tif in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6C31658D18C001E8D20 /* rename.tif */; };
 		258CF6C61658D1DA001E8D20 /* duplicate.tif in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6C51658D1DA001E8D20 /* duplicate.tif */; };
-		258CF6CB1658D2A1001E8D20 /* blueButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6C71658D2A1001E8D20 /* blueButton.png */; };
-		258CF6CC1658D2A1001E8D20 /* darkBlueButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6C81658D2A1001E8D20 /* darkBlueButton.png */; };
-		258CF6CD1658D2A1001E8D20 /* darkRedButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6C91658D2A1001E8D20 /* darkRedButton.png */; };
-		258CF6CE1658D2A1001E8D20 /* redButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 258CF6CA1658D2A1001E8D20 /* redButton.png */; };
 		258D907916731436007EEC9A /* paleocurrent greyscale.png in Resources */ = {isa = PBXBuildFile; fileRef = 258D907816731436007EEC9A /* paleocurrent greyscale.png */; };
 		258E34BE1656E6C200E09A3A /* StrataPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258E34BD1656E6C200E09A3A /* StrataPageView.m */; };
 		258E5F7E17152CEB006706B3 /* Default~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E5F7D17152CEB006706B3 /* Default~ipad.png */; };
@@ -57,7 +53,6 @@
 		259318F8176E602600A6341A /* LegendView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259318F7176E602600A6341A /* LegendView.m */; };
 		259339BD173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 259339BC173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m */; };
 		25A5086018888E9900842903 /* ContainerPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A5085F18888E9900842903 /* ContainerPageViewController.m */; };
-		25AA3CE91860C82300B01E64 /* Format background.png in Resources */ = {isa = PBXBuildFile; fileRef = 25AA3CE81860C82300B01E64 /* Format background.png */; };
 		25B7FADA189F6156006E22D4 /* TabbingTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B7FAD9189F6156006E22D4 /* TabbingTextField.m */; };
 		25C47823185EC6BA0020D30A /* StratumInfoNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C47822185EC6BA0020D30A /* StratumInfoNotesViewController.m */; };
 		25C4782F185F5B1C0020D30A /* StratumGranularityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4782E185F5B1C0020D30A /* StratumGranularityViewController.m */; };
@@ -512,10 +507,6 @@
 				258C79461654877D0040F759 /* patterns descriptive text.txt in Resources */,
 				258CF6C41658D18C001E8D20 /* rename.tif in Resources */,
 				258CF6C61658D1DA001E8D20 /* duplicate.tif in Resources */,
-				258CF6CB1658D2A1001E8D20 /* blueButton.png in Resources */,
-				258CF6CC1658D2A1001E8D20 /* darkBlueButton.png in Resources */,
-				258CF6CD1658D2A1001E8D20 /* darkRedButton.png in Resources */,
-				258CF6CE1658D2A1001E8D20 /* redButton.png in Resources */,
 				25066EE1166A67CB0095C3CC /* cut.png in Resources */,
 				25066EE3166A79040095C3CC /* anchor.png in Resources */,
 				2590CEC5166B24C2009525D8 /* patterns1 multipage.pdf in Resources */,
@@ -526,7 +517,6 @@
 				258E5F8317152E6C006706B3 /* Default-Landscape~ipad.png in Resources */,
 				258F8BBA171E611B0027EA4D /* paleocurrent selected.png in Resources */,
 				2536509F1800AEE600114127 /* ApplicationIcon.png in Resources */,
-				25AA3CE91860C82300B01E64 /* Format background.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
