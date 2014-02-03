@@ -35,19 +35,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-	UIImage *buttonImageNormal = [UIImage imageNamed:@"blueButton.png"];
-	UIImage *stretchableButtonImageNormal = [buttonImageNormal stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-	UIImage *buttonImagePressed = [UIImage imageNamed:@"darkBlueButton.png"];
-	UIImage *stretchableButtonImagePressed = [buttonImagePressed stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-	UIImage *buttonImageCancelNormal = [UIImage imageNamed:@"redButton.png"];
-	UIImage *stretchableButtonImageCancelNormal = [buttonImageCancelNormal stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-	UIImage *buttonImageCancelPressed = [UIImage imageNamed:@"darkRedButton.png"];
-	UIImage *stretchableButtonImageCancelPressed = [buttonImageCancelPressed stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-	
-	[self.saveButton setBackgroundImage:stretchableButtonImageNormal forState:UIControlStateNormal];
-	[self.saveButton setBackgroundImage:stretchableButtonImagePressed forState:UIControlStateHighlighted];
-	[self.cancelButton setBackgroundImage:stretchableButtonImageCancelNormal forState:UIControlStateNormal];
-	[self.cancelButton setBackgroundImage:stretchableButtonImageCancelPressed forState:UIControlStateHighlighted];
+	[self.sectionLabelText becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
