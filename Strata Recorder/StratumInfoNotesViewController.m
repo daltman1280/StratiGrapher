@@ -39,6 +39,7 @@
     [super viewDidLoad];
 	NSLog(@"self.notes = %@", self.notesTextView);
 	self.notesTextView.text = self.notes;
+	[self.notesTextView becomeFirstResponder];
 	// Do any additional setup after loading the view.
 }
 

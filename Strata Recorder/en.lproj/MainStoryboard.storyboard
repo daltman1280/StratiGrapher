@@ -429,8 +429,15 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Notes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0nc-aG-ocq">
-                                                    <rect key="frame" x="13" y="11" width="86" height="21"/>
+                                                    <rect key="frame" x="13" y="11" width="58" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Notes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5aR-bI-oqb">
+                                                    <rect key="frame" x="97" y="11" width="618" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -489,6 +496,7 @@
                         <outlet property="eraseButton" destination="Dks-o1-xzi" id="HcJ-RB-kLd"/>
                         <outlet property="grainSizeText" destination="5Mf-Mb-fui" id="4mN-zy-AKH"/>
                         <outlet property="materialTitleText" destination="5bw-fl-6SR" id="v4E-X1-JMI"/>
+                        <outlet property="notesText" destination="5aR-bI-oqb" id="quf-gF-74c"/>
                         <outlet property="pattern" destination="Y2s-mR-gBe" id="iDl-Kh-fH2"/>
                         <outlet property="stratumHeightText" destination="x90-1a-Iiv" id="Xu4-DY-a00"/>
                         <outlet property="subtitle" destination="w1d-sE-kYW" id="xaD-4a-Pf4"/>

@@ -20,6 +20,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *subtitle;
 @property (strong, nonatomic) IBOutlet UITextField *stratumHeightText;
 @property (strong, nonatomic) IBOutlet UILabel *grainSizeText;
+@property (strong, nonatomic) IBOutlet UILabel *notesText;
 @property (strong, nonatomic) IBOutlet UIButton *eraseButton;
 
 @end
@@ -97,6 +98,7 @@
 		self.materialTitleText.text = @"";
 		self.subtitle.text = @"Unassigned";
 		self.pattern.patternNumber = 0;
+		self.notesText.text = @"";
 		[self.pattern setNeedsDisplay];
 	} else {
 		NSString *descriptions = [NSString stringWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"patterns descriptive text" ofType:@"txt"] encoding:NSASCIIStringEncoding error:nil];
@@ -112,6 +114,7 @@
 	}
 	self.stratumHeightText.text = [NSString stringWithFormat:@"%.2f", self.stratum.frame.size.height];
 	self.grainSizeText.text = (NSString *)gGrainSizeNames[self.stratum.grainSizeIndex-1];
+	self.notesText.text = self.stratum.notes;
 }
 
 - (void)viewDidLoad
