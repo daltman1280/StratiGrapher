@@ -28,5 +28,6 @@
 @property float				patternScale;
 @property float				legendScale;
 @property NSMutableArray*	sectionLabels;
+@property (strong, nonatomic) IBOutlet UIView *accessoryView;
 
 @end

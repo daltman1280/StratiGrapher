@@ -7,10 +7,13 @@
 //
 
 #import "SettingsTableController.h"
+#import "TabbingTextField.h"
 #import "StrataNotifications.h"
 #import "SectionLabelsTableViewController.h"
 #import "MaterialPatternView.h"
 #import "StrataModelState.h"
+
+extern TabbingTextField *gFirstResponder;
 
 @interface SettingsTableController ()
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *saveItem;
@@ -18,17 +21,17 @@
 @property (strong, nonatomic) IBOutlet UISlider *pageScaleSlider;
 @property (strong, nonatomic) IBOutlet UITextField *strataHeightText;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *unitsSelector;
-@property (strong, nonatomic) IBOutlet UITextField *paperWidthText;
-@property (strong, nonatomic) IBOutlet UITextField *paperHeightText;
-@property (strong, nonatomic) IBOutlet UITextField *marginWidthText;
-@property (strong, nonatomic) IBOutlet UITextField *marginHeightText;
-@property (strong, nonatomic) IBOutlet UITextField *pageScaleText;
-@property (strong, nonatomic) IBOutlet UITextField *lineThicknessText;
-@property (strong, nonatomic) IBOutlet UITextField *patternScaleText;
+@property (strong, nonatomic) IBOutlet TabbingTextField *paperWidthText;
+@property (strong, nonatomic) IBOutlet TabbingTextField *paperHeightText;
+@property (strong, nonatomic) IBOutlet TabbingTextField *marginWidthText;
+@property (strong, nonatomic) IBOutlet TabbingTextField *marginHeightText;
+@property (strong, nonatomic) IBOutlet TabbingTextField *pageScaleText;
+@property (strong, nonatomic) IBOutlet TabbingTextField *lineThicknessText;
+@property (strong, nonatomic) IBOutlet TabbingTextField *patternScaleText;
 @property (strong, nonatomic) IBOutlet UISlider *patternScaleSlider;
 @property (strong, nonatomic) IBOutlet MaterialPatternView *patternSampleView;
 @property (strong, nonatomic) IBOutlet UISlider *legendScaleSlider;
-@property (strong, nonatomic) IBOutlet UITextField *legendScaleText;
+@property (strong, nonatomic) IBOutlet TabbingTextField *legendScaleText;
 @end
 
 @implementation SettingsTableController
@@ -174,20 +177,56 @@
 	// populate the table's controls from property values
 	self.strataHeightText.text = [NSString stringWithFormat:@"%d", self.strataHeight];
 	self.unitsSelector.selectedSegmentIndex = [self.units isEqualToString:@"Metric"] ? 0 : 1;
+
 	self.paperWidthText.text = [NSString stringWithFormat:@"%.1f", self.paperWidth];
+    self.paperWidthText.inputAccessoryView = self.accessoryView;
+	self.paperWidthText.next = self.paperHeightText;
+	self.paperWidthText.prev = self.patternScaleText;
+
 	self.paperHeightText.text = [NSString stringWithFormat:@"%.1f", self.paperHeight];
+	self.paperHeightText.inputAccessoryView = self.accessoryView;
+	self.paperHeightText.next = self.marginWidthText;
+	self.paperHeightText.prev = self.paperWidthText;
+
 	self.marginWidthText.text = [NSString stringWithFormat:@"%.1f", self.marginWidth];
+	self.marginWidthText.inputAccessoryView = self.accessoryView;
+	self.marginWidthText.next = self.marginHeightText;
+	self.marginWidthText.prev = self.paperHeightText;
+
 	self.marginHeightText.text = [NSString stringWithFormat:@"%.1f", self.marginHeight];
+	self.marginHeightText.inputAccessoryView = self.accessoryView;
+	self.marginHeightText.next = self.pageScaleText;
+	self.marginHeightText.prev = self.marginWidthText;
+
 	self.pageScaleText.text = [NSString stringWithFormat:@"%.1f", self.pageScale];
+	self.pageScaleText.inputAccessoryView = self.accessoryView;
+	self.pageScaleText.next = self.lineThicknessText;
+	self.pageScaleText.prev = self.marginHeightText;
+
 	self.pageScaleSlider.value = self.pageScale;
+
 	self.lineThicknessText.text = [NSString stringWithFormat:@"%d", self.lineThickness];
-	self.patternScaleSlider.value = self.patternScale;
-	self.patternScaleText.text = [NSString stringWithFormat:@"%.1f", self.patternScale];
+	self.lineThicknessText.inputAccessoryView = self.accessoryView;
+	self.lineThicknessText.next = self.legendScaleText;
+	self.lineThicknessText.prev = self.pageScaleText;
+
 	self.patternSampleView.patternNumber = 643;															// arbitrary pattern
 	self.patternSampleView.patternScale = self.patternScale;
 	[self.patternSampleView setNeedsDisplay];
 	self.legendScaleSlider.value = self.legendScale;
+
 	self.legendScaleText.text = [NSString stringWithFormat:@"%.1f", self.legendScale];
+	self.legendScaleText.inputAccessoryView = self.accessoryView;
+	self.legendScaleText.next = self.patternScaleText;
+	self.legendScaleText.prev = self.lineThicknessText;
+
+	self.patternScaleSlider.value = self.patternScale;
+
+	self.patternScaleText.text = [NSString stringWithFormat:@"%.1f", self.patternScale];
+	self.patternScaleText.inputAccessoryView = self.accessoryView;
+	self.patternScaleText.next = self.paperWidthText;
+	self.patternScaleText.prev = self.legendScaleText;
+
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.modalInPopover = YES;									// make this view modal (if it's in a popover, ignore outside clicks)
@@ -207,82 +246,13 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
-#if 0
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 1;
+- (IBAction)selectNextResponder:(id)sender {
+	[gFirstResponder.next becomeFirstResponder];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (IBAction)selectPrevResponder:(id)sender
 {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 3;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    // Configure the cell...
-    
-    return cell;
-}
-#endif
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+	[gFirstResponder.prev becomeFirstResponder];
 }
 
 - (void)viewDidUnload {
