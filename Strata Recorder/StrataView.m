@@ -438,16 +438,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	[self populateMoveIconLocations];														// we're overriding the setter, because this is a good time to do this
 }
 
-- (void)handleEnterBackground
-{
-	[self.overlayContainer removeFromSuperlayer];
-}
-
-- (void)handleEnterForeground
-{
-	[self.layer addSublayer:self.overlayContainer];
-}
-
 /*
  initWithCoder and initWithFrame are not reliably called, so we call this from the view controller in its UIApplicationDidBecomeActiveNotification
  This is to be called once.
@@ -777,8 +767,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		if (stratum.hasPageCutter) [self.scissorsIcon drawAtPoint:CGPointMake(-0.25, stratum.frame.origin.y) scale:self.scale inContext:currentContext];
 		// causes error
 		if (stratum.hasAnchor) [self.anchorIcon drawAtPoint:CGPointMake(-0.5, stratum.frame.origin.y) scale:self.scale inContext:currentContext];
-		for (PaleoCurrent *paleo in stratum.paleoCurrents)
+		for (PaleoCurrent *paleo in stratum.paleoCurrents) {
 			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:1 rotation:paleo.rotation inContext:currentContext];
+//			[self.arrowIcon drawAtPointWithRotation:CGPointMake(stratum.frame.size.width+paleo.origin.x, stratum.frame.origin.y+paleo.origin.y) scale:self.scale rotation:paleo.rotation inContext:currentContext];
+		}
 		if (!self.dragActive && stratum != self.activeDocument.strata.lastObject)			// draw info icon, unless this is the last (empty) stratum
 			[self.infoIcon drawAtPoint:CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1) scale:self.scale inContext:currentContext];
 		if (!self.dragActive && stratum != self.activeDocument.strata.lastObject)			// draw pencil icon, unless this is the last (empty) stratum

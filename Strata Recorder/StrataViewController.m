@@ -91,17 +91,22 @@ typedef enum {
 + (void)handleEnterBackground
 {
 	StrataViewController *controller = (StrataViewController *) [[[UIApplication sharedApplication] keyWindow] rootViewController];
-//	controller.strataView.overlayContainer.hidden = YES;
-//	controller.strataView.traceContainer.hidden = YES;
-	[controller.strataView handleEnterBackground];
+	if (controller.currentTapState == tapStatePencilSelected) {
+		controller.currentTapState = tapStateNoneSelected;
+		[controller.strataView handlePencilTap:controller.selectedStratum];
+		controller.strataView.touchesEnabled = YES;
+		controller.strataGraphScrollView.pinchGestureRecognizer.enabled = YES;
+		controller.strataGraphScrollView.scrollEnabled = YES;
+		controller.strataView.overlayContainer.overlayVisible = NO;
+		[controller.strataView setNeedsDisplay];
+		[controller.strataView.overlayContainer removeFromSuperlayer];
+	}
 }
 
 + (void)handleEnterForeground
 {
 	StrataViewController *controller = (StrataViewController *) [[[UIApplication sharedApplication] keyWindow] rootViewController];
-//	controller.strataView.overlayContainer.hidden = NO;
-//	controller.strataView.traceContainer.hidden = NO;
-	[controller.strataView handleEnterForeground];
+#pragma unused(controller)
 }
 
 #define HIT_DISTANCE 1./6.
@@ -110,6 +115,7 @@ typedef enum {
 
 - (IBAction)handleTapGesture:(UITapGestureRecognizer *)gestureRecognizer
 {
+	NSLog(@"sublayers = %@", self.view.layer.sublayers);
 	CGPoint hitPoint = CGPointMake(UX([gestureRecognizer locationInView:gestureRecognizer.view].x), UY([gestureRecognizer locationInView:gestureRecognizer.view].y));
 	if (self.currentTapState == tapStateNoneSelected) {																			// we're not currently in a mode state
 		for (Stratum *stratum in self.activeDocument.strata) {
@@ -375,8 +381,8 @@ typedef enum {
 		UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
 		((DocumentListTableViewController *)((UINavigationController *)segue.destinationViewController).topViewController).activeDocument = self.activeDocument;
 		((DocumentListTableViewController *)((UINavigationController *)segue.destinationViewController).topViewController).delegate = self;			// set up ourselves as delegate
-		((UIStoryboardPopoverSegue *)segue).popoverController.delegate = (id) self;																	// popover controller delegate
 		[self.activeDocument save];
+		((UIStoryboardPopoverSegue *)segue).popoverController.delegate = (id) self;																	// popover controller delegate
 		self.popover = popoverSegue.popoverController;																								// so we can dismiss the popover
 	} else if ([segue.identifier isEqualToString:@"settings"]) {
 		UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
