@@ -12,6 +12,8 @@
 
 #import "StrataPageViewController.h"
 
+static float gCacheScrollViewHeightPageIndexZero;
+
 @interface StrataPageViewController ()
 
 @end
@@ -24,7 +26,6 @@
 
 - (void)viewDidLoad
 {
-//	NSLog(@"viewDidLoad parent = %@", self.parent);
     [super viewDidLoad];
 	if (self.parent) {
 		[self initializePageView];
@@ -36,7 +37,6 @@
 - (void)setParent:(ContainerPageViewController *)parent
 {
 	_parent = parent;
-//	NSLog(@"setParent, parent = %@, strataPageView = %@", _parent, self.strataPageView);
 	if (self.strataPageView) {
 		[self initializePageView];
 		[self adjustMinimumZoom];
@@ -46,7 +46,6 @@
 
 - (void)setPageIndex:(int)pageIndex
 {
-//	NSLog(@"setPageIndex, strataPageView = %@", self.strataPageView);
 	_pageIndex = pageIndex;
 	self.strataPageView.pageIndex = pageIndex;
 	if (self.strataPageView)
@@ -82,10 +81,18 @@
 {
 	self.strataPageScrollView.contentSize = self.view.bounds.size;
 	self.strataPageScrollView.contentOffset = CGPointZero;
+	/*
+	 Case 1: First instance (page 1):
+		viewDidLoad, setParent called in order
+	 Case 2: Second (and subsequent) instances:
+		setParent, viewDidLoad called in order
+	 because of their methods of instantiation. For case 2, the scrollview has not been instantiated, so its vertical dimension is not usable.
+	 Use the cached dimension from case 1.
+	 */
+	if (self.pageIndex == 0)																// cached dimension from page 1
+		gCacheScrollViewHeightPageIndexZero = self.strataPageScrollView.bounds.size.height;
 	float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width*self.strataPageScrollView.zoomScale)/2.0, 0);
-	float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height*self.strataPageScrollView.zoomScale)/2.0, 0);
-//	NSLog(@"maintainScrollView, height = %f, height = %f, scale = %f", self.strataPageScrollView.bounds.size.height, self.strataPageView.bounds.size.height, self.strataPageScrollView.zoomScale);
-//	NSLog(@"maintainScrollView horizontalInset = %f, verticalInset = %f", horizontalInset, verticalInset);
+	float verticalInset = fmaxf((gCacheScrollViewHeightPageIndexZero-self.strataPageView.bounds.size.height*self.strataPageScrollView.zoomScale)/2.0, 0);
 	self.strataPageScrollView.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
 	if (verticalInset > 0 || horizontalInset > 0) self.strataPageScrollView.contentOffset = CGPointMake(-horizontalInset, -verticalInset);
 	self.strataPageScrollView.scrollEnabled = (horizontalInset == 0 && verticalInset == 0) ? YES : NO;
@@ -102,8 +109,6 @@
 {
 	float horizontalInset = fmaxf((self.strataPageScrollView.bounds.size.width-self.strataPageView.bounds.size.width*self.strataPageScrollView.zoomScale)/2.0, 0);
 	float verticalInset = fmaxf((self.strataPageScrollView.bounds.size.height-self.strataPageView.bounds.size.height*self.strataPageScrollView.zoomScale)/2.0, 0);
-//	NSLog(@"scrollViewDidEndZooming, height = %f, height = %f, scale = %f", self.strataPageScrollView.bounds.size.height, self.strataPageView.bounds.size.height, self.strataPageScrollView.zoomScale);
-//	NSLog(@"scrollViewDidEndZooming horizontalInset = %f, verticalInset = %f", horizontalInset, verticalInset);
 	self.strataPageScrollView.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
 	self.strataPageScrollView.scrollEnabled = (horizontalInset == 0 && verticalInset == 0) ? YES : NO;
 }
