@@ -63,12 +63,15 @@
 {
 	if (self.numberOfLines == 0) {
 		self.legendLineMaterial.patternNumber = materialNumber;
+		[self.legendLineMaterial setNeedsDisplay];
 		self.legendLineLabel.text = materialName;
+		NSLog(@"addLineToLegend first materialName = %@", materialName);
 		CGRect legendViewBounds = self.bounds;
 		legendViewBounds.size.height = self.initialHeight;
 		self.bounds = legendViewBounds;
 		++self.numberOfLines;
 	} else {
+		NSLog(@"addLineToLegend materialName = %@", materialName);
 		NSData *archivedData = [NSKeyedArchiver archivedDataWithRootObject:self.legendLineContainer];
 		UIView *newLegendLine = [NSKeyedUnarchiver unarchiveObjectWithData:archivedData];
 		CGRect legendViewBounds = self.bounds;

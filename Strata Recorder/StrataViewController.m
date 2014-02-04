@@ -91,6 +91,9 @@ typedef enum {
 + (void)handleEnterBackground
 {
 	StrataViewController *controller = (StrataViewController *) [[[UIApplication sharedApplication] keyWindow] rootViewController];
+	/*
+	 The following emulates code from handleTapGesture. Must be kept in sync.
+	 */
 	if (controller.currentTapState == tapStatePencilSelected) {
 		controller.currentTapState = tapStateNoneSelected;
 		[controller.strataView handlePencilTap:controller.selectedStratum];
@@ -115,7 +118,6 @@ typedef enum {
 
 - (IBAction)handleTapGesture:(UITapGestureRecognizer *)gestureRecognizer
 {
-	NSLog(@"sublayers = %@", self.view.layer.sublayers);
 	CGPoint hitPoint = CGPointMake(UX([gestureRecognizer locationInView:gestureRecognizer.view].x), UY([gestureRecognizer locationInView:gestureRecognizer.view].y));
 	if (self.currentTapState == tapStateNoneSelected) {																			// we're not currently in a mode state
 		for (Stratum *stratum in self.activeDocument.strata) {

@@ -33,7 +33,7 @@ static StrataDocument *gCurrentDocument = nil;
 			}
 		}
 		self.units = @"Metric";
-		self.strataHeight = 10;
+		self.strataHeight = 8;
 		self.sectionLabels = [[NSMutableArray alloc] init];
 		self.pageDimension = CGSizeMake(8.5, 11.);							// default
 		self.pageMargins = CGSizeMake(.5, .5);

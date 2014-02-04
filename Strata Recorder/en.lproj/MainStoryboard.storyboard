@@ -162,7 +162,7 @@
                                 <rect key="frame" x="273" y="970" width="220" height="36"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <color key="pageIndicatorTintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="currentPageIndicatorTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="currentPageIndicatorTintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </pageControl>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="cut.png" id="CKd-Wg-9zQ">
                                 <rect key="frame" x="364" y="782" width="40" height="40"/>
