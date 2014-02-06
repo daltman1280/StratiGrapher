@@ -38,6 +38,7 @@ typedef enum {
 - (void)rename:(NSString *)name;
 + (id)loadFromFile:(NSString *)name;
 + (NSString *)documentsFolderPath;
++ (NSArray *)existingStrataDocuments;
 + (int)snapToGrainSizePoint:(float *)stratumWidth;
 + (float)stratumWidthFromGrainSize:(grainSizeEnum)grainSize;
 

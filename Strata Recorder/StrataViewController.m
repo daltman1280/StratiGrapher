@@ -403,10 +403,25 @@ typedef enum {
     [super viewDidLoad];
 	self.doOnce = NO;
 	// settings from user preferences
-	if ([[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"])
-		self.activeDocument = [StrataDocument loadFromFile:[[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"]];
-	else
-		self.activeDocument = [[StrataDocument alloc] init];							// empty document
+	NSArray *existingStrataDocuments = [StrataDocument existingStrataDocuments];
+	if (existingStrataDocuments.count > 0) {
+		NSString *documentName = [[NSUserDefaults standardUserDefaults] objectForKey:@"activeDocument"];
+		if (documentName) {
+			self.activeDocument = [StrataDocument loadFromFile:documentName];
+			if (!self.activeDocument) {																	// doesn't exist, load another, otherwise, we're finished
+				self.activeDocument = [StrataDocument loadFromFile:existingStrataDocuments[0]];		// load the first one
+				[[NSUserDefaults standardUserDefaults] setObject:self.activeDocument.name forKey:@"activeDocument"];
+				[[NSUserDefaults standardUserDefaults] synchronize];
+			}
+		}
+		
+	} else {																					// no existing documents
+		self.activeDocument = [[StrataDocument alloc] init];									// empty document
+		[self.activeDocument save];
+		self.activeDocument = [StrataDocument loadFromFile:self.activeDocument.name];
+		[[NSUserDefaults standardUserDefaults] setObject:self.activeDocument.name forKey:@"activeDocument"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	}
 	NSURL *url = [[NSBundle mainBundle] URLForResource:@"patterns1 multipage" withExtension:@"pdf"];
 	CGPDFDocumentRef document = CGPDFDocumentCreateWithURL((__bridge CFURLRef)(url));
 	CGPDFPageRef page;

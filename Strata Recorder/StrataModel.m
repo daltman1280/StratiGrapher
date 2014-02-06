@@ -109,6 +109,17 @@ static StrataDocument *gCurrentDocument = nil;
 	return doc;
 }
 
++ (NSArray *)existingStrataDocuments
+{
+	NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[StrataDocument documentsFolderPath] error:nil];
+	NSMutableArray *existingStrataDocuments = [[NSMutableArray alloc] init];
+	for (NSString *filename in contents) {
+		if ([[filename pathExtension] isEqualToString:@"strata"])
+			[existingStrataDocuments addObject:filename];
+	}
+	return existingStrataDocuments;
+}
+
 + (NSString *)documentsFolderPath
 {
 	return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
