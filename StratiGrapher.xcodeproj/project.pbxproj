@@ -54,6 +54,11 @@
 		259339BD173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 259339BC173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m */; };
 		25A5086018888E9900842903 /* ContainerPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A5085F18888E9900842903 /* ContainerPageViewController.m */; };
 		25B7FADA189F6156006E22D4 /* TabbingTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B7FAD9189F6156006E22D4 /* TabbingTextField.m */; };
+		25C1FC1C18A34B9F00F67A79 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25C1FC1B18A34B9F00F67A79 /* Images.xcassets */; };
+		25C1FC1F18A34EA400F67A79 /* ApplicationIcon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C1FC1D18A34EA400F67A79 /* ApplicationIcon-76.png */; };
+		25C1FC2018A34EA500F67A79 /* ApplicationIcon-152.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C1FC1E18A34EA400F67A79 /* ApplicationIcon-152.png */; };
+		25C1FC2618A361CD00F67A79 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C1FC2518A361CC00F67A79 /* Security.framework */; };
+		25C1FC2818A3629300F67A79 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C1FC2718A3629300F67A79 /* DropboxSDK.framework */; };
 		25C47823185EC6BA0020D30A /* StratumInfoNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C47822185EC6BA0020D30A /* StratumInfoNotesViewController.m */; };
 		25C4782F185F5B1C0020D30A /* StratumGranularityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4782E185F5B1C0020D30A /* StratumGranularityViewController.m */; };
 		25C5AA171755650600A66C08 /* AddSectionLabelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C5AA161755650600A66C08 /* AddSectionLabelViewController.m */; };
@@ -161,6 +166,11 @@
 		25AA3CE81860C82300B01E64 /* Format background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Format background.png"; path = "images/Format background.png"; sourceTree = "<group>"; };
 		25B7FAD8189F6156006E22D4 /* TabbingTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabbingTextField.h; sourceTree = "<group>"; };
 		25B7FAD9189F6156006E22D4 /* TabbingTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabbingTextField.m; sourceTree = "<group>"; };
+		25C1FC1B18A34B9F00F67A79 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = StratiGrapher/Images.xcassets; sourceTree = "<group>"; };
+		25C1FC1D18A34EA400F67A79 /* ApplicationIcon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ApplicationIcon-76.png"; path = "images/ApplicationIcon-76.png"; sourceTree = "<group>"; };
+		25C1FC1E18A34EA400F67A79 /* ApplicationIcon-152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ApplicationIcon-152.png"; path = "images/ApplicationIcon-152.png"; sourceTree = "<group>"; };
+		25C1FC2518A361CC00F67A79 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		25C1FC2718A3629300F67A79 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DropboxSDK.framework; sourceTree = "<group>"; };
 		25C20BB017111F40003ED123 /* ApplicationIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ApplicationIcon.png; sourceTree = "<group>"; };
 		25C47821185EC6BA0020D30A /* StratumInfoNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StratumInfoNotesViewController.h; sourceTree = "<group>"; };
 		25C47822185EC6BA0020D30A /* StratumInfoNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StratumInfoNotesViewController.m; sourceTree = "<group>"; };
@@ -183,6 +193,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25C1FC2818A3629300F67A79 /* DropboxSDK.framework in Frameworks */,
+				25C1FC2618A361CD00F67A79 /* Security.framework in Frameworks */,
 				2589CF07163F897C00E43147 /* UIKit.framework in Frameworks */,
 				2589CF09163F897C00E43147 /* Foundation.framework in Frameworks */,
 				2589CF0B163F897C00E43147 /* CoreGraphics.framework in Frameworks */,
@@ -213,6 +225,7 @@
 		2589CEF7163F897C00E43147 = {
 			isa = PBXGroup;
 			children = (
+				25C1FC1B18A34B9F00F67A79 /* Images.xcassets */,
 				2557E68C1867C36000D36B92 /* Application Notes.rtf */,
 				258E5F8217152E6C006706B3 /* Default-Landscape~ipad.png */,
 				258E5F7D17152CEB006706B3 /* Default~ipad.png */,
@@ -234,6 +247,8 @@
 		2589CF05163F897C00E43147 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				25C1FC2718A3629300F67A79 /* DropboxSDK.framework */,
+				25C1FC2518A361CC00F67A79 /* Security.framework */,
 				2590DC96171CE43600CEA001 /* QuartzCore.framework */,
 				2589CF06163F897C00E43147 /* UIKit.framework */,
 				2589CF08163F897C00E43147 /* Foundation.framework */,
@@ -365,6 +380,8 @@
 			isa = PBXGroup;
 			children = (
 				2536509D1800AEE600114127 /* ApplicationIcon.png */,
+				25C1FC1D18A34EA400F67A79 /* ApplicationIcon-76.png */,
+				25C1FC1E18A34EA400F67A79 /* ApplicationIcon-152.png */,
 				2536509E1800AEE600114127 /* ApplicationIcon.ai */,
 				253650A21800AF0C00114127 /* paleocurrent selected.ai */,
 				253650A41800AF2D00114127 /* post-it-pencil.ai */,
@@ -503,14 +520,17 @@
 				2589CF20163F897D00E43147 /* MainStoryboard.storyboard in Resources */,
 				258E73851642F14500C12D43 /* move icon.png in Resources */,
 				259129E81648491200C08897 /* move icon selected.png in Resources */,
+				25C1FC1F18A34EA400F67A79 /* ApplicationIcon-76.png in Resources */,
 				25E7D2701652C56800109376 /* info icon.png in Resources */,
 				258C79461654877D0040F759 /* patterns descriptive text.txt in Resources */,
 				258CF6C41658D18C001E8D20 /* rename.tif in Resources */,
 				258CF6C61658D1DA001E8D20 /* duplicate.tif in Resources */,
+				25C1FC2018A34EA500F67A79 /* ApplicationIcon-152.png in Resources */,
 				25066EE1166A67CB0095C3CC /* cut.png in Resources */,
 				25066EE3166A79040095C3CC /* anchor.png in Resources */,
 				2590CEC5166B24C2009525D8 /* patterns1 multipage.pdf in Resources */,
 				258C982E166C1A7300665158 /* paleocurrent.png in Resources */,
+				25C1FC1C18A34B9F00F67A79 /* Images.xcassets in Resources */,
 				258D907916731436007EEC9A /* paleocurrent greyscale.png in Resources */,
 				25921D2C168C04D30038E9D9 /* post-it-pencil.png in Resources */,
 				258E5F7E17152CEB006706B3 /* Default~ipad.png in Resources */,
@@ -638,12 +658,17 @@
 		2589CF27163F897D00E43147 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJCPP_ARC_ABI = YES;
 				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = "Strata Recorder/Strata Recorder.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/daltman/Documents/projects/iPad/StratiGrapher,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Strata Recorder/StratiGrapher-Prefix.pch";
 				INFOPLIST_FILE = "Strata Recorder/StratiGrapher-Info.plist";
@@ -658,12 +683,17 @@
 		2589CF28163F897D00E43147 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJCPP_ARC_ABI = YES;
 				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = "Strata Recorder/Strata Recorder.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/daltman/Documents/projects/iPad/StratiGrapher,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Strata Recorder/StratiGrapher-Prefix.pch";
 				INFOPLIST_FILE = "Strata Recorder/StratiGrapher-Info.plist";
