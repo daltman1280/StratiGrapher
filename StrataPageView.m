@@ -246,7 +246,9 @@
 	[self exportPDF];
 	NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 	NSString *pdfFile = [NSString stringWithFormat:@"%@.pdf", _activeDocument.name];
-	[self.restClient uploadFile:pdfFile toPath:@"/" withParentRev:nil fromPath:[documentsFolder stringByAppendingPathComponent:pdfFile]];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[self.restClient uploadFile:pdfFile toPath:@"/" withParentRev:nil fromPath:[documentsFolder stringByAppendingPathComponent:pdfFile]];
+	});
 }
 
 - (DBRestClient *)restClient {
@@ -259,13 +261,16 @@
 }
 
 - (void)restClient:(DBRestClient*)client uploadedFile:(NSString*)destPath
-			  from:(NSString*)srcPath metadata:(DBMetadata*)metadata {
+			  from:(NSString*)srcPath metadata:(DBMetadata*)metadata
+{
 	
-    NSLog(@"File uploaded successfully to path: %@", metadata.path);
 }
 
 - (void)restClient:(DBRestClient*)client uploadFileFailedWithError:(NSError*)error {
     NSLog(@"File upload failed with error - %@", error);
+	UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Can\'t access Dropbox" delegate:nil cancelButtonTitle:@"" destructiveButtonTitle:@"OK" otherButtonTitles:@"", nil];
+	sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+	[sheet showInView:[[[UIApplication sharedApplication] keyWindow] rootViewController].view];
 }
 
 - (void)drawRect:(CGRect)rect
@@ -275,11 +280,6 @@
 			CGContextTranslateCTM(UIGraphicsGetCurrentContext(), _activeDocument.pageMargins.width*72., _activeDocument.pageMargins.height*72.);
 			CGContextScaleCTM(UIGraphicsGetCurrentContext(), 72./PPI*_activeDocument.legendScale, 72./PPI*_activeDocument.legendScale);
 		} else {
-			// draw page boundaries
-			CGContextRef currentContext = UIGraphicsGetCurrentContext();
-			CGContextSetLineWidth(currentContext, 3);
-			CGContextStrokeRect(currentContext, self.bounds);
-
 			CGContextTranslateCTM(UIGraphicsGetCurrentContext(), _activeDocument.pageMargins.width*PPI, _activeDocument.pageMargins.height*PPI);
 			CGContextScaleCTM(UIGraphicsGetCurrentContext(), _activeDocument.legendScale, _activeDocument.legendScale);
 		}
@@ -300,9 +300,7 @@
 	CGColorRef colorWhite = CGColorCreate(colorSpace, colorComponentsWhite);
 	CGContextSetStrokeColorWithColor(currentContext, colorBlack);
 	CFRelease(colorSpace);
-	// draw page boundaries
 	CGContextSetLineWidth(currentContext, 3);
-	CGContextStrokeRect(currentContext, self.bounds);
 	// draw scale indicator at lower left of page
 	CGContextBeginPath(currentContext);
 	CGContextMoveToPoint(currentContext, VX(_activeDocument.pageMargins.width), VY(_activeDocument.pageMargins.height));

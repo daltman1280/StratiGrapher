@@ -62,6 +62,8 @@
 		25C47823185EC6BA0020D30A /* StratumInfoNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C47822185EC6BA0020D30A /* StratumInfoNotesViewController.m */; };
 		25C4782F185F5B1C0020D30A /* StratumGranularityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4782E185F5B1C0020D30A /* StratumGranularityViewController.m */; };
 		25C5AA171755650600A66C08 /* AddSectionLabelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C5AA161755650600A66C08 /* AddSectionLabelViewController.m */; };
+		25E0044D18A70E88008B6343 /* Default@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E0044C18A70E88008B6343 /* Default@2x~ipad.png */; };
+		25E0044F18A70E95008B6343 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E0044E18A70E95008B6343 /* Default-Landscape@2x~ipad.png */; };
 		25E7D2701652C56800109376 /* info icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E7D26F1652C56800109376 /* info icon.png */; };
 		25E91B2016633CC600AFFC0E /* SettingsTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E91B1F16633CC600AFFC0E /* SettingsTableController.m */; };
 		25F061EC1899C898002BB2DC /* StrataModelState.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F061EB1899C898002BB2DC /* StrataModelState.m */; };
@@ -178,6 +180,8 @@
 		25C4782E185F5B1C0020D30A /* StratumGranularityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StratumGranularityViewController.m; sourceTree = "<group>"; };
 		25C5AA151755650600A66C08 /* AddSectionLabelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSectionLabelViewController.h; sourceTree = "<group>"; };
 		25C5AA161755650600A66C08 /* AddSectionLabelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddSectionLabelViewController.m; sourceTree = "<group>"; };
+		25E0044C18A70E88008B6343 /* Default@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x~ipad.png"; sourceTree = "<group>"; };
+		25E0044E18A70E95008B6343 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		25E7D26F1652C56800109376 /* info icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info icon.png"; sourceTree = "<group>"; };
 		25E91B1E16633CC600AFFC0E /* SettingsTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsTableController.h; path = ../SettingsTableController.h; sourceTree = "<group>"; };
 		25E91B1F16633CC600AFFC0E /* SettingsTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsTableController.m; path = ../SettingsTableController.m; sourceTree = "<group>"; };
@@ -225,6 +229,8 @@
 		2589CEF7163F897C00E43147 = {
 			isa = PBXGroup;
 			children = (
+				25E0044E18A70E95008B6343 /* Default-Landscape@2x~ipad.png */,
+				25E0044C18A70E88008B6343 /* Default@2x~ipad.png */,
 				25C1FC1B18A34B9F00F67A79 /* Images.xcassets */,
 				2557E68C1867C36000D36B92 /* Application Notes.rtf */,
 				258E5F8217152E6C006706B3 /* Default-Landscape~ipad.png */,
@@ -528,6 +534,7 @@
 				25C1FC2018A34EA500F67A79 /* ApplicationIcon-152.png in Resources */,
 				25066EE1166A67CB0095C3CC /* cut.png in Resources */,
 				25066EE3166A79040095C3CC /* anchor.png in Resources */,
+				25E0044D18A70E88008B6343 /* Default@2x~ipad.png in Resources */,
 				2590CEC5166B24C2009525D8 /* patterns1 multipage.pdf in Resources */,
 				258C982E166C1A7300665158 /* paleocurrent.png in Resources */,
 				25C1FC1C18A34B9F00F67A79 /* Images.xcassets in Resources */,
@@ -535,6 +542,7 @@
 				25921D2C168C04D30038E9D9 /* post-it-pencil.png in Resources */,
 				258E5F7E17152CEB006706B3 /* Default~ipad.png in Resources */,
 				258E5F8317152E6C006706B3 /* Default-Landscape~ipad.png in Resources */,
+				25E0044F18A70E95008B6343 /* Default-Landscape@2x~ipad.png in Resources */,
 				258F8BBA171E611B0027EA4D /* paleocurrent selected.png in Resources */,
 				2536509F1800AEE600114127 /* ApplicationIcon.png in Resources */,
 			);

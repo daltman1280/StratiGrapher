@@ -221,14 +221,10 @@
 
 - (IBAction)handleDropboxPDFButton:(id)sender
 {
-#if 0
 	dispatch_queue_t exportQueue = dispatch_queue_create("dropbox queue", NULL);
 	dispatch_async(exportQueue, ^{
 		[self.delegate handleDropboxPDFButton:self];
 	});
-#else
-	[self.delegate handleDropboxPDFButton:self];
-#endif
 }
 
 - (IBAction)handleExportPDFButton:(id)sender

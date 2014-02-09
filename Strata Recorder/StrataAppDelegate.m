@@ -18,16 +18,12 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-#if 1
-    DBSession *dbSession = [[DBSession alloc] initWithAppKey:@"es8mm9m7zdulbpw" appSecret:@"xlp44xohqeyhh9g" root:kDBRootAppFolder];
+	DBSession *dbSession = [[DBSession alloc] initWithAppKey:@"es8mm9m7zdulbpw" appSecret:@"xlp44xohqeyhh9g" root:kDBRootAppFolder];
 	[DBSession setSharedSession:dbSession];
-    if (![[DBSession sharedSession] isLinked]) {
-        [[DBSession sharedSession] linkFromController:((UIWindow *)[[UIApplication sharedApplication] windows][0]).rootViewController];
-    } else
-		NSLog(@"no");
-#endif
+	if (![[DBSession sharedSession] isLinked])
+		[[DBSession sharedSession] linkFromController:[[[UIApplication sharedApplication] keyWindow] rootViewController]];
 	[StrataModelState currentState].dirty = YES;
-    return YES;
+	return YES;
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
