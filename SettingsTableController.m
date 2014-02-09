@@ -256,11 +256,13 @@ extern TabbingTextField *gFirstResponder;
 
 - (IBAction)selectNextResponder:(id)sender {
 	[gFirstResponder.next becomeFirstResponder];
+	[gFirstResponder selectAll:self];
 }
 
 - (IBAction)selectPrevResponder:(id)sender
 {
 	[gFirstResponder.prev becomeFirstResponder];
+	[gFirstResponder selectAll:self];
 }
 
 - (void)viewDidUnload {
