@@ -46,6 +46,39 @@
 	controller.delegate = self;
 }
 
+//	make the cell's lable invisible and activate the text field
+
+- (IBAction)handleRenameStart:(id)sender {
+	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
+	cell.textLabel.hidden = YES;
+	UITextField *textField = (UITextField *)[cell.contentView viewWithTag:99];
+	textField.hidden = NO;
+	textField.text = cell.textLabel.text;
+	textField.delegate = self;
+	[textField becomeFirstResponder];
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+	if (textField.text.length == 0 || [self.strataFiles containsObject:textField.text])
+		return NO;
+	[self.activeDocument rename:textField.text];
+	[self populateDocumentsList];
+	[self.tableView reloadData];
+	int index = [self.strataFiles indexOfObject:self.activeDocument.name];
+	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
+	[self.delegate setActiveStrataDocument:self.strataFiles[index]];
+	// deactivate editing control and activate original cell label
+	textField.hidden = YES;
+	textField.delegate = nil;
+	[textField resignFirstResponder];
+	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
+	cell.textLabel.hidden = NO;
+	cell.textLabel.text = textField.text;
+	return YES;
+}
+
 - (IBAction)handleRenameDocument:(id)sender
 {
 	NSString *newName = ((RenameViewController *)sender).currentName;
@@ -154,6 +187,12 @@
 	for (NSString *filename in self.strataFiles) {
 		if (strataFileIndex == [indexPath indexAtPosition:1]) {
 			cell.textLabel.text = [filename stringByDeletingPathExtension];
+			UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 120, 30)];
+			textField.tag = 99;
+			[cell.contentView insertSubview:textField belowSubview:cell.textLabel];
+			textField.borderStyle = UITextBorderStyleRoundedRect;
+			textField.clearButtonMode = UITextFieldViewModeAlways;
+			textField.hidden = YES;
 			return cell;
 		}
 		++strataFileIndex;

@@ -11,7 +11,7 @@
 #import <MessageUI/MFMailComposeViewController.h>
 #import "DocumentListControllerDelegate.h"
 
-@interface DocumentListTableViewController : UITableViewController <UIPopoverControllerDelegate, MFMailComposeViewControllerDelegate, UIActionSheetDelegate> {
+@interface DocumentListTableViewController : UITableViewController <UIPopoverControllerDelegate, MFMailComposeViewControllerDelegate, UIActionSheetDelegate, UITextFieldDelegate> {
 	
 	UIActionSheet*								exportDocumentActionSheet;
 	UIActionSheet*								deleteDocumentActionSheet;

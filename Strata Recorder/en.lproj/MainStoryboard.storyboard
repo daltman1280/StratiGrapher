@@ -1373,7 +1373,7 @@
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cEd-Iq-LE4">
                                             <rect key="frame" x="15" y="0.0" width="738" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </label>
@@ -1413,7 +1413,7 @@
                         </barButtonItem>
                         <barButtonItem title="rename" id="m0x-r6-gSG" userLabel="Bar Button Item - Rename">
                             <connections>
-                                <segue destination="9H2-Bm-wBM" kind="modal" modalPresentationStyle="currentContext" modalTransitionStyle="coverVertical" id="Jtz-Vd-PuA"/>
+                                <action selector="handleRenameStart:" destination="4F8-GC-SJo" id="Y9W-Nd-ugD"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem title="duplicate" id="7lQ-md-qoY" userLabel="Bar Button Item - Duplicate">
