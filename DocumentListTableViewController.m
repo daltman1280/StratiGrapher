@@ -30,6 +30,7 @@
 	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
 	[self.delegate setActiveStrataDocument:self.strataFiles[index]];
+	[self setDeleteButtonEnabled];
 }
 
 - (IBAction)handleDeleteDocument:(id)sender {
@@ -66,6 +67,7 @@
 	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
 	[self.delegate setActiveStrataDocument:self.strataFiles[index]];
+	[self setDeleteButtonEnabled];
 }
 
 - (IBAction)handleActionDocument:(id)sender {

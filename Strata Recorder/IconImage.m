@@ -63,6 +63,7 @@
 	CGContextSaveGState(currentContext);
 	CGContextTranslateCTM(currentContext, VX(point.x), VY(point.y));
 	CGContextRotateCTM(currentContext, rotation);
+//	CGContextScaleCTM(currentContext, scale, -scale);
 	CGContextScaleCTM(currentContext, 1, -1);
 	CGImageRef image = self.image.CGImage;
 	CGContextDrawImage(currentContext, CGRectMake(-self.width/2.0, -self.width/2, self.width, self.width), image);

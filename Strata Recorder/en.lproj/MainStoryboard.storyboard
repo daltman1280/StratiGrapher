@@ -1397,11 +1397,6 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HH3-J0-1YH" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="wS2-hj-cqx">
-                    <rect key="frame" x="0.0" y="0.0" width="274" height="193"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                </view>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" id="5zS-sQ-i6r">
                     <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -1416,12 +1411,12 @@
                                 <action selector="handleDeleteDocument:" destination="4F8-GC-SJo" id="igs-SC-vrQ"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem image="rename.tif" id="m0x-r6-gSG">
+                        <barButtonItem title="rename" id="m0x-r6-gSG" userLabel="Bar Button Item - Rename">
                             <connections>
                                 <segue destination="9H2-Bm-wBM" kind="modal" modalPresentationStyle="currentContext" modalTransitionStyle="coverVertical" id="Jtz-Vd-PuA"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem image="duplicate.tif" id="7lQ-md-qoY">
+                        <barButtonItem title="duplicate" id="7lQ-md-qoY" userLabel="Bar Button Item - Duplicate">
                             <connections>
                                 <action selector="handleDuplicateDocument:" destination="4F8-GC-SJo" id="I1C-12-Ioq"/>
                             </connections>
@@ -1552,10 +1547,8 @@
     <resources>
         <image name="anchor.png" width="128" height="128"/>
         <image name="cut.png" width="128" height="128"/>
-        <image name="duplicate.tif" width="20" height="20"/>
         <image name="paleocurrent selected.png" width="533" height="533"/>
         <image name="paleocurrent.png" width="533" height="533"/>
-        <image name="rename.tif" width="20" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
