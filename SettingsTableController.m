@@ -19,7 +19,8 @@ extern TabbingTextField *gFirstResponder;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *saveItem;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelItem;
 @property (strong, nonatomic) IBOutlet UISlider *pageScaleSlider;
-@property (strong, nonatomic) IBOutlet UITextField *strataHeightText;
+//@property (strong, nonatomic) IBOutlet UITextField *strataHeightText;
+@property (strong, nonatomic) IBOutlet UILabel *strataHeightText;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *unitsSelector;
 @property (strong, nonatomic) IBOutlet TabbingTextField *paperWidthText;
 @property (strong, nonatomic) IBOutlet TabbingTextField *paperHeightText;
@@ -27,6 +28,7 @@ extern TabbingTextField *gFirstResponder;
 @property (strong, nonatomic) IBOutlet TabbingTextField *marginHeightText;
 @property (strong, nonatomic) IBOutlet TabbingTextField *pageScaleText;
 @property (strong, nonatomic) IBOutlet TabbingTextField *lineThicknessText;
+@property (strong, nonatomic) IBOutlet UISlider *lineThicknessSlider;
 @property (strong, nonatomic) IBOutlet TabbingTextField *patternScaleText;
 @property (strong, nonatomic) IBOutlet UISlider *patternScaleSlider;
 @property (strong, nonatomic) IBOutlet MaterialPatternView *patternSampleView;
@@ -147,6 +149,10 @@ extern TabbingTextField *gFirstResponder;
 	self.legendScaleText.text = [NSString stringWithFormat:@"%.1f", self.legendScaleSlider.value];
 }
 
+- (IBAction)handleLineThicknessSlider:(id)sender {
+	self.lineThicknessText.text = [NSString stringWithFormat:@"%d", (int) self.lineThicknessSlider.value];
+}
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -209,6 +215,8 @@ extern TabbingTextField *gFirstResponder;
 	self.lineThicknessText.inputAccessoryView = self.accessoryView;
 	self.lineThicknessText.next = self.legendScaleText;
 	self.lineThicknessText.prev = self.pageScaleText;
+	
+	self.lineThicknessSlider.value = self.lineThickness;
 
 	self.patternSampleView.patternNumber = 643;															// arbitrary pattern
 	self.patternSampleView.patternScale = self.patternScale;
