@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <DropboxSDK/DropboxSDK.h>
 #import "StrataModel.h"
 #import "IconImage.h"
 #import "LegendView.h"
@@ -16,7 +17,9 @@ typedef enum {
 	PDFMode
 } drawMode;
 
-@interface StrataPageView : UIView
+@interface StrataPageView : UIView <DBRestClientDelegate> {
+	DBRestClient*								_restClient;
+}
 
 // initialized externally
 
@@ -43,7 +46,12 @@ typedef enum {
 @property int									pageIndex;					// index of page to be drawn
 @property int									maxPageIndex;				// number of pages-1 (including legend): initialized by setupPages
 
+//	Dropbox
+
+@property (nonatomic, readonly) DBRestClient*	restClient;
+
 - (void)setupPages;
 - (void)exportPDF;
+- (void)dropboxPDF;
 
 @end

@@ -241,6 +241,33 @@
 	_mode = graphMode;
 }
 
+- (void)dropboxPDF
+{
+	[self exportPDF];
+	NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+	NSString *pdfFile = [NSString stringWithFormat:@"%@.pdf", _activeDocument.name];
+	[self.restClient uploadFile:pdfFile toPath:@"/" withParentRev:nil fromPath:[documentsFolder stringByAppendingPathComponent:pdfFile]];
+}
+
+- (DBRestClient *)restClient {
+	if (!_restClient) {
+		_restClient =
+		[[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
+		_restClient.delegate = self;
+	}
+	return _restClient;
+}
+
+- (void)restClient:(DBRestClient*)client uploadedFile:(NSString*)destPath
+			  from:(NSString*)srcPath metadata:(DBMetadata*)metadata {
+	
+    NSLog(@"File uploaded successfully to path: %@", metadata.path);
+}
+
+- (void)restClient:(DBRestClient*)client uploadFileFailedWithError:(NSError*)error {
+    NSLog(@"File upload failed with error - %@", error);
+}
+
 - (void)drawRect:(CGRect)rect
 {
 	if (_pageIndex == _maxPageIndex) {

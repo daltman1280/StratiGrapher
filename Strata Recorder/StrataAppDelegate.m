@@ -11,14 +11,35 @@
 #import "StrataModel.h"
 #import "StrataModelState.h"
 #import "StrataViewController.h"
+#import <DropboxSDK/DropboxSDK.h>
 
 @implementation StrataAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+#if 1
+    DBSession *dbSession = [[DBSession alloc] initWithAppKey:@"es8mm9m7zdulbpw" appSecret:@"xlp44xohqeyhh9g" root:kDBRootAppFolder];
+	[DBSession setSharedSession:dbSession];
+    if (![[DBSession sharedSession] isLinked]) {
+        [[DBSession sharedSession] linkFromController:((UIWindow *)[[UIApplication sharedApplication] windows][0]).rootViewController];
+    } else
+		NSLog(@"no");
+#endif
 	[StrataModelState currentState].dirty = YES;
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    if ([[DBSession sharedSession] handleOpenURL:url]) {
+        if ([[DBSession sharedSession] isLinked]) {
+            NSLog(@"App linked successfully!");
+            // At this point you can start making API calls
+        }
+        return YES;
+    }
+    // Add whatever other url handling code your app requires here
+    return NO;
 }
 
 /*

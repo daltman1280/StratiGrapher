@@ -33,7 +33,7 @@
 }
 
 - (IBAction)handleDeleteDocument:(id)sender {
-	deleteDocumentActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Document" otherButtonTitles:nil];
+	deleteDocumentActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Drawing" otherButtonTitles:nil];
 	[deleteDocumentActionSheet showFromBarButtonItem:self.actionDocument animated:YES];
 }
 
@@ -69,7 +69,7 @@
 }
 
 - (IBAction)handleActionDocument:(id)sender {
-	exportDocumentActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Feedback…", @"Email .docx", @"Export .docx", @"Email PDF", @"Export PDF",nil];
+	exportDocumentActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Feedback…", @"Dropbox PDF", @"Email PDF", @"Export PDF",nil];
 	[exportDocumentActionSheet showFromBarButtonItem:self.actionDocument animated:YES];
 }
 
@@ -219,6 +219,18 @@
 	[super viewDidUnload];
 }
 
+- (IBAction)handleDropboxPDFButton:(id)sender
+{
+#if 0
+	dispatch_queue_t exportQueue = dispatch_queue_create("dropbox queue", NULL);
+	dispatch_async(exportQueue, ^{
+		[self.delegate handleDropboxPDFButton:self];
+	});
+#else
+	[self.delegate handleDropboxPDFButton:self];
+#endif
+}
+
 - (IBAction)handleExportPDFButton:(id)sender
 {
 	dispatch_queue_t exportQueue = dispatch_queue_create("export queue", NULL);
@@ -250,23 +262,14 @@
 //				[self handleEmailFeedbackButton:self];
 				break;
 			case 1:
-//				[self handleEmailDOCXButton:self];
+				[self handleDropboxPDFButton:self];
 				break;
 			case 2:
-//				[self handleExportDOCXButton:self];
-				break;
-			case 3:
 //				[self handleEmailPDFButton:self];
 				break;
-			case 4:
+			case 3:
 				[self handleExportPDFButton:self];
 				break;
-#if CONSOLE
-			case 5:
-				NSLog(@"console output");
-				[self handleEmailConsoleButton:self];
-				break;
-#endif
 		}
 	} else
 		NSAssert(NO, @"Illegal value for actionSheet.");
