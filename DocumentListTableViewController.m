@@ -12,10 +12,13 @@
 #import "DocumentListTableViewController.h"
 #import "StrataNotifications.h"
 
+const static int kSGTextFieldTagNumber = 99;
+
 @interface DocumentListTableViewController ()
 
 @property (strong, nonatomic) IBOutlet UIToolbar*	toolbar;
 @property (strong, nonatomic) NSMutableArray*		strataFiles;
+@property (assign) NSInteger						activeEditingSessionIndex;				// in case user taps another row during an active editing session (rename drawing). -1: no active session
 
 @end
 
@@ -46,49 +49,56 @@
 	controller.delegate = self;
 }
 
-//	make the cell's lable invisible and activate the text field
+//	make the cell's label invisible and activate the text field
 
 - (IBAction)handleRenameStart:(id)sender {
 	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
 	cell.textLabel.hidden = YES;
-	UITextField *textField = (UITextField *)[cell.contentView viewWithTag:99];
+	UITextField *textField = (UITextField *)[cell.contentView viewWithTag:kSGTextFieldTagNumber];
 	textField.hidden = NO;
 	textField.text = cell.textLabel.text;
 	textField.delegate = self;
 	[textField becomeFirstResponder];
+	self.activeEditingSessionIndex = [[self.tableView indexPathForSelectedRow] indexAtPosition:1];					// active editing session here!
 }
+
+#pragma mark UITextFieldDelegate
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-	if (textField.text.length == 0 || [self.strataFiles containsObject:textField.text])
-		return NO;
-	[self.activeDocument rename:textField.text];
-	[self populateDocumentsList];
-	[self.tableView reloadData];
-	int index = [self.strataFiles indexOfObject:self.activeDocument.name];
-	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
-	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
-	[self.delegate setActiveStrataDocument:self.strataFiles[index]];
+	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
+	[self closeEditingSessionOfCell:cell textField:textField];
+	return YES;																										// always allow the session to end
+}
+
+//	User has tapped a different row from the active editing session, we need to end it (and possibly rename its drawing)
+
+- (void)deselectedActiveEditingSession
+{
+	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:self.activeEditingSessionIndex inSection:0]];
+	UITextField *textField = (UITextField *) [cell.contentView viewWithTag:kSGTextFieldTagNumber];
+	[self closeEditingSessionOfCell:cell textField:textField];
+	self.activeEditingSessionIndex = -1;
+}
+
+- (void)closeEditingSessionOfCell:(UITableViewCell *)cell textField:(UITextField *)textField
+{
+	BOOL renameAllowed = NO;
+	if (textField.text.length > 0 && ![self.strataFiles containsObject:textField.text]) {							// rename the drawing if it's legal
+		renameAllowed = YES;
+		BOOL success = [self.activeDocument rename:textField.text];
+		if (success) {
+			[self populateDocumentsList];
+			int index = [self.strataFiles indexOfObject:self.activeDocument.name];
+			[self.delegate setActiveStrataDocument:self.strataFiles[index]];
+		}
+	}
 	// deactivate editing control and activate original cell label
 	textField.hidden = YES;
 	textField.delegate = nil;
 	[textField resignFirstResponder];
-	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
 	cell.textLabel.hidden = NO;
-	cell.textLabel.text = textField.text;
-	return YES;
-}
-
-- (IBAction)handleRenameDocument:(id)sender
-{
-	NSString *newName = ((RenameViewController *)sender).currentName;
-	[self.activeDocument rename:newName];
-	[self populateDocumentsList];
-	[self.tableView reloadData];
-	int index = [self.strataFiles indexOfObject:self.activeDocument.name];
-	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
-	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
-	[self.delegate setActiveStrataDocument:self.strataFiles[index]];
+	cell.textLabel.text = self.activeDocument.name;
 }
 
 - (IBAction)handleDuplicateDocument:(id)sender
@@ -133,6 +143,7 @@
 	[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
 	[self setDeleteButtonEnabled];
 	[[NSNotificationCenter defaultCenter] postNotificationName:SRPopupVisibleNotification object:self];
+	self.activeEditingSessionIndex = -1;																		// initially, no active editing session. Will have row index whenever a session begins
 }
 
 - (void)populateDocumentsList
@@ -187,8 +198,9 @@
 	for (NSString *filename in self.strataFiles) {
 		if (strataFileIndex == [indexPath indexAtPosition:1]) {
 			cell.textLabel.text = [filename stringByDeletingPathExtension];
-			UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 120, 30)];
-			textField.tag = 99;
+			// create the editing text field
+			UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 200, 30)];
+			textField.tag = kSGTextFieldTagNumber;
 			[cell.contentView insertSubview:textField belowSubview:cell.textLabel];
 			textField.borderStyle = UITextBorderStyleRoundedRect;
 			textField.clearButtonMode = UITextFieldViewModeAlways;
@@ -244,6 +256,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	int index = [indexPath indexAtPosition:1];
+	if (self.activeEditingSessionIndex >= 0)
+		[self deselectedActiveEditingSession];																// need to handle deselected row BEFORE calling active document setter!
 	if ([(NSString *)(self.strataFiles[index]) isEqualToString:self.activeDocument.name]) return;			// user picked current document
 	[self.delegate setActiveStrataDocument:self.strataFiles[index]];
 	[StrataModelState currentState].dirty = YES;

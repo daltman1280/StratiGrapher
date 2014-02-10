@@ -76,12 +76,15 @@ static StrataDocument *gCurrentDocument = nil;
 	return nil;
 }
 
-- (void)rename:(NSString *)name
+- (BOOL)rename:(NSString *)name
 {
+	BOOL success =
 	[[NSFileManager defaultManager] moveItemAtPath:[[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:self.name] stringByAppendingPathExtension:@"strata"]
 											toPath:[[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"strata"]
 											 error:nil];
-	self.name = name;
+	if (success)
+		self.name = name;
+	return success;
 }
 
 - (void)remove

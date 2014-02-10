@@ -35,7 +35,7 @@ typedef enum {
 + (void)saveState;
 - (StrataDocument *)duplicate;
 - (void)remove;
-- (void)rename:(NSString *)name;
+- (BOOL)rename:(NSString *)name;
 + (id)loadFromFile:(NSString *)name;
 + (NSString *)documentsFolderPath;
 + (NSArray *)existingStrataDocuments;
