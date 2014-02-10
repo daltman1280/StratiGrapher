@@ -219,6 +219,8 @@
 }
 
 - (void)viewDidUnload {
+	[self setMaterialTitleText:nil];
+	[self setNotesText:nil];
 	[self setTitle:nil];
 	[self setPattern:nil];
 	[self setSubtitle:nil];

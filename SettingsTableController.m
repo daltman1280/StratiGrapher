@@ -19,7 +19,6 @@ extern TabbingTextField *gFirstResponder;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *saveItem;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelItem;
 @property (strong, nonatomic) IBOutlet UISlider *pageScaleSlider;
-//@property (strong, nonatomic) IBOutlet UITextField *strataHeightText;
 @property (strong, nonatomic) IBOutlet UILabel *strataHeightText;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *unitsSelector;
 @property (strong, nonatomic) IBOutlet TabbingTextField *paperWidthText;
@@ -274,6 +273,7 @@ extern TabbingTextField *gFirstResponder;
 	[self setSaveItem:nil];
 	[self setPageScaleSlider:nil];
 	[self setLineThicknessText:nil];
+	[self setLineThicknessSlider:nil];
 	[self setPatternScaleText:nil];
 	[self setCancelItem:nil];
 	[self setMarginWidthText:nil];
@@ -282,6 +282,8 @@ extern TabbingTextField *gFirstResponder;
 	[self setPatternSampleView:nil];
 	[self setLegendScaleSlider:nil];
 	[self setLegendScaleText:nil];
+	[self setAccessoryView:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super viewDidUnload];
 }
 @end

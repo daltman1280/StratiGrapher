@@ -14,8 +14,6 @@
 
 @property (strong, nonatomic) IBOutlet UIPickerView *granularityPicker;
 
-//@property StrataDocument*					activeDocument;
-//@property Stratum*							stratum;
 @property grainSizeEnum						grainSizeIndex;
 @property StratumInfoTableViewController*	parent;
 

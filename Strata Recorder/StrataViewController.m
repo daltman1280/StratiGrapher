@@ -753,6 +753,7 @@ typedef enum {
 }
 
 - (void)viewDidUnload {
+	[self setStrataView:nil];
 	[self setLocationLabel:nil];
 	[self setDimensionLabel:nil];
 	[self setToolbar:nil];
@@ -784,6 +785,7 @@ typedef enum {
 	[self setModeControl:nil];
 	[self setPageControl:nil];
 	[self setPageViewBackground:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super viewDidUnload];
 }
 @end

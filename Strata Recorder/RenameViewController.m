@@ -59,7 +59,6 @@
 	[self setRenameCancelButton:nil];
 	[self setRenameText:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[self setRenameText:nil];
 	[super viewDidUnload];
 }
 @end

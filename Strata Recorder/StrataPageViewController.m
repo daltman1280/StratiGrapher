@@ -121,7 +121,6 @@ static float gCacheScrollViewHeightPageIndexZero;
 
 - (void)viewDidUnload {
 	[self setStrataPageScrollView:nil];
-	[self setStrataPageScrollView:nil];
 	[self setStrataPageView:nil];
 	[super viewDidUnload];
 }
