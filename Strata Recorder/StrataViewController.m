@@ -671,11 +671,6 @@ typedef enum {
 	[self.strataPageView exportPDF];
 }
 
-- (void)handleDropboxPDFButton:(id)sender
-{
-	[self.strataPageView dropboxPDF];
-}
-
 - (void)setActiveStrataDocument:(NSString *)name
 {
 	float previousDocumentHeight = self.activeDocument.strataHeight;

@@ -10,11 +10,13 @@
 #import <MessageUI/MessageUI.h>
 #import <MessageUI/MFMailComposeViewController.h>
 #import "DocumentListControllerDelegate.h"
+#import <DropboxSDK/DropboxSDK.h>
 
-@interface DocumentListTableViewController : UITableViewController <UIPopoverControllerDelegate, MFMailComposeViewControllerDelegate, UIActionSheetDelegate, UITextFieldDelegate> {
+@interface DocumentListTableViewController : UITableViewController <UIPopoverControllerDelegate, MFMailComposeViewControllerDelegate, UIActionSheetDelegate, UITextFieldDelegate, DBRestClientDelegate> {
 	
 	UIActionSheet*								exportDocumentActionSheet;
 	UIActionSheet*								deleteDocumentActionSheet;
+	DBRestClient*								_restClient;
 }
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem*	addDocument;
@@ -24,5 +26,6 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem*	actionDocument;
 @property id											delegate;
 @property StrataDocument*								activeDocument;
+@property (nonatomic, readonly) DBRestClient*			restClient;							// Dropbox
 
 @end
