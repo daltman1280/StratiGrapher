@@ -27,12 +27,6 @@
 
 @end
 
-typedef void(*callback)(char *);
-
-void callthis(callback func) {
-	func("1");
-}
-
 @implementation StrataPageView
 
 - (void)setActiveDocument:(StrataDocument *)activeDocument
@@ -40,7 +34,6 @@ void callthis(callback func) {
 	_activeDocument = activeDocument;
 	self.bounds = CGRectMake(0, 0, self.activeDocument.pageDimension.width*PPI, self.activeDocument.pageDimension.height*PPI);
 	self.frame = self.bounds;
-	callthis((callback)0);										// causes crash (for testing symbolication)
 	self.arrowIcon.bounds = self.bounds;						// bounds for icons must also be updated
 }
 
