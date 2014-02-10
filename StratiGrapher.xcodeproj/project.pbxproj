@@ -164,6 +164,8 @@
 		25A5085F18888E9900842903 /* ContainerPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContainerPageViewController.m; path = ../ContainerPageViewController.m; sourceTree = "<group>"; };
 		25AA3CE81860C82300B01E64 /* Format background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Format background.png"; path = "images/Format background.png"; sourceTree = "<group>"; };
 		25B5E9B218A87CBC0024C57C /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		25B5E9B418A89B740024C57C /* duplicate.ai */ = {isa = PBXFileReference; lastKnownFileType = text; name = duplicate.ai; path = images/duplicate.ai; sourceTree = "<group>"; };
+		25B5E9B518A89B740024C57C /* rename.ai */ = {isa = PBXFileReference; lastKnownFileType = text; name = rename.ai; path = images/rename.ai; sourceTree = "<group>"; };
 		25B7FAD8189F6156006E22D4 /* TabbingTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabbingTextField.h; sourceTree = "<group>"; };
 		25B7FAD9189F6156006E22D4 /* TabbingTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabbingTextField.m; sourceTree = "<group>"; };
 		25C1FC1B18A34B9F00F67A79 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = StratiGrapher/Images.xcassets; sourceTree = "<group>"; };
@@ -398,8 +400,10 @@
 				258E73841642F14500C12D43 /* move icon.png */,
 				259129E71648491200C08897 /* move icon selected.png */,
 				25E7D26F1652C56800109376 /* info icon.png */,
+				25B5E9B518A89B740024C57C /* rename.ai */,
 				258CF6C31658D18C001E8D20 /* rename.tif */,
 				25E0045218A75FF1008B6343 /* rename.png */,
+				25B5E9B418A89B740024C57C /* duplicate.ai */,
 				258CF6C51658D1DA001E8D20 /* duplicate.tif */,
 				25E0045018A74F8C008B6343 /* duplicate.png */,
 				258CF6C71658D2A1001E8D20 /* blueButton.png */,
