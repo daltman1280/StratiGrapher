@@ -51,6 +51,7 @@
 		259318F8176E602600A6341A /* LegendView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259318F7176E602600A6341A /* LegendView.m */; };
 		259339BD173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 259339BC173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m */; };
 		25A5086018888E9900842903 /* ContainerPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A5085F18888E9900842903 /* ContainerPageViewController.m */; };
+		25B5E9B318A87CBC0024C57C /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25B5E9B218A87CBC0024C57C /* MessageUI.framework */; };
 		25B7FADA189F6156006E22D4 /* TabbingTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B7FAD9189F6156006E22D4 /* TabbingTextField.m */; };
 		25C1FC1C18A34B9F00F67A79 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25C1FC1B18A34B9F00F67A79 /* Images.xcassets */; };
 		25C1FC1F18A34EA400F67A79 /* ApplicationIcon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C1FC1D18A34EA400F67A79 /* ApplicationIcon-76.png */; };
@@ -162,6 +163,7 @@
 		25A5085E18888E9900842903 /* ContainerPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContainerPageViewController.h; path = ../ContainerPageViewController.h; sourceTree = "<group>"; };
 		25A5085F18888E9900842903 /* ContainerPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContainerPageViewController.m; path = ../ContainerPageViewController.m; sourceTree = "<group>"; };
 		25AA3CE81860C82300B01E64 /* Format background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Format background.png"; path = "images/Format background.png"; sourceTree = "<group>"; };
+		25B5E9B218A87CBC0024C57C /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		25B7FAD8189F6156006E22D4 /* TabbingTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabbingTextField.h; sourceTree = "<group>"; };
 		25B7FAD9189F6156006E22D4 /* TabbingTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabbingTextField.m; sourceTree = "<group>"; };
 		25C1FC1B18A34B9F00F67A79 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = StratiGrapher/Images.xcassets; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25B5E9B318A87CBC0024C57C /* MessageUI.framework in Frameworks */,
 				25C1FC2818A3629300F67A79 /* DropboxSDK.framework in Frameworks */,
 				25C1FC2618A361CD00F67A79 /* Security.framework in Frameworks */,
 				2589CF07163F897C00E43147 /* UIKit.framework in Frameworks */,
@@ -247,6 +250,7 @@
 		2589CF05163F897C00E43147 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				25B5E9B218A87CBC0024C57C /* MessageUI.framework */,
 				25C1FC2718A3629300F67A79 /* DropboxSDK.framework */,
 				25C1FC2518A361CC00F67A79 /* Security.framework */,
 				2590DC96171CE43600CEA001 /* QuartzCore.framework */,

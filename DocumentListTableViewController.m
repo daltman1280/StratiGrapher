@@ -290,6 +290,36 @@ const static int kSGTextFieldTagNumber = 99;
 	});
 }
 
+- (IBAction)handleEmailPDFButton:(id)sender
+{
+	dispatch_queue_t exportQueue = dispatch_queue_create("export queue", NULL);
+	dispatch_async(exportQueue, ^{
+		[self.delegate handleExportPDFButton:self];
+		dispatch_async(dispatch_get_main_queue(), ^{[self createEmailWithPDF:self];});
+	});
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)createEmailWithPDF:(id)sender
+{
+	if (![MFMailComposeViewController canSendMail])
+		NSLog(@"a");
+	MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+	picker.mailComposeDelegate = self;
+	[picker setSubject:[NSString stringWithFormat:@"Printable PDF for %@", self.activeDocument.name]];
+	NSString *emailBody = @"Please print the attached PDF document.";
+	[picker setMessageBody:emailBody isHTML:NO];
+	NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+	NSString *pdfFile = [documentsFolder stringByAppendingFormat:@"/%@.pdf", self.activeDocument.name];
+    NSData *myData = [NSData dataWithContentsOfFile:pdfFile];
+	[picker addAttachmentData:myData mimeType:@"application/pdf" fileName:[self.activeDocument.name stringByAppendingString:@".pdf"]];
+	[self presentViewController:picker animated:YES completion:nil];
+}
+
 //	UIActionSheetDelegate method
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -316,7 +346,7 @@ const static int kSGTextFieldTagNumber = 99;
 				[self handleDropboxPDFButton:self];
 				break;
 			case 2:
-//				[self handleEmailPDFButton:self];
+				[self handleEmailPDFButton:self];
 				break;
 			case 3:
 				[self handleExportPDFButton:self];
