@@ -1357,8 +1357,8 @@
         <!--Document List Menu Table-->
         <scene sceneID="YqO-nk-QhJ">
             <objects>
-                <tableViewController id="4F8-GC-SJo" userLabel="Document List Menu Table" customClass="DocumentListTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="tcy-M9-vMb">
+                <tableViewController clearsSelectionOnViewWillAppear="NO" id="4F8-GC-SJo" userLabel="Document List Menu Table" customClass="DocumentListTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="tcy-M9-vMb">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="980"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

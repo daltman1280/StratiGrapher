@@ -75,19 +75,22 @@ const static int kSGTextFieldTagNumber = 99;
 
 - (void)deselectedActiveEditingSession
 {
-	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:self.activeEditingSessionIndex inSection:0]];
+	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:self.activeEditingSessionIndex inSection:0]];		// row that contained active editing session
 	UITextField *textField = (UITextField *) [cell.contentView viewWithTag:kSGTextFieldTagNumber];
-	[self closeEditingSessionOfCell:cell textField:textField];
-	self.activeEditingSessionIndex = -1;
+	[self closeEditingSessionOfCell:cell textField:textField];														// close the editing session
+	self.activeEditingSessionIndex = -1;																			// no active editing session
 }
+
+/*
+ Active editing session terminated, either because user dismissed keyboard, dismissed popover, or tapped a different drawing
+ row in the popover.
+ */
 
 - (void)closeEditingSessionOfCell:(UITableViewCell *)cell textField:(UITextField *)textField
 {
-	BOOL renameAllowed = NO;
 	if (textField.text.length > 0 && ![self.strataFiles containsObject:textField.text]) {							// rename the drawing if it's legal
-		renameAllowed = YES;
 		BOOL success = [self.activeDocument rename:textField.text];
-		if (success) {
+		if (success) {																								// test return code from rename operation
 			[self populateDocumentsList];
 			int index = [self.strataFiles indexOfObject:self.activeDocument.name];
 			[self.delegate setActiveStrataDocument:self.strataFiles[index]];
@@ -216,23 +219,7 @@ const static int kSGTextFieldTagNumber = 99;
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-		int i = [indexPath indexAtPosition:1];
-		NSString *filename = [[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:self.strataFiles[i]] stringByAppendingPathExtension:@"strata"];
-		[[NSFileManager defaultManager] removeItemAtPath:filename error:nil];
-		[self.strataFiles removeObjectAtIndex:i];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+    return NO;
 }
 
 /*
