@@ -568,10 +568,6 @@ typedef enum {
 - (IBAction)handleModeSwitch:(id)sender {
 	int selection = [(UISegmentedControl *)sender selectedSegmentIndex];
 	if (selection == 1) {																						// switching to page mode
-		self.pageControl.hidden = NO;
-		self.containerPageViewController.view.hidden = NO;
-		self.pageViewBackground.hidden = NO;
-		self.strataGraphScrollView.alpha = 0;
 		if ([StrataModelState currentState].dirty) {
 			[StrataModelState currentState].dirty = NO;
 			// initialize properties that are needed in StrataPageView
@@ -593,19 +589,23 @@ typedef enum {
 			self.pageControl.numberOfPages = controller.maxPages;
 			self.containerPageViewController.maxPages = controller.maxPages;
 		}
+		[UIView setAnimationDuration:1.5];
 		[UIView beginAnimations:@"GraphToPageTransition" context:nil];
-		[UIView setAnimationDuration:0.5];
+		self.pageControl.hidden = NO;
+		self.containerPageViewController.view.hidden = NO;
+		self.pageViewBackground.hidden = NO;
+		self.strataGraphScrollView.alpha = 0;
 		self.strataGraphScrollView.alpha = 0.0;
 		self.containerPageViewController.view.alpha = 1;
 		self.pageViewBackground.alpha = 1.0;
 		[UIView commitAnimations];
 	} else {																									// switching to draft mode
+		[UIView setAnimationDuration:1.5];
+		[UIView beginAnimations:@"PageToGraphTransition" context:nil];
 		self.pageControl.hidden = YES;
 		self.containerPageViewController.view.hidden = YES;
 		self.pageViewBackground.hidden = YES;
 		self.pageControl.hidden = YES;
-		[UIView beginAnimations:@"PageToGraphTransition" context:nil];
-		[UIView setAnimationDuration:0.5];
 		self.strataGraphScrollView.alpha = 1.0;
 		self.containerPageViewController.view.alpha = 0;
 		[UIView commitAnimations];
