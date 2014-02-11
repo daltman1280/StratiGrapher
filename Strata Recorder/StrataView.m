@@ -253,8 +253,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	CGFloat alpha = 1;
 	CGContextSetFillPattern(currentContext, pattern, &alpha);
 	CGPatternRelease(pattern);
-	gScale = self.scale;
-	CGContextDrawPath(currentContext, kCGPathFillStroke);								// does fill and stroke
+	CGPathDrawingMode *drawingMode = (self.dragActive) ? kCGPathStroke : kCGPathFillStroke;
+	CGContextDrawPath(currentContext, drawingMode);										// does fill and stroke
 	// draw points in red for debugging purposes
 	CGContextSetStrokeColorWithColor(currentContext, [UIColor colorWithRed:1 green:0 blue:0 alpha:1.0].CGColor);
 	if (self.pencilActive) {
@@ -709,11 +709,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)handleLongPress:(UILongPressGestureRecognizer *)gesture
 {
-}
-
-- (void)drawRect:(CGRect)rect
-{
-	
 }
 
 -(void)drawLayer:(CALayer*)layer inContext:(CGContextRef)currentContext
