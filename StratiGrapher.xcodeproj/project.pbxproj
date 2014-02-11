@@ -51,6 +51,7 @@
 		259318F8176E602600A6341A /* LegendView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259318F7176E602600A6341A /* LegendView.m */; };
 		259339BD173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 259339BC173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m */; };
 		25A5086018888E9900842903 /* ContainerPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A5085F18888E9900842903 /* ContainerPageViewController.m */; };
+		25B3EDDE18A9A99800765549 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25B3EDDD18A9A99800765549 /* Crashlytics.framework */; };
 		25B5E9B318A87CBC0024C57C /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25B5E9B218A87CBC0024C57C /* MessageUI.framework */; };
 		25B7FADA189F6156006E22D4 /* TabbingTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B7FAD9189F6156006E22D4 /* TabbingTextField.m */; };
 		25C1FC1C18A34B9F00F67A79 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25C1FC1B18A34B9F00F67A79 /* Images.xcassets */; };
@@ -163,6 +164,7 @@
 		25A5085E18888E9900842903 /* ContainerPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContainerPageViewController.h; path = ../ContainerPageViewController.h; sourceTree = "<group>"; };
 		25A5085F18888E9900842903 /* ContainerPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContainerPageViewController.m; path = ../ContainerPageViewController.m; sourceTree = "<group>"; };
 		25AA3CE81860C82300B01E64 /* Format background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Format background.png"; path = "images/Format background.png"; sourceTree = "<group>"; };
+		25B3EDDD18A9A99800765549 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		25B5E9B218A87CBC0024C57C /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		25B5E9B418A89B740024C57C /* duplicate.ai */ = {isa = PBXFileReference; lastKnownFileType = text; name = duplicate.ai; path = images/duplicate.ai; sourceTree = "<group>"; };
 		25B5E9B518A89B740024C57C /* rename.ai */ = {isa = PBXFileReference; lastKnownFileType = text; name = rename.ai; path = images/rename.ai; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 			files = (
 				25B5E9B318A87CBC0024C57C /* MessageUI.framework in Frameworks */,
 				25C1FC2818A3629300F67A79 /* DropboxSDK.framework in Frameworks */,
+				25B3EDDE18A9A99800765549 /* Crashlytics.framework in Frameworks */,
 				25C1FC2618A361CD00F67A79 /* Security.framework in Frameworks */,
 				2589CF07163F897C00E43147 /* UIKit.framework in Frameworks */,
 				2589CF09163F897C00E43147 /* Foundation.framework in Frameworks */,
@@ -259,6 +262,7 @@
 				2589CF06163F897C00E43147 /* UIKit.framework */,
 				2589CF08163F897C00E43147 /* Foundation.framework */,
 				2589CF0A163F897C00E43147 /* CoreGraphics.framework */,
+				25B3EDDD18A9A99800765549 /* Crashlytics.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -476,6 +480,7 @@
 				2589CEFE163F897C00E43147 /* Sources */,
 				2589CEFF163F897C00E43147 /* Frameworks */,
 				2589CF00163F897C00E43147 /* Resources */,
+				25B3EDDA18A9A88E00765549 /* Run Script (Crashlytics) */,
 			);
 			buildRules = (
 			);
@@ -549,6 +554,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		25B3EDDA18A9A88E00765549 /* Run Script (Crashlytics) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script (Crashlytics)";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run 3a5d33a7fbf7ecf443588919477cd2b62d50cafa f96fafe4150c670e53197b4d88a32cdffb35f66097407f9f8c00f40a6a235145";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2589CEFE163F897C00E43147 /* Sources */ = {

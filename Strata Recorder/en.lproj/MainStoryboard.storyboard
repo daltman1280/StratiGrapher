@@ -1431,63 +1431,6 @@
             </objects>
             <point key="canvasLocation" x="1362" y="1122"/>
         </scene>
-        <!--Rename View Controller - Rename Model-->
-        <scene sceneID="grF-pG-4X4">
-            <objects>
-                <viewController title="Rename Model" id="9H2-Bm-wBM" customClass="RenameViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="bottomLeft" id="d2x-ax-l0n" userLabel="Rename Model">
-                        <rect key="frame" x="0.0" y="0.0" width="274" height="193"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Auz-4p-n6Z">
-                                <rect key="frame" x="49" y="94" width="175" height="35"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.64307230709999996" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="17"/>
-                                <state key="normal" title="Rename"/>
-                                <connections>
-                                    <action selector="handleRenameConfirm:" destination="9H2-Bm-wBM" eventType="touchUpInside" id="iSe-im-VwH"/>
-                                </connections>
-                            </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="always" id="dpX-Q0-Nfo">
-                                <rect key="frame" x="31" y="50" width="212" height="31"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.64307230709999996" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Rename Document:" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" id="D80-GL-qQA">
-                                <rect key="frame" x="52" y="15" width="169" height="23"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.17883211369999999" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="19"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cl2-si-nF2">
-                                <rect key="frame" x="49" y="141" width="175" height="35"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.64909636969999995" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="17"/>
-                                <state key="normal" title="Cancel"/>
-                                <connections>
-                                    <action selector="handleRenameConfirm:" destination="9H2-Bm-wBM" eventType="touchUpInside" id="aS3-ie-qrt"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" red="0.86979874320652173" green="0.86979874320652173" blue="0.86979874320652173" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
-                    <value key="contentSizeForViewInPopover" type="size" width="274" height="193"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <connections>
-                        <outlet property="renameCancelButton" destination="cl2-si-nF2" id="cyy-gh-VhC"/>
-                        <outlet property="renameOKButton" destination="Auz-4p-n6Z" id="Bfs-yX-rWK"/>
-                        <outlet property="renameText" destination="dpX-Q0-Nfo" id="nN6-hO-XZZ"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="K8z-FJ-PLd" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2442" y="1533"/>
-        </scene>
         <!--Document List Menu Navigator-->
         <scene sceneID="kjd-Od-pHD">
             <objects>

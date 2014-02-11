@@ -12,6 +12,8 @@
 #import "StrataModelState.h"
 #import "StrataViewController.h"
 #import <DropboxSDK/DropboxSDK.h>
+#import <Crashlytics/Crashlytics.h>
+
 
 @implementation StrataAppDelegate
 
@@ -23,6 +25,7 @@
 	if (![[DBSession sharedSession] isLinked])
 		[[DBSession sharedSession] linkFromController:[[[UIApplication sharedApplication] keyWindow] rootViewController]];
 	[StrataModelState currentState].dirty = YES;
+	[Crashlytics startWithAPIKey:@"3a5d33a7fbf7ecf443588919477cd2b62d50cafa"];
 	return YES;
 }
 
