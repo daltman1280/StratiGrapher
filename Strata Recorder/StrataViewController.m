@@ -423,7 +423,7 @@ typedef enum {
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	NSURL *url = [[NSBundle mainBundle] URLForResource:@"patterns1 multipage" withExtension:@"pdf"];
-	CGPDFDocumentRef document = CGPDFDocumentCreateWithURL((__bridge CFURLRef)(url));
+	CGPDFDocumentRef document = CGPDFDocumentCreateWithURL((CFURLRef)(url));
 	CGPDFPageRef page;
 	self.strataView.patternsPageArray = [[NSMutableArray alloc] init];
 	for (int i=1; i<=28; ++i) {

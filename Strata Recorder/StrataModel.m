@@ -186,7 +186,7 @@ static StrataDocument *gCurrentDocument = nil;
 		for (int index = 0; index < stratum.outline.count; ++index) {
 			NSMutableDictionary *dict = stratum.outline[index];
 			CGPoint point;
-			CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &point);
+			CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(dict), &point);
 			point.x *= xScale;
 			point.y *= yScale;
 			[dict setObject:[NSNumber numberWithFloat:point.x] forKey:@"X"];

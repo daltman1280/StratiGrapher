@@ -62,7 +62,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			[path moveToPoint:point];
 		else
 			[path addLineToPoint:point];
-		CFRelease((__bridge CFTypeRef)(dict));
+		CFRelease((CFTypeRef)(dict));
 	}
 	[path setLineWidth:3];
 	[path stroke];
@@ -178,13 +178,13 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	// create a pair of control points shared between each pair of adjoining vertices
 	for (int index = 0; index < stratum.outline.count-2; ++index) {
 		CGPoint point;
-		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(stratum.outline[index]), &point);
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(stratum.outline[index]), &point);
 		float x0 = point.x;
 		float y0 = point.y;
-		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(stratum.outline[index+1]), &point);
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(stratum.outline[index+1]), &point);
 		float x1 = point.x;
 		float y1 = point.y;
-		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(stratum.outline[index+2]), &point);
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(stratum.outline[index+2]), &point);
 		float x2 = point.x;
 		float y2 = point.y;
 		float d01 = sqrtf((x1-x0)*(x1-x0)+(y1-y0)*(y1-y0));
@@ -219,24 +219,24 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	// construct bezier path
 	CGMutablePathRef mPath = CGPathCreateMutable();
 	CGPoint point;
-	CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(stratum.outline[0]), &point);
+	CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(stratum.outline[0]), &point);
 	CGPathMoveToPoint(mPath, NULL, VX(point.x+stratum.frame.origin.x), VY(point.y+stratum.frame.origin.y));
-	CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(stratum.outline[1]), &point);
+	CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(stratum.outline[1]), &point);
 	CGPoint cPoint;
-	CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(controlPoints[0]), &cPoint);
+	CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(controlPoints[0]), &cPoint);
 	// first and last curves have only a single control point
 	CGPathAddQuadCurveToPoint(mPath, NULL, VX(cPoint.x+stratum.frame.origin.x), VY(cPoint.y+stratum.frame.origin.y), VX(point.x+stratum.frame.origin.x), VY(point.y+stratum.frame.origin.y));
 	int cpIndex = 1;
 	for (int index = 2; index < stratum.outline.count-3; ++index) {
 		CGPoint cPoint1, cPoint2;
-		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(stratum.outline[index]), &point);
-		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(controlPoints[cpIndex++]), &cPoint1);
-		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(controlPoints[cpIndex++]), &cPoint2);
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(stratum.outline[index]), &point);
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(controlPoints[cpIndex++]), &cPoint1);
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(controlPoints[cpIndex++]), &cPoint2);
 		// grab the next pair of control points and use them for the next curve
 		CGPathAddCurveToPoint(mPath, NULL, VX(cPoint1.x+stratum.frame.origin.x), VY(cPoint1.y+stratum.frame.origin.y), VX(cPoint2.x+stratum.frame.origin.x), VY(cPoint2.y+stratum.frame.origin.y), VX(point.x+stratum.frame.origin.x), VY(point.y+stratum.frame.origin.y));
 	}
-	CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(controlPoints[cpIndex]), &cPoint);
-	CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)([stratum.outline lastObject]), &point);
+	CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(controlPoints[cpIndex]), &cPoint);
+	CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)([stratum.outline lastObject]), &point);
 	// last curve again has a single control point
 	CGPathAddQuadCurveToPoint(mPath, NULL, VX(cPoint.x+stratum.frame.origin.x), VY(cPoint.y+stratum.frame.origin.y), VX(point.x+stratum.frame.origin.x), VY(point.y+stratum.frame.origin.y));
 	CGPathCloseSubpath(mPath);
@@ -260,7 +260,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	if (self.pencilActive) {
 		for (NSDictionary *dict in stratum.outline) {
 			CGPoint point;
-			CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &point);
+			CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(dict), &point);
 			CGContextStrokeRect(currentContext, CGRectMake(VX(point.x+stratum.frame.origin.x), VY(point.y+stratum.frame.origin.y), 1, 1));
 		}
 	}
@@ -290,8 +290,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	if (stratum.outline && stratum.outline.count > 0 && self.overlayContainer.tracePoints.count > 1) {				// edit existing stratum outline
 		BOOL traceReversed = NO;																					// trace is in opposite polarity from outline
 		CGPoint p1, p2;
-		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.overlayContainer.tracePoints[0]), &p1);
-		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)([self.overlayContainer.tracePoints lastObject]), &p2);
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(self.overlayContainer.tracePoints[0]), &p1);
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)([self.overlayContainer.tracePoints lastObject]), &p2);
 		p1.x -= stratum.frame.origin.x;
 		p1.y -= stratum.frame.origin.y;
 		p2.x -= stratum.frame.origin.x;
@@ -300,7 +300,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		int d1MinIndex = -1, d2MinIndex = -1;																		// -1 indicates it's uninitialized
 		for (int index = 0; index < stratum.outline.count; ++index) {
 			CGPoint pOutline;
-			CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(stratum.outline[index]), &pOutline);
+			CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(stratum.outline[index]), &pOutline);
 			float d1 = distance(pOutline, p1);
 			if (d1 < d1Min) {
 				d1Min = d1;
@@ -325,7 +325,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		if (!traceReversed) {																						// add points from trace in original order
 			for (int index = 1; index < self.overlayContainer.tracePoints.count-1; index += 5) {
 				CGPoint p1;
-				CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &p1);
+				CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &p1);
 				p1.x -= stratum.frame.origin.x;
 				p1.y -= stratum.frame.origin.y;
 				[newOutline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(p1))]];
@@ -333,7 +333,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		} else {																									// add points from trace in reversed order
 			for (int index = self.overlayContainer.tracePoints.count-2; index > 0; index -= 5) {
 				CGPoint p1;
-				CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &p1);
+				CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &p1);
 				p1.x -= stratum.frame.origin.x;
 				p1.y -= stratum.frame.origin.y;
 				[newOutline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(p1))]];
@@ -352,12 +352,12 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		CGPoint point;
 		for (int index = 0; index < self.overlayContainer.tracePoints.count; index += 5) {
 			// make its user coordinates relative to stratum frame origin
-			CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &point);
+			CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &point);
 			point.x -= stratum.frame.origin.x;
 			point.y -= stratum.frame.origin.y;
 			[stratum.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(point))]];
 		}
-		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)([self.overlayContainer.tracePoints lastObject]), &point);
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)([self.overlayContainer.tracePoints lastObject]), &point);
 		point.x -= stratum.frame.origin.x;
 		point.y -= stratum.frame.origin.y;
 		[stratum.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(point))]];
@@ -558,7 +558,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	CGPoint dragPoint = [self getDragPoint:event];
 	for (NSMutableDictionary *dict in self.iconLocations) {												// first check move icons
 		CGPoint iconLocation;
-		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &iconLocation);
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(dict), &iconLocation);
 		if ((dragPoint.x-iconLocation.x)*(dragPoint.x-iconLocation.x)+
 			(dragPoint.y-iconLocation.y)*(dragPoint.y-iconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {	// hit detected
 			[[NSNotificationCenter defaultCenter] postNotificationName:SREditingOperationStartedNotification object:self];	// disable scrolling
@@ -611,7 +611,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		[dict setObject:[NSNumber numberWithFloat:offsetDragPoint.x] forKey:@"X"];
 		[dict setObject:[NSNumber numberWithFloat:offsetDragPoint.y] forKey:@"Y"];
 		CGPoint iconLocation;
-		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.iconLocations[self.activeDragIndex]), &iconLocation);
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(self.iconLocations[self.activeDragIndex]), &iconLocation);
 		CGSize newSize = CGSizeMake(iconLocation.x-stratum.frame.origin.x, iconLocation.y-stratum.frame.origin.y);
 		[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];	// here's where the work is done
 		NSSet *touches = [event touchesForView:self];
@@ -646,7 +646,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		[dict setObject:[NSNumber numberWithFloat:offsetDragPoint.x] forKey:@"X"];
 		[dict setObject:[NSNumber numberWithFloat:offsetDragPoint.y] forKey:@"Y"];
 		CGPoint iconLocation;
-		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(self.iconLocations[self.activeDragIndex]), &iconLocation);
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(self.iconLocations[self.activeDragIndex]), &iconLocation);
 		CGSize newSize = CGSizeMake(iconLocation.x-stratum.frame.origin.x, iconLocation.y-stratum.frame.origin.y);
 		[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];					// here's where the work is done
 		if (self.activeDragIndex == self.activeDocument.strata.count-1 &&
@@ -778,7 +778,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	}
 	for (NSDictionary *dict in self.iconLocations) {										// draw move icons
 		CGPoint iconLocation;
-		CGPointMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)(dict), &iconLocation);
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(dict), &iconLocation);
 		CGPoint viewPoint = CGPointMake(VX(iconLocation.x), VY(iconLocation.y));
 		CGRect iconRect = CGRectMake(viewPoint.x-self.moveIcon.width, viewPoint.y-self.moveIcon.width, self.moveIcon.width*2, self.moveIcon.width*2);
 		if (CGRectIntersectsRect(clippingRect, iconRect)) {
