@@ -457,7 +457,7 @@ typedef enum {
 	// set up the page view complex
 	[self.strataPageView removeFromSuperview];											// we'll just use as a template, populating its parent programmatically
 	self.strataPageViewControllerArray = [[NSMutableArray alloc] init];					// used to retain references to page view view controllers
-	self.containerPageViewController = [[ContainerPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:[NSDictionary dictionaryWithObjectsAndKeys:UIPageViewControllerOptionInterPageSpacingKey, [NSNumber numberWithFloat:50], nil]];
+	self.containerPageViewController = [[ContainerPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:[NSDictionary dictionaryWithObjectsAndKeys:UIPageViewControllerOptionInterPageSpacingKey, [NSNumber numberWithFloat:50.0], nil]];
 	self.containerPageViewController.pageControl = self.pageControl;
 	[self addChildViewController:self.containerPageViewController];						// required when embedding container VCs
 	[self.view insertSubview:self.containerPageViewController.view belowSubview:self.toolbar];	// required when embedding container VCs, we want it behind the toolbar
@@ -590,7 +590,9 @@ typedef enum {
 			self.containerPageViewController.maxPages = controller.maxPages;
 		}
 		[UIView transitionFromView:self.strataGraphScrollView toView:self.containerPageViewController.view duration:0.5 options:UIViewAnimationOptionShowHideTransitionViews | UIViewAnimationOptionTransitionCrossDissolve completion:NULL];
+		self.pageViewBackground.hidden = NO;
 	} else {																									// switching to draft mode
+		self.pageViewBackground.hidden = YES;
 		[UIView transitionFromView:self.containerPageViewController.view toView:self.strataGraphScrollView duration:0.5 options:UIViewAnimationOptionShowHideTransitionViews | UIViewAnimationOptionTransitionCrossDissolve completion:NULL];
 	}
 }
