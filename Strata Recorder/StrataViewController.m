@@ -589,26 +589,9 @@ typedef enum {
 			self.pageControl.numberOfPages = controller.maxPages;
 			self.containerPageViewController.maxPages = controller.maxPages;
 		}
-		[UIView setAnimationDuration:1.5];
-		[UIView beginAnimations:@"GraphToPageTransition" context:nil];
-		self.pageControl.hidden = NO;
-		self.containerPageViewController.view.hidden = NO;
-		self.pageViewBackground.hidden = NO;
-		self.strataGraphScrollView.alpha = 0;
-		self.strataGraphScrollView.alpha = 0.0;
-		self.containerPageViewController.view.alpha = 1;
-		self.pageViewBackground.alpha = 1.0;
-		[UIView commitAnimations];
+		[UIView transitionFromView:self.strataGraphScrollView toView:self.containerPageViewController.view duration:0.5 options:UIViewAnimationOptionShowHideTransitionViews | UIViewAnimationOptionTransitionCrossDissolve completion:NULL];
 	} else {																									// switching to draft mode
-		[UIView setAnimationDuration:1.5];
-		[UIView beginAnimations:@"PageToGraphTransition" context:nil];
-		self.pageControl.hidden = YES;
-		self.containerPageViewController.view.hidden = YES;
-		self.pageViewBackground.hidden = YES;
-		self.pageControl.hidden = YES;
-		self.strataGraphScrollView.alpha = 1.0;
-		self.containerPageViewController.view.alpha = 0;
-		[UIView commitAnimations];
+		[UIView transitionFromView:self.containerPageViewController.view toView:self.strataGraphScrollView duration:0.5 options:UIViewAnimationOptionShowHideTransitionViews | UIViewAnimationOptionTransitionCrossDissolve completion:NULL];
 	}
 }
 
