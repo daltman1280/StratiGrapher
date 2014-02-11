@@ -403,10 +403,6 @@
 			CGContextSetFillPattern(currentContext, pattern, &alpha);
 			CGContextSetLineWidth(currentContext, _activeDocument.lineThickness);
 			CGContextSetStrokeColorWithColor(currentContext, colorBlack);
-			// draw left boundary, before setting clipping path
-			CGContextMoveToPoint(currentContext, VX(offset.x+stratum.frame.origin.x/scale), VY(offset.y+stratum.frame.origin.y/scale));
-			CGContextAddLineToPoint(currentContext, VX(offset.x+stratum.frame.origin.x/scale), VY(offset.y+(stratum.frame.origin.y+stratum.frame.size.height)/scale));
-			CGContextStrokePath(currentContext);
 			// set clipping rectangle
 			CGContextBeginPath(currentContext);
 			// it's larger than the stratum boundary
@@ -415,6 +411,12 @@
 			[self addOutline:stratum offset:offset];															// add outline of stratum to current context
 			CGContextDrawPath(currentContext, kCGPathFillStroke);												// fills and strokes the path
 			CGContextRestoreGState(currentContext);
+			// draw left boundary, after restoring graphics context (to remove clipping)
+			float uVerticalOffset = (indexOfStratum == indexOfInitialStratum) ? 0 : kPencilMargin/scale;		// in case outline crosses left boundary below unit baseline
+			CGContextMoveToPoint(currentContext, VX(offset.x+stratum.frame.origin.x/scale), VY(offset.y+stratum.frame.origin.y/scale-uVerticalOffset));
+			// adjust length of line, if there's a starting offset
+			CGContextAddLineToPoint(currentContext, VX(offset.x+stratum.frame.origin.x/scale), VY(offset.y+(stratum.frame.origin.y+stratum.frame.size.height)/scale+uVerticalOffset));
+			CGContextStrokePath(currentContext);
 		}
 	}
 	CFRelease(colorWhite);
