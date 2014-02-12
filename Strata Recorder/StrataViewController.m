@@ -704,7 +704,7 @@ typedef enum {
 
 /*
  In iOS 6 and above, if the initial orientation isn't portrait, didRotateFromInterfaceOrientation does not get called
- for initial rotation, so we use this callback (only want to do this once, when view controller first gets initialized.
+ for initial rotation, so we use this callback (only want to do this once, when view controller first gets initialized).
  */
 
 - (void)viewWillLayoutSubviews
@@ -721,9 +721,9 @@ typedef enum {
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-	CGRect frame = CGRectMake(0, 0, self.strataView.frame.size.width, self.activeDocument.strataHeight*PPI);
+	CGRect frame = CGRectMake(0, 0, self.strataView.frame.size.width*self.strataGraphScrollView.zoomScale, self.activeDocument.strataHeight*PPI*self.strataGraphScrollView.zoomScale);
 	self.strataView.frame = frame;															// modifying bounds would affect frame origin
-	self.strataGraphScrollView.contentSize = self.strataView.bounds.size;
+	self.strataGraphScrollView.contentSize = CGSizeMake(self.strataView.bounds.size.width*self.strataGraphScrollView.zoomScale, self.strataView.bounds.size.height*self.strataGraphScrollView.zoomScale);
 	self.strataGraphScrollView.contentOffset = CGPointMake(0, self.strataView.bounds.size.height-self.strataGraphScrollView.bounds.size.height);
 	// for graphics.h
 	self.bounds = self.strataView.bounds;
