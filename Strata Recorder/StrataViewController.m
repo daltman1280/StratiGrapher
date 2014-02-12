@@ -591,8 +591,10 @@ typedef enum {
 		}
 		[UIView transitionFromView:self.strataGraphScrollView toView:self.containerPageViewController.view duration:0.5 options:UIViewAnimationOptionShowHideTransitionViews | UIViewAnimationOptionTransitionCrossDissolve completion:NULL];
 		self.pageViewBackground.hidden = NO;
+		self.pageControl.hidden = NO;
 	} else {																									// switching to draft mode
 		self.pageViewBackground.hidden = YES;
+		self.pageControl.hidden = YES;
 		[UIView transitionFromView:self.containerPageViewController.view toView:self.strataGraphScrollView duration:0.5 options:UIViewAnimationOptionShowHideTransitionViews | UIViewAnimationOptionTransitionCrossDissolve completion:NULL];
 	}
 }
