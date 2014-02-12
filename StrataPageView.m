@@ -313,6 +313,7 @@
 	Stratum *initialStratum = _activeDocument.strata[indexOfInitialStratum];
 	// initial offset in user units
 	CGPoint offset = CGPointMake(_activeDocument.pageDimension.width-_activeDocument.pageMargins.width-[_maxWidths[columnIndex] floatValue], _activeDocument.pageMargins.height+_columnVerticalMargin- initialStratum.frame.origin.y/scale);
+	int stratumIndexForColumnBottom = indexOfInitialStratum;													// index of the bottom stratum for the current column
 	
 	// draw strata
 	for (int indexOfStratum = indexOfInitialStratum; indexOfStratum <= [_maxStratumIndexForPage[_pageIndex] intValue]; ++indexOfStratum) {
@@ -326,6 +327,7 @@
 			[self drawColumnAdornments:columnIndex+1 columnOrigin:stratumRect.origin minGrainSizeIndex:[_minGrainSizeIndices[columnIndex] intValue] maxGrainSizeIndex:[_maxGrainSizeIndices[columnIndex] intValue]];
 		// offset stratum rectangle for new column
 		if (stratumTop > pageTop || (stratum.hasPageCutter && indexOfStratum != indexOfInitialStratum)) {		// reached top of column, need to start a new column
+			stratumIndexForColumnBottom = indexOfStratum;
 			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);										// undo the offset from current column
 			offset.x -= [_maxWidths[++columnIndex] floatValue]+_activeDocument.pageMargins.width/2.0;			// horizontal adjustment using maxwidth, and adding half of horizontal page margin
 			offset.y = -stratumRect.origin.y+_activeDocument.pageMargins.height+_columnVerticalMargin;			// vertical adjustment to make stratum sit on base page margin
@@ -412,10 +414,9 @@
 			CGContextDrawPath(currentContext, kCGPathFillStroke);												// fills and strokes the path
 			CGContextRestoreGState(currentContext);
 			// draw left boundary, after restoring graphics context (to remove clipping)
-			float uVerticalOffset = (indexOfStratum == indexOfInitialStratum) ? 0 : kPencilMargin/scale;		// in case outline crosses left boundary below unit baseline
+			float uVerticalOffset = (indexOfStratum == stratumIndexForColumnBottom) ? 0 : kPencilMargin/scale;	// in case outline crosses left boundary below unit baseline
 			CGContextMoveToPoint(currentContext, VX(offset.x+stratum.frame.origin.x/scale), VY(offset.y+stratum.frame.origin.y/scale-uVerticalOffset));
-			// adjust length of line, if there's a starting offset
-			CGContextAddLineToPoint(currentContext, VX(offset.x+stratum.frame.origin.x/scale), VY(offset.y+(stratum.frame.origin.y+stratum.frame.size.height)/scale+uVerticalOffset));
+			CGContextAddLineToPoint(currentContext, VX(offset.x+stratum.frame.origin.x/scale), VY(offset.y+(stratum.frame.origin.y+stratum.frame.size.height)/scale));
 			CGContextStrokePath(currentContext);
 		}
 	}
