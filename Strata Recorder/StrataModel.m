@@ -181,8 +181,8 @@ static StrataDocument *gCurrentDocument = nil;
 	CGSize adjustment = CGSizeMake(size.width-oldFrame.size.width, size.height-oldFrame.size.height);
 	stratum.frame = CGRectMake(stratum.frame.origin.x, stratum.frame.origin.y, size.width, size.height);
 	if (stratum.outline && stratum.outline.count) {
-		float xScale = stratum.frame.size.width/oldFrame.size.width;
-		float yScale = stratum.frame.size.height/oldFrame.size.height;
+		float xScale = oldFrame.size.width ?  stratum.frame.size.width/oldFrame.size.width : 1;
+		float yScale = oldFrame.size.height ? stratum.frame.size.height/oldFrame.size.height : 1;
 		for (int index = 0; index < stratum.outline.count; ++index) {
 			NSMutableDictionary *dict = stratum.outline[index];
 			CGPoint point;

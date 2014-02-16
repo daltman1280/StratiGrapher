@@ -90,6 +90,15 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 @implementation OverlayLayerContainer
 
+- (void)layoutSublayers
+{
+//	NSLog(@"layoutSublayers, strataView bounds h = %f, w = %f", self.strataView.bounds.size.height, self.strataView.bounds.size.width);
+	if (self.strataView.bounds.size.height) {
+//		self.frame = self.strataView.frame;
+//		self.overlay.frame = self.strataView.frame;
+	}
+}
+
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx
 {
 	UIGraphicsPushContext(ctx);
@@ -103,6 +112,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)drawPencilHighlighting
 {
+//	NSLog(@"drawPencilHighlighting, bounds h = %f, w = %f", self.bounds.size.height, self.bounds.size.width);
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
 	CGFloat colorComponents[4] = {0, 0, 0, 0.3};
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -189,8 +199,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		float y2 = point.y;
 		float d01 = sqrtf((x1-x0)*(x1-x0)+(y1-y0)*(y1-y0));
 		float d12 = sqrtf((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
-		float fa = t*d01/(d01+d12);
-		float fb = t*d12/(d01+d12);
+		float fa = d01+d12 ? t*d01/(d01+d12) : 0;
+		float fb = d01+d12 ? t*d12/(d01+d12) : 0;
 		float p1x = x1-fa*(x2-x0);
 		float p1y = y1-fa*(y2-y0);
 		float p2x = x1+fb*(x2-x0);
