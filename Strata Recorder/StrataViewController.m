@@ -731,6 +731,7 @@ typedef enum {
 	self.bounds = self.strataView.bounds;
 	self.origin = CGPointMake(XORIGIN, YORIGIN);
 	self.strataPageView.activeDocument = self.activeDocument;							// this will initialize the view's bounds
+	[self.strataView.overlayContainer setNeedsLayout];
 	[self.strataView setNeedsDisplay];
 	// update the page views
 	[StrataModelState currentState].dirty = YES;
