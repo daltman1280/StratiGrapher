@@ -63,7 +63,6 @@
 		25E7D2701652C56800109376 /* info icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E7D26F1652C56800109376 /* info icon.png */; };
 		25E91B2016633CC600AFFC0E /* SettingsTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E91B1F16633CC600AFFC0E /* SettingsTableController.m */; };
 		25F061EC1899C898002BB2DC /* StrataModelState.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F061EB1899C898002BB2DC /* StrataModelState.m */; };
-		25F3F2F2165B568F001A2F53 /* RenameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F3F2F1165B568F001A2F53 /* RenameViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -186,8 +185,6 @@
 		25E91B251663FBBF00AFFC0E /* SettingsControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingsControllerDelegate.h; sourceTree = "<group>"; };
 		25F061EA1899C898002BB2DC /* StrataModelState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrataModelState.h; sourceTree = "<group>"; };
 		25F061EB1899C898002BB2DC /* StrataModelState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StrataModelState.m; sourceTree = "<group>"; };
-		25F3F2F0165B568F001A2F53 /* RenameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenameViewController.h; sourceTree = "<group>"; };
-		25F3F2F1165B568F001A2F53 /* RenameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenameViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -433,8 +430,6 @@
 				258CF6C01658CE48001E8D20 /* DocumentListTableViewController.h */,
 				258CF6C11658CE48001E8D20 /* DocumentListTableViewController.m */,
 				259FDA57165DE9300010867E /* DocumentListControllerDelegate.h */,
-				25F3F2F0165B568F001A2F53 /* RenameViewController.h */,
-				25F3F2F1165B568F001A2F53 /* RenameViewController.m */,
 			);
 			name = "Document List";
 			sourceTree = "<group>";
@@ -581,7 +576,6 @@
 				25890D8B1655DAD20007BC72 /* MaterialTableViewCell.m in Sources */,
 				258E34BE1656E6C200E09A3A /* StrataPageView.m in Sources */,
 				258CF6C21658CE48001E8D20 /* DocumentListTableViewController.m in Sources */,
-				25F3F2F2165B568F001A2F53 /* RenameViewController.m in Sources */,
 				25E91B2016633CC600AFFC0E /* SettingsTableController.m in Sources */,
 				25066EDA166A5EF70095C3CC /* StrataToolsView.m in Sources */,
 				259339BD173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m in Sources */,
