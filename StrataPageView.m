@@ -437,8 +437,10 @@
 	CGMutablePathRef mPath = CGPathCreateMutable();
 	CGPoint point;
 	CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(stratum.outline[0]), &point);
+	point = CGPointMake(point.x*stratum.frame.size.width, point.y*stratum.frame.size.height);
 	CGPathMoveToPoint(mPath, NULL, VX(offset.x+(point.x+stratum.frame.origin.x)/scale), VY(offset.y+(point.y+stratum.frame.origin.y)/scale));
 	CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(stratum.outline[1]), &point);
+	point = CGPointMake(point.x*stratum.frame.size.width, point.y*stratum.frame.size.height);
 	CGPoint cPoint;
 	CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(controlPoints[0]), &cPoint);
 	// first and last curves have only a single control point
@@ -447,6 +449,7 @@
 	for (int index = 2; index < stratum.outline.count-3; ++index) {
 		CGPoint cPoint1, cPoint2;
 		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(stratum.outline[index]), &point);
+		point = CGPointMake(point.x*stratum.frame.size.width, point.y*stratum.frame.size.height);
 		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(controlPoints[cpIndex++]), &cPoint1);
 		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(controlPoints[cpIndex++]), &cPoint2);
 		// grab the next pair of control points and use them for the next curve
@@ -454,6 +457,7 @@
 	}
 	CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(controlPoints[cpIndex]), &cPoint);
 	CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)([stratum.outline lastObject]), &point);
+	point = CGPointMake(point.x*stratum.frame.size.width, point.y*stratum.frame.size.height);
 	// last curve again has a single control point
 	CGPathAddQuadCurveToPoint(mPath, NULL, VX(offset.x+(cPoint.x+stratum.frame.origin.x)/scale), VY(offset.y+(cPoint.y+stratum.frame.origin.y)/scale), VX(offset.x+(point.x+stratum.frame.origin.x)/scale), VY(offset.y+(point.y+stratum.frame.origin.y)/scale));
 	CGPathCloseSubpath(mPath);

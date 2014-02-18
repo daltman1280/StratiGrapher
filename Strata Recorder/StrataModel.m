@@ -180,19 +180,6 @@ static StrataDocument *gCurrentDocument = nil;
 	CGRect oldFrame = stratum.frame;
 	CGSize adjustment = CGSizeMake(size.width-oldFrame.size.width, size.height-oldFrame.size.height);
 	stratum.frame = CGRectMake(stratum.frame.origin.x, stratum.frame.origin.y, size.width, size.height);
-	if (stratum.outline && stratum.outline.count) {
-		float xScale = oldFrame.size.width ?  stratum.frame.size.width/oldFrame.size.width : 1;
-		float yScale = oldFrame.size.height ? stratum.frame.size.height/oldFrame.size.height : 1;
-		for (int index = 0; index < stratum.outline.count; ++index) {
-			NSMutableDictionary *dict = stratum.outline[index];
-			CGPoint point;
-			CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(dict), &point);
-			point.x *= xScale;
-			point.y *= yScale;
-			[dict setObject:[NSNumber numberWithFloat:point.x] forKey:@"X"];
-			[dict setObject:[NSNumber numberWithFloat:point.y] forKey:@"Y"];
-		}
-	}
 	for (int i=index+1; i<self.strata.count; ++i) {															// offset origins of all following strata
 		Stratum *stratum = self.strata[i];
 		stratum.frame = CGRectOffset(stratum.frame, 0, adjustment.height);
@@ -258,12 +245,12 @@ static StrataDocument *gCurrentDocument = nil;
 {
 	self.outline = [[NSMutableArray alloc] init];
 	float numberOfSegments = 5;
-	for (float x = self.frame.origin.x, segnum = 0; segnum <= numberOfSegments; x += self.frame.size.width/numberOfSegments, ++segnum)						// left to right, on bottom
+	for (float x = 0, segnum = 0; segnum <= numberOfSegments; x += 1.0/numberOfSegments, ++segnum)															// left to right, on bottom
 		[self.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(x, 0)))]];
-	for (float y = 0, segnum = 0; segnum <= numberOfSegments; y += self.frame.size.height/numberOfSegments, ++segnum)										// bottom to top, on right side
-		[self.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(self.frame.origin.x+self.frame.size.width, y)))]];
-	for (float x = self.frame.origin.x+self.frame.size.width, segnum = 0; segnum <= numberOfSegments; x -= self.frame.size.width/numberOfSegments, ++segnum)// right to left, on top
-		[self.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(x, self.frame.size.height)))]];
+	for (float y = 0, segnum = 0; segnum <= numberOfSegments; y += 1.0/numberOfSegments, ++segnum)															// bottom to top, on right side
+		[self.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(1, y)))]];
+	for (float x = 1, segnum = 0; segnum <= numberOfSegments; x -= 1.0/numberOfSegments, ++segnum)															// right to left, on top
+		[self.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(x, 1)))]];
 }
 
 #pragma mark NSCoder protocol

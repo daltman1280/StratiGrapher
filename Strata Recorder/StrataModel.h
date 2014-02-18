@@ -71,7 +71,7 @@ typedef enum {
 @property BOOL				hasPageCutter;		// does it have a page boundary attached? (it starts a new column)
 @property BOOL				hasAnchor;			// does it have an anchor attached?
 @property NSMutableArray*	paleoCurrents;		// of PaleoCurrent's
-@property NSMutableArray*	outline;			// of NSMutableDictionary's, defining endpoints and control points
+@property NSMutableArray*	outline;			// of NSMutableDictionary's, defining endpoints and control points (normalized for stratum dimensions)
 @property grainSizeEnum		grainSizeIndex;		// zero, if unassigned (new stratum), otherwise, index of applicable grain size enum + 1
 @property NSString*			notes;
 
