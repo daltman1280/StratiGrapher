@@ -1260,7 +1260,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="BGc-x7-Mff"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Section Label Detail" id="abs-d8-dy8"/>
-                    <value key="contentSizeForViewInPopover" type="size" width="460" height="530"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="440" height="530"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="numberStrataSpanned" destination="mHy-Q7-VFd" id="Jpb-fb-5Fr"/>

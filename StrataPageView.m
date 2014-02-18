@@ -295,13 +295,12 @@
 	float scale = _activeDocument.scale;
 	float pageTop = _activeDocument.pageDimension.height-_activeDocument.pageMargins.height;
 	gScale = 1;
-	int indexOfInitialStratum = _pageIndex > 0 ? [_maxStratumIndexForPage[_pageIndex-1] intValue]+1 : 0;
+	int indexOfInitialStratum = _pageIndex > 0 ? [_maxStratumIndexForPage[_pageIndex-1] intValue]+1 : 0;		// index of initial stratum for current page
 	int sectionIndex = 0;																						// index of current section for current page
 	int stratumSectionLower = -1;																				// index of first stratum for current section label
 	int stratumSectionUpper = -1;																				// index of last stratum for current section label
-	for (int i=0, accum=0; i<_activeDocument.sectionLabels.count; ++i) {										// iterate section labels to find index of first label that applies to this stratum
-		accum += ((SectionLabel *)_activeDocument.sectionLabels[i]).numberOfStrataSpanned;
-		sectionIndex = i;
+	for (int accum=-1; sectionIndex<_activeDocument.sectionLabels.count; ++sectionIndex) {						// iterate section labels to find index of first label that applies to this stratum
+		accum += ((SectionLabel *)_activeDocument.sectionLabels[sectionIndex]).numberOfStrataSpanned;			// index of last stratum spanned by label
 		stratumSectionLower = stratumSectionUpper + 1;
 		stratumSectionUpper = stratumSectionLower + ((SectionLabel *)_activeDocument.sectionLabels[sectionIndex]).numberOfStrataSpanned-1;
 		if (accum >= indexOfInitialStratum) {
