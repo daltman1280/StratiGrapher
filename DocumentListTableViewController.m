@@ -8,7 +8,6 @@
 
 #import "StrataModel.h"
 #import "StrataModelState.h"
-#import "RenameViewController.h"
 #import "DocumentListTableViewController.h"
 #import "StrataNotifications.h"
 
@@ -39,14 +38,6 @@ const static int kSGTextFieldTagNumber = 99;
 - (IBAction)handleDeleteDocument:(id)sender {
 	deleteDocumentActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Drawing" otherButtonTitles:nil];
 	[deleteDocumentActionSheet showFromBarButtonItem:self.actionDocument animated:YES];
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-	RenameViewController *controller = (RenameViewController *)(segue.destinationViewController);
-	controller.currentName = self.activeDocument.name;
-	controller.strataFiles = self.strataFiles;
-	controller.delegate = self;
 }
 
 //	make the cell's label invisible and activate the text field
@@ -313,6 +304,17 @@ const static int kSGTextFieldTagNumber = 99;
 	});
 }
 
+- (IBAction)handleEmailFeedbackButton:(id)sender
+{
+	if (![MFMailComposeViewController canSendMail])
+		NSLog(@"a");
+	MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+	picker.mailComposeDelegate = self;
+	[picker setSubject:[NSString stringWithFormat:@"Question/request/feedback for Stratigrapher"]];
+	[picker setToRecipients:@[@"support@homebodyapps.com"]];
+	[self presentViewController:picker animated:YES completion:nil];
+}
+
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
 {
 	[self dismissViewControllerAnimated:YES completion:nil];
@@ -354,7 +356,7 @@ const static int kSGTextFieldTagNumber = 99;
 	} else if (actionSheet == exportDocumentActionSheet) {
 		switch (buttonIndex) {
 			case 0:
-//				[self handleEmailFeedbackButton:self];
+				[self handleEmailFeedbackButton:self];
 				break;
 			case 1:
 				[self handleDropboxPDFButton:self];
