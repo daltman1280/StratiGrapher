@@ -620,6 +620,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 {
+	[super touchesMoved:touches withEvent:event];
 	if (self.pencilActive) {
 		[self pencilTouchesMoved:touches withEvent:event];
 		return;
@@ -647,6 +648,13 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		self.iconOrigin = dragPoint;																	// so we can display it as it's dragged
 		[self setNeedsDisplay];																			// to display the dragged icon
 	}
+}
+
+//	This is called when a touch event is stuck in the queue, probably because we're spending too much time rendering in the main thread (-drawLayer:inContext:)
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	[self touchesEnded:touches withEvent:event];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
