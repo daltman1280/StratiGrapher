@@ -620,7 +620,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 {
-	[super touchesMoved:touches withEvent:event];
 	if (self.pencilActive) {
 		[self pencilTouchesMoved:touches withEvent:event];
 		return;
