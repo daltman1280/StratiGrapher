@@ -282,7 +282,7 @@ const static int kSGTextFieldTagNumber = 99;
 
 - (void)restClient:(DBRestClient*)client uploadFileFailedWithError:(NSError*)error {
     NSLog(@"File upload failed with error - %@", error);
-	UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Can\'t access Dropbox" delegate:nil cancelButtonTitle:@"" destructiveButtonTitle:@"OK" otherButtonTitles:@"", nil];
+	UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Can\'t access Dropbox." delegate:nil cancelButtonTitle:@"" destructiveButtonTitle:@"OK" otherButtonTitles:@"", nil];
 	sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
 	[sheet showInView:[[[UIApplication sharedApplication] keyWindow] rootViewController].view];
 }
@@ -306,8 +306,12 @@ const static int kSGTextFieldTagNumber = 99;
 
 - (IBAction)handleEmailFeedbackButton:(id)sender
 {
-	if (![MFMailComposeViewController canSendMail])
-		NSLog(@"a");
+	if (![MFMailComposeViewController canSendMail]) {
+		NSLog(@"Can\'t access mail.");
+		UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Can\'t access Mail." delegate:nil cancelButtonTitle:@"" destructiveButtonTitle:@"OK" otherButtonTitles:@"", nil];
+		sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+		[sheet showInView:[[[UIApplication sharedApplication] keyWindow] rootViewController].view];
+	}
 	MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
 	picker.mailComposeDelegate = self;
 	[picker setSubject:[NSString stringWithFormat:@"Question/request/feedback for Stratigrapher"]];
@@ -322,8 +326,12 @@ const static int kSGTextFieldTagNumber = 99;
 
 - (IBAction)createEmailWithPDF:(id)sender
 {
-	if (![MFMailComposeViewController canSendMail])
-		NSLog(@"a");
+	if (![MFMailComposeViewController canSendMail]) {
+		NSLog(@"Can\'t access mail.");
+		UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Can\'t access Mail." delegate:nil cancelButtonTitle:@"" destructiveButtonTitle:@"OK" otherButtonTitles:@"", nil];
+		sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+		[sheet showInView:[[[UIApplication sharedApplication] keyWindow] rootViewController].view];
+	}
 	MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
 	picker.mailComposeDelegate = self;
 	[picker setSubject:[NSString stringWithFormat:@"Printable PDF for %@", self.activeDocument.name]];
