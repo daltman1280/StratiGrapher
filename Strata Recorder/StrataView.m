@@ -29,6 +29,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	if ((int) info < 0 || ((int) info == 0 && gTransparent)) return;
 	int patternIndex = (info) ? (int) info-601 : 3;												// treat pattern 0 as 604 (which is blank)
 	int columnIndex = patternIndex % 5;
+	if (gScale != 1) CGContextScaleCTM(context, gScale, gScale);
 	CGContextTranslateCTM(context, -(55*columnIndex)+.1, +.3);									// so the ith element in the row will be at the origin
 	if (!gTransparent) {
 		CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
@@ -263,7 +264,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	struct CGPatternCallbacks patternCallbacks = {
 		0, &patternDrawingCallback, 0
 	};
-	CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(self.activeDocument.patternScale, -self.activeDocument.patternScale), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
+	float patternScale = self.activeDocument.patternScale;
+	CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(1, 0, 53, 54), CGAffineTransformMakeScale(patternScale, -patternScale), 53, 54, kCGPatternTilingConstantSpacingMinimalDistortion, YES, &patternCallbacks);
 	CGFloat alpha = 1;
 	CGContextSetFillPattern(currentContext, pattern, &alpha);
 	CGPatternRelease(pattern);
@@ -753,6 +755,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		0, &patternDrawingCallback, 0
 	};
 	CGFloat alpha = 1;
+	gScale = 1;
 	gPageArray = self.patternsPageArray;
 	// apparently, we need to do this in the current context, can't cache it
 	CGColorSpaceRef patternSpace = CGColorSpaceCreatePattern(NULL);
@@ -780,10 +783,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			if (stratum.outline == nil || stratum.outline.count == 0) {					// no outline, just a rectangle
 				// setup fill pattern, must do for each stratum
 				if (!self.dragActive) {
-					CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(self.activeDocument.patternScale, -self.activeDocument.patternScale), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
+					float patternScale = self.activeDocument.patternScale;
+					CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(1, 0, 53, 54), CGAffineTransformMakeScale(patternScale, -patternScale), 53, 54, kCGPatternTilingConstantSpacingMinimalDistortion, YES, &patternCallbacks);
 					CGContextSetFillPattern(currentContext, pattern, &alpha);
 					CGPatternRelease(pattern);
-					gScale = self.scale;
 					CGContextFillRect(currentContext, myRect);							// draw fill pattern
 				}
 				CGContextStrokeRect(currentContext, myRect);							// draw boundary

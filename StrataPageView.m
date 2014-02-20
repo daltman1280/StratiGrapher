@@ -220,6 +220,38 @@
 	++_maxPageIndex;																								// legend
 }
 
+#if 0
+- (void)exportPDF
+{
+	[self setupPages];
+	_mode = PDFMode;
+	NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+	NSString *pdfFile = [documentsFolder stringByAppendingFormat:@"/%@.pdf", _activeDocument.name];
+	CGRect bounds = CGRectMake(0, 0, _activeDocument.pageDimension.width*72., _activeDocument.pageDimension.height*72.);
+//	UIGraphicsBeginPDFContextToFile(pdfFile, bounds, [NSDictionary dictionaryWithObject:(id)kCGPDFContextMediaBox forKey:[NSData dataWithBytes:&bounds length:sizeof(bounds)]]);
+	CFURLRef url = CFURLCreateWithFileSystemPath(NULL, (CFStringRef) pdfFile, kCFURLPOSIXPathStyle, NO);
+	CGContextRef pdfContext = CGPDFContextCreateWithURL(url, &bounds, NULL);
+	UIGraphicsPushContext(pdfContext);
+	for (int pageIndex = 0; pageIndex < _maxPageIndex; ++pageIndex) {
+//		UIGraphicsBeginPDFPage();
+		CGPDFContextBeginPage(pdfContext, NULL);
+		CGContextTranslateCTM(pdfContext, 0, 300);
+		CGContextScaleCTM(pdfContext, 1, -1);
+		_pageIndex = pageIndex;
+		[self drawRect:CGRectZero];
+	}
+//	UIGraphicsBeginPDFPage();
+	CGPDFContextBeginPage(pdfContext, NULL);
+	_pageIndex = _maxPageIndex;																					// legend on last page
+	_legendView.hidden = NO;
+	[self drawRect:CGRectZero];
+//	UIGraphicsEndPDFContext();
+	UIGraphicsPopContext();
+    CGContextRelease (pdfContext);
+	_mode = graphMode;
+}
+#else
+
 - (void)exportPDF
 {
 	[self setupPages];
@@ -240,6 +272,7 @@
 	UIGraphicsEndPDFContext();
 	_mode = graphMode;
 }
+#endif
 
 - (void)drawRect:(CGRect)rect
 {
@@ -391,7 +424,11 @@
 		}
 		// don't draw last empty stratum
 		if ([_activeDocument.strata indexOfObject:stratum] == _activeDocument.strata.count-1) break;
-		CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(0, 0, 54, 54), CGAffineTransformMakeScale(1., -1.), 54, 54, kCGPatternTilingConstantSpacing, YES, &patternCallbacks);
+		float patternScale = self.activeDocument.patternScale;
+		if (_mode == PDFMode) {
+			gScale = patternScale;
+		}
+		CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(1, 0, 53, 54), CGAffineTransformMakeScale(patternScale, -patternScale), 53, 54, kCGPatternTilingConstantSpacingMinimalDistortion, YES, &patternCallbacks);
 		CGContextSetFillPattern(currentContext, pattern, &alpha);
 		
 		// draw stratum
@@ -421,6 +458,8 @@
 	}
 	CFRelease(colorWhite);
 	CFRelease(colorBlack);
+//	if (_mode == PDFMode)
+//		CGPDFContextEndPage (currentContext);
 }
 
 /*
