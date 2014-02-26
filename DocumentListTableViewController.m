@@ -241,6 +241,8 @@ const static int kSGTextFieldTagNumber = 99;
 	[StrataModelState currentState].dirty = YES;
 }
 
+#pragma mark -
+
 - (void)viewDidUnload {
 	[self setAddDocument:nil];
 	[self setDeleteDocument:nil];
