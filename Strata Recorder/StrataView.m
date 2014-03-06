@@ -15,6 +15,8 @@
 #import "StrataViewController.h"
 #import "StrataNotifications.h"
 #import "StrataModelState.h"
+#import <Crashlytics/Crashlytics.h>
+#import "ExceptionReporter.h"
 
 /*
  A static callback function for drawing stratigraphic patterns. Uses a matrix of pattern swatches contained in a manually prepared
@@ -206,6 +208,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		float p1y = y1-fa*(y2-y0);
 		float p2x = x1+fb*(x2-x0);
 		float p2y = y1+fb*(y2-y0);
+		NSAssert(!isinf(p1x), @"floating point overflow");
+		NSAssert(!isinf(p1y), @"floating point overflow");
+		NSAssert(!isinf(p2x), @"floating point overflow");
+		NSAssert(!isinf(p2y), @"floating point overflow");
 		[controlPoints addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(p1x, p1y)))];
 		[controlPoints addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(p2x, p2y)))];
 	}
@@ -337,33 +343,43 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			d2MinIndex = temp;
 		}
 		NSMutableArray *newOutline = [[NSMutableArray alloc] init];
-		for (int index = 0; index < d1MinIndex; ++index)															// initial segment of original outline
-			[newOutline addObject:stratum.outline[index]];
-		// replace points in outline between d1MinIndex and d2MinIndex with filtered trace points (minus endpoints)
-		if (!traceReversed) {																						// add points from trace in original order
-			for (int index = 1; index < self.overlayContainer.tracePoints.count-1; index += 5) {
-				CGPoint p1;
-				CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &p1);
-				p1.x -= stratum.frame.origin.x;
-				p1.y -= stratum.frame.origin.y;
-				p1.x /= stratum.frame.size.width;
-				p1.y /= stratum.frame.size.height;
-				[newOutline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(p1))]];
-			}
-		} else {																									// add points from trace in reversed order
-			for (int index = self.overlayContainer.tracePoints.count-2; index > 0; index -= 5) {
-				CGPoint p1;
-				CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &p1);
-				p1.x -= stratum.frame.origin.x;
-				p1.y -= stratum.frame.origin.y;
-				p1.x /= stratum.frame.size.width;
-				p1.y /= stratum.frame.size.height;
-				[newOutline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(p1))]];
-			}
-		}
-		if (d2MinIndex < stratum.outline.count-1) {																	// don't copy singular endpoint of original
-			for (int index = d2MinIndex; index < stratum.outline.count; ++index)									// remaining segment of original outline
+		@try {
+			for (int index = 0; index < d1MinIndex; ++index)															// initial segment of original outline
 				[newOutline addObject:stratum.outline[index]];
+			// replace points in outline between d1MinIndex and d2MinIndex with filtered trace points (minus endpoints)
+			if (!traceReversed) {																						// add points from trace in original order
+				for (int index = 1; index < self.overlayContainer.tracePoints.count-1; index += 5) {
+					CGPoint p1;
+					CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &p1);
+					p1.x -= stratum.frame.origin.x;
+					p1.y -= stratum.frame.origin.y;
+					p1.x /= stratum.frame.size.width;
+					p1.y /= stratum.frame.size.height;
+					NSAssert(!isinf(p1.x), @"floating point overflow");
+					NSAssert(!isinf(p1.y), @"floating point overflow");
+					NSAssert(false, @"test");
+					[newOutline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(p1))]];
+				}
+			} else {																									// add points from trace in reversed order
+				for (int index = self.overlayContainer.tracePoints.count-2; index > 0; index -= 5) {
+					CGPoint p1;
+					CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &p1);
+					p1.x -= stratum.frame.origin.x;
+					p1.y -= stratum.frame.origin.y;
+					p1.x /= stratum.frame.size.width;
+					p1.y /= stratum.frame.size.height;
+					NSAssert(!isinf(p1.x), @"floating point overflow");
+					NSAssert(!isinf(p1.y), @"floating point overflow");
+					NSAssert(false, @"test");
+					[newOutline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(p1))]];
+				}
+			}
+			if (d2MinIndex < stratum.outline.count-1) {																	// don't copy singular endpoint of original
+				for (int index = d2MinIndex; index < stratum.outline.count; ++index)									// remaining segment of original outline
+					[newOutline addObject:stratum.outline[index]];
+			}
+		} @catch (NSException *exception) {
+			[[ExceptionReporter defaultReporter] reportException:exception failure:@"Failed to update outline"];
 		}
 		stratum.outline = newOutline;																				// replace outline
 	} else if (stratum.outline && stratum.outline.count > 0 && self.overlayContainer.tracePoints.count == 1) {		// delete existing outline
@@ -371,6 +387,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	} else {																										// no existing outline, make a new one
 		// TODO: this is very crude, it should recognize significant points, take curvature into account
 		if (!stratum.outline) stratum.outline = [[NSMutableArray alloc] init];
+		@try {
 		CGPoint point;
 		for (int index = 0; index < self.overlayContainer.tracePoints.count; index += 5) {
 			// make its user coordinates relative to stratum frame origin
@@ -379,6 +396,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			point.y -= stratum.frame.origin.y;
 			point.x /= stratum.frame.size.width;
 			point.y /= stratum.frame.size.height;
+			NSAssert(!isinf(point.x), @"floating point overflow");
+			NSAssert(!isinf(point.y), @"floating point overflow");
 			[stratum.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(point))]];
 		}
 		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)([self.overlayContainer.tracePoints lastObject]), &point);
@@ -386,7 +405,12 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		point.y -= stratum.frame.origin.y;
 		point.x /= stratum.frame.size.width;
 		point.y /= stratum.frame.size.height;
+		NSAssert(!isinf(point.x), @"floating point overflow");
+		NSAssert(!isinf(point.y), @"floating point overflow");
 		[stratum.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(point))]];
+		} @catch (NSException *exception) {
+			[[ExceptionReporter defaultReporter] reportException:exception failure:@"Failed up update outline"];
+		}
 	}
 }
 
@@ -791,7 +815,11 @@ void patternDrawingCallback(void *info, CGContextRef context)
 				}
 				CGContextStrokeRect(currentContext, myRect);							// draw boundary
 			} else
-				[self drawStratumOutline:stratum inContext:currentContext];
+				@try {
+					[self drawStratumOutline:stratum inContext:currentContext];
+				} @catch (NSException *exception) {
+					[[ExceptionReporter defaultReporter] reportException:exception failure:@"Failed to draw stratum outline"];
+				}
 		}
 		if (stratum.hasPageCutter) [self.scissorsIcon drawAtPoint:CGPointMake(-0.25, stratum.frame.origin.y) scale:self.scale inContext:currentContext];
 		// causes error

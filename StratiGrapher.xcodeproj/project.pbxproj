@@ -10,6 +10,7 @@
 		25066EDA166A5EF70095C3CC /* StrataToolsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25066ED9166A5EF70095C3CC /* StrataToolsView.m */; };
 		25066EE1166A67CB0095C3CC /* cut.png in Resources */ = {isa = PBXBuildFile; fileRef = 25066EE0166A67CB0095C3CC /* cut.png */; };
 		25066EE3166A79040095C3CC /* anchor.png in Resources */ = {isa = PBXBuildFile; fileRef = 25066EE2166A79040095C3CC /* anchor.png */; };
+		250DCB5218C8526500D193D9 /* ExceptionReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 250DCB5118C8526500D193D9 /* ExceptionReporter.m */; };
 		2536509F1800AEE600114127 /* ApplicationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2536509D1800AEE600114127 /* ApplicationIcon.png */; };
 		253650AE1803B55C00114127 /* SettingsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 253650AD1803B55B00114127 /* SettingsNavigationController.m */; };
 		255394C718786865001A6B39 /* StrataPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 255394C618786865001A6B39 /* StrataPageViewController.m */; };
@@ -70,6 +71,8 @@
 		25066ED9166A5EF70095C3CC /* StrataToolsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StrataToolsView.m; path = ../StrataToolsView.m; sourceTree = "<group>"; };
 		25066EE0166A67CB0095C3CC /* cut.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cut.png; path = images/cut.png; sourceTree = "<group>"; };
 		25066EE2166A79040095C3CC /* anchor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = anchor.png; path = images/anchor.png; sourceTree = "<group>"; };
+		250DCB5018C8526500D193D9 /* ExceptionReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExceptionReporter.h; sourceTree = "<group>"; };
+		250DCB5118C8526500D193D9 /* ExceptionReporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExceptionReporter.m; sourceTree = "<group>"; };
 		2536509D1800AEE600114127 /* ApplicationIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ApplicationIcon.png; path = images/ApplicationIcon.png; sourceTree = "<group>"; };
 		2536509E1800AEE600114127 /* ApplicationIcon.ai */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ApplicationIcon.ai; path = images/ApplicationIcon.ai; sourceTree = "<group>"; };
 		253650A21800AF0C00114127 /* paleocurrent selected.ai */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "paleocurrent selected.ai"; path = "images/paleocurrent selected.ai"; sourceTree = "<group>"; };
@@ -327,6 +330,8 @@
 				258FABA416433356005A00A8 /* IconImage.m */,
 				2589CF15163F897C00E43147 /* StrataAppDelegate.h */,
 				2589CF16163F897C00E43147 /* StrataAppDelegate.m */,
+				250DCB5018C8526500D193D9 /* ExceptionReporter.h */,
+				250DCB5118C8526500D193D9 /* ExceptionReporter.m */,
 			);
 			name = General;
 			sourceTree = "<group>";
@@ -579,6 +584,7 @@
 				25E91B2016633CC600AFFC0E /* SettingsTableController.m in Sources */,
 				25066EDA166A5EF70095C3CC /* StrataToolsView.m in Sources */,
 				259339BD173C601E009B60E6 /* StratumMaterialsPaletteTableViewController.m in Sources */,
+				250DCB5218C8526500D193D9 /* ExceptionReporter.m in Sources */,
 				25911D17174F218100839ED5 /* StratumInfoTableViewController.m in Sources */,
 				258FA2EC1755178B00E439FE /* SectionLabelsTableViewController.m in Sources */,
 				258FA2F017551AC400E439FE /* SectionLabelCell.m in Sources */,
