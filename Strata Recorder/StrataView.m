@@ -93,15 +93,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 @implementation OverlayLayerContainer
 
-- (void)layoutSublayers
-{
-//	NSLog(@"layoutSublayers, strataView bounds h = %f, w = %f", self.strataView.bounds.size.height, self.strataView.bounds.size.width);
-	if (self.strataView.bounds.size.height) {
-//		self.frame = self.strataView.frame;
-//		self.overlay.frame = self.strataView.frame;
-	}
-}
-
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx
 {
 	UIGraphicsPushContext(ctx);
@@ -119,7 +110,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)drawPencilHighlighting
 {
-//	NSLog(@"drawPencilHighlighting, bounds h = %f, w = %f", self.bounds.size.height, self.bounds.size.width);
 	CGContextRef currentContext = UIGraphicsGetCurrentContext();
 	CGFloat colorComponents[4] = {0, 0, 0, 0.3};
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();

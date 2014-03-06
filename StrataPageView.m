@@ -430,8 +430,6 @@
 	}
 	CFRelease(colorWhite);
 	CFRelease(colorBlack);
-//	if (_mode == PDFMode)
-//		CGPDFContextEndPage (currentContext);
 }
 
 /*

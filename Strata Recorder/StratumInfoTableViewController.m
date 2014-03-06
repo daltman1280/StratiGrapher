@@ -38,7 +38,7 @@
 
 - (IBAction)handleSave:(id)sender {
 	self.stratum.materialNumber = self.materialNumber;
-	if (self.stratumHeightText.text.floatValue != self.stratum.frame.size.height)
+	if (self.stratumHeightText.text.floatValue != self.stratum.frame.size.height && self.stratumHeightText.text.floatValue > 0)
 		[self.activeDocument adjustStratumSize:CGSizeMake(self.stratum.frame.size.width, self.stratumHeightText.text.floatValue) atIndex:[self.activeDocument.strata indexOfObject:self.stratum]];
 	if (self.grainSizeIndex != self.stratum.grainSizeIndex) {
 		self.stratum.grainSizeIndex = self.grainSizeIndex;
@@ -113,6 +113,7 @@
 		}
 	}
 	self.stratumHeightText.text = [NSString stringWithFormat:@"%.2f", self.stratum.frame.size.height];
+	NSAssert1(self.stratum.grainSizeIndex >= 1 && (int) self.stratum.grainSizeIndex <= grainSizeBoulders+1, @"Illegal grain size index = %d", self.stratum.grainSizeIndex);
 	self.grainSizeText.text = (NSString *)gGrainSizeNames[self.stratum.grainSizeIndex-1];
 	self.notesText.text = self.stratum.notes;
 }
