@@ -108,7 +108,11 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	if (self.overlayVisible) {
 		gTransparent = YES;
 		[self drawPencilHighlighting];
-		[self.strataView drawStratumOutline:self.selectedPencilStratum inContext:ctx];
+		@try {
+			[self.strataView drawStratumOutline:self.selectedPencilStratum inContext:ctx];
+		} @catch (NSException *exception) {
+			[[ExceptionReporter defaultReporter] reportException:exception failure:@"failed to draw outline in trace mode"];
+		}
 	}
 	UIGraphicsPopContext();
 }
@@ -208,10 +212,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		float p1y = y1-fa*(y2-y0);
 		float p2x = x1+fb*(x2-x0);
 		float p2y = y1+fb*(y2-y0);
-		NSAssert(!isinf(p1x), @"floating point overflow");
-		NSAssert(!isinf(p1y), @"floating point overflow");
-		NSAssert(!isinf(p2x), @"floating point overflow");
-		NSAssert(!isinf(p2y), @"floating point overflow");
+		NSAssert1(!isinf(p1x), @"floating point overflow, index = %d", index);
+		NSAssert1(!isinf(p1y), @"floating point overflow, index = %d", index);
+		NSAssert1(!isinf(p2x), @"floating point overflow, index = %d", index);
+		NSAssert1(!isinf(p2y), @"floating point overflow, index = %d", index);
 		[controlPoints addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(p1x, p1y)))];
 		[controlPoints addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(p2x, p2y)))];
 	}
@@ -252,6 +256,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		point = CGPointMake(point.x*stratum.frame.size.width, point.y*stratum.frame.size.height);
 		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(controlPoints[cpIndex++]), &cPoint1);
 		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(controlPoints[cpIndex++]), &cPoint2);
+		NSAssert1(!isinf(cPoint1.x), @"floating point overflow, cPoint1.x[%d]", cpIndex-2);
+		NSAssert1(!isinf(cPoint1.y), @"floating point overflow, cPoint1.y[%d]", cpIndex-2);
+		NSAssert1(!isinf(cPoint2.x), @"floating point overflow, cPoint2.x[%d]", cpIndex-1);
+		NSAssert1(!isinf(cPoint2.y), @"floating point overflow, cPoint2.y[%d]", cpIndex-1);
 		// grab the next pair of control points and use them for the next curve
 		CGPathAddCurveToPoint(mPath, NULL, VX(cPoint1.x+stratum.frame.origin.x), VY(cPoint1.y+stratum.frame.origin.y), VX(cPoint2.x+stratum.frame.origin.x), VY(cPoint2.y+stratum.frame.origin.y), VX(point.x+stratum.frame.origin.x), VY(point.y+stratum.frame.origin.y));
 	}
@@ -355,9 +363,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 					p1.y -= stratum.frame.origin.y;
 					p1.x /= stratum.frame.size.width;
 					p1.y /= stratum.frame.size.height;
-					NSAssert(!isinf(p1.x), @"floating point overflow");
-					NSAssert(!isinf(p1.y), @"floating point overflow");
-					NSAssert(false, @"test");
+					NSAssert1(!isinf(p1.x), @"floating point overflow, index = %d", index);
+					NSAssert1(!isinf(p1.y), @"floating point overflow, index = %d", index);
 					[newOutline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(p1))]];
 				}
 			} else {																									// add points from trace in reversed order
@@ -368,9 +375,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 					p1.y -= stratum.frame.origin.y;
 					p1.x /= stratum.frame.size.width;
 					p1.y /= stratum.frame.size.height;
-					NSAssert(!isinf(p1.x), @"floating point overflow");
-					NSAssert(!isinf(p1.y), @"floating point overflow");
-					NSAssert(false, @"test");
+					NSAssert1(!isinf(p1.x), @"floating point overflow, index = %d", index);
+					NSAssert1(!isinf(p1.y), @"floating point overflow, index = %d", index);
 					[newOutline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(p1))]];
 				}
 			}
@@ -396,8 +402,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			point.y -= stratum.frame.origin.y;
 			point.x /= stratum.frame.size.width;
 			point.y /= stratum.frame.size.height;
-			NSAssert(!isinf(point.x), @"floating point overflow");
-			NSAssert(!isinf(point.y), @"floating point overflow");
+			NSAssert1(!isinf(point.x), @"floating point overflow, index = %d", index);
+			NSAssert1(!isinf(point.y), @"floating point overflow, index = %d", index);
 			[stratum.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(point))]];
 		}
 		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)([self.overlayContainer.tracePoints lastObject]), &point);
@@ -405,8 +411,8 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		point.y -= stratum.frame.origin.y;
 		point.x /= stratum.frame.size.width;
 		point.y /= stratum.frame.size.height;
-		NSAssert(!isinf(point.x), @"floating point overflow");
-		NSAssert(!isinf(point.y), @"floating point overflow");
+		NSAssert(!isinf(point.x), @"floating point overflow, last");
+		NSAssert(!isinf(point.y), @"floating point overflow, last");
 		[stratum.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(point))]];
 		} @catch (NSException *exception) {
 			[[ExceptionReporter defaultReporter] reportException:exception failure:@"Failed up update outline"];

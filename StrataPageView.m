@@ -13,6 +13,7 @@
 #import "StrataView.h"											// pattern drawing
 #import "Graphics.h"
 #import "StrataNotifications.h"
+#import "ExceptionReporter.h"
 
 @interface StrataPageView ()
 
@@ -413,7 +414,11 @@
 			// it's larger than the stratum boundary
 			CGContextAddRect(currentContext, CGRectMake(VX(offset.x+stratum.frame.origin.x/scale), VY(offset.y+(stratum.frame.origin.y-kPencilMargin)/scale), VDX((stratum.frame.size.width+kPencilMargin)/scale), VDY((stratum.frame.size.height+2*kPencilMargin)/scale)));
 			CGContextClip(currentContext);
-			[self addOutline:stratum offset:offset];															// add outline of stratum to current context
+			@try {
+				[self addOutline:stratum offset:offset];														// add outline of stratum to current context
+			} @catch (NSException *exception) {
+				[[ExceptionReporter defaultReporter] reportException:exception failure:@"failure to draw outline in page view"];
+			}
 			CGContextDrawPath(currentContext, kCGPathFillStroke);												// fills and strokes the path
 			CGContextRestoreGState(currentContext);
 			// draw left boundary, after restoring graphics context (to remove clipping)
@@ -457,6 +462,10 @@
 		point = CGPointMake(point.x*stratum.frame.size.width, point.y*stratum.frame.size.height);
 		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(controlPoints[cpIndex++]), &cPoint1);
 		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(controlPoints[cpIndex++]), &cPoint2);
+		NSAssert1(!isinf(cPoint1.x), @"floating point overflow, cPoint1.x[%d]", cpIndex-2);
+		NSAssert1(!isinf(cPoint1.y), @"floating point overflow, cPoint1.y[%d]", cpIndex-2);
+		NSAssert1(!isinf(cPoint2.x), @"floating point overflow, cPoint2.x[%d]", cpIndex-1);
+		NSAssert1(!isinf(cPoint2.y), @"floating point overflow, cPoint2.y[%d]", cpIndex-1);
 		// grab the next pair of control points and use them for the next curve
 		CGPathAddCurveToPoint(mPath, NULL, VX(offset.x+(cPoint1.x+stratum.frame.origin.x)/scale), VY(offset.y+(cPoint1.y+stratum.frame.origin.y)/scale), VX(offset.x+(cPoint2.x+stratum.frame.origin.x)/scale), VY(offset.y+(cPoint2.y+stratum.frame.origin.y)/scale), VX(offset.x+(point.x+stratum.frame.origin.x)/scale), VY(offset.y+(point.y+stratum.frame.origin.y)/scale));
 	}
