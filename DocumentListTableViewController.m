@@ -340,7 +340,13 @@ const static int kSGTextFieldTagNumber = 99;
 	NSString *emailBody = @"Please print the attached PDF document.";
 	[picker setMessageBody:emailBody isHTML:NO];
 	NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-	NSString *pdfFile = [documentsFolder stringByAppendingFormat:@"/%@.pdf", self.activeDocument.name];
+	NSString *pdfFile = [documentsFolder stringByAppendingFormat:@"/%@.pdf ", self.activeDocument.name];
+	if (![[NSFileManager defaultManager] fileExistsAtPath:pdfFile] || ![[NSFileManager defaultManager] contentsAtPath:pdfFile]) {
+		UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:@"Can\'t access PDF \"%@\" for Mail.", pdfFile.lastPathComponent] delegate:nil cancelButtonTitle:@"" destructiveButtonTitle:@"OK" otherButtonTitles:@"", nil];
+		sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+		[sheet showInView:[[[UIApplication sharedApplication] keyWindow] rootViewController].view];
+		return;
+	}
     NSData *myData = [NSData dataWithContentsOfFile:pdfFile];
 	[picker addAttachmentData:myData mimeType:@"application/pdf" fileName:[self.activeDocument.name stringByAppendingString:@".pdf"]];
 	[self presentViewController:picker animated:YES completion:nil];
