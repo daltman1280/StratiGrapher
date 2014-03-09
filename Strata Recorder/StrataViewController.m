@@ -121,6 +121,8 @@ typedef enum {
 	CGPoint hitPoint = CGPointMake(UX([gestureRecognizer locationInView:gestureRecognizer.view].x), UY([gestureRecognizer locationInView:gestureRecognizer.view].y));
 	if (self.currentTapState == tapStateNoneSelected) {																			// we're not currently in a mode state
 		for (Stratum *stratum in self.activeDocument.strata) {
+			if ([self.activeDocument.strata indexOfObject:stratum] == self.activeDocument.strata.count-1)						// don't process tap gestures for last empty stratum
+				continue;
 			CGPoint infoIconLocation = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width-.12, stratum.frame.origin.y+.1);
 			CGPoint pencilIconLocation = CGPointMake(stratum.frame.origin.x+stratum.frame.size.width/2.0, stratum.frame.origin.y+stratum.frame.size.height/2.0);
 			if ((hitPoint.x-infoIconLocation.x)*(hitPoint.x-infoIconLocation.x)+
