@@ -364,6 +364,9 @@ typedef enum {
 				}
 			}
 		}
+		// doesn't belong to any stratum
+		[self putAwayTool:view toOriginalView:originalView];																	// paleocurrent must be placed to the right of the stratum
+		return;
 	}
 }
 
