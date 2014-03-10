@@ -18,12 +18,14 @@
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		reporter = [[ExceptionReporter alloc] init];
+		reporter.hasLogged = NO;
 	});
 	return reporter;
 }
 
 - (void)reportException:(NSException *)exception failure:(NSString *)failure
 {
+	self.hasLogged = YES;																	// force Crashlytics to report logs by crashing at termination
 	CLSNSLog(@"exception %@, reason: %@", exception.name, exception.reason);
 	CLSNSLog(@"%@", failure);
 	CLSNSLog(@"call stack symbols %@", exception.callStackSymbols);

@@ -10,6 +10,8 @@
 
 @interface ExceptionReporter : NSObject
 
+@property BOOL hasLogged;										// keep track of whether any exceptions have been generated when terminating
+
 + (ExceptionReporter *)defaultReporter;
 - (void)reportException:(NSException *)exception failure:(NSString *)failure;
 

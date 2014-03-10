@@ -77,6 +77,8 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
 	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+	if ([ExceptionReporter defaultReporter].hasLogged)																	// if we've logged any assertions, crash, in order to report them
+		[[Crashlytics sharedInstance] crash];
 }
 
 - (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder
