@@ -648,18 +648,16 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		}
 	}
 	for (Stratum *stratum in self.activeDocument.strata) {												// check anchors, and scissors
-		if (stratum != self.activeDocument.strata.lastObject) {
-			if (stratum.hasAnchor && (dragPoint.x-ANCHOR_X)*(dragPoint.x-ANCHOR_X)+
-				(dragPoint.y-stratum.frame.origin.y)*(dragPoint.y-stratum.frame.origin.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on anchor icon
-				[[NSNotificationCenter defaultCenter] postNotificationName:SREditingOperationStartedNotification object:self];	// disable scrolling
-				self.selectedAnchorStratum = stratum;
-				stratum.hasAnchor = NO;																	// user is removing it (might return it at touchesEnded
-			} else if (stratum.hasPageCutter && (dragPoint.x-SCISSORS_X)*(dragPoint.x-SCISSORS_X)+
-					   (dragPoint.y-stratum.frame.origin.y)*(dragPoint.y-stratum.frame.origin.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on scissors icon
-				[[NSNotificationCenter defaultCenter] postNotificationName:SREditingOperationStartedNotification object:self];	// disable scrolling
-				self.selectedScissorsStratum = stratum;
-				stratum.hasPageCutter = NO;																// user is removing it (might return it at touchesEnded
-			}
+		if (stratum.hasAnchor && (dragPoint.x-ANCHOR_X)*(dragPoint.x-ANCHOR_X)+
+			(dragPoint.y-stratum.frame.origin.y)*(dragPoint.y-stratum.frame.origin.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on anchor icon
+			[[NSNotificationCenter defaultCenter] postNotificationName:SREditingOperationStartedNotification object:self];	// disable scrolling
+			self.selectedAnchorStratum = stratum;
+			stratum.hasAnchor = NO;																		// user is removing it (might return it at touchesEnded
+		} else if (stratum.hasPageCutter && (dragPoint.x-SCISSORS_X)*(dragPoint.x-SCISSORS_X)+
+				   (dragPoint.y-stratum.frame.origin.y)*(dragPoint.y-stratum.frame.origin.y) < HIT_DISTANCE*HIT_DISTANCE) {// hit detected on scissors icon
+			[[NSNotificationCenter defaultCenter] postNotificationName:SREditingOperationStartedNotification object:self];	// disable scrolling
+			self.selectedScissorsStratum = stratum;
+			stratum.hasPageCutter = NO;																	// user is removing it (might return it at touchesEnded
 		}
 	}
 }
