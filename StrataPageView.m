@@ -317,6 +317,8 @@
 	
 	// draw strata
 	for (int indexOfStratum = indexOfInitialStratum; indexOfStratum <= [_maxStratumIndexForPage[_pageIndex] intValue]; ++indexOfStratum) {
+		if (indexOfStratum == _activeDocument.strata.count-1)
+			break;																								// don't do anything with the last stratum
 		Stratum *stratum = _activeDocument.strata[indexOfStratum];
 		Stratum *nextStratum = indexOfStratum < _activeDocument.strata.count-1 ? _activeDocument.strata[indexOfStratum+1] : nil;
 		CGRect stratumRect = CGRectMake(stratum.frame.origin.x/scale, stratum.frame.origin.y/scale, stratum.frame.size.width/scale, stratum.frame.size.height/scale);
