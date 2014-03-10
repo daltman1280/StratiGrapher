@@ -24,6 +24,8 @@ const static int kSGTextFieldTagNumber = 99;
 @implementation DocumentListTableViewController
 
 - (IBAction)handleAddDocument:(id)sender {
+	if (self.activeEditingSessionIndex >= 0)
+		[self deselectedActiveEditingSession];																// need to handle deselected row BEFORE calling active document setter!
 	StrataDocument *document = [[StrataDocument alloc] init];
 	[document save];
 	[self populateDocumentsList];
@@ -36,6 +38,8 @@ const static int kSGTextFieldTagNumber = 99;
 }
 
 - (IBAction)handleDeleteDocument:(id)sender {
+	if (self.activeEditingSessionIndex >= 0)
+		[self deselectedActiveEditingSession];																// need to handle deselected row BEFORE calling active document setter!
 	deleteDocumentActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Drawing" otherButtonTitles:nil];
 	[deleteDocumentActionSheet showFromBarButtonItem:self.actionDocument animated:YES];
 }
@@ -97,6 +101,8 @@ const static int kSGTextFieldTagNumber = 99;
 
 - (IBAction)handleDuplicateDocument:(id)sender
 {
+	if (self.activeEditingSessionIndex >= 0)
+		[self deselectedActiveEditingSession];																// need to handle deselected row BEFORE calling active document setter!
 	StrataDocument *document = [self.activeDocument duplicate];
 	[self populateDocumentsList];
 	[self.tableView reloadData];
