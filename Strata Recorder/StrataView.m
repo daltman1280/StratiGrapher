@@ -174,6 +174,31 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	return [CATiledLayer class];
 }
 
++ (void)validateOutlineAndControlPoints:(Stratum *)stratum index:(int)index p1x:(float)p1x p1y:(float)p1y p2x:(float)p2x p2y:(float)p2y
+{
+	float t = .5;															// smoothness coefficient, arbitrary value
+	if (isinf(p1x) || isinf(p1y) || isinf(p2x) || isinf(p2y)) {													// repeat the calculations from populateControlPoints
+		CGPoint point;
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(stratum.outline[index]), &point);
+		float x0 = point.x*stratum.frame.size.width;
+		float y0 = point.y*stratum.frame.size.height;
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(stratum.outline[index+1]), &point);
+		float x1 = point.x*stratum.frame.size.width;
+		float y1 = point.y*stratum.frame.size.height;
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(stratum.outline[index+2]), &point);
+		float x2 = point.x*stratum.frame.size.width;
+		float y2 = point.y*stratum.frame.size.height;
+		float d01 = sqrtf((x1-x0)*(x1-x0)+(y1-y0)*(y1-y0));
+		float d12 = sqrtf((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
+		float fa = d01+d12 ? t*d01/(d01+d12) : 0;
+		float fb = d01+d12 ? t*d12/(d01+d12) : 0;
+		CLSNSLog(@"validateOutlineAndControlPoints failure, x0: %f, y0: %f, x1: %f, y1: %f, x2: %f, y2: %f", x0, y0, x1, y1, x2, y2);
+		CLSNSLog(@"d01: %f, d12: %f, fa: %f, fb: %f", d01, d12, fa, fb);
+		[ExceptionReporter defaultReporter].hasLogged = YES;													// make crashlytics report the exceptions before terminating
+		NSAssert(false, @"validateOutlineAndControlPoints");													// generate an exception
+	}
+}
+
 /*
  Algorithm from http://scaledinnovation.com/analytics/splines/aboutSplines.html
  */
@@ -202,10 +227,9 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		float p1y = y1-fa*(y2-y0);
 		float p2x = x1+fb*(x2-x0);
 		float p2y = y1+fb*(y2-y0);
-		NSAssert1(!isinf(p1x), @"floating point overflow, index = %d", index);
-		NSAssert1(!isinf(p1y), @"floating point overflow, index = %d", index);
-		NSAssert1(!isinf(p2x), @"floating point overflow, index = %d", index);
-		NSAssert1(!isinf(p2y), @"floating point overflow, index = %d", index);
+		[StrataView validateOutlineAndControlPoints:stratum index:index p1x:p1x p1y:p1y p2x:p2x p2y:p2y];
+		CLSNSLog(@"test logging");
+		[ExceptionReporter defaultReporter].hasLogged = YES;
 		[controlPoints addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(p1x, p1y)))];
 		[controlPoints addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(p2x, p2y)))];
 	}
