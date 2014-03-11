@@ -32,7 +32,7 @@
  */
 
 - (IBAction)handleAdd:(id)sender {
-	int lineNumber = [self.tableView indexPathForSelectedRow].row;
+	NSInteger lineNumber = [self.tableView indexPathForSelectedRow].row;
 	[self.materialIndexes addObject:self.unusedMaterialIndexes[lineNumber]];
 	[self.activeDocument.materialNumbersPalette addObject:self.unusedMaterialIndexes[lineNumber]];
 	[self populateUnusedMaterials];

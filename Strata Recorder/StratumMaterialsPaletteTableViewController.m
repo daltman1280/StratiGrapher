@@ -32,7 +32,7 @@
 {
 	self.materialIndexes = [NSMutableArray arrayWithArray:[self.activeDocument.materialNumbersPalette sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"intValue" ascending:YES]]]];
 	[self.tableView reloadData];
-	int i = (self.materialNumber) ? [self.materialIndexes indexOfObject:[NSNumber numberWithInt:self.materialNumber]]+1 : 0;
+	NSInteger i = (self.materialNumber) ? [self.materialIndexes indexOfObject:[NSNumber numberWithInt:self.materialNumber]]+1 : 0;
 	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 }
@@ -152,7 +152,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	int lineNumber = [self.tableView indexPathForSelectedRow].row;
+	NSInteger lineNumber = [self.tableView indexPathForSelectedRow].row;
 	int materialNumber;
 	if (lineNumber)														// first line is for unassigned materials
 		materialNumber = [self.materialIndexes[lineNumber-1] intValue];

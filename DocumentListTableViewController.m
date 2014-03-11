@@ -30,7 +30,7 @@ const static int kSGTextFieldTagNumber = 99;
 	[document save];
 	[self populateDocumentsList];
 	[self.tableView reloadData];
-	int index = [self.strataFiles indexOfObject:document.name];
+	NSInteger index = [self.strataFiles indexOfObject:document.name];
 	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
 	[self.delegate setActiveStrataDocument:self.strataFiles[index]];
@@ -87,7 +87,7 @@ const static int kSGTextFieldTagNumber = 99;
 		BOOL success = [self.activeDocument rename:textField.text];
 		if (success) {																								// test return code from rename operation
 			[self populateDocumentsList];
-			int index = [self.strataFiles indexOfObject:self.activeDocument.name];
+			NSInteger index = [self.strataFiles indexOfObject:self.activeDocument.name];
 			[self.delegate setActiveStrataDocument:self.strataFiles[index]];
 		}
 	}
@@ -106,7 +106,7 @@ const static int kSGTextFieldTagNumber = 99;
 	StrataDocument *document = [self.activeDocument duplicate];
 	[self populateDocumentsList];
 	[self.tableView reloadData];
-	int index = [self.strataFiles indexOfObject:document.name];
+	NSInteger index = [self.strataFiles indexOfObject:document.name];
 	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
 	[self.delegate setActiveStrataDocument:self.strataFiles[index]];
@@ -239,7 +239,7 @@ const static int kSGTextFieldTagNumber = 99;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	int index = [indexPath indexAtPosition:1];
+	NSInteger index = [indexPath indexAtPosition:1];
 	if (self.activeEditingSessionIndex >= 0)
 		[self deselectedActiveEditingSession];																// need to handle deselected row BEFORE calling active document setter!
 	if ([(NSString *)(self.strataFiles[index]) isEqualToString:self.activeDocument.name]) return;			// user picked current document
@@ -364,7 +364,7 @@ const static int kSGTextFieldTagNumber = 99;
 {
 	if (buttonIndex == actionSheet.cancelButtonIndex) return;									// user canceled
 	if (actionSheet == deleteDocumentActionSheet) {
-		int previousSelectionIndex = [self.strataFiles indexOfObject:self.activeDocument.name];
+		NSInteger previousSelectionIndex = [self.strataFiles indexOfObject:self.activeDocument.name];
 		[self.activeDocument remove];
 		[self populateDocumentsList];
 		if (previousSelectionIndex >= self.strataFiles.count) --previousSelectionIndex;			// in case user has deleted the last paper in the list

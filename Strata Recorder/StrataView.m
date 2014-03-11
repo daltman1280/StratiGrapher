@@ -160,7 +160,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 @property CGSize dragOffsetFromCenter;					// the offset of the drag coordinate from center of dragged object, to track movement of icon's center coordinates
 @property CGPoint dragConstraint;						// lower left limit of dragging allowed, don't allow negative height/width
 @property BOOL dragActive;								// tracks dragging state
-@property int activeDragIndex;							// index in strata of dragged item
+@property NSInteger activeDragIndex;					// index in strata of dragged item
 @property BOOL pencilTouchBeganInEditRegion;
 @property Stratum* selectedScissorsStratum;
 @property Stratum* selectedAnchorStratum;
@@ -293,7 +293,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		0, &patternDrawingCallback, 0
 	};
 	float patternScale = self.activeDocument.patternScale;
-	CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(1, 0, 53, 54), CGAffineTransformMakeScale(patternScale, -patternScale), 53, 54, kCGPatternTilingConstantSpacingMinimalDistortion, YES, &patternCallbacks);
+	CGPatternRef pattern = CGPatternCreate(stratum.materialNumber, CGRectMake(1, 0, 53, 54), CGAffineTransformMakeScale(patternScale, -patternScale), 53, 54, kCGPatternTilingConstantSpacingMinimalDistortion, YES, &patternCallbacks);
 	CGFloat alpha = 1;
 	CGContextSetFillPattern(currentContext, pattern, &alpha);
 	CGPatternRelease(pattern);
@@ -382,15 +382,15 @@ void patternDrawingCallback(void *info, CGContextRef context)
 					[newOutline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(p1))]];
 				}
 			} else {																									// add points from trace in reversed order
-				for (int index = self.overlayContainer.tracePoints.count-2; index > 0; index -= 5) {
+				for (NSInteger index = self.overlayContainer.tracePoints.count-2; index > 0; index -= 5) {
 					CGPoint p1;
 					CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(self.overlayContainer.tracePoints[index]), &p1);
 					p1.x -= stratum.frame.origin.x;
 					p1.y -= stratum.frame.origin.y;
 					p1.x /= stratum.frame.size.width;
 					p1.y /= stratum.frame.size.height;
-					NSAssert1(!isinf(p1.x), @"floating point overflow, index = %d", index);
-					NSAssert1(!isinf(p1.y), @"floating point overflow, index = %d", index);
+					NSAssert1(!isinf(p1.x), @"floating point overflow, index = %ld", (long) index);
+					NSAssert1(!isinf(p1.y), @"floating point overflow, index = %ld", (long) index);
 					[newOutline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(p1))]];
 				}
 			}
@@ -568,7 +568,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)updateCoordinateText:(CGPoint)iconLocation touchLocation:(CGPoint)touchLocation stratum:(Stratum *)stratum
 {
-	float snapLocation = iconLocation.x;
+	CGFloat snapLocation = iconLocation.x;
 	int snapIndex = [StrataDocument snapToGrainSizePoint:&snapLocation];
 	Stratum *anchorStratum = nil;
 	for (Stratum *stratumIter in self.activeDocument.strata) {
@@ -811,7 +811,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	CGContextSetStrokeColorWithColor(currentContext, color);
 	CFRelease(color);
 	CFRelease(colorSpace);
-	for (int index = self.activeDocument.strata.count-1; index>=0; --index) {
+	for (NSInteger index = self.activeDocument.strata.count-1; index>=0; --index) {
 		Stratum *stratum = self.activeDocument.strata[index];
 		CGRect myRect = CGRectMake(VX(stratum.frame.origin.x),							// stratum rectangle
 								   VY(stratum.frame.origin.y),
@@ -826,7 +826,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 				// setup fill pattern, must do for each stratum
 				if (!self.dragActive) {
 					float patternScale = self.activeDocument.patternScale;
-					CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(1, 0, 53, 54), CGAffineTransformMakeScale(patternScale, -patternScale), 53, 54, kCGPatternTilingConstantSpacingMinimalDistortion, YES, &patternCallbacks);
+					CGPatternRef pattern = CGPatternCreate(stratum.materialNumber, CGRectMake(1, 0, 53, 54), CGAffineTransformMakeScale(patternScale, -patternScale), 53, 54, kCGPatternTilingConstantSpacingMinimalDistortion, YES, &patternCallbacks);
 					CGContextSetFillPattern(currentContext, pattern, &alpha);
 					CGPatternRelease(pattern);
 					CGContextFillRect(currentContext, myRect);							// draw fill pattern

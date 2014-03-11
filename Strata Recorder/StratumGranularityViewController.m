@@ -39,7 +39,7 @@
 
 - (void)willPopViewController
 {
-	self.grainSizeIndex = [self.granularityPicker selectedRowInComponent:0]+1;
+	self.grainSizeIndex = (grainSizeEnum) [self.granularityPicker selectedRowInComponent:0]+1;
 	[self.parent handleGranularityChanged:self.grainSizeIndex];
 }
 

@@ -27,7 +27,7 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<stackItem value = %d>\n", [self.value integerValue]];
+	return [NSString stringWithFormat:@"<stackItem value = %ld>\n", (long)[self.value integerValue]];
 }
 
 @end

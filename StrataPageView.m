@@ -200,7 +200,7 @@
 			stratumRect = CGRectOffset(stratumRect, -offset.x, -offset.y);											// undo the offset from current column
 			offset.x -= [_maxWidths[++columnIndex] floatValue]+_activeDocument.pageMargins.width/2.0;				// horizontal adjustment using maxwidth, and adding half of horizontal page margin
 			if (offset.x < _activeDocument.pageMargins.width) {														// we've overflowed the current page, in horizontal direction
-				[_maxStratumIndexForPage addObject:[NSNumber numberWithInt:[_activeDocument.strata indexOfObject:stratum]-1]];
+				[_maxStratumIndexForPage addObject:[NSNumber numberWithInteger:[_activeDocument.strata indexOfObject:stratum]-1]];
 				offset.x = _activeDocument.pageDimension.width-_activeDocument.pageMargins.width-[_maxWidths[columnIndex] floatValue];
 				[_minColumnIndexForPage addObject:[NSNumber numberWithInt:columnIndex]];
 				++_maxPageIndex;
@@ -217,7 +217,7 @@
 	}
 	[_minGrainSizeIndices addObject:[NSNumber numberWithInt:minGrainSizeIndexTemp]];								// last column
 	[_maxGrainSizeIndices addObject:[NSNumber numberWithInt:maxGrainSizeIndexTemp]];
-	[_maxStratumIndexForPage addObject:[NSNumber numberWithInt:_activeDocument.strata.count-1]];					// last stratum
+	[_maxStratumIndexForPage addObject:[NSNumber numberWithInteger:_activeDocument.strata.count-1]];				// last stratum
 	++_maxPageIndex;																								// legend
 }
 
@@ -398,7 +398,7 @@
 		if (_mode == PDFMode) {
 			gScale = patternScale;
 		}
-		CGPatternRef pattern = CGPatternCreate((void *)stratum.materialNumber, CGRectMake(1, 0, 53, 54), CGAffineTransformMakeScale(patternScale, -patternScale), 53, 54, kCGPatternTilingConstantSpacingMinimalDistortion, YES, &patternCallbacks);
+		CGPatternRef pattern = CGPatternCreate(stratum.materialNumber, CGRectMake(1, 0, 53, 54), CGAffineTransformMakeScale(patternScale, -patternScale), 53, 54, kCGPatternTilingConstantSpacingMinimalDistortion, YES, &patternCallbacks);
 		CGContextSetFillPattern(currentContext, pattern, &alpha);
 		
 		// draw stratum

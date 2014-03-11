@@ -133,7 +133,7 @@ static StrataDocument *gCurrentDocument = nil;
  Returns granularity (can also be used as index for granularity names table).
  */
 
-+ (int)snapToGrainSizePoint:(float *)stratumWidth
++ (int)snapToGrainSizePoint:(CGFloat *)stratumWidth
 {
 	float snapLocation;
 	int snapIndex;
@@ -174,19 +174,19 @@ static StrataDocument *gCurrentDocument = nil;
 	[NSKeyedArchiver archiveRootObject:self toFile:[[StrataDocument documentsFolderPath] stringByAppendingPathComponent:[self.name stringByAppendingPathExtension:@"strata"]]];
 }
 
-- (void)adjustStratumSize:(CGSize)size atIndex:(int)index
+- (void)adjustStratumSize:(CGSize)size atIndex:(NSInteger)index
 {
 	Stratum *stratum = self.strata[index];
 	CGRect oldFrame = stratum.frame;
 	CGSize adjustment = CGSizeMake(size.width-oldFrame.size.width, size.height-oldFrame.size.height);
 	stratum.frame = CGRectMake(stratum.frame.origin.x, stratum.frame.origin.y, size.width, size.height);
-	for (int i=index+1; i<self.strata.count; ++i) {															// offset origins of all following strata
+	for (NSInteger i=index+1; i<self.strata.count; ++i) {															// offset origins of all following strata
 		Stratum *stratum = self.strata[i];
 		stratum.frame = CGRectOffset(stratum.frame, 0, adjustment.height);
 	}
 }
 
-- (void)removeStratumAtIndex:(int)index
+- (void)removeStratumAtIndex:(NSInteger)index
 {
 	[self.strata removeObjectAtIndex:index];
 }
@@ -266,8 +266,10 @@ static StrataDocument *gCurrentDocument = nil;
 	self.outline = [aDecoder decodeObjectForKey:@"outline"];
 	NSMutableArray *convertedOutline = [[NSMutableArray alloc] init];
 	int i = 0;
-	for (NSDictionary *dict in self.outline)
+	for (NSDictionary *dict in self.outline) {
 		[convertedOutline addObject:[NSMutableDictionary dictionaryWithDictionary:self.outline[i++]]];
+#pragma unused(dict)
+	}
 	self.outline = convertedOutline;
 	self.grainSizeIndex = [aDecoder decodeIntForKey:@"grainSizeIndex"];
 	self.notes = [aDecoder decodeObjectForKey:@"notes"];

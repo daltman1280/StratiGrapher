@@ -571,7 +571,7 @@ typedef enum {
 }
 
 - (IBAction)handleModeSwitch:(id)sender {
-	int selection = [(UISegmentedControl *)sender selectedSegmentIndex];
+	NSInteger selection = [(UISegmentedControl *)sender selectedSegmentIndex];
 	if (selection == 1) {																						// switching to page mode
 		if ([StrataModelState currentState].dirty) {
 			[StrataModelState currentState].dirty = NO;
@@ -649,7 +649,7 @@ typedef enum {
 		self.activeDocument.legendScale = self.settingsTableController.legendScale;
 		self.activeDocument.sectionLabels = self.settingsTableController.sectionLabels;
 		// update the page views
-		int selection = [(UISegmentedControl *)self.modeControl selectedSegmentIndex];
+		NSInteger selection = [(UISegmentedControl *)self.modeControl selectedSegmentIndex];
 		if (selection == 1)																					// if we're in page mode, refresh, with page 1
 			[self handleModeSwitch:self.modeControl];
 		[[NSNotificationCenter defaultCenter] postNotificationName:SRStrataHeightChangedNotification object:self];
@@ -740,7 +740,7 @@ typedef enum {
 	[self.strataView setNeedsDisplay];
 	// update the page views
 	[StrataModelState currentState].dirty = YES;
-	int selection = [(UISegmentedControl *)self.modeControl selectedSegmentIndex];
+	NSInteger selection = [(UISegmentedControl *)self.modeControl selectedSegmentIndex];
 	if (selection == 1)																					// if we're in page mode, refresh, with page 1
 		[self handleModeSwitch:self.modeControl];
 }

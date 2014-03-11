@@ -29,8 +29,8 @@ typedef enum {
 
 @interface StrataDocument : NSObject <NSCoding>
 
-- (void)adjustStratumSize:(CGSize)size atIndex:(int)index;
-- (void)removeStratumAtIndex:(int)index;
+- (void)adjustStratumSize:(CGSize)size atIndex:(NSInteger)index;
+- (void)removeStratumAtIndex:(NSInteger)index;
 - (void)save;
 + (void)saveState;
 - (StrataDocument *)duplicate;
@@ -39,7 +39,7 @@ typedef enum {
 + (id)loadFromFile:(NSString *)name;
 + (NSString *)documentsFolderPath;
 + (NSArray *)existingStrataDocuments;
-+ (int)snapToGrainSizePoint:(float *)stratumWidth;
++ (int)snapToGrainSizePoint:(CGFloat *)stratumWidth;
 + (float)stratumWidthFromGrainSize:(grainSizeEnum)grainSize;
 
 // not a part of persistent document, just for housekeeping purposes
