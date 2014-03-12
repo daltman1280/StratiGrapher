@@ -193,7 +193,7 @@
 	for (Stratum *stratum in _activeDocument.strata) {
 		CGRect stratumRect = CGRectMake(stratum.frame.origin.x/scale, stratum.frame.origin.y/scale, stratum.frame.size.width/scale, stratum.frame.size.height/scale);
 		stratumRect = CGRectStandardize(stratumRect);
-		if (stratumRect.size.width == 0) break;																		// last stratum is empty, ignore it
+		if (fabs(stratumRect.size.width) < 0.1) break;																// last stratum is empty, ignore it
 		stratumRect = CGRectOffset(stratumRect, offset.x, offset.y);
 		float stratumTop = stratumRect.origin.y+stratumRect.size.height;
 		if (stratumTop > pageTop || stratum.hasPageCutter) {														// reached top of column, need to start a new column

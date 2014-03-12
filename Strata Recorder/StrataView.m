@@ -159,7 +159,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 @property NSMutableArray* iconLocations;				// CGPoint dictionaries, in user coordinates, for moveIcon's
 @property CGSize dragOffsetFromCenter;					// the offset of the drag coordinate from center of dragged object, to track movement of icon's center coordinates
 @property CGPoint dragConstraint;						// lower left limit of dragging allowed, don't allow negative height/width
-@property BOOL dragActive;								// tracks dragging state
+@property BOOL dragActive;								// tracks dragging state, YES, if unit handle is in active drag mode
 @property NSInteger activeDragIndex;					// index in strata of dragged item
 @property BOOL pencilTouchBeganInEditRegion;
 @property Stratum* selectedScissorsStratum;
@@ -614,7 +614,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 /*
  These are routed to StrataView, after determining that pan gesture on any of the tool icons has not fired (action methods are in StrataViewController).
  
- We check to see whether user has hit a move icon, anchor icon, or scissors icon.
+ We check to see whether user has hit a unit handle, anchor icon, or scissors icon.
  */
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -730,7 +730,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 			Stratum *newStratum = [[Stratum alloc] initWithFrame:CGRectMake(0, lastStratum.frame.origin.y+lastStratum.frame.size.height, 0, 0)];
 			newStratum.materialNumber = 0;																// unassigned material
 			[self.activeDocument.strata addObject:newStratum];
-		} else if (stratum.grainSizeIndex == 1 && stratum.frame.size.height == 0) {						// user has dragged UR corner to LL corner, remove the stratum
+		} else if (stratum.grainSizeIndex == grainSizeFineSand && fabsf(stratum.frame.size.height) < 0.1) {	// user has dragged UR corner to LL corner, remove the stratum
 			if (self.activeDragIndex != self.activeDocument.strata.count-1) {							// last stratum is already empty, do nothing in this case
 				[self.activeDocument removeStratumAtIndex:self.activeDragIndex];
 			}
