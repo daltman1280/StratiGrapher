@@ -858,9 +858,14 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		if (CGRectIntersectsRect(clippingRect, iconRect)) {
 			if (self.dragActive) {
 				@try {
-				NSAssert1([dict isKindOfClass:[NSDictionary class]], @"expecting dictionary for %@", dict);
-				if (self.activeDragIndex == [self.iconLocations indexOfObject:dict])
-					[self.moveIconSelected drawAtPoint:iconLocation scale:self.scale inContext:currentContext];		// draw icon in selected state if it's selected and dragging is active
+					NSAssert1([dict isKindOfClass:[NSDictionary class]], @"expecting dictionary for %@", dict);
+					NSDictionary *test;
+					for (NSInteger index = 0; index < self.iconLocations.count; ++index) {
+						test = self.iconLocations[index];
+						NSAssert2([test isKindOfClass:[NSDictionary class]], @"expecting dictionary for element of iconLocations %@, [%ld]", test, (long) index);
+					}
+					if (self.activeDragIndex == [self.iconLocations indexOfObject:dict])
+						[self.moveIconSelected drawAtPoint:iconLocation scale:self.scale inContext:currentContext];		// draw icon in selected state if it's selected and dragging is active
 				} @catch (NSException *exception) {
 					[[ExceptionReporter defaultReporter] reportException:exception failure:@"Dragging unit handle."];
 				}
