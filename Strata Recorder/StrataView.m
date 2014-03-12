@@ -40,6 +40,10 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	CGContextDrawPDFPage(context, [((NSValue *)gPageArray[patternIndex/5]) pointerValue]);		// draw the requested pattern rectangle from the PDF materials patterns page
 }
 
+@implementation MyPoint
+
+@end
+
 /*
  TraceLayerContainer class: CALayer subclass, to host TraceLayer
  
@@ -477,9 +481,13 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	self.iconLocations = [[NSMutableArray alloc] init];
     for (Stratum *stratum in self.activeDocument.strata) {
         CGRect myRect = stratum.frame;
-        CGPoint iconLocation = CGPointMake(myRect.origin.x+myRect.size.width, myRect.origin.y+myRect.size.height);
-		NSMutableDictionary *dict = ([NSMutableDictionary dictionaryWithDictionary:(__bridge_transfer NSDictionary *)(CGPointCreateDictionaryRepresentation(iconLocation))]);
-        [self.iconLocations addObject:(dict)];
+		MyPoint *point = [[MyPoint alloc] init];
+		point.x = [NSNumber numberWithFloat:myRect.origin.x+myRect.size.width];
+		point.y = [NSNumber numberWithFloat:myRect.origin.y+myRect.size.height];
+		[self.iconLocations addObject:point];
+//        CGPoint iconLocation = CGPointMake(myRect.origin.x+myRect.size.width, myRect.origin.y+myRect.size.height);
+//		NSMutableDictionary *dict = ([NSMutableDictionary dictionaryWithDictionary:(__bridge_transfer NSDictionary *)(CGPointCreateDictionaryRepresentation(iconLocation))]);
+//        [self.iconLocations addObject:(dict)];
     }
 }
 
@@ -625,9 +633,11 @@ void patternDrawingCallback(void *info, CGContextRef context)
 	}
 	if (!self.touchesEnabled) return;
 	CGPoint dragPoint = [self getDragPoint:event];
-	for (NSMutableDictionary *dict in self.iconLocations) {												// first check move icons
+	for (MyPoint *dict in self.iconLocations) {												// first check move icons
 		CGPoint iconLocation;
-		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(dict), &iconLocation);
+//		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(dict), &iconLocation);
+		iconLocation.x = dict.x.floatValue;
+		iconLocation.y = dict.y.floatValue;
 		if ((dragPoint.x-iconLocation.x)*(dragPoint.x-iconLocation.x)+
 			(dragPoint.y-iconLocation.y)*(dragPoint.y-iconLocation.y) < HIT_DISTANCE*HIT_DISTANCE) {	// hit detected
 			[[NSNotificationCenter defaultCenter] postNotificationName:SREditingOperationStartedNotification object:self];	// disable scrolling
@@ -674,11 +684,15 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		if (offsetDragPoint.x < self.dragConstraint.x) offsetDragPoint.x = self.dragConstraint.x;		// constrain the dragged icon
 		if (offsetDragPoint.y < self.dragConstraint.y) offsetDragPoint.y = self.dragConstraint.y;
 		Stratum *stratum = self.activeDocument.strata[self.activeDragIndex];							// selected stratum
-		NSMutableDictionary *dict = [self.iconLocations objectAtIndex:self.activeDragIndex];
-		[dict setObject:[NSNumber numberWithFloat:offsetDragPoint.x] forKey:@"X"];
-		[dict setObject:[NSNumber numberWithFloat:offsetDragPoint.y] forKey:@"Y"];
+		MyPoint *dict = [self.iconLocations objectAtIndex:self.activeDragIndex];
+		dict.x = [NSNumber numberWithFloat:offsetDragPoint.x];
+		dict.y = [NSNumber numberWithFloat:offsetDragPoint.y];
+//		[dict setObject:[NSNumber numberWithFloat:offsetDragPoint.x] forKey:@"X"];
+//		[dict setObject:[NSNumber numberWithFloat:offsetDragPoint.y] forKey:@"Y"];
 		CGPoint iconLocation;
-		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(self.iconLocations[self.activeDragIndex]), &iconLocation);
+		iconLocation.x = ((MyPoint *)self.iconLocations[self.activeDragIndex]).x.floatValue;
+		iconLocation.y = ((MyPoint *) self.iconLocations[self.activeDragIndex]).y.floatValue;
+//		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(self.iconLocations[self.activeDragIndex]), &iconLocation);
 		CGSize newSize = CGSizeMake(iconLocation.x-stratum.frame.origin.x, iconLocation.y-stratum.frame.origin.y);
 		[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];	// here's where the work is done
 		NSSet *touches = [event touchesForView:self];
@@ -716,11 +730,15 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		int grainSizeIndex = [StrataDocument snapToGrainSizePoint:&offsetDragPoint.x];
 		Stratum *stratum = self.activeDocument.strata[self.activeDragIndex];							// selected stratum
 		stratum.grainSizeIndex = grainSizeIndex + 1;
-		NSMutableDictionary *dict = [self.iconLocations objectAtIndex:self.activeDragIndex];
-		[dict setObject:[NSNumber numberWithFloat:offsetDragPoint.x] forKey:@"X"];
-		[dict setObject:[NSNumber numberWithFloat:offsetDragPoint.y] forKey:@"Y"];
+		MyPoint *dict = [self.iconLocations objectAtIndex:self.activeDragIndex];
+		dict.x = [NSNumber numberWithFloat:offsetDragPoint.x];
+		dict.y = [NSNumber numberWithFloat:offsetDragPoint.y];
+//		[dict setObject:[NSNumber numberWithFloat:offsetDragPoint.x] forKey:@"X"];
+//		[dict setObject:[NSNumber numberWithFloat:offsetDragPoint.y] forKey:@"Y"];
 		CGPoint iconLocation;
-		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(self.iconLocations[self.activeDragIndex]), &iconLocation);
+		iconLocation.x = ((MyPoint *)self.iconLocations[self.activeDragIndex]).x.floatValue;
+		iconLocation.y = ((MyPoint *)self.iconLocations[self.activeDragIndex]).y.floatValue;
+//		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(self.iconLocations[self.activeDragIndex]), &iconLocation);
 		CGSize newSize = CGSizeMake(iconLocation.x-stratum.frame.origin.x, iconLocation.y-stratum.frame.origin.y);
 		[self.activeDocument adjustStratumSize:newSize atIndex:self.activeDragIndex];					// here's where the work is done
 		if (self.activeDragIndex == self.activeDocument.strata.count-1 &&
@@ -787,6 +805,7 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 -(void)drawLayer:(CALayer*)layer inContext:(CGContextRef)currentContext
 {
+	NSLog(@"drawLayer");
 	gTransparent = YES;
 	[self drawGraphPaper:currentContext];
 	CGContextSetShouldAntialias(currentContext, YES);
@@ -850,20 +869,22 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		if (!self.dragActive && stratum != self.activeDocument.strata.lastObject)			// draw pencil icon, unless this is the last (empty) stratum
 			[self.pencilIcon drawAtPoint:CGPointMake(stratum.frame.origin.x+(stratum.frame.size.width/2.0), stratum.frame.origin.y+(stratum.frame.size.height/2.0)) scale:self.scale inContext:currentContext];
 	}
-	for (NSDictionary *dict in self.iconLocations) {										// draw move icons
+	for (MyPoint *dict in self.iconLocations) {										// draw move icons
 		CGPoint iconLocation;
-		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(dict), &iconLocation);
+		iconLocation.x = dict.x.floatValue;
+		iconLocation.y = dict.y.floatValue;
+//		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(dict), &iconLocation);
 		CGPoint viewPoint = CGPointMake(VX(iconLocation.x), VY(iconLocation.y));
 		CGRect iconRect = CGRectMake(viewPoint.x-self.moveIcon.width, viewPoint.y-self.moveIcon.width, self.moveIcon.width*2, self.moveIcon.width*2);
 		if (CGRectIntersectsRect(clippingRect, iconRect)) {
 			if (self.dragActive) {
 				@try {
-					NSAssert1([dict isKindOfClass:[NSDictionary class]], @"expecting dictionary for %@", dict);
-					NSDictionary *test;
-					for (NSInteger index = 0; index < self.iconLocations.count; ++index) {
-						test = self.iconLocations[index];
-						NSAssert2([test isKindOfClass:[NSDictionary class]], @"expecting dictionary for element of iconLocations %@, [%ld]", test, (long) index);
-					}
+//					NSAssert1([dict isKindOfClass:[NSDictionary class]], @"expecting dictionary for %@", dict);
+//					NSDictionary *test;
+//					for (NSInteger index = 0; index < self.iconLocations.count; ++index) {
+//						test = self.iconLocations[index];
+//						NSAssert2([test isKindOfClass:[NSDictionary class]], @"expecting dictionary for element of iconLocations %@, [%ld]", test, (long) index);
+//					}
 					if (self.activeDragIndex == [self.iconLocations indexOfObject:dict])
 						[self.moveIconSelected drawAtPoint:iconLocation scale:self.scale inContext:currentContext];		// draw icon in selected state if it's selected and dragging is active
 				} @catch (NSException *exception) {

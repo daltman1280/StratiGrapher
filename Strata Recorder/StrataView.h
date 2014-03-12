@@ -11,6 +11,13 @@
 #import "StrataViewController.h"
 #import "StrataModel.h"
 
+@interface MyPoint : NSObject
+
+@property NSNumber *x;
+@property NSNumber *y;
+
+@end
+
 static const float kPencilMargin = 0.2;							// in model/user units
 
 //	globals for use with callback function
