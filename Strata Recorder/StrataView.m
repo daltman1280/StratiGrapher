@@ -228,7 +228,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		float p2x = x1+fb*(x2-x0);
 		float p2y = y1+fb*(y2-y0);
 		[StrataView validateOutlineAndControlPoints:stratum index:index p1x:p1x p1y:p1y p2x:p2x p2y:p2y];
-		CLSNSLog(@"test logging");
 		[ExceptionReporter defaultReporter].hasLogged = YES;
 		[controlPoints addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(p1x, p1y)))];
 		[controlPoints addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(p2x, p2y)))];
@@ -858,8 +857,13 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		CGRect iconRect = CGRectMake(viewPoint.x-self.moveIcon.width, viewPoint.y-self.moveIcon.width, self.moveIcon.width*2, self.moveIcon.width*2);
 		if (CGRectIntersectsRect(clippingRect, iconRect)) {
 			if (self.dragActive) {
+				@try {
+				NSAssert1([dict isKindOfClass:[NSDictionary class]], @"expecting dictionary for %@", dict);
 				if (self.activeDragIndex == [self.iconLocations indexOfObject:dict])
 					[self.moveIconSelected drawAtPoint:iconLocation scale:self.scale inContext:currentContext];		// draw icon in selected state if it's selected and dragging is active
+				} @catch (NSException *exception) {
+					[[ExceptionReporter defaultReporter] reportException:exception failure:@"Dragging unit handle."];
+				}
 			} else
 				[self.moveIcon drawAtPoint:iconLocation scale:self.scale inContext:currentContext];
 		}

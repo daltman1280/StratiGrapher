@@ -23,6 +23,10 @@
 	return reporter;
 }
 
+/*
+ Call this in the catch, where recovery takes place. Will insure that crash report is sent when app terminates.
+ */
+
 - (void)reportException:(NSException *)exception failure:(NSString *)failure
 {
 	self.hasLogged = YES;																	// force Crashlytics to report logs by crashing at termination
