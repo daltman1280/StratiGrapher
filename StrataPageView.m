@@ -446,22 +446,28 @@
 	NSMutableArray *controlPoints = [StrataView populateControlPoints:stratum];
 	CGMutablePathRef mPath = CGPathCreateMutable();
 	CGPoint point;
-	CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(stratum.outline[0]), &point);
+	point.x = ((PointObj *)stratum.outline[0]).x;
+	point.y = ((PointObj *)stratum.outline[0]).y;
 	point = CGPointMake(point.x*stratum.frame.size.width, point.y*stratum.frame.size.height);
 	CGPathMoveToPoint(mPath, NULL, VX(offset.x+(point.x+stratum.frame.origin.x)/scale), VY(offset.y+(point.y+stratum.frame.origin.y)/scale));
-	CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(stratum.outline[1]), &point);
+	point.x = ((PointObj *)stratum.outline[1]).x;
+	point.y = ((PointObj *)stratum.outline[1]).y;
 	point = CGPointMake(point.x*stratum.frame.size.width, point.y*stratum.frame.size.height);
 	CGPoint cPoint;
-	CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(controlPoints[0]), &cPoint);
+	cPoint.x = ((PointObj *)controlPoints[0]).x;
+	cPoint.y = ((PointObj *)controlPoints[0]).y;
 	// first and last curves have only a single control point
 	CGPathAddQuadCurveToPoint(mPath, NULL, VX(offset.x+(cPoint.x+stratum.frame.origin.x)/scale), VY(offset.y+(cPoint.y+stratum.frame.origin.y)/scale), VX(offset.x+(point.x+stratum.frame.origin.x)/scale), VY(offset.y+(point.y+stratum.frame.origin.y)/scale));
 	int cpIndex = 1;
 	for (int index = 2; index < stratum.outline.count-3; ++index) {
 		CGPoint cPoint1, cPoint2;
-		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(stratum.outline[index]), &point);
+		point.x = ((PointObj *)stratum.outline[index]).x;
+		point.y = ((PointObj *)stratum.outline[index]).y;
 		point = CGPointMake(point.x*stratum.frame.size.width, point.y*stratum.frame.size.height);
-		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(controlPoints[cpIndex++]), &cPoint1);
-		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(controlPoints[cpIndex++]), &cPoint2);
+		cPoint1.x = ((PointObj *)controlPoints[cpIndex]).x;
+		cPoint1.y = ((PointObj *)controlPoints[cpIndex++]).y;
+		cPoint2.x = ((PointObj *)controlPoints[cpIndex]).x;
+		cPoint2.y = ((PointObj *)controlPoints[cpIndex++]).y;
 		NSAssert1(!isinf(cPoint1.x), @"floating point overflow, cPoint1.x[%d]", cpIndex-2);
 		NSAssert1(!isinf(cPoint1.y), @"floating point overflow, cPoint1.y[%d]", cpIndex-2);
 		NSAssert1(!isinf(cPoint2.x), @"floating point overflow, cPoint2.x[%d]", cpIndex-1);
@@ -469,8 +475,10 @@
 		// grab the next pair of control points and use them for the next curve
 		CGPathAddCurveToPoint(mPath, NULL, VX(offset.x+(cPoint1.x+stratum.frame.origin.x)/scale), VY(offset.y+(cPoint1.y+stratum.frame.origin.y)/scale), VX(offset.x+(cPoint2.x+stratum.frame.origin.x)/scale), VY(offset.y+(cPoint2.y+stratum.frame.origin.y)/scale), VX(offset.x+(point.x+stratum.frame.origin.x)/scale), VY(offset.y+(point.y+stratum.frame.origin.y)/scale));
 	}
-	CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)(controlPoints[cpIndex]), &cPoint);
-	CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)([stratum.outline lastObject]), &point);
+	cPoint.x = ((PointObj *)controlPoints[cpIndex]).x;
+	cPoint.y = ((PointObj *)controlPoints[cpIndex]).y;
+	point.x = ((PointObj *)[stratum.outline lastObject]).x;
+	point.y = ((PointObj *)[stratum.outline lastObject]).y;
 	point = CGPointMake(point.x*stratum.frame.size.width, point.y*stratum.frame.size.height);
 	// last curve again has a single control point
 	CGPathAddQuadCurveToPoint(mPath, NULL, VX(offset.x+(cPoint.x+stratum.frame.origin.x)/scale), VY(offset.y+(cPoint.y+stratum.frame.origin.y)/scale), VX(offset.x+(point.x+stratum.frame.origin.x)/scale), VY(offset.y+(point.y+stratum.frame.origin.y)/scale));

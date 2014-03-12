@@ -11,10 +11,12 @@
 #import "StrataViewController.h"
 #import "StrataModel.h"
 
-@interface MyPoint : NSObject
+@interface PointObj : NSObject
 
-@property NSNumber *x;
-@property NSNumber *y;
+@property float x;
+@property float y;
+
+- (id)initWithPoint:(CGPoint)point;
 
 @end
 

@@ -9,6 +9,7 @@
 #import "StrataModel.h"
 #import "StrataModelState.h"
 #import "Graphics.h"
+#import "StrataView.h"
 
 static StrataDocument *gCurrentDocument = nil;
 
@@ -245,12 +246,12 @@ static StrataDocument *gCurrentDocument = nil;
 {
 	self.outline = [[NSMutableArray alloc] init];
 	float numberOfSegments = 5;
-	for (float x = 0, segnum = 0; segnum <= numberOfSegments; x += 1.0/numberOfSegments, ++segnum)															// left to right, on bottom
-		[self.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(x, 0)))]];
-	for (float y = 0, segnum = 0; segnum <= numberOfSegments; y += 1.0/numberOfSegments, ++segnum)															// bottom to top, on right side
-		[self.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(1, y)))]];
-	for (float x = 1, segnum = 0; segnum <= numberOfSegments; x -= 1.0/numberOfSegments, ++segnum)															// right to left, on top
-		[self.outline addObject:[NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(x, 1)))]];
+	for (float x = 0, segnum = 0; segnum <= numberOfSegments; x += 1.0/numberOfSegments, ++segnum)														// left to right, on bottom
+		[self.outline addObject:[[PointObj alloc] initWithPoint:CGPointMake(x, 0)]];
+	for (float y = 0, segnum = 0; segnum <= numberOfSegments; y += 1.0/numberOfSegments, ++segnum)														// bottom to top, on right side
+		[self.outline addObject:[[PointObj alloc] initWithPoint:CGPointMake(1, y)]];
+	for (float x = 1, segnum = 0; segnum <= numberOfSegments; x -= 1.0/numberOfSegments, ++segnum)														// right to left, on top
+		[self.outline addObject:[[PointObj alloc] initWithPoint:CGPointMake(x, 1)]];
 }
 
 #pragma mark NSCoder protocol
@@ -263,14 +264,13 @@ static StrataDocument *gCurrentDocument = nil;
 	self.hasPageCutter = [aDecoder decodeBoolForKey:@"hasPageCutter"];
 	self.hasAnchor = [aDecoder decodeBoolForKey:@"hasAnchor"];
 	self.paleoCurrents = [aDecoder decodeObjectForKey:@"paleocurrents"];
-	self.outline = [aDecoder decodeObjectForKey:@"outline"];
-	NSMutableArray *convertedOutline = [[NSMutableArray alloc] init];
-	int i = 0;
-	for (NSDictionary *dict in self.outline) {
-		[convertedOutline addObject:[NSMutableDictionary dictionaryWithDictionary:self.outline[i++]]];
-#pragma unused(dict)
+	NSArray *outlineArray = [aDecoder decodeObjectForKey:@"outline"];
+	self.outline = [[NSMutableArray alloc] init];
+	for (NSDictionary *dict in outlineArray) {
+		CGPoint point;
+		CGPointMakeWithDictionaryRepresentation((CFDictionaryRef) dict, &point);
+		[self.outline addObject:[[PointObj alloc] initWithPoint:point]];
 	}
-	self.outline = convertedOutline;
 	self.grainSizeIndex = [aDecoder decodeIntForKey:@"grainSizeIndex"];
 	self.notes = [aDecoder decodeObjectForKey:@"notes"];
 	return self;
@@ -283,7 +283,10 @@ static StrataDocument *gCurrentDocument = nil;
 	[aCoder encodeBool:self.hasPageCutter forKey:@"hasPageCutter"];
 	[aCoder encodeBool:self.hasAnchor forKey:@"hasAnchor"];
 	[aCoder encodeObject:self.paleoCurrents forKey:@"paleocurrents"];
-	[aCoder encodeObject:self.outline forKey:@"outline"];
+	NSMutableArray *outlineArray = [[NSMutableArray alloc] init];
+	for (PointObj *pointObj in self.outline)
+		[outlineArray addObject:CFBridgingRelease(CGPointCreateDictionaryRepresentation(CGPointMake(pointObj.x, pointObj.y)))];
+	[aCoder encodeObject:outlineArray forKey:@"outline"];
 	[aCoder encodeInt:self.grainSizeIndex forKey:@"grainSizeIndex"];
 	[aCoder encodeObject:self.notes forKey:@"notes"];
 }
