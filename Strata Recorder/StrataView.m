@@ -881,31 +881,13 @@ void patternDrawingCallback(void *info, CGContextRef context)
 
 - (void)drawGraphPaper:(CGContextRef)context
 {
-	CGRect clippingRect = CGContextGetClipBoundingBox(context);						// in screen units
-	CGRect clippingRectUser = CGRectMake(UX(clippingRect.origin.x), UY(clippingRect.origin.y)+UDY(clippingRect.size.height), UDX(clippingRect.size.width), -UDY(clippingRect.size.height));
 	// paper background
 	CGContextSetShouldAntialias(context, NO);
 	
     CGContextSetRGBFillColor(context, 1.0,1.0,1.0,1.0);
+	CGRect clippingRect = CGContextGetClipBoundingBox(context);						// in screen units
     CGContextFillRect(context,clippingRect);
 	// horizontal rules
-#if 1
-	CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0 green:1 blue:1 alpha:1.0].CGColor);
-	float yStart = roundf(clippingRectUser.origin.y/GRID_WIDTH)*GRID_WIDTH-GRID_WIDTH;
-	for (float i=yStart; i<yStart+clippingRectUser.size.height+GRID_WIDTH*2.0; i+=GRID_WIDTH) {
-		CGContextMoveToPoint(context, 0, VY(i));
-		CGContextAddLineToPoint(context, self.frame.size.width, VY(i));
-		CGContextStrokePath(context);
-	}
-	// vertical rules
-	CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0 green:1 blue:1 alpha:1.0].CGColor);
-	float xStart = roundf(clippingRectUser.origin.x/GRID_WIDTH)*GRID_WIDTH+GRID_WIDTH;
-	for (float i=xStart; i<=xStart+clippingRectUser.size.width+GRID_WIDTH*2.0; i+=GRID_WIDTH) {
-		CGContextMoveToPoint(context, VX(i), 0);
-		CGContextAddLineToPoint(context, VX(i), self.frame.origin.y+self.frame.size.height);
-		CGContextStrokePath(context);
-	}
-#else
 	CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0 green:1 blue:1 alpha:1.0].CGColor);
 	for (float i=-YORIGIN; i<self.bounds.size.height/PPI; i+=GRID_WIDTH) {
 		CGContextMoveToPoint(context, 0, VY(i));
@@ -919,7 +901,6 @@ void patternDrawingCallback(void *info, CGContextRef context)
 		CGContextAddLineToPoint(context, VX(i), self.frame.origin.y+self.frame.size.height);
 		CGContextStrokePath(context);
 	}
-#endif
 }
 
 @end
